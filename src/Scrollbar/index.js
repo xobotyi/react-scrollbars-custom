@@ -64,7 +64,7 @@ export default class Scrollbar extends Component
                   scrollHeight = 0,
                   clientWidth  = 0,
                   clientHeight = 0,
-              } = this.view || {};
+              } = this.scroller || {};
 
         return {
             left: (scrollLeft / (scrollWidth - clientWidth)) || 0,
@@ -114,20 +114,26 @@ export default class Scrollbar extends Component
             this.scrollLeft = scrollLeft;
             this.scrollTop = scrollTop;
         });
+
+        this.detectScroll();
     }
 
     detectScroll() {
         if (this.scrolling) { return; }
 
         this.scrolling = true;
-        this.props.onScrollStart();
+        if (isFunction(this.props.onScrollStart)) {
+            this.props.onScrollStart();
+        }
 
         this.detectScrollInterval = setInterval(() => {
                                                     if (this.lastScrollLeft === this.scrollLeft && this.lastScrollTop === this.scrollTop) {
                                                         clearInterval(this.detectScrollInterval);
                                                         this.scrolling = false;
 
-                                                        this.props.onScrollStop();
+                                                        if (isFunction(this.props.onScrollStart)) {
+                                                            this.props.onScrollStop();
+                                                        }
                                                     }
 
                                                     this.lastScrollLeft = this.scrollLeft;
@@ -163,17 +169,17 @@ export default class Scrollbar extends Component
         const trackHorizontalInnerWidth = getInnerWigth(this.trackHorizontal),
               trackVerticalInnerHeight  = getInnerHeight(this.trackVertical);
 
-        const thumbHorizontalWidth = this.computeThumbHorizontalWidth(),
-              thumbVerticalHeight  = this.computeThumbVerticalHeight();
+        const thumbHorizontalWidth = this.computeThumbHorizontalWidth(trackHorizontalInnerWidth),
+              thumbVerticalHeight  = this.computeThumbVerticalHeight(trackVerticalInnerHeight);
 
-        const thumbHorizontalOffset = scrollLeft / (scrollWidth - clientWidth) * (trackHorizontalInnerWidth - thumbHorizontalWidth),
-              thumbVerticalOffset   = scrollTop / (scrollHeight - clientHeight) * (trackVerticalInnerHeight - thumbVerticalHeight);
+        const thumbHorizontalOffset = thumbHorizontalWidth ? scrollLeft / (scrollWidth - clientWidth) * (trackHorizontalInnerWidth - thumbHorizontalWidth) : 0,
+              thumbVerticalOffset   = thumbVerticalHeight ? scrollTop / (scrollHeight - clientHeight) * (trackVerticalInnerHeight - thumbVerticalHeight) : 0;
 
-        this.thumbHorizontal.style.transform = `translateX(${thumbHorizontalOffset}px)`;
-        this.thumbHorizontal.style.width = thumbHorizontalWidth + 'px';
+        this.thumbHorizontal.style['transform'] = `translateX(${thumbHorizontalOffset}px)`;
+        this.thumbHorizontal.style['width'] = thumbHorizontalWidth + 'px';
 
-        this.thumbVertical.style.transform = `translateY(${thumbVerticalOffset}px)`;
-        this.thumbVertical.style.height = thumbVerticalHeight + 'px';
+        this.thumbVertical.style['transform'] = `translateY(${thumbVerticalOffset}px)`;
+        this.thumbVertical.style['height'] = thumbVerticalHeight + 'px';
 
         if (isFunction(cb)) {
             cb(scrollValues);
@@ -197,7 +203,7 @@ export default class Scrollbar extends Component
 
         return createElement(
                 tagName,
-                {...props, style: wrapperStyle, ref: (ref) => {this.container = ref;}},
+                {...props, style: wrapperStyle, ref: (ref) => {this.wrapper = ref;}},
                 [
                     renderView({
                                    key:   'scroller',

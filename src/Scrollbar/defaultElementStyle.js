@@ -31,6 +31,7 @@ export const trackHorizontal = {
 export const thumbVertical = {
     position:   'relative',
     width:      '100%',
+    height:     0,
     cursor:     'pointer',
     background: 'rgba(0,0,0,.35)',
 };
@@ -38,6 +39,7 @@ export const thumbVertical = {
 export const thumbHorizontal = {
     position:   'relative',
     height:     '100%',
+    width:      0,
     cursor:     'pointer',
     background: 'rgba(0,0,0,.35)',
 };

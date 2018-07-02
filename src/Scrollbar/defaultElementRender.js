@@ -1,7 +1,7 @@
 import React from 'react';
 
 export function scroller(props) {
-    return <div className="CustomScrollbar-view" { ...props } />;
+    return <div className="CustomScrollbar-scroller" { ...props } />;
 }
 
 export function trackVertical(props) {

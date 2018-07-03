@@ -16,7 +16,7 @@ body {
     flex-direction: column;
     font-size:      2rem;
     width:          100vw;
-    height:         100vh;
+    min-height:     100vh;
     max-width:      1200px;
     margin:         0 auto;
     font-family:    "Open Sans", sans-serif;
@@ -28,9 +28,10 @@ body {
     display:     flex;
     flex-wrap:   wrap;
     align-items: center;
+    justify-content: center;
     width:       100%;
     flex-grow:   0;
-    margin:      2rem 0 5rem;
+    margin:      2rem 0 3rem;
     padding:     0 2rem;
 }
 
@@ -54,13 +55,41 @@ body {
     color: rgba(0, 0, 0, .87);
 }
 
+#foot {
+    display:        flex;
+    width:          100%;
+    flex-direction: column;
+    align-items:    center;
+    margin:         0 0 2rem;
+    flex-shrink:    0;
+}
+
+#foot .libLink {
+    font-size:      2rem;
+    font-weight:    600;
+    text-transform: uppercase;
+}
+
+#foot .authorLink {
+    font-size: 1.75rem;
+}
+
+#foot .libLink, #foot .authorLink {
+    color:           rgba(0, 0, 0, .54);
+    text-decoration: none;
+}
+
+#foot .libLink:hover, #foot .authorLink:hover {
+    color:           rgba(0, 0, 0, .87);
+    text-decoration: none;
+}
+
 .scrollers {
-    display:       flex;
-    flex-wrap:     wrap;
-    width:         100%;
-    flex-grow:     1;
-    align-items:   flex-start;
-    margin-bottom: 5rem;
+    display:     flex;
+    flex-wrap:   wrap;
+    width:       100%;
+    flex-grow:   1;
+    align-items: flex-start;
 }
 
 .scrollers .scroller {
@@ -93,9 +122,21 @@ body {
     border-bottom: 1px solid rgba(0, 0, 0, .05);
 }
 
+.scrollers .scroller > .description .button {
+    display:        inline-block;
+    font-size:      1.5rem;
+    text-transform: uppercase;
+    background:     #444444;
+    color:          rgba(255, 255, 255, .87);
+    padding:        .5rem 1rem;
+    cursor:         pointer;
+    user-select:    none;
+    margin:         .25rem .5rem
+}
+
 .scrollers .scroller .CustomScrollbar-wrapper {
     width:          100%;
-    padding-bottom: 75%;
+    padding-bottom: 55%;
 }
 
 .scrollers .scroller .CustomScrollbar-scroller {
@@ -111,28 +152,53 @@ body {
     margin-bottom: 5rem;
 }
 
-#customScrollbarsRoot .CustomScrollbar-scroller {
+#customScrollbarsRoot .CustomScrollbar-scroller,
+#autohideScrollbarsRoot .CustomScrollbar-scroller,
+#sandboxScrollbarsRoot .CustomScrollbar-scroller {
     padding-right: 2rem;
 }
 
 @media screen and (max-width: 1000px) {
-    #customScrollbarsRoot .CustomScrollbar-scroller {
+    #customScrollbarsRoot .CustomScrollbar-scroller,
+    #autohideScrollbarsRoot .CustomScrollbar-scroller,
+    #sandboxScrollbarsRoot .CustomScrollbar-scroller {
         padding-right: 1rem;
     }
 }
 
-#customScrollbarsRoot .CustomScrollbar-trackVertical {
+#customScrollbarsRoot .CustomScrollbar-trackVertical,
+#autohideScrollbarsRoot .CustomScrollbar-trackVertical,
+#sandboxScrollbarsRoot .CustomScrollbar-trackVertical {
     display:       block;
     position:      absolute;
     height:        100%;
     width:         1rem;
     top:           0;
     right:         2px;
-    background:    rgba(0, 0, 0, .05);
+    background:    rgba(0, 0, 0, .1);
     border-radius: 2px;
 }
 
-#customScrollbarsRoot .CustomScrollbar-thumbVertical {
+#sandboxScrollbarsRoot .CustomScrollbar-trackHorizontal {
+    display:       block;
+    position:      absolute;
+    width:         calc(100% - 2rem);
+    height:        1rem;
+    bottom:        2px;
+    left:          0;
+    background:    rgba(0, 0, 0, .1);
+    border-radius: 2px;
+}
+
+#autohideScrollbarsRoot .CustomScrollbar-trackVertical {
+    opacity:     0;
+    will-change: opacity;
+    transition:  opacity ease-in .2s;
+}
+
+#customScrollbarsRoot .CustomScrollbar-thumbVertical,
+#autohideScrollbarsRoot .CustomScrollbar-thumbVertical,
+#sandboxScrollbarsRoot .CustomScrollbar-thumbVertical {
     display:       block;
     position:      relative;
     background:    #9F9F9F;
@@ -140,7 +206,9 @@ body {
     cursor:        pointer;
 }
 
-#customScrollbarsRoot .CustomScrollbar-thumbVertical:hover, #customScrollbarsRoot .CustomScrollbar-thumbVertical.dragging {
+#customScrollbarsRoot .CustomScrollbar-thumbVertical:hover, #customScrollbarsRoot .CustomScrollbar-thumbVertical.dragging,
+#autohideScrollbarsRoot .CustomScrollbar-thumbVertical:hover, #autohideScrollbarsRoot .CustomScrollbar-thumbVertical.dragging,
+#sandboxScrollbarsRoot .CustomScrollbar-thumbVertical:hover, #sandboxScrollbarsRoot .CustomScrollbar-thumbVertical.dragging {
     width: calc(100% + 2px);
     left:  -1px;
 }

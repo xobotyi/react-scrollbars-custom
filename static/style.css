@@ -1,0 +1,214 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans');
+
+* {
+    box-sizing: border-box;
+    padding:    0;
+    margin:     0;
+}
+
+html {
+    font-size: 8px;
+}
+
+body {
+    display:        flex;
+    position:       relative;
+    flex-direction: column;
+    font-size:      2rem;
+    width:          100vw;
+    min-height:     100vh;
+    max-width:      1200px;
+    margin:         0 auto;
+    font-family:    "Open Sans", sans-serif;
+    background:     #DDE2EA;
+    color:          rgba(0, 0, 0, .87);
+}
+
+#libHead {
+    display:     flex;
+    flex-wrap:   wrap;
+    align-items: center;
+    justify-content: center;
+    width:       100%;
+    flex-grow:   0;
+    margin:      2rem 0 3rem;
+    padding:     0 2rem;
+}
+
+#libHead h1 {
+    display:     block;
+    flex-grow:   1;
+    flex-shrink: 0;
+    font-size:   4rem;
+    font-weight: 600;
+}
+
+#libHead a {
+    display:         block;
+    font-size:       6rem;
+    cursor:          pointer;
+    text-decoration: none;
+    color:           rgba(0, 0, 0, .54);
+}
+
+#libHead a:hover {
+    color: rgba(0, 0, 0, .87);
+}
+
+#foot {
+    display:        flex;
+    width:          100%;
+    flex-direction: column;
+    align-items:    center;
+    margin:         0 0 2rem;
+    flex-shrink:    0;
+}
+
+#foot .libLink {
+    font-size:      2rem;
+    font-weight:    600;
+    text-transform: uppercase;
+}
+
+#foot .authorLink {
+    font-size: 1.75rem;
+}
+
+#foot .libLink, #foot .authorLink {
+    color:           rgba(0, 0, 0, .54);
+    text-decoration: none;
+}
+
+#foot .libLink:hover, #foot .authorLink:hover {
+    color:           rgba(0, 0, 0, .87);
+    text-decoration: none;
+}
+
+.scrollers {
+    display:     flex;
+    flex-wrap:   wrap;
+    width:       100%;
+    flex-grow:   1;
+    align-items: flex-start;
+}
+
+.scrollers .scroller {
+    display:    block;
+    position:   relative;
+    padding:    3rem;
+    background: #FFFFFF;
+    margin:     1rem;
+    max-width:  calc(50% - 2rem);
+    width:      100%;
+}
+
+@media screen and (max-width: 1000px) {
+    .scrollers .scroller {
+        max-width: calc(100% - 2rem);
+    }
+}
+
+.scrollers .scroller > .title {
+    font-weight:    600;
+    text-transform: uppercase;
+    margin:         0 0 1rem;
+}
+
+.scrollers .scroller > .description {
+    display:       block;
+    width:         100%;
+    margin:        0 0 1.5rem;
+    padding:       0 0 1rem;
+    border-bottom: 1px solid rgba(0, 0, 0, .05);
+}
+
+.scrollers .scroller > .description .button {
+    display:        inline-block;
+    font-size:      1.5rem;
+    text-transform: uppercase;
+    background:     #444444;
+    color:          rgba(255, 255, 255, .87);
+    padding:        .5rem 1rem;
+    cursor:         pointer;
+    user-select:    none;
+    margin:         .25rem .5rem
+}
+
+.scrollers .scroller .CustomScrollbar-wrapper {
+    width:          100%;
+    padding-bottom: 55%;
+}
+
+.scrollers .scroller .CustomScrollbar-scroller {
+    text-align: justify;
+    font-size:  1.75rem;
+}
+
+.scrollers .scroller .CustomScrollbar-scroller p + p {
+    margin-top: 1.5rem;
+}
+
+.scrollers .scroller .CustomScrollbar-scroller p:last-child {
+    margin-bottom: 5rem;
+}
+
+#customScrollbarsRoot .CustomScrollbar-scroller,
+#autohideScrollbarsRoot .CustomScrollbar-scroller,
+#sandboxScrollbarsRoot .CustomScrollbar-scroller {
+    padding-right: 2rem;
+}
+
+@media screen and (max-width: 1000px) {
+    #customScrollbarsRoot .CustomScrollbar-scroller,
+    #autohideScrollbarsRoot .CustomScrollbar-scroller,
+    #sandboxScrollbarsRoot .CustomScrollbar-scroller {
+        padding-right: 1rem;
+    }
+}
+
+#customScrollbarsRoot .CustomScrollbar-trackVertical,
+#autohideScrollbarsRoot .CustomScrollbar-trackVertical,
+#sandboxScrollbarsRoot .CustomScrollbar-trackVertical {
+    display:       block;
+    position:      absolute;
+    height:        100%;
+    width:         1rem;
+    top:           0;
+    right:         2px;
+    background:    rgba(0, 0, 0, .1);
+    border-radius: 2px;
+}
+
+#sandboxScrollbarsRoot .CustomScrollbar-trackHorizontal {
+    display:       block;
+    position:      absolute;
+    width:         calc(100% - 2rem);
+    height:        1rem;
+    bottom:        2px;
+    left:          0;
+    background:    rgba(0, 0, 0, .1);
+    border-radius: 2px;
+}
+
+#autohideScrollbarsRoot .CustomScrollbar-trackVertical {
+    opacity:     0;
+    will-change: opacity;
+    transition:  opacity ease-in .2s;
+}
+
+#customScrollbarsRoot .CustomScrollbar-thumbVertical,
+#autohideScrollbarsRoot .CustomScrollbar-thumbVertical,
+#sandboxScrollbarsRoot .CustomScrollbar-thumbVertical {
+    display:       block;
+    position:      relative;
+    background:    #9F9F9F;
+    border-radius: 2px;
+    cursor:        pointer;
+}
+
+#customScrollbarsRoot .CustomScrollbar-thumbVertical:hover, #customScrollbarsRoot .CustomScrollbar-thumbVertical.dragging,
+#autohideScrollbarsRoot .CustomScrollbar-thumbVertical:hover, #autohideScrollbarsRoot .CustomScrollbar-thumbVertical.dragging,
+#sandboxScrollbarsRoot .CustomScrollbar-thumbVertical:hover, #sandboxScrollbarsRoot .CustomScrollbar-thumbVertical.dragging {
+    width: calc(100% + 2px);
+    left:  -1px;
+}

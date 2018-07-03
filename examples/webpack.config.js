@@ -1,11 +1,10 @@
 let path = require('path');
 
 module.exports = {
-    mode:         "development",
+    mode:         process.env.NODE_ENV === 'development' ? 'development' : 'production',
     target:       "web",
-    devtool:      'eval',
-    entry:        ['webpack-dev-server/client?http://localhost:3000'].concat('./index'),
-    watch:        true,
+    entry:        path.join(__dirname, 'index.js'),
+    watch:        process.env.NODE_ENV === 'development',
     output:       {
         path:       path.join(__dirname, 'static'),
         filename:   'bundle.js',

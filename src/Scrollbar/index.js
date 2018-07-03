@@ -12,14 +12,17 @@ export default class Scrollbar extends Component
         tagName:               PropTypes.string,
         className:             PropTypes.string,
         defaultStyles:         PropTypes.bool,
-        renderView:            PropTypes.func,
+        renderScroller:        PropTypes.func,
         renderTrackVertical:   PropTypes.func,
         renderTrackHorizontal: PropTypes.func,
         renderThumbVertical:   PropTypes.func,
         renderThumbHorizontal: PropTypes.func,
         thumbSizeMin:          PropTypes.number,
-        onScroll:              PropTypes.func,
         children:              PropTypes.node,
+
+        onScroll:      PropTypes.func,
+        onScrollStart: PropTypes.func,
+        onScrollStop:  PropTypes.func,
     };
 
     static defaultProps = {
@@ -27,7 +30,7 @@ export default class Scrollbar extends Component
         className:             'CustomScrollbar-wrapper',
         defaultStyles:         true,
         thumbSizeMin:          30,
-        renderView:            defaultElementRender.scroller,
+        renderScroller:        defaultElementRender.scroller,
         renderTrackVertical:   defaultElementRender.trackVertical,
         renderTrackHorizontal: defaultElementRender.trackHorizontal,
         renderThumbVertical:   defaultElementRender.thumbVertical,
@@ -68,9 +71,7 @@ export default class Scrollbar extends Component
     }
 
     addListeners() {
-        if (!isset(document) || !this.scroller) {
-            return;
-        }
+        if (!isset(document) || !this.scroller) { return; }
 
         const {scroller, trackVertical, trackHorizontal, thumbVertical, thumbHorizontal} = this;
 
@@ -83,9 +84,7 @@ export default class Scrollbar extends Component
     }
 
     removeListeners() {
-        if (!isset(document) || !this.scroller) {
-            return;
-        }
+        if (!isset(document) || !this.scroller) { return; }
 
         const {scroller, trackVertical, trackHorizontal, thumbVertical, thumbHorizontal} = this;
 
@@ -98,9 +97,145 @@ export default class Scrollbar extends Component
     }
 
     //==============//
+    //     api      //
+    //==============//
+    /**
+     * Set the vertical scroll to given amount of pixels
+     *
+     * @param top {number} Pixels amount
+     */
+    set scrollTop(top) {
+        if (!this.scroller) { return; }
+
+        this.scroller.scrollTop = top;
+    }
+
+    /**
+     * Return the vertical scroll position
+     *
+     * @return {number}
+     */
+    get scrollTop() {
+        if (!this.scroller) { return 0; }
+
+        return this.scroller.scrollTop;
+    }
+
+    /**
+     * Set the horizontal scroll to given amount of pixels
+     *
+     * @param left {number} Pixels amount
+     */
+    set scrollLeft(left) {
+        if (!this.scroller) { return; }
+
+        this.scroller.scrollLeft = left;
+    }
+
+    /**
+     * Return the horizontal scroll position
+     *
+     * @return {number}
+     */
+    get scrollLeft() {
+        if (!this.scroller) { return 0; }
+
+        this.scroller.scrollLeft = left;
+    }
+
+    /**
+     * @return {number}
+     */
+    get scrolHeight() {
+        if (!this.scroller) { return 0; }
+
+        return this.scroller.scrolHeight;
+    }
+
+    /**
+     * @return {number}
+     */
+    get scrolWidth() {
+        if (!this.scroller) {
+            return 0;
+        }
+        return this.scroller.scrolWidth;
+    }
+
+    /**
+     * @return {number}
+     */
+    get clientHeight() {
+        if (!this.scroller) { return 0; }
+
+        return this.scroller.clientHeight;
+    }
+
+    /**
+     * @return {number}
+     */
+    get clientWidth() {
+        if (!this.scroller) { return 0; }
+
+        return this.scroller.clientWidth;
+    }
+
+    /**
+     * Scrol to the top border
+     *
+     * @return {Scrollbar}
+     */
+    scrollToTop() {
+        if (!this.scroller) {
+            return this;
+        }
+        this.scroller.scrollTop = 0;
+
+        return this;
+    }
+
+    /**
+     * Scroll to the bottom brder
+     *
+     * @return {Scrollbar}
+     */
+    scrollToBotoom() {
+        if (!this.scroller) { return this; }
+        this.scroller.scrollTop = this.scroller.scrollHeight;
+
+        return this;
+    }
+
+    /**
+     * Scrolls to the left border
+     *
+     * @return {Scrollbar}
+     */
+    scrollToLeft() {
+        if (!this.scroller) { return this; }
+        this.scroller.scrollLeft = 0;
+
+        return this;
+    }
+
+    /**
+     * Scroll to the right border
+     *
+     * @return {Scrollbar}
+     */
+    scrollToRight() {
+        if (!this.scroller) { return this; }
+        this.scroller.scrollLeft = this.scroller.scrollWidth;
+
+        return this;
+    }
+
+    //==============//
     //   handlers   //
     //==============//
-    handleScrollEvent() {
+    handleScrollEvent(e) {
+        if (isFunction(this.onScroll)) { this.onScroll(e); }
+
         this.update();
     }
 
@@ -211,7 +346,7 @@ export default class Scrollbar extends Component
     /**
      * Request animation frame and call given function inside
      *
-     * @param cb {function}
+     * @param cb {function} Function to call in reqiested frame
      */
     raf(cb) {
         if (isset(this.requestFrame)) {raf.cancel(this.requestFrame);}
@@ -321,13 +456,13 @@ export default class Scrollbar extends Component
     render() {
         const {
                   tagName, thumbSizeMin, children, defaultStyles, style,
-                  renderView, renderTrackVertical, renderTrackHorizontal, renderThumbVertical, renderThumbHorizontal,
+                  renderScroller, renderTrackVertical, renderTrackHorizontal, renderThumbVertical, renderThumbHorizontal,
                   ...props
               } = this.props;
 
         const browserScrollbarWidth = getScrollbarWidth(),
-              wrapperStyle          = {...style, ...(defaultStyles && defaultElementStyles.wrapper)},
-              scrollerStyle         = {...(defaultStyles && defaultElementStyles.scroller), marginRight: -browserScrollbarWidth, marginBottom: -browserScrollbarWidth},
+              wrapperStyle          = {...style, ...defaultElementStyles.wrapper},
+              scrollerStyle         = {...defaultElementStyles.scroller, marginRight: -browserScrollbarWidth, marginBottom: -browserScrollbarWidth},
               trackVerticalStyle    = {...(defaultStyles && defaultElementStyles.trackVertical)},
               thumbVerticalStyle    = {...(defaultStyles && defaultElementStyles.thumbVertical)},
               trackHorizontalStyle  = {...(defaultStyles && defaultElementStyles.trackHorizontal)},
@@ -337,12 +472,12 @@ export default class Scrollbar extends Component
                 tagName,
                 {...props, style: wrapperStyle, ref: (ref) => {this.wrapper = ref;}},
                 [
-                    renderView({
-                                   key:   'scroller',
-                                   style: scrollerStyle,
-                                   ref:   (ref) => {this.scroller = ref;},
-                                   children,
-                               }),
+                    renderScroller({
+                                       key:   'scroller',
+                                       style: scrollerStyle,
+                                       ref:   (ref) => {this.scroller = ref;},
+                                       children,
+                                   }),
                     renderTrackVertical({
                                             key:      'trackVertical',
                                             style:    trackVerticalStyle,

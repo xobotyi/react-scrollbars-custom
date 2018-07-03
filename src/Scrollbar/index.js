@@ -9,27 +9,31 @@ import * as defaultElementStyles                from "./defaultElementStyle";
 export default class Scrollbar extends Component
 {
     static propTypes = {
+        thumbSizeMin:             PropTypes.number,
+        scrollDetectionThreshold: PropTypes.number,
+        defaultStyles:            PropTypes.bool,
+
+        onScroll:      PropTypes.func,
+        onScrollStart: PropTypes.func,
+        onScrollStop:  PropTypes.func,
+
         tagName:               PropTypes.string,
         className:             PropTypes.string,
-        defaultStyles:         PropTypes.bool,
         renderScroller:        PropTypes.func,
         renderTrackVertical:   PropTypes.func,
         renderTrackHorizontal: PropTypes.func,
         renderThumbVertical:   PropTypes.func,
         renderThumbHorizontal: PropTypes.func,
-        thumbSizeMin:          PropTypes.number,
         children:              PropTypes.node,
-
-        onScroll:      PropTypes.func,
-        onScrollStart: PropTypes.func,
-        onScrollStop:  PropTypes.func,
     };
 
     static defaultProps = {
+        defaultStyles:            true,
+        thumbSizeMin:             30,
+        scrollDetectionThreshold: 100,
+
         tagName:               'div',
         className:             'CustomScrollbar-wrapper',
-        defaultStyles:         true,
-        thumbSizeMin:          30,
         renderScroller:        defaultElementRender.scroller,
         renderTrackVertical:   defaultElementRender.trackVertical,
         renderTrackHorizontal: defaultElementRender.trackHorizontal,
@@ -58,7 +62,9 @@ export default class Scrollbar extends Component
     componentWillUnmount() {
         this.handleDragEnd();
         this.removeListeners();
+
         raf.cancel(this.requestFrame);
+        clearInterval(this.scrollDetect.interval);
     }
 
     componentDidMount() {
@@ -234,9 +240,31 @@ export default class Scrollbar extends Component
     //   handlers   //
     //==============//
     handleScrollEvent(e) {
-        if (isFunction(this.onScroll)) { this.onScroll(e); }
+        this.update((values) => {
+            if (isFunction(this.props.onScroll)) { this.props.onScroll({...values, event: e}); }
+        });
 
-        this.update();
+        this.scrollDetect();
+    }
+
+    scrollDetect() {
+        if (this.scrolling) { return; }
+
+        this.scrolling = true;
+
+        if (isFunction(this.props.onScrollStart)) { this.props.onScrollStart(this.getScrollValues()); }
+
+        this.scrollDetect.interval = setInterval(() => {
+            if (this.scrollDetect.lastScrollTop === this.scroller.scrollTop && this.scrollDetect.lastScrollLeft === this.scroller.scrollLeft) {
+                clearInterval(this.scrollDetect.interval);
+                this.scrolling = false;
+
+                if (isFunction(this.props.onScrollStop)) { this.props.onScrollStop(this.getScrollValues()); }
+            }
+
+            this.scrollDetect.lastScrollTop = this.scroller.scrollTop;
+            this.scrollDetect.lastScrollLeft = this.scroller.scrollLeft;
+        }, this.props.scrollDetectionThreshold);
     }
 
     handleWindowResizeEvent() {
@@ -331,16 +359,18 @@ export default class Scrollbar extends Component
     getScrollValues() {
         const {scrollLeft = 0, scrollTop = 0, scrollWidth = 0, scrollHeight = 0, clientWidth = 0, clientHeight = 0} = this.scroller || {};
 
-        return {
+        this.scrollValues = {
             left: (scrollLeft / (scrollWidth - clientWidth)) || 0,
             top:  (scrollTop / (scrollHeight - clientHeight)) || 0,
-            scrollLeft,
             scrollTop,
-            scrollWidth,
+            scrollLeft,
             scrollHeight,
+            scrollWidth,
             clientWidth,
             clientHeight,
         };
+
+        return this.scrollValues;
     }
 
     /**
@@ -455,8 +485,9 @@ export default class Scrollbar extends Component
 
     render() {
         const {
-                  tagName, thumbSizeMin, children, defaultStyles, style,
-                  renderScroller, renderTrackVertical, renderTrackHorizontal, renderThumbVertical, renderThumbHorizontal,
+                  style, thumbSizeMin, defaultStyles, scrollDetectionThreshold,
+                  tagName, children, renderScroller, renderTrackVertical, renderTrackHorizontal, renderThumbVertical, renderThumbHorizontal,
+                  onScroll, onScrollStart, onScrollStop,
                   ...props
               } = this.props;
 

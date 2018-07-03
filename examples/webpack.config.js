@@ -16,7 +16,7 @@ module.exports = {
     },
     resolve:      {
         alias:      {
-            "react-scrollbar-custom": path.join(__dirname, '..', '..', 'src'),
+            "react-scrollbar-custom": path.join(__dirname, '..', 'src'),
         },
         extensions: ['.js'],
     },

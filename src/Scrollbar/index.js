@@ -9,9 +9,12 @@ import * as defaultElementStyles                from "./defaultElementStyle";
 export default class Scrollbar extends Component
 {
     static propTypes = {
-        thumbSizeMin:             PropTypes.number,
-        scrollDetectionThreshold: PropTypes.number,
-        defaultStyles:            PropTypes.bool,
+        thumbSizeMin:                 PropTypes.number,
+        scrollDetectionThreshold:     PropTypes.number,
+        defaultStyles:                PropTypes.bool,
+        permanentScrollbars:          PropTypes.bool,
+        permanentScrollbarVertical:   PropTypes.bool,
+        permanentScrollbarHorizontal: PropTypes.bool,
 
         onScroll:      PropTypes.func,
         onScrollStart: PropTypes.func,
@@ -28,9 +31,12 @@ export default class Scrollbar extends Component
     };
 
     static defaultProps = {
-        defaultStyles:            true,
-        thumbSizeMin:             30,
-        scrollDetectionThreshold: 100,
+        defaultStyles:                true,
+        thumbSizeMin:                 30,
+        scrollDetectionThreshold:     100,
+        permanentScrollbars:          false,
+        permanentScrollbarVertical:   false,
+        permanentScrollbarHorizontal: false,
 
         tagName:               'div',
         className:             'CustomScrollbar-wrapper',
@@ -470,13 +476,17 @@ export default class Scrollbar extends Component
         const thumbHorizontalOffset = thumbHorizontalWidth ? scrollLeft / (scrollWidth - clientWidth) * (trackHorizontalInnerWidth - thumbHorizontalWidth) : 0,
               thumbVerticalOffset   = thumbVerticalHeight ? scrollTop / (scrollHeight - clientHeight) * (trackVerticalInnerHeight - thumbVerticalHeight) : 0;
 
-        this.trackHorizontal.style.display = thumbHorizontalWidth ? null : 'none';
-        this.thumbHorizontal.style.transform = `translateX(${thumbHorizontalOffset}px)`;
-        this.thumbHorizontal.style.width = thumbHorizontalWidth + 'px';
-
-        this.trackVertical.style.display = thumbVerticalHeight ? null : 'none';
+        if (!this.props.permanentScrollbars && !this.props.permanentScrollbarVertical) {
+            this.trackVertical.style.display = thumbVerticalHeight ? null : 'none';
+        }
         this.thumbVertical.style.transform = `translateY(${thumbVerticalOffset}px)`;
         this.thumbVertical.style.height = thumbVerticalHeight + 'px';
+
+        if (!this.props.permanentScrollbars && !this.props.permanentScrollbarHorizontal) {
+            this.trackHorizontal.style.display = thumbHorizontalWidth ? null : 'none';
+        }
+        this.thumbHorizontal.style.transform = `translateX(${thumbHorizontalOffset}px)`;
+        this.thumbHorizontal.style.width = thumbHorizontalWidth + 'px';
 
         if (isFunction(cb)) {
             cb(scrollValues);
@@ -485,7 +495,7 @@ export default class Scrollbar extends Component
 
     render() {
         const {
-                  style, thumbSizeMin, defaultStyles, scrollDetectionThreshold,
+                  style, thumbSizeMin, defaultStyles, scrollDetectionThreshold, permanentScrollbars, permanentScrollbarVertical, permanentScrollbarHorizontal,
                   tagName, children, renderScroller, renderTrackVertical, renderTrackHorizontal, renderThumbVertical, renderThumbHorizontal,
                   onScroll, onScrollStart, onScrollStop,
                   ...props
@@ -494,9 +504,9 @@ export default class Scrollbar extends Component
         const browserScrollbarWidth = getScrollbarWidth(),
               wrapperStyle          = {...style, ...defaultElementStyles.wrapper},
               scrollerStyle         = {...defaultElementStyles.scroller, marginRight: -browserScrollbarWidth, marginBottom: -browserScrollbarWidth},
-              trackVerticalStyle    = {...(defaultStyles && defaultElementStyles.trackVertical)},
+              trackVerticalStyle    = {...(defaultStyles && defaultElementStyles.trackVertical), ...(!browserScrollbarWidth && {display: 'none'})},
               thumbVerticalStyle    = {...(defaultStyles && defaultElementStyles.thumbVertical)},
-              trackHorizontalStyle  = {...(defaultStyles && defaultElementStyles.trackHorizontal)},
+              trackHorizontalStyle  = {...(defaultStyles && defaultElementStyles.trackHorizontal), ...(!browserScrollbarWidth && {display: 'none'})},
               thumbHorizontalStyle  = {...(defaultStyles && defaultElementStyles.thumbHorizontal)};
 
         return createElement(

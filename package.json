@@ -35,10 +35,16 @@
     "babel-preset-env": "^1.7.0",
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-0": "^6.24.1",
+    "cross-env": "^5.2.0",
+    "opn-cli": "^3.1.0",
     "path": "^0.12.7",
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
     "webpack": "^4.14.0",
     "webpack-dev-server": "^3.1.4"
+  },
+  "scripts": {
+    "run-examples": "cd ./examples/ && opn http://localhost:3000 && node server.js",
+    "examples": "npm i && npm run run-examples"
   }
 }

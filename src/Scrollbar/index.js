@@ -87,8 +87,8 @@ export default class Scrollbar extends Component
 
         const {scroller, trackVertical, trackHorizontal, thumbVertical, thumbHorizontal} = this;
 
-        window.addEventListener('resize', this.handleWindowResizeEvent);
-        scroller.addEventListener('scroll', this.handleScrollEvent);
+        window.addEventListener('resize', this.handleWindowResizeEvent, {passive: true});
+        scroller.addEventListener('scroll', this.handleScrollEvent, {passive: true});
         trackVertical.addEventListener('mousedown', this.handleTrackVerticalMousedownEvent);
         trackHorizontal.addEventListener('mousedown', this.handleTrackHorizontalMousedownEvent);
         thumbVertical.addEventListener('mousedown', this.handleThumbVerticalMousedownEvent);
@@ -261,7 +261,7 @@ export default class Scrollbar extends Component
         if (isFunction(this.props.onScrollStart)) { this.props.onScrollStart(this.getScrollValues()); }
 
         this.scrollDetect.interval = setInterval(() => {
-            if (this.scrollDetect.lastScrollTop === this.scroller.scrollTop && this.scrollDetect.lastScrollLeft === this.scroller.scrollLeft) {
+            if (this.scrollDetect.lastScrollTop === this.scroller.scrollTop && this.scrollDetect.lastScrollLeft === this.scroller.scrollLeft && !this.drag) {
                 clearInterval(this.scrollDetect.interval);
                 this.scrolling = false;
 
@@ -321,6 +321,7 @@ export default class Scrollbar extends Component
 
     handleDragStart() {
         this.drag = true;
+        this.scrollDetect();
 
         document.addEventListener('mousemove', this.handleDragEvent);
         document.addEventListener('mouseup', this.handleDragEnd);

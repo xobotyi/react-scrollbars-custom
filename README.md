@@ -1,6 +1,9 @@
 <h1 align="center">react-scrollbar-custom</h1>
 <p align="center">
-badges will be here
+<a href="https://www.npmjs.com/package/react-scrollbar-custom"><img src="https://img.shields.io/npm/l/react-scrollbar-custom.svg" /></a>
+<a href="https://www.npmjs.com/package/react-scrollbar-custom"><img src="https://img.shields.io/npm/v/react-scrollbar-custom.svg" /></a>
+<a href="https://www.npmjs.com/package/react-scrollbar-custom"><img src="https://img.shields.io/npm/dt/react-scrollbar-custom.svg" /></a>
+<a></a>
 </p>
 <p align="center">
     <a href="https://xobotyi.github.io/react-scrollbars-custom/">DEMO</a> ♦ <a href="https://github.com/xobotyi/react-scrollbars-custom/tree/master/docs">DOCS</a>

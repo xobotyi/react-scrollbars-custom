@@ -41,10 +41,12 @@
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
     "webpack": "^4.14.0",
+    "webpack-cli": "^3.0.8",
     "webpack-dev-server": "^3.1.4"
   },
   "scripts": {
-    "run-examples": "cd ./examples/ && opn http://localhost:3000 && node server.js",
+    "run-examples": "cd ./examples/ && opn http://localhost:3000 && cross-env NODE_ENV=development node server.js",
+    "build-examples": "npm i && cd ./examples && cross-env NODE_ENV=production webpack",
     "examples": "npm i && npm run run-examples"
   }
 }

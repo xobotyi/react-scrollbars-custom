@@ -6,6 +6,11 @@
     * `defaultStyles`: _(boolean)_ Apply default inline styles _(default: false)_
     * `thumbSizeMin`: _(number)_ Minimal size of thumb in pixels _(default: 30)_
     * `scrollDetectionThreshold`: _(number)_ Scroll process check interval in milliseconds _(default: 100)_
+    * `permanentScrollbars`: _(boolean)_ Display both, vertical and horizontal scrollbars permanently, in spite of scrolling possibility _(default: false)_
+    * `permanentScrollbarVertical`: _(boolean)_ Display vertical scrollbar permanently, in spite of scrolling possibility  _(default: false)_
+    * `permanentScrollbarHorizontal`: _(boolean)_ Display horizontal scrollbar permanently, in spite of scrolling possibility  _(default: false)_
+    * `contentSizeTrack`: _(boolean)_ Automatically check content's sizes to actualize the scrollbars. Useful when dom is changed not only by react. _(default: false)_
+    * `contentSizeTrackInterval`: _(number)_ Interval between content's size check, in milliseconds _(default: 200)_
 * **Rendering**
     * `renderWrapper`: _(function)_ The element that wraps the content in order to hide browser's scrollbars
     * `renderContent`: _(function)_ The element where content will be rendered

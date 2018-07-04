@@ -1,7 +1,7 @@
 # USAGE
 
 ### Default
-The <Scrollbar> component works out of the box, with only need of `width` and `height` to be set, inline or via CSS;
+The `<Scrollbar />` component works out of the box, with only need of `width` and `height` to be set, inline or via CSS;
 ```javascript
 import React, { Component }  from 'react';
 import Scrollbar from 'react-scrollbar-custom';
@@ -84,3 +84,20 @@ class App extends Component
     }
 }
 ```
+
+### Automatic size checks
+It is possible that DOM will be changed not only with React: for these cases `<Scrollbar />` has automatic content checker.
+```javascript
+import React, { Component }  from 'react';
+import Scrollbar from 'react-scrollbar-custom';
+
+class App extends Component
+{
+    render() {
+        return (
+                <Scrollbar contentSizeTrack={true} contentSizeTrack={500}/>
+        );
+    }
+}
+```
+Now `<Scrollbar/>` will check content's sizes every 500ms and trigger `Scrollbar.update()` if they're changed.

@@ -47,3 +47,7 @@ Run the example, it will install dependencies, build current component version a
 ```bash
 npm run examples
 ```
+
+## Credits
+Big thanks to @malte-wessel with his [react-custom-scrollbars](https://github.com/malte-wessel/react-custom-scrollbars) which I used before writing this component.
+So don't be wondered that repos and code are look the same in some places, his package used as ethalon. And for the users convenience i've tried to make API's seamless as much as it possible.

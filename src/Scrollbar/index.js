@@ -15,6 +15,8 @@ export default class Scrollbar extends Component
         permanentScrollbars:          PropTypes.bool,
         permanentScrollbarVertical:   PropTypes.bool,
         permanentScrollbarHorizontal: PropTypes.bool,
+        contentSizeTrack:         PropTypes.bool,
+        contentSizeTrackInterval: PropTypes.number,
 
         onUpdate:      PropTypes.func,
         onScroll:      PropTypes.func,
@@ -23,8 +25,6 @@ export default class Scrollbar extends Component
 
         tagName:   PropTypes.string,
         className: PropTypes.string,
-
-        renderScroller: PropTypes.func,
 
         renderWrapper:         PropTypes.func,
         renderContent:         PropTypes.func,
@@ -42,6 +42,8 @@ export default class Scrollbar extends Component
         permanentScrollbars:          false,
         permanentScrollbarVertical:   false,
         permanentScrollbarHorizontal: false,
+        contentSizeTrack:         false,
+        contentSizeTrackInterval: 200,
 
         tagName:               'div',
         className:             'CustomScrollbar',
@@ -76,16 +78,43 @@ export default class Scrollbar extends Component
         this.removeListeners();
 
         raf.cancel(this.requestFrame);
-        clearInterval(this.scrollDetect.interval);
+
+        if (this.scrollDetect.interval) {
+            clearInterval(this.scrollDetect.interval);
+            this.scrollDetect.interval = undefined;
+        }
+        this.contentSizeTrackStop();
     }
 
     componentDidMount() {
         this.addListeners();
         this.update();
+
+        if (this.props.contentSizeTrack) {
+            this.contentSizeTrackStart();
+        }
     }
 
     componentDidUpdate() {
         this.update();
+
+        const {scrollHeight = 0, scrollWidth = 0, clientHeight = 0, clientWidth = 0} = this.content;
+        this.contentSizeTrackPreviousSize = {scrollHeight, scrollWidth, clientHeight, clientWidth};
+    }
+
+    componentWillUpdate(nextProps, nextState) {
+        if (nextProps.contentSizeTrack !== this.props.contentSizeTrack) {
+            if (nextProps.contentSizeTrack) {
+                this.contentSizeTrackStart();
+            }
+            else {
+                this.contentSizeTrackStop();
+            }
+        }
+        else if (nextProps.contentSizeTrack && nextProps.contentSizeTrackInterval !== this.props.contentSizeTrackInterval) {
+            this.contentSizeTrackStop();
+            this.contentSizeTrackStart();
+        }
     }
 
     /**
@@ -514,10 +543,49 @@ export default class Scrollbar extends Component
         return this;
     }
 
+    /**
+     * @return {Scrollbar}
+     */
+    contentSizeTrackStart() {
+        if (!this.content || this.contentSizeTrackInterval) { return this; }
+
+        const {scrollHeight = 0, scrollWidth = 0, clientHeight = 0, clientWidth = 0} = this.content;
+        this.contentSizeTrackPreviousSize = {scrollHeight, scrollWidth, clientHeight, clientWidth};
+        const {contentSizeTrackInterval} = this.props;
+
+        this.contentSizeTrackInterval = setInterval(() => {
+            const {scrollHeight = 0, scrollWidth = 0, clientHeight = 0, clientWidth = 0} = this.content;
+
+            if (this.contentSizeTrackPreviousSize.scrollHeight !== scrollHeight || this.contentSizeTrackPreviousSize.scrollWidth !== scrollWidth ||
+                this.contentSizeTrackPreviousSize.clientHeight !== clientHeight || this.contentSizeTrackPreviousSize.clientWidth !== clientWidth) {
+                this.update();
+            }
+
+            this.contentSizeTrackPreviousSize = {scrollHeight, scrollWidth, clientHeight, clientWidth};
+        }, contentSizeTrackInterval);
+
+        return this;
+    }
+
+    /**
+     * @return {Scrollbar}
+     */
+    contentSizeTrackStop() {
+        if (this.contentSizeTrackInterval) {
+            clearInterval(this.contentSizeTrackInterval);
+        }
+
+        this.contentSizeTrackInterval = undefined;
+        this.contentSizeTrackPreviousSize = undefined;
+
+        return this;
+    }
+
     render() {
         const {
                   style, thumbSizeMin, defaultStyles, scrollDetectionThreshold, permanentScrollbars, permanentScrollbarVertical, permanentScrollbarHorizontal,
-                  tagName, children, renderScroller, renderWrapper, renderContent, renderTrackVertical, renderTrackHorizontal, renderThumbVertical, renderThumbHorizontal,
+                  contentSizeTrack, contentSizeTrackInterval,
+                  tagName, children, renderWrapper, renderContent, renderTrackVertical, renderTrackHorizontal, renderThumbVertical, renderThumbHorizontal,
                   onUpdate, onScroll, onScrollStart, onScrollStop,
                   ...props
               } = this.props;

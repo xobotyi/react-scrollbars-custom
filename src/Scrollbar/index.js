@@ -223,11 +223,11 @@ export default class Scrollbar extends Component
     }
 
     /**
-     * Scroll to the bottom brder
+     * Scroll to the bottom border
      *
      * @return {Scrollbar}
      */
-    scrollToBotoom() {
+    scrollToBottom() {
         if (!this.content) { return this; }
         this.content.scrollTop = this.content.scrollHeight;
 
@@ -500,15 +500,11 @@ export default class Scrollbar extends Component
         const thumbHorizontalOffset = thumbHorizontalWidth ? scrollLeft / (scrollWidth - clientWidth) * (trackHorizontalInnerWidth - thumbHorizontalWidth) : 0,
               thumbVerticalOffset   = thumbVerticalHeight ? scrollTop / (scrollHeight - clientHeight) * (trackVerticalInnerHeight - thumbVerticalHeight) : 0;
 
-        this.trackVertical.style.display = this.props.permanentScrollbars || this.props.permanentScrollbarVertical || thumbVerticalHeight
-                                           ? null
-                                           : 'none';
+        this.trackVertical.style.display = this.props.permanentScrollbars || this.props.permanentScrollbarVertical || thumbVerticalHeight ? null : 'none';
         this.thumbVertical.style.transform = `translateY(${thumbVerticalOffset}px)`;
         this.thumbVertical.style.height = thumbVerticalHeight + 'px';
 
-        this.trackHorizontal.style.display = this.props.permanentScrollbars || this.props.permanentScrollbarHorizontal || thumbHorizontalWidth
-                                             ? null
-                                             : 'none';
+        this.trackHorizontal.style.display = this.props.permanentScrollbars || this.props.permanentScrollbarHorizontal || thumbHorizontalWidth ? null : 'none';
         this.thumbHorizontal.style.transform = `translateX(${thumbHorizontalOffset}px)`;
         this.thumbHorizontal.style.width = thumbHorizontalWidth + 'px';
 

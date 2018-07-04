@@ -1,7 +1,7 @@
 {
   "name": "react-scrollbar-custom",
   "description": "The best React custom scrollbars component",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "repository": {
     "type": "git",
     "url": "https://github.com/xobotyi/react-scrollbars-custom.git"

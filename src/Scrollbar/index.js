@@ -168,7 +168,7 @@ export default class Scrollbar extends Component
     get scrollLeft() {
         if (!this.content) { return 0; }
 
-        this.content.scrollLeft = left;
+        return this.content.scrollLeft;
     }
 
     /**
@@ -184,9 +184,7 @@ export default class Scrollbar extends Component
      * @return {number}
      */
     get scrollWidth() {
-        if (!this.content) {
-            return 0;
-        }
+        if (!this.content) { return 0; }
         return this.content.scrollWidth;
     }
 
@@ -214,9 +212,7 @@ export default class Scrollbar extends Component
      * @return {Scrollbar}
      */
     scrollToTop() {
-        if (!this.content) {
-            return this;
-        }
+        if (!this.content) { return this; }
         this.content.scrollTop = 0;
 
         return this;

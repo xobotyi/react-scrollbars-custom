@@ -16,7 +16,7 @@ export default class App extends React.Component
             this.hideTieout = undefined;
         }
 
-        this.refs.scrollbar.trackVertical.style.opacity = 1;
+        this.scrollbar.trackVertical.style.opacity = 1;
     }
 
     handleScrollStop() {
@@ -24,7 +24,7 @@ export default class App extends React.Component
             clearTimeout(this.hideTieout);
         }
         this.hideTieout = setTimeout(() => {
-            this.refs.scrollbar.trackVertical.style.opacity = 0;
+            this.scrollbar.trackVertical.style.opacity = 0;
         }, 500);
     }
 
@@ -34,7 +34,7 @@ export default class App extends React.Component
                     <div className="title">Autohide tracks</div>
                     <div className="description">Or scrollbars can be hidden automatically, when scrolling is not used</div>
                     <Scrollbar
-                            ref="scrollbar"
+                            ref={ (ref) => {this.scrollbar = ref;} }
                             defaultStyles={ false }
                             onScrollStart={ this.handleScrollStart }
                             onScrollStop={ this.handleScrollStop }>

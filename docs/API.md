@@ -31,13 +31,15 @@
 
 
 #### Methods
-* `(get|set) scrollTop` get or set the scrollTop value _(as in vanila JS)_
-* `(get|set) scrollLeft` get or set the scrollLeft value _(as in vanila JS)_
-* `(get) scrollHeight` get the scrollHeight value _(as in vanila JS)_
-* `(get) scrollWidth` get the scrollWidth value _(as in vanila JS)_
-* `(get) clientHeight` get the clientHeight value _(as in vanila JS)_
-* `(get) clientWidth` get the clientWidth value _(as in vanila JS)_
-* `scrollToTop()` scroll to the top border
-* `scrollToBottom()` scroll to the bottom border
-* `scrollToLeft()` scroll to the left border
-* `scrollToRight()` scroll to the right border
+* `(get|set) scrollTop`: _(number)_ Get or set the scrollTop value _(as in vanila JS)_
+* `(get|set) scrollLeft`: _(number)_ Get or set the scrollLeft value _(as in vanila JS)_
+* `(get) scrollHeight`: _(number)_ Get the scrollHeight value _(as in vanila JS)_
+* `(get) scrollWidth`: _(number)_ Get the scrollWidth value _(as in vanila JS)_
+* `(get) clientHeight`: _(number)_ Get the clientHeight value _(as in vanila JS)_
+* `(get) clientWidth`: _(number)_ Get the clientWidth value _(as in vanila JS)_
+* `scrollToTop()`: _(Scrollbar)_ Scroll to the top border
+* `scrollToBottom()`: _(Scrollbar)_ Scroll to the bottom border
+* `scrollToLeft()`: _(Scrollbar)_ Scroll to the left border
+* `scrollToRight()`: _(Scrollbar)_ Scroll to the right border
+* `update()`: _(Scrollbar)_ Updates the scrollbars. Useful when external, non-react libraries are changing scrollable content
+* `getScrollValues()`: _(object)_ Get values representing current scrolling position

@@ -1,31 +1,29 @@
-export const wrapper = {
-    position: 'relative',
-    overflow: 'hidden',
+export const holder = {
+    display:             'grid',
+    position:            'relative',
+    gridTemplateColumns: '1fr min-content',
+    gridTemplateRows:    '1fr min-content',
 };
 
-export const scroller = {
-    position: 'absolute',
-    top:      0,
-    bottom:   0,
-    left:     0,
-    right:    0,
-    overflow: 'scroll',
+export const wrapper = {
+    gridColumn: 1,
+    gridRow:    1,
 };
 
 export const trackVertical = {
-    position: 'absolute',
-    top:      0,
-    right:    0,
-    width:    8,
-    height:   '100%',
+    position:   'relative',
+    width:      8,
+    background: 'rgba(0,0,0,.1)',
+    gridColumn: 2,
+    gridRow:    1,
 };
 
 export const trackHorizontal = {
-    position: 'absolute',
-    bottom:   0,
-    left:     0,
-    width:    '100%',
-    height:   8,
+    position:   'relative',
+    height:     8,
+    background: 'rgba(0,0,0,.1)',
+    gridColumn: 1,
+    gridRow:    2,
 };
 
 export const thumbVertical = {
@@ -42,4 +40,13 @@ export const thumbHorizontal = {
     width:      0,
     cursor:     'pointer',
     background: 'rgba(0,0,0,.35)',
+};
+
+export const content = {
+    position: 'absolute',
+    top:      0,
+    bottom:   0,
+    left:     0,
+    right:    0,
+    overflow: 'scroll',
 };

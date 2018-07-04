@@ -31,7 +31,7 @@ export default class App extends React.Component
     }
 
     handleRandomScrollPositionClick() {
-        this.refs.scrollbar.scrollTop = Math.floor(Math.random() * (this.refs.scrollbar.scrollHeight + 1));
+        this.scrollbar.scrollTop = Math.floor(Math.random() * (this.scrollbar.scrollHeight + 1));
     }
 
     render() {
@@ -48,7 +48,7 @@ export default class App extends React.Component
                         <div className="button" onClick={ this.handleAddParagraphClick }>Add paragraph</div>
                     </div>
                     <Scrollbar
-                            ref="scrollbar"
+                            ref={ (ref) => {this.scrollbar = ref;} }
                             defaultStyles={ false }
                             permanentScrollbars={ permanentTracks }>
                         { elements }

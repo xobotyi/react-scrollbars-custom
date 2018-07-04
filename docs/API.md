@@ -7,7 +7,8 @@
     * `thumbSizeMin`: _(number)_ Minimal size of thumb in pixels _(default: 30)_
     * `scrollDetectionThreshold`: _(number)_ Scroll process check interval in milliseconds _(default: 100)_
 * **Rendering**
-    * `renderView`: _(function)_ The element where content will be rendered
+    * `renderWrapper`: _(function)_ The element that wraps the content in order to hide browser's scrollbars
+    * `renderContent`: _(function)_ The element where content will be rendered
     * `renderTrackVertical`: _(function)_ Vertical track element
     * `renderTrackHorizontal`: _(function)_ Horizontal track element
     * `renderThumbVertical`: _(function)_ Vertical thumb element

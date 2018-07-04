@@ -6,14 +6,13 @@
 <a></a>
 </p>
 <p align="center">
-    <a href="https://xobotyi.github.io/react-scrollbars-custom/">DEMO</a> ♦ <a href="https://github.com/xobotyi/react-scrollbars-custom/tree/master/docs">DOCUMENTATION</a>
+    <a href="https://xobotyi.github.io/react-scrollbars-custom/">DEMO</a> · <a href="https://github.com/xobotyi/react-scrollbars-custom/tree/master/docs">DOCUMENTATION</a>
 </p>
 
 * Fully customizable
 * `requestAnimationFrame` for 60fps
 * No extra stylesheets necessary
 * Native scrollbars on mobile devices
-* Well tested
 
 >**IMPORTANT:** default component styles uses [grid layout](https://developer.mozilla.org/docs/Web/CSS/CSS_Grid_Layout/Basic_Concepts_of_Grid_Layout) for proper scrollbars display.  
 >But you can change it with help of [customisation](https://github.com/xobotyi/react-scrollbars-custom/tree/master/docs/CUSTOMISATION.md). 
@@ -26,10 +25,10 @@ npm i --save react-scrollbar-custom
 ## Usage
 Minimal configuration
 ```javascript
-import React     from 'react';
+import React, { Component }  from 'react';
 import Scrollbar from 'react-scrollbar-custom';
 
-class App extends React.Component
+class App extends Component
 {
     render() {
         return (
@@ -47,7 +46,3 @@ Run the example, it will install dependencies, build current component version a
 ```bash
 npm run examples
 ```
-
-## Tests
-
-## Coverage

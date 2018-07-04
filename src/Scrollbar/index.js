@@ -16,6 +16,7 @@ export default class Scrollbar extends Component
         permanentScrollbarVertical:   PropTypes.bool,
         permanentScrollbarHorizontal: PropTypes.bool,
 
+        onUpdate:      PropTypes.func,
         onScroll:      PropTypes.func,
         onScrollStart: PropTypes.func,
         onScrollStop:  PropTypes.func,
@@ -511,6 +512,9 @@ export default class Scrollbar extends Component
         this.thumbHorizontal.style.transform = `translateX(${thumbHorizontalOffset}px)`;
         this.thumbHorizontal.style.width = thumbHorizontalWidth + 'px';
 
+        if (isFunction(this.refs.onUpdate)) {
+            this.refs.onUpdate(scrollValues);
+        }
         if (isFunction(cb)) {
             cb(scrollValues);
         }
@@ -522,7 +526,7 @@ export default class Scrollbar extends Component
         const {
                   style, thumbSizeMin, defaultStyles, scrollDetectionThreshold, permanentScrollbars, permanentScrollbarVertical, permanentScrollbarHorizontal,
                   tagName, children, renderScroller, renderWrapper, renderContent, renderTrackVertical, renderTrackHorizontal, renderThumbVertical, renderThumbHorizontal,
-                  onScroll, onScrollStart, onScrollStop,
+                  onUpdate, onScroll, onScrollStart, onScrollStop,
                   ...props
               } = this.props;
 

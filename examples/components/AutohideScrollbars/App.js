@@ -32,7 +32,7 @@ export default class App extends React.Component
         return (
                 <div className="scroller" id="autohideScrollbarsRoot">
                     <div className="title">Autohide tracks</div>
-                    <div className="description">Or scrollbars can be hidden automatically, when scrolling is not used</div>
+                    <div className="description">Or scrollbars can be hidden automatically, when scrolling is not used<br/>This one is based on <i>onScrollStart</i> and <i>onScrollStop</i> listeners</div>
                     <Scrollbar
                             ref={ (ref) => {this.scrollbar = ref;} }
                             defaultStyles={ false }

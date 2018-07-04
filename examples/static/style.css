@@ -15,7 +15,7 @@ body {
     position:       relative;
     flex-direction: column;
     font-size:      2rem;
-    width:          100vw;
+    width:          100%;
     min-height:     100vh;
     max-width:      1200px;
     margin:         0 auto;
@@ -60,7 +60,7 @@ body {
     width:          100%;
     flex-direction: column;
     align-items:    center;
-    margin:         0 0 2rem;
+    margin:         2rem 0;
     flex-shrink:    0;
 }
 
@@ -87,18 +87,18 @@ body {
 .scrollers {
     display:   flex;
     flex-wrap: wrap;
-    width:     100%;
-    flex-grow: 1;
+    flex:      1 0 100%;
 }
 
 .scrollers .scroller {
-    display:    block;
-    position:   relative;
-    padding:    3rem;
-    background: #FFFFFF;
-    margin:     1rem;
-    max-width:  calc(50% - 2rem);
-    width:      100%;
+    display:        flex;
+    flex-direction: column;
+    position:       relative;
+    padding:        3rem;
+    background:     #FFFFFF;
+    margin:         1rem;
+    max-width:      calc(50% - 2rem);
+    width:          100%;
 }
 
 @media screen and (max-width: 1000px) {
@@ -134,8 +134,7 @@ body {
 }
 
 .scrollers .scroller .CustomScrollbar {
-    width:      100%;
-    min-height: 300px;
+    flex: 1;
 }
 
 .scrollers .scroller .CustomScrollbar-content {
@@ -158,6 +157,8 @@ body {
     position:              relative;
     grid-template-columns: 1fr min-content;
     grid-template-rows:    1fr min-content;
+    width:                 100%;
+    min-height:            300px;
 }
 
 #customScrollbarsRoot .CustomScrollbar-trackVertical,

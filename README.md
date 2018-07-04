@@ -33,7 +33,7 @@ class App extends React.Component
 {
     render() {
         return (
-                <Scrollbar style={ {width: 250, height: 250} }>
+                <Scrollbar style={ {width: '100%', minHeight: 300} } >
                     <p>Hello world!</p>
                 </Scrollbar>
         );
@@ -43,7 +43,7 @@ class App extends React.Component
 All properties and methods are in the [API Documentation](https://github.com/xobotyi/react-scrollbars-custom/tree/master/docs/API.md)
 
 ## Examples
-Run the example (browser window will open automatically)
+Run the example, it will install dependencies, build current component version and run local web-server listening `localhost:3000` (browser window will open automatically)
 ```bash
 npm run examples
 ```

@@ -526,27 +526,13 @@ export default class Scrollbar extends Component
                   ...props
               } = this.props;
 
-        //const browserScrollbarWidth = getScrollbarWidth(),
-        //      wrapperStyle          = {...defaultElementStyles.wrapper},
-        //      contentStyle          = {...defaultElementStyles.content, marginRight: -browserScrollbarWidth, marginBottom: -browserScrollbarWidth},
-        //      trackVerticalStyle    = {
-        //          ...(defaultStyles && defaultElementStyles.trackVertical),
-        //          ...(!permanentScrollbars && !permanentScrollbarVertical && !browserScrollbarWidth && {display: 'none'}),
-        //      },
-        //      thumbVerticalStyle    = {...(defaultStyles && defaultElementStyles.thumbVertical)},
-        //      trackHorizontalStyle  = {
-        //          ...(defaultStyles && defaultElementStyles.trackHorizontal),
-        //          ...(!permanentScrollbars && !permanentScrollbarHorizontal && !browserScrollbarWidth && {display: 'none'}),
-        //      },
-        //      thumbHorizontalStyle  = {...(defaultStyles && defaultElementStyles.thumbHorizontal)};
-
         const browserScrollbarWidth = getScrollbarWidth(),
-              holderStyle           = {...(defaultStyles && defaultElementStyles.holder)},
+              holderStyle           = {...style, ...(defaultStyles && defaultElementStyles.holder)},
               wrapperStyle          = {...(defaultStyles && defaultElementStyles.wrapper), position: 'relative', overflow: 'hidden'},
               contentStyle          = {...defaultElementStyles.content, marginRight: -browserScrollbarWidth, marginBottom: -browserScrollbarWidth},
               trackVerticalStyle    = {
                   ...(defaultStyles && defaultElementStyles.trackVertical),
-                  ...(!permanentScrollbars && !permanentScrollbarHorizontal && !browserScrollbarWidth && {display: 'none'}),
+                  ...(!permanentScrollbars && !permanentScrollbarVertical && !browserScrollbarWidth && {display: 'none'}),
               },
               thumbVerticalStyle    = {...(defaultStyles && defaultElementStyles.thumbVertical)},
               trackHorizontalStyle  = {

@@ -1,5 +1,6 @@
 <h1 align="center">react-scrollbar-custom</h1>
 <p align="center">
+<a href="https://www.npmjs.com/package/react-scrollbar-custom"><img src="https://img.shields.io/badge/npm-react--scrollbar--custom-brightgreen.svg" /></a>
 <a href="https://www.npmjs.com/package/react-scrollbar-custom"><img src="https://img.shields.io/npm/l/react-scrollbar-custom.svg" /></a>
 <a href="https://www.npmjs.com/package/react-scrollbar-custom"><img src="https://img.shields.io/npm/v/react-scrollbar-custom.svg" /></a>
 <a href="https://www.npmjs.com/package/react-scrollbar-custom"><img src="https://img.shields.io/npm/dt/react-scrollbar-custom.svg" /></a>
@@ -49,5 +50,5 @@ npm run examples
 ```
 
 ## Credits
-Big thanks to [@malte-wessel](https://github.com/malte-wessel) with his [react-custom-scrollbars](https://github.com/malte-wessel/react-custom-scrollbars) which I used before writing this component.
-So don't be wondered that repos and code are look the same in some places, his package used as ethalon. And for the users convenience i've tried to make API's seamless as much as it possible.
+Big thanks to [@malte-wessel](https://github.com/malte-wessel) with his [react-custom-scrollbars](https://github.com/malte-wessel/react-custom-scrollbars) which I used before writing this component.  
+So don't be wondered that repos and code look similar in some places, his package used as ethalon. And for the users convenience i've tried to make API's seamless as much as it possible.

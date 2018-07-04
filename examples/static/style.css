@@ -150,7 +150,42 @@ body {
     margin-bottom: 5rem;
 }
 
-#customScrollbarsRoot .CustomScrollbar,
+#customScrollbarsRoot .CustomScrollbar {
+    display:    block;
+    position:   relative;
+    width:      100%;
+    min-height: 300px;
+}
+
+#customScrollbarsRoot .CustomScrollbar-wrapper {
+    display:  block;
+    position: relative;
+    width:    100%;
+    height:   100%;
+}
+
+#customScrollbarsRoot .CustomScrollbar-trackVertical {
+    display:       block;
+    position:      absolute;
+    height:        100%;
+    width:         1rem;
+    background:    rgba(0, 0, 0, .1);
+    border-radius: 2px;
+    top:           0;
+    right:         -1.5rem;
+}
+
+#customScrollbarsRoot .CustomScrollbar-trackHorizontal {
+    display:       block;
+    position:      absolute;
+    width:         100%;
+    height:        1rem;
+    background:    rgba(0, 0, 0, .1);
+    border-radius: 2px;
+    left:          0;
+    bottom:        -1.5rem;
+}
+
 #autohideScrollbarsRoot .CustomScrollbar,
 #sandboxScrollbarsRoot .CustomScrollbar {
     display:               grid;
@@ -161,7 +196,6 @@ body {
     min-height:            300px;
 }
 
-#customScrollbarsRoot .CustomScrollbar-trackVertical,
 #autohideScrollbarsRoot .CustomScrollbar-trackVertical,
 #sandboxScrollbarsRoot .CustomScrollbar-trackVertical {
     display:       block;
@@ -174,7 +208,6 @@ body {
     grid-area:     1 / 2 / auto / auto;
 }
 
-#customScrollbarsRoot .CustomScrollbar-trackHorizontal,
 #autohideScrollbarsRoot .CustomScrollbar-trackHorizontal,
 #sandboxScrollbarsRoot .CustomScrollbar-trackHorizontal {
     display:       block;

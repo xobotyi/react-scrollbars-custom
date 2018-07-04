@@ -55,6 +55,11 @@ body {
     color: rgba(0, 0, 0, .87);
 }
 
+#disclaimer {
+    padding: 0 2rem;
+    margin:  0 0 1.5rem;
+}
+
 #foot {
     display:        flex;
     width:          100%;

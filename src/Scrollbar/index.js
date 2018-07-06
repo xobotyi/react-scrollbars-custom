@@ -15,8 +15,13 @@ export default class Scrollbar extends Component
         permanentScrollbars:          PropTypes.bool,
         permanentScrollbarVertical:   PropTypes.bool,
         permanentScrollbarHorizontal: PropTypes.bool,
-        contentSizeTrack:         PropTypes.bool,
-        contentSizeTrackInterval: PropTypes.number,
+        contentSizeTrack:             PropTypes.bool,
+        contentSizeTrackInterval:     PropTypes.number,
+
+        noScroll: PropTypes.bool,
+        scrollX:  PropTypes.bool,
+        scrollY:  PropTypes.bool,
+        gridless: PropTypes.bool,
 
         onUpdate:      PropTypes.func,
         onScroll:      PropTypes.func,
@@ -42,8 +47,13 @@ export default class Scrollbar extends Component
         permanentScrollbars:          false,
         permanentScrollbarVertical:   false,
         permanentScrollbarHorizontal: false,
-        contentSizeTrack:         false,
-        contentSizeTrackInterval: 200,
+        contentSizeTrack:             false,
+        contentSizeTrackInterval:     200,
+
+        noScroll: false,
+        scrollX:  true,
+        scrollY:  true,
+        gridless: false,
 
         tagName:               'div',
         className:             'CustomScrollbar',
@@ -73,9 +83,93 @@ export default class Scrollbar extends Component
         this.handleDragEvent = this.handleDragEvent.bind(this);
     }
 
+    /**
+     * Return the vertical scroll position
+     *
+     * @return {number}
+     */
+    get scrollTop() {
+        if (!this.content) { return 0; }
+
+        return this.content.scrollTop;
+    }
+
+    //==============//
+    /**
+     * Set the vertical scroll to given amount of pixels
+     *
+     * @param top {number} Pixels amount
+     */
+    set scrollTop(top) {
+        if (!this.content) { return; }
+
+        this.content.scrollTop = top;
+    }
+
+    /**
+     * Return the horizontal scroll position
+     *
+     * @return {number}
+     */
+    get scrollLeft() {
+        if (!this.content) { return 0; }
+
+        return this.content.scrollLeft;
+    }
+
+    /**
+     * Set the horizontal scroll to given amount of pixels
+     *
+     * @param left {number} Pixels amount
+     */
+    set scrollLeft(left) {
+        if (!this.content) { return; }
+
+        this.content.scrollLeft = left;
+    }
+
+    /**
+     * @return {number}
+     */
+    get scrollHeight() {
+        if (!this.content) { return 0; }
+
+        return this.content.scrollHeight;
+    }
+
+    /**
+     * @return {number}
+     */
+    get scrollWidth() {
+        if (!this.content) { return 0; }
+        return this.content.scrollWidth;
+    }
+
+    //==============//
+    //     api      //
+
+    /**
+     * @return {number}
+     */
+    get clientHeight() {
+        if (!this.content) { return 0; }
+
+        return this.content.clientHeight;
+    }
+
+    /**
+     * @return {number}
+     */
+    get clientWidth() {
+        if (!this.content) { return 0; }
+
+        return this.content.clientWidth;
+    }
+
     componentWillUnmount() {
         this.handleDragEnd();
         this.removeListeners();
+        this.contentSizeTrackStop();
 
         raf.cancel(this.requestFrame);
 
@@ -83,7 +177,6 @@ export default class Scrollbar extends Component
             clearInterval(this.scrollDetect.interval);
             this.scrollDetect.interval = undefined;
         }
-        this.contentSizeTrackStop();
     }
 
     componentDidMount() {
@@ -100,9 +193,11 @@ export default class Scrollbar extends Component
 
         const {scrollHeight = 0, scrollWidth = 0, clientHeight = 0, clientWidth = 0} = this.content;
         this.contentSizeTrackPreviousSize = {scrollHeight, scrollWidth, clientHeight, clientWidth};
+
+        this.addListeners();
     }
 
-    componentWillUpdate(nextProps, nextState) {
+    componentWillUpdate(nextProps) {
         if (nextProps.contentSizeTrack !== this.props.contentSizeTrack) {
             if (nextProps.contentSizeTrack) {
                 this.contentSizeTrackStart();
@@ -123,14 +218,36 @@ export default class Scrollbar extends Component
     addListeners() {
         if (!isset(document) || !this.content) { return this; }
 
-        const {wrapper, content, trackVertical, trackHorizontal, thumbVertical, thumbHorizontal} = this;
+        const {content, trackVertical, trackHorizontal, thumbVertical, thumbHorizontal} = this;
+        const {noScroll, scrollY, scrollX} = this.props;
 
-        window.addEventListener('resize', this.handleWindowResizeEvent, {passive: true});
-        content.addEventListener('scroll', this.handleScrollEvent, {passive: true});
-        trackVertical.addEventListener('mousedown', this.handleTrackVerticalMousedownEvent);
-        trackHorizontal.addEventListener('mousedown', this.handleTrackHorizontalMousedownEvent);
-        thumbVertical.addEventListener('mousedown', this.handleThumbVerticalMousedownEvent);
-        thumbHorizontal.addEventListener('mousedown', this.handleThumbHorizontalMousedownEvent);
+        if (noScroll) {
+            this.removeListeners();
+
+            return this;
+        }
+        else {
+            window.addEventListener('resize', this.handleWindowResizeEvent, {passive: true});
+            content.addEventListener('scroll', this.handleScrollEvent, {passive: true});
+        }
+
+        if (scrollY) {
+            trackVertical.addEventListener('mousedown', this.handleTrackVerticalMousedownEvent);
+            thumbVertical.addEventListener('mousedown', this.handleThumbVerticalMousedownEvent);
+        }
+        else {
+            trackVertical.removeEventListener('mousedown', this.handleTrackVerticalMousedownEvent);
+            thumbVertical.removeEventListener('mousedown', this.handleThumbVerticalMousedownEvent);
+        }
+
+        if (scrollX) {
+            trackHorizontal.addEventListener('mousedown', this.handleTrackHorizontalMousedownEvent);
+            thumbHorizontal.addEventListener('mousedown', this.handleThumbHorizontalMousedownEvent);
+        }
+        else {
+            trackHorizontal.removeEventListener('mousedown', this.handleTrackHorizontalMousedownEvent);
+            thumbHorizontal.removeEventListener('mousedown', this.handleThumbHorizontalMousedownEvent);
+        }
 
         return this;
     }
@@ -141,7 +258,7 @@ export default class Scrollbar extends Component
     removeListeners() {
         if (!isset(document) || !this.content) { return this; }
 
-        const {wrapper, content, trackVertical, trackHorizontal, thumbVertical, thumbHorizontal} = this;
+        const {content, trackVertical, trackHorizontal, thumbVertical, thumbHorizontal} = this;
 
         window.removeEventListener('resize', this.handleWindowResizeEvent);
         content.removeEventListener('scroll', this.handleScrollEvent);
@@ -151,88 +268,6 @@ export default class Scrollbar extends Component
         thumbHorizontal.removeEventListener('mousedown', this.handleThumbHorizontalMousedownEvent);
 
         return this;
-    }
-
-    //==============//
-    //     api      //
-    //==============//
-    /**
-     * Set the vertical scroll to given amount of pixels
-     *
-     * @param top {number} Pixels amount
-     */
-    set scrollTop(top) {
-        if (!this.content) { return; }
-
-        this.content.scrollTop = top;
-    }
-
-    /**
-     * Return the vertical scroll position
-     *
-     * @return {number}
-     */
-    get scrollTop() {
-        if (!this.content) { return 0; }
-
-        return this.content.scrollTop;
-    }
-
-    /**
-     * Set the horizontal scroll to given amount of pixels
-     *
-     * @param left {number} Pixels amount
-     */
-    set scrollLeft(left) {
-        if (!this.content) { return; }
-
-        this.content.scrollLeft = left;
-    }
-
-    /**
-     * Return the horizontal scroll position
-     *
-     * @return {number}
-     */
-    get scrollLeft() {
-        if (!this.content) { return 0; }
-
-        return this.content.scrollLeft;
-    }
-
-    /**
-     * @return {number}
-     */
-    get scrollHeight() {
-        if (!this.content) { return 0; }
-
-        return this.content.scrollHeight;
-    }
-
-    /**
-     * @return {number}
-     */
-    get scrollWidth() {
-        if (!this.content) { return 0; }
-        return this.content.scrollWidth;
-    }
-
-    /**
-     * @return {number}
-     */
-    get clientHeight() {
-        if (!this.content) { return 0; }
-
-        return this.content.clientHeight;
-    }
-
-    /**
-     * @return {number}
-     */
-    get clientWidth() {
-        if (!this.content) { return 0; }
-
-        return this.content.clientWidth;
     }
 
     /**
@@ -400,28 +435,6 @@ export default class Scrollbar extends Component
     //   assistance   //
     //================//
     /**
-     * Return values representing current scrolling position
-     *
-     * @return {{left: number, top: number, scrollLeft: number, scrollTop: number, scrollWidth: number, scrollHeight: number, clientWidth: number, clientHeight: number}}
-     */
-    getScrollValues() {
-        const {scrollLeft = 0, scrollTop = 0, scrollWidth = 0, scrollHeight = 0, clientWidth = 0, clientHeight = 0} = this.content || {};
-
-        this.scrollValues = {
-            left: (scrollLeft / (scrollWidth - clientWidth)) || 0,
-            top:  (scrollTop / (scrollHeight - clientHeight)) || 0,
-            scrollTop,
-            scrollLeft,
-            scrollHeight,
-            scrollWidth,
-            clientWidth,
-            clientHeight,
-        };
-
-        return this.scrollValues;
-    }
-
-    /**
      * Request animation frame and call given function inside
      *
      * @param cb {function} Function to call in reqiested frame
@@ -448,6 +461,28 @@ export default class Scrollbar extends Component
         this.raf(() => this.actualizeScrollbars(cb));
 
         return this;
+    }
+
+    /**
+     * Return values representing current scrolling position
+     *
+     * @return {{left: number, top: number, scrollLeft: number, scrollTop: number, scrollWidth: number, scrollHeight: number, clientWidth: number, clientHeight: number}}
+     */
+    getScrollValues() {
+        const {scrollLeft = 0, scrollTop = 0, scrollWidth = 0, scrollHeight = 0, clientWidth = 0, clientHeight = 0} = this.content || {};
+
+        this.scrollValues = {
+            left: (scrollLeft / (scrollWidth - clientWidth)) || 0,
+            top:  (scrollTop / (scrollHeight - clientHeight)) || 0,
+            scrollTop,
+            scrollLeft,
+            scrollHeight,
+            scrollWidth,
+            clientWidth,
+            clientHeight,
+        };
+
+        return this.scrollValues;
     }
 
     /**
@@ -519,17 +554,25 @@ export default class Scrollbar extends Component
         const trackHorizontalInnerWidth = getInnerWigth(this.trackHorizontal),
               trackVerticalInnerHeight  = getInnerHeight(this.trackVertical);
 
-        const thumbHorizontalWidth = this.computeThumbHorizontalWidth(trackHorizontalInnerWidth),
-              thumbVerticalHeight  = this.computeThumbVerticalHeight(trackVerticalInnerHeight);
+        const thumbHorizontalWidth      = this.computeThumbHorizontalWidth(trackHorizontalInnerWidth),
+              thumbVerticalHeight       = this.computeThumbVerticalHeight(trackVerticalInnerHeight),
+              oldVerticalTrackDisplay   = this.trackVertical.style.display,
+              oldHorizontalTrackDisplay = this.trackHorizontal.style.display;
+
+        this.trackVertical.style.display = this.props.permanentScrollbars || this.props.permanentScrollbarVertical || thumbVerticalHeight ? null : 'none';
+        this.trackHorizontal.style.display = this.props.permanentScrollbars || this.props.permanentScrollbarHorizontal || thumbHorizontalWidth ? null : 'none';
+
+        if (oldVerticalTrackDisplay !== this.trackVertical.style.display || oldHorizontalTrackDisplay !== this.trackHorizontal.style.display) {
+            this.actualizeScrollbars(cb);
+            return this;
+        }
 
         const thumbHorizontalOffset = thumbHorizontalWidth ? scrollLeft / (scrollWidth - clientWidth) * (trackHorizontalInnerWidth - thumbHorizontalWidth) : 0,
               thumbVerticalOffset   = thumbVerticalHeight ? scrollTop / (scrollHeight - clientHeight) * (trackVerticalInnerHeight - thumbVerticalHeight) : 0;
 
-        this.trackVertical.style.display = this.props.permanentScrollbars || this.props.permanentScrollbarVertical || thumbVerticalHeight ? null : 'none';
         this.thumbVertical.style.transform = `translateY(${thumbVerticalOffset}px)`;
         this.thumbVertical.style.height = thumbVerticalHeight + 'px';
 
-        this.trackHorizontal.style.display = this.props.permanentScrollbars || this.props.permanentScrollbarHorizontal || thumbHorizontalWidth ? null : 'none';
         this.thumbHorizontal.style.transform = `translateX(${thumbHorizontalOffset}px)`;
         this.thumbHorizontal.style.width = thumbHorizontalWidth + 'px';
 
@@ -584,26 +627,48 @@ export default class Scrollbar extends Component
     render() {
         const {
                   style, thumbSizeMin, defaultStyles, scrollDetectionThreshold, permanentScrollbars, permanentScrollbarVertical, permanentScrollbarHorizontal,
-                  contentSizeTrack, contentSizeTrackInterval,
+                  contentSizeTrack, contentSizeTrackInterval, noScroll, scrollX, scrollY, gridless,
                   tagName, children, renderWrapper, renderContent, renderTrackVertical, renderTrackHorizontal, renderThumbVertical, renderThumbHorizontal,
                   onUpdate, onScroll, onScrollStart, onScrollStop,
                   ...props
               } = this.props;
 
-        const browserScrollbarWidth = getScrollbarWidth(),
-              holderStyle           = {...style, ...(defaultStyles && defaultElementStyles.holder)},
-              wrapperStyle          = {...(defaultStyles && defaultElementStyles.wrapper), position: 'relative', overflow: 'hidden'},
-              contentStyle          = {...defaultElementStyles.content, marginRight: -browserScrollbarWidth, marginBottom: -browserScrollbarWidth},
-              trackVerticalStyle    = {
-                  ...(defaultStyles && defaultElementStyles.trackVertical),
-                  ...(!permanentScrollbars && !permanentScrollbarVertical && !browserScrollbarWidth && {display: 'none'}),
-              },
-              thumbVerticalStyle    = {...(defaultStyles && defaultElementStyles.thumbVertical)},
-              trackHorizontalStyle  = {
-                  ...(defaultStyles && defaultElementStyles.trackHorizontal),
-                  ...(!permanentScrollbars && !permanentScrollbarHorizontal && !browserScrollbarWidth && {display: 'none'}),
-              },
-              thumbHorizontalStyle  = {...(defaultStyles && defaultElementStyles.thumbHorizontal)};
+        const browserScrollbarWidth = getScrollbarWidth();
+
+        let holderStyle          = {...style, ...(defaultStyles && (gridless ? defaultElementStyles.holderGridless : defaultElementStyles.holder))},
+            wrapperStyle         = {...(defaultStyles && (gridless ? defaultElementStyles.wrapperGridless : defaultElementStyles.wrapper)), position: 'relative', overflow: 'hidden'},
+            contentStyle         = {...defaultElementStyles.content, marginRight: -browserScrollbarWidth, marginBottom: -browserScrollbarWidth},
+            trackVerticalStyle   = {...(defaultStyles && (gridless ? defaultElementStyles.trackVerticalGridless : defaultElementStyles.trackVertical))},
+            thumbVerticalStyle   = {...(defaultStyles && defaultElementStyles.thumbVertical)},
+            trackHorizontalStyle = {...(defaultStyles && (gridless ? defaultElementStyles.trackHorizontalGridless : defaultElementStyles.trackHorizontal))},
+            thumbHorizontalStyle = {...(defaultStyles && defaultElementStyles.thumbHorizontal)};
+
+        if (noScroll || (!scrollY && !scrollX)) {
+            contentStyle = {...defaultElementStyles.content, overflow: 'hidden', marginRight: null, marginBottom: null};
+            trackVerticalStyle = {display: 'none'};
+            trackHorizontalStyle = {display: 'none'};
+        }
+        else {
+            if (!scrollY) {
+                contentStyle = {...contentStyle, overflowY: 'hidden', marginRight: null};
+                trackVerticalStyle = {display: 'none'};
+            }
+            if (!scrollX) {
+                contentStyle = {...contentStyle, overflowX: 'hidden', marginBottom: null};
+                trackHorizontalStyle = {display: 'none'};
+            }
+        }
+
+        //const trackVerticalStyle   = {
+        //          ...(defaultStyles && defaultElementStyles.trackVertical),
+        //          ...(!permanentScrollbars && !permanentScrollbarVertical && !browserScrollbarWidth && {display: 'none'}),
+        //      },
+        //      thumbVerticalStyle   = {...(defaultStyles && defaultElementStyles.thumbVertical)},
+        //      trackHorizontalStyle = {
+        //          ...(defaultStyles && defaultElementStyles.trackHorizontal),
+        //          ...(!permanentScrollbars && !permanentScrollbarHorizontal && !browserScrollbarWidth && {display: 'none'}),
+        //      },
+        //      thumbHorizontalStyle = {...(defaultStyles && defaultElementStyles.thumbHorizontal)};
 
         return createElement(
                 tagName,

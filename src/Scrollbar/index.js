@@ -635,40 +635,58 @@ export default class Scrollbar extends Component
 
         const browserScrollbarWidth = getScrollbarWidth();
 
-        let holderStyle          = {...style, ...(defaultStyles && (gridless ? defaultElementStyles.holderGridless : defaultElementStyles.holder))},
-            wrapperStyle         = {...(defaultStyles && (gridless ? defaultElementStyles.wrapperGridless : defaultElementStyles.wrapper)), position: 'relative', overflow: 'hidden'},
-            contentStyle         = {...defaultElementStyles.content, marginRight: -browserScrollbarWidth, marginBottom: -browserScrollbarWidth},
-            trackVerticalStyle   = {...(defaultStyles && (gridless ? defaultElementStyles.trackVerticalGridless : defaultElementStyles.trackVertical))},
-            thumbVerticalStyle   = {...(defaultStyles && defaultElementStyles.thumbVertical)},
-            trackHorizontalStyle = {...(defaultStyles && (gridless ? defaultElementStyles.trackHorizontalGridless : defaultElementStyles.trackHorizontal))},
-            thumbHorizontalStyle = {...(defaultStyles && defaultElementStyles.thumbHorizontal)};
+        const holderStyle          = {...style, ...(defaultStyles && (gridless ? defaultElementStyles.holderGridless : defaultElementStyles.holder))},
+              wrapperStyle         = {...(defaultStyles && (gridless ? defaultElementStyles.wrapperGridless : defaultElementStyles.wrapper)), position: 'relative', overflow: 'hidden'},
+              contentStyle         = {...defaultElementStyles.content, overflowX: 'scroll', overflowY: 'scroll', marginRight: -browserScrollbarWidth, marginBottom: -browserScrollbarWidth},
+              trackVerticalStyle   = {...(defaultStyles && (gridless ? defaultElementStyles.trackVerticalGridless : defaultElementStyles.trackVertical))},
+              thumbVerticalStyle   = {...(defaultStyles && defaultElementStyles.thumbVertical)},
+              trackHorizontalStyle = {...(defaultStyles && (gridless ? defaultElementStyles.trackHorizontalGridless : defaultElementStyles.trackHorizontal))},
+              thumbHorizontalStyle = {...(defaultStyles && defaultElementStyles.thumbHorizontal)};
 
         if (noScroll || (!scrollY && !scrollX)) {
-            contentStyle = {...defaultElementStyles.content, overflow: 'hidden', marginRight: null, marginBottom: null};
-            trackVerticalStyle = {display: 'none'};
-            trackHorizontalStyle = {display: 'none'};
+            contentStyle.marginRight = contentStyle.marginBottom = null;
+            contentStyle.overflowX = contentStyle.overflowY = 'hidden';
+
+            trackVerticalStyle.display = trackHorizontalStyle.display = 'none';
         }
-        else {
-            if (!scrollY) {
-                contentStyle = {...contentStyle, overflowY: 'hidden', marginRight: null};
-                trackVerticalStyle = {display: 'none'};
-            }
-            if (!scrollX) {
-                contentStyle = {...contentStyle, overflowX: 'hidden', marginBottom: null};
-                trackHorizontalStyle = {display: 'none'};
-            }
+        else if (!scrollY) {
+            contentStyle.marginRight = null;
+            contentStyle.overflowX = 'scroll';
+            contentStyle.overflowY = 'hidden';
+
+            trackVerticalStyle.display = 'none';
+        }
+        else if (!scrollX) {
+            contentStyle.marginBottom = null;
+            contentStyle.overflowY = 'scroll';
+            contentStyle.overflowX = 'hidden';
+
+            trackHorizontalStyle.display = 'none';
         }
 
-        //const trackVerticalStyle   = {
-        //          ...(defaultStyles && defaultElementStyles.trackVertical),
-        //          ...(!permanentScrollbars && !permanentScrollbarVertical && !browserScrollbarWidth && {display: 'none'}),
-        //      },
-        //      thumbVerticalStyle   = {...(defaultStyles && defaultElementStyles.thumbVertical)},
-        //      trackHorizontalStyle = {
-        //          ...(defaultStyles && defaultElementStyles.trackHorizontal),
-        //          ...(!permanentScrollbars && !permanentScrollbarHorizontal && !browserScrollbarWidth && {display: 'none'}),
-        //      },
-        //      thumbHorizontalStyle = {...(defaultStyles && defaultElementStyles.thumbHorizontal)};
+        console.log(contentStyle);
+
+        if ((permanentScrollbars || permanentScrollbarVertical)) {
+            trackVerticalStyle.display = null;
+
+            if (noScroll || !scrollY) {
+                thumbVerticalStyle.display = 'none';
+            }
+        }
+        else if (!browserScrollbarWidth) {
+            trackVerticalStyle.display = 'none';
+        }
+
+        if ((permanentScrollbars || permanentScrollbarHorizontal)) {
+            trackHorizontalStyle.display = null;
+
+            if (noScroll || !scrollX) {
+                thumbHorizontalStyle.display = 'none';
+            }
+        }
+        else if (!browserScrollbarWidth) {
+            trackHorizontalStyle.display = 'none';
+        }
 
         return createElement(
                 tagName,

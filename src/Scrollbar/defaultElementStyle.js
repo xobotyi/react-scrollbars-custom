@@ -9,6 +9,7 @@ export const wrapper = {
     gridRow:    1,
 };
 export const trackVertical = {
+    display:    'block',
     position:   'relative',
     width:      8,
     background: 'rgba(0,0,0,.1)',
@@ -16,6 +17,7 @@ export const trackVertical = {
     gridRow:    1,
 };
 export const trackHorizontal = {
+    display:    'block',
     position:   'relative',
     height:     8,
     background: 'rgba(0,0,0,.1)',
@@ -23,6 +25,7 @@ export const trackHorizontal = {
     gridRow:    2,
 };
 export const thumbVertical = {
+    display:    'block',
     position:   'relative',
     width:      '100%',
     height:     0,
@@ -30,6 +33,7 @@ export const thumbVertical = {
     background: 'rgba(0,0,0,.35)',
 };
 export const thumbHorizontal = {
+    display:    'block',
     position:   'relative',
     height:     '100%',
     width:      0,

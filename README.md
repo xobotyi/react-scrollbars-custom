@@ -17,7 +17,7 @@
 * Native scrollbars on mobile devices
 
 >**IMPORTANT:** default component styles uses [grid layout](https://developer.mozilla.org/docs/Web/CSS/CSS_Grid_Layout/Basic_Concepts_of_Grid_Layout) for proper scrollbars display.  
->But you can change it with help of [customisation](https://github.com/xobotyi/react-scrollbars-custom/tree/master/docs/CUSTOMISATION.md). 
+>But you can change it by passing `gridless` parameter on initialisation. 
 
 ## Installation
 ```bash

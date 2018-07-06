@@ -664,8 +664,6 @@ export default class Scrollbar extends Component
             trackHorizontalStyle.display = 'none';
         }
 
-        console.log(contentStyle);
-
         if ((permanentScrollbars || permanentScrollbarVertical)) {
             trackVerticalStyle.display = null;
 

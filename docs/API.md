@@ -3,12 +3,16 @@
 ### `<Scrollbar>`
 #### Properties
 * **Setups**
+    * `gridless`: _(boolean)_ Forces to use non-grid styles _(default: false)_
     * `defaultStyles`: _(boolean)_ Apply default inline styles _(default: false)_
     * `thumbSizeMin`: _(number)_ Minimal size of thumb in pixels _(default: 30)_
-    * `scrollDetectionThreshold`: _(number)_ Scroll process check interval in milliseconds _(default: 100)_
+    * `noScroll`: _(boolean)_ Disable both scrollings, vertical and horizontal _(default: false)_
+    * `scrollY`: _(boolean)_ If false, vertical scrolling will be disabled _(default: true)_
+    * `scrollX`: _(boolean)_ If false, horizontal scrolling will be disabled _(default: true)_
     * `permanentScrollbars`: _(boolean)_ Display both, vertical and horizontal scrollbars permanently, in spite of scrolling possibility _(default: false)_
     * `permanentScrollbarVertical`: _(boolean)_ Display vertical scrollbar permanently, in spite of scrolling possibility  _(default: false)_
     * `permanentScrollbarHorizontal`: _(boolean)_ Display horizontal scrollbar permanently, in spite of scrolling possibility  _(default: false)_
+    * `scrollDetectionThreshold`: _(number)_ Scroll process check interval in milliseconds _(default: 100)_
     * `contentSizeTrack`: _(boolean)_ Automatically check content's sizes to actualize the scrollbars. Useful when dom is changed not only by react. _(default: false)_
     * `contentSizeTrackInterval`: _(number)_ Interval between content's size check, in milliseconds _(default: 200)_
 * **Rendering**
@@ -29,8 +33,8 @@ All of these event handlers will be called inside the animation frame
             * `values.scrollLeft`: _(number)_ Native scrollLeft
             * `values.scrollHeight`: _(number)_ Native scrollHeight
             * `values.scrollWidth`: _(number)_ Native scrollWidth
-            * `values.clientWidth`: _(number)_ Native clientWidth 
-            * `values.clientHeight`: _(number)_ Native clientHeight 
+            * `values.clientWidth`: _(number)_ Native clientWidth
+            * `values.clientHeight`: _(number)_ Native clientHeight
     * `onUpdate (values)`: _(function)_ Called when the component is updated
         * `values`: _(object)_ Values representing scrolling position for the scroll start moment
     * `onScrollStart (values)`: _(function)_ Called when scrolling has started

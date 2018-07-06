@@ -34,8 +34,12 @@ Component creates next structure:
 </div>
 ```
 
+### Scroll disabling
+The most common need is to disable scrolling fully or partially. You can do it simply adding `noScroll` to disable all scrolls and `scrollY={false}`/`scrollX={false}` to disable scrolls separately.  
+Note, that if `scrollY={false}` and `scrollX={false}` will be set simultaneously, it will be treated like `noScroll={true}`.
+
 ### Default styles
-To customize scrollbars as you wish - you can turn off default styles.
+To customize scrollbars as you wish - you may want to turn off default styles.
 ```javascript
 import React, { Component }  from 'react';
 import Scrollbar from 'react-scrollbar-custom';
@@ -85,8 +89,8 @@ class App extends Component
 }
 ```
 
-### Automatic size checks
-It is possible that DOM will be changed not only with React: for these cases `<Scrollbar />` has automatic content checker.
+### Automatic size tracking
+It is possible that DOM will be changed not only with React: for these cases `<Scrollbar />` has automatic content tracker.
 ```javascript
 import React, { Component }  from 'react';
 import Scrollbar from 'react-scrollbar-custom';

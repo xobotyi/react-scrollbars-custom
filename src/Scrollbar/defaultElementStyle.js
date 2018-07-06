@@ -53,7 +53,10 @@ export const holderGridless = {
     display:  'block',
     position: 'relative',
 };
-export const wrapperGridless = {};
+export const wrapperGridless = {
+    display:   'block',
+    minHeight: '100%',
+};
 export const trackVerticalGridless = {
     background: 'rgba(0,0,0,.1)',
     position:   'absolute',

@@ -1,5 +1,5 @@
 # CUSTOMISATION
-`react-scrollbar-custom` is a fully customizable component, it consist of the following elements:
+`react-scrollbars-custom` is a fully customizable component, it consist of the following elements:
 * `holder` Holds content and scrollbars
 * `wrapper` Wraps the content in order to hide browser's scrollbars
 * `content` The element your content rendered in
@@ -12,7 +12,7 @@ Each of them (excepting holder) can be replaced and rendered with a function whi
 4ex: if you want to change the className of elements.
 ```javascript
 import React, { Component }  from 'react';
-import Scrollbar from 'react-scrollbar-custom';
+import Scrollbar from 'react-scrollbars-custom';
 
 class App extends Component
 {
@@ -37,7 +37,7 @@ Component provides scroll controlling methods, a list of which you can find in t
 To call them you have to make a reference to `<Scrollbar/>` component. Below you can see how to access component's methods and it's DOM elements:  
 ```javascript
 import React, { Component }  from 'react';
-import Scrollbar from 'react-scrollbar-custom';
+import Scrollbar from 'react-scrollbars-custom';
 
 class App extends Component
 {

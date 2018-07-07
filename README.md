@@ -1,9 +1,9 @@
-<h1 align="center">react-scrollbar-custom</h1>
+<h1 align="center">react-scrollbars-custom</h1>
 <p align="center">
-<a href="https://www.npmjs.com/package/react-scrollbar-custom"><img src="https://img.shields.io/badge/npm-react--scrollbar--custom-brightgreen.svg" /></a>
-<a href="https://www.npmjs.com/package/react-scrollbar-custom"><img src="https://img.shields.io/npm/l/react-scrollbar-custom.svg" /></a>
-<a href="https://www.npmjs.com/package/react-scrollbar-custom"><img src="https://img.shields.io/npm/v/react-scrollbar-custom.svg" /></a>
-<a href="https://www.npmjs.com/package/react-scrollbar-custom"><img src="https://img.shields.io/npm/dt/react-scrollbar-custom.svg" /></a>
+<a href="https://www.npmjs.com/package/react-scrollbars-custom"><img src="https://img.shields.io/badge/npm-react--scrollbar--custom-brightgreen.svg" /></a>
+<a href="https://www.npmjs.com/package/react-scrollbars-custom"><img src="https://img.shields.io/npm/l/react-scrollbars-custom.svg" /></a>
+<a href="https://www.npmjs.com/package/react-scrollbars-custom"><img src="https://img.shields.io/npm/v/react-scrollbars-custom.svg" /></a>
+<a href="https://www.npmjs.com/package/react-scrollbars-custom"><img src="https://img.shields.io/npm/dt/react-scrollbars-custom.svg" /></a>
 <a></a>
 </p>
 <p align="center">
@@ -21,14 +21,14 @@
 
 ## Installation
 ```bash
-npm i --save react-scrollbar-custom
+npm i --save react-scrollbars-custom
 ```
 
 ## Usage
 Minimal configuration
 ```javascript
 import React, { Component }  from 'react';
-import Scrollbar from 'react-scrollbar-custom';
+import Scrollbar from 'react-scrollbars-custom';
 
 class App extends Component
 {

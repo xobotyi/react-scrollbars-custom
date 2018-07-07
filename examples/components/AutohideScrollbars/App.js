@@ -1,5 +1,5 @@
 import React     from 'react';
-import Scrollbar from 'react-scrollbar-custom';
+import Scrollbar from 'react-scrollbars-custom';
 
 export default class App extends React.Component
 {

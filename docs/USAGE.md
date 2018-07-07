@@ -4,7 +4,7 @@
 The `<Scrollbar />` component works out of the box, with only need of `width` and `height` to be set, inline or via CSS;
 ```javascript
 import React, { Component }  from 'react';
-import Scrollbar from 'react-scrollbar-custom';
+import Scrollbar from 'react-scrollbars-custom';
 
 class App extends Component
 {
@@ -42,7 +42,7 @@ Note, that if `scrollY={false}` and `scrollX={false}` will be set simultaneously
 To customize scrollbars as you wish - you may want to turn off default styles.
 ```javascript
 import React, { Component }  from 'react';
-import Scrollbar from 'react-scrollbar-custom';
+import Scrollbar from 'react-scrollbars-custom';
 
 class App extends Component
 {
@@ -73,7 +73,7 @@ Styles presented in markup above are not removable and needed to proper componen
 There are several events you can listen to. Each listener will be called _inside the animation frame_.
 ```javascript
 import React, { Component }  from 'react';
-import Scrollbar from 'react-scrollbar-custom';
+import Scrollbar from 'react-scrollbars-custom';
 
 class App extends Component
 {
@@ -93,7 +93,7 @@ class App extends Component
 It is possible that DOM will be changed not only with React: for these cases `<Scrollbar />` has automatic content tracker.
 ```javascript
 import React, { Component }  from 'react';
-import Scrollbar from 'react-scrollbar-custom';
+import Scrollbar from 'react-scrollbars-custom';
 
 class App extends Component
 {

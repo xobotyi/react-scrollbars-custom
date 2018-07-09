@@ -5,7 +5,6 @@ export function wrapper(props) {
 }
 
 export function content(props) {
-    console.log(props.style.overflow);
     return <div className="CustomScrollbar-content"  { ...props } />;
 }
 

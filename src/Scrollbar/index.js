@@ -175,7 +175,7 @@ export default class Scrollbar extends Component
 
         if (this.scrollDetect.interval) {
             clearInterval(this.scrollDetect.interval);
-            this.scrollDetect.interval = undefined;
+            delete this.scrollDetect.interval;
         }
     }
 
@@ -414,7 +414,7 @@ export default class Scrollbar extends Component
         document.removeEventListener("mouseup", this.handleDragEnd);
 
         document.body.style.userSelect = null;
-        document.onselectstart = undefined;
+        delete document.onselectstart;
 
         this.thumbHorizontal.classList.remove("dragging");
         this.thumbVertical.classList.remove("dragging");
@@ -437,14 +437,14 @@ export default class Scrollbar extends Component
     /**
      * Request animation frame and call given function inside
      *
-     * @param cb {function} Function to call in reqiested frame
+     * @param cb {function|undefined} Function to call in requested frame
      * @return {Scrollbar}
      */
     raf(cb) {
         if (isset(this.requestFrame)) {raf.cancel(this.requestFrame);}
 
         this.requestFrame = raf(() => {
-            this.requestFrame = undefined;
+            delete this.requestFrame;
             cb();
         });
 
@@ -457,7 +457,7 @@ export default class Scrollbar extends Component
      * @param cb {function|undefined} The function to call after actualisation
      * @return {Scrollbar}
      */
-    update(cb = undefined) {
+    update(cb) {
         this.raf(() => this.actualizeScrollbars(cb));
 
         return this;
@@ -547,7 +547,7 @@ export default class Scrollbar extends Component
      * @param cb {function|undefined} The function to call after actualisation
      * @return {Scrollbar}
      */
-    actualizeScrollbars(cb = undefined) {
+    actualizeScrollbars(cb) {
         const scrollValues = this.getScrollValues();
         const {scrollLeft, scrollTop, clientWidth, scrollWidth, clientHeight, scrollHeight} = scrollValues;
 
@@ -618,8 +618,8 @@ export default class Scrollbar extends Component
             clearInterval(this.contentSizeTrackInterval);
         }
 
-        this.contentSizeTrackInterval = undefined;
-        this.contentSizeTrackPreviousSize = undefined;
+        delete this.contentSizeTrackInterval;
+        delete this.contentSizeTrackPreviousSize;
 
         return this;
     }

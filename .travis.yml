@@ -1,15 +1,20 @@
+sudo: true
+dist: trusty
+addons:
+  chrome: stable
+
 language: node_js
 
 node_js:
-  - iojs
+  - 10
+
+matrix:
+  fast_finish: true
 
 cache:
   timeout: 1000
   directories:
     - node_modules
-
-addons:
-  chrome: stable
 
 script:
   - npm i

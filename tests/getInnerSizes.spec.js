@@ -14,25 +14,28 @@ describe('getInnerSizes', () => {
     });
 
     describe('getInnerHeight()', () => {
-        it('returns the height of an element without padding', () => {
+        it('returns the height of an element without padding', (done) => {
             render(<div style={ {width: 200, height: 200, padding: 20} } />, node, function () {
                 expect(getInnerHeight(findDOMNode(this))).to.equal(200);
+                done();
             });
         });
     });
 
     describe('getInnerWidth()', () => {
-        it('returns the width of an element without padding', () => {
+        it('returns the width of an element without padding', (done) => {
             render(<div style={ {width: 200, height: 200, padding: 20} } />, node, function () {
                 expect(getInnerWidth(findDOMNode(this))).to.equal(200);
+                done();
             });
         });
     });
 
     describe('getInnerSizes()', () => {
-        it('returns the width and height of an element without padding', () => {
+        it('returns the width and height of an element without padding', (done) => {
             render(<div style={ {width: 200, height: 200, padding: 20} } />, node, function () {
                 expect(getInnerSizes(findDOMNode(this))).to.deep.equal({width: 200, height: 200});
+                done();
             });
         });
     });

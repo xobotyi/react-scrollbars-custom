@@ -9,16 +9,6 @@ export function isFunction(v) {
 }
 
 /**
- * Check if variable of type string
- *
- * @param v
- * @return {boolean}
- */
-export function isString(v) {
-    return typeof v === 'string';
-}
-
-/**
  * Check if variable defined and not null
  *
  * @param v

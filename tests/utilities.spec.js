@@ -20,7 +20,7 @@ describe('utilities', () => {
     });
 
     describe('getScrollbarWidth()', function () {
-        it('for chrome must be equal 17', () => {expect(getScrollbarWidth()).to.equal(17);});
-        it('second run must take previously calculated value (just for coverage)', () => {expect(getScrollbarWidth()).to.equal(17);});
+        it('for chrome must be equal 17 (Windows) or 15 (UNIX)', () => {expect(getScrollbarWidth()).to.be.oneOf([17, 15]);});
+        it('second run must take previously calculated value (just for coverage)', () => {expect(getScrollbarWidth()).to.be.oneOf([17, 15]);});
     });
 });

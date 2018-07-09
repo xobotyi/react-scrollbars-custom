@@ -1,6 +1,5 @@
 /**
- * Check if variable of type function
- *
+ * @description Check if variable of type function
  * @param v
  * @return {boolean}
  */
@@ -9,8 +8,7 @@ export function isFunction(v) {
 }
 
 /**
- * Check if variable defined and not null
- *
+ * @description Check if variable defined and not null
  * @param v
  * @return {boolean}
  */
@@ -21,8 +19,7 @@ export function isset(v) {
 let scrollbarWidth;
 
 /**
- * Returns scrollbar width cpecific for current environment
- *
+ * @description Returns scrollbar width specific for current environment
  * @return {number}
  */
 export function getScrollbarWidth() {

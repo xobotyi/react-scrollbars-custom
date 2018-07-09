@@ -1,6 +1,5 @@
 /**
- * Returns element"s height without paddings
- *
+ * @description Returns element"s height without padding
  * @param {HTMLElement} el
  * @return {number}
  */
@@ -12,8 +11,7 @@ export function getInnerHeight(el) {
 }
 
 /**
- * Returns element"s width without paddings
- *
+ * @description Returns element"s width without padding
  * @param {HTMLElement} el
  * @return {number}
  */
@@ -25,8 +23,7 @@ export function getInnerWidth(el) {
 }
 
 /**
- * Returns element"s dimensions without paddings
- *
+ * @description Returns element"s dimensions without padding
  * @param {HTMLElement} el
  * @return {{width: number, height: number}}
  */

@@ -17,7 +17,6 @@ cache:
     - node_modules
 
 script:
-  - npm i
   - npm run test:coverage
 
 after_success:

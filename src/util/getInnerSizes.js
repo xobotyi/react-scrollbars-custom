@@ -1,5 +1,5 @@
 /**
- * Returns element's height without paddings
+ * Returns element"s height without paddings
  *
  * @param {HTMLElement} el
  * @return {number}
@@ -12,12 +12,12 @@ export function getInnerHeight(el) {
 }
 
 /**
- * Returns element's width without paddings
+ * Returns element"s width without paddings
  *
  * @param {HTMLElement} el
  * @return {number}
  */
-export function getInnerWigth(el) {
+export function getInnerWidth(el) {
     const {clientWidth} = el;
     const {paddingLeft, paddingRight} = getComputedStyle(el);
 
@@ -25,7 +25,7 @@ export function getInnerWigth(el) {
 }
 
 /**
- * Returns element's dimensions without paddings
+ * Returns element"s dimensions without paddings
  *
  * @param {HTMLElement} el
  * @return {{width: number, height: number}}

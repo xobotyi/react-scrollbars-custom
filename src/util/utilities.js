@@ -5,7 +5,7 @@
  * @return {boolean}
  */
 export function isFunction(v) {
-    return typeof v === 'function';
+    return typeof v === "function";
 }
 
 /**
@@ -15,7 +15,7 @@ export function isFunction(v) {
  * @return {boolean}
  */
 export function isset(v) {
-    return typeof v !== 'undefined' && v !== null;
+    return typeof v !== "undefined" && v !== null;
 }
 
 let scrollbarWidth;
@@ -34,8 +34,8 @@ export function getScrollbarWidth() {
         return scrollbarWidth = 0;
     }
 
-    let el = document.createElement('div');
-    el.setAttribute('style', 'display:block;position:absolute;width:100px;height:100px;top:-9999px;overflow:scroll;');
+    let el = document.createElement("div");
+    el.setAttribute("style", "display:block;position:absolute;width:100px;height:100px;top:-9999px;overflow:scroll;");
 
     document.body.appendChild(el);
     scrollbarWidth = el.offsetWidth - el.clientWidth;

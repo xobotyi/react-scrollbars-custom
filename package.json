@@ -2,7 +2,7 @@
   "name": "react-scrollbars-custom",
   "description": "The best React custom scrollbars component",
   "version": "1.4.0",
-  "main": "src/index.js",
+  "main": "dist/index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/xobotyi/react-scrollbars-custom.git"
@@ -56,6 +56,7 @@
     "path": "^0.12.7",
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
+    "rimraf": "^2.6.2",
     "webpack": "^4.15.1",
     "webpack-cli": "^3.0.8",
     "webpack-dev-server": "^3.1.4"
@@ -66,6 +67,8 @@
     "test": "cross-env NODE_ENV=test karma start",
     "test:watch": "cross-env NODE_ENV=test karma start --auto-watch --no-single-run",
     "test:coverage": "cross-env NODE_ENV=test COVERAGE=true karma start --single-run",
-    "push-codacy-coverage": "cat ./coverage/lcov.info | codacy-coverage -p ."
+    "push-codacy-coverage": "cat ./coverage/lcov.info | codacy-coverage -p .",
+    "build": "rimraf lib && babel src -d dist",
+    "prepublish": "npm test && npm run build"
   }
 }

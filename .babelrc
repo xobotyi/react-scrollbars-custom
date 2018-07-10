@@ -1,3 +1,10 @@
 {
-  "presets": ["env", "react", "stage-0"]
+  "ignore": [
+    "node-modules/**"
+  ],
+  "presets": [
+    "env",
+    "react",
+    "stage-0"
+  ]
 }

@@ -48,7 +48,23 @@ All properties and methods are in the [API Documentation](https://github.com/xob
 ## Examples
 Run the example, it will install dependencies, build current component version and run local web-server listening `localhost:3000` (browser window will open automatically)
 ```bash
+# install dependencies if you haven't yet
+npm install
 npm run examples
+```
+
+## Tests
+```bash
+# install dependencies if you haven't yet
+npm install
+npm run test
+```
+
+## Coverage
+```bash
+# install dependencies if you haven't yet
+npm install
+npm run test:coverage
 ```
 
 ## Credits

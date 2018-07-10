@@ -522,7 +522,7 @@ export default class Scrollbar extends Component
     computeThumbHorizontalWidth(trackWidth) {
         const {scrollWidth, clientWidth} = this.content;
         const {thumbSizeMin} = this.props;
-        const width = Math.ceil(scrollWidth / clientWidth * trackWidth);
+        const width = Math.ceil(clientWidth / scrollWidth * trackWidth);
 
         return trackWidth === width ? 0 : Math.max(width, thumbSizeMin);
     }
@@ -554,8 +554,8 @@ export default class Scrollbar extends Component
         const trackHorizontalInnerWidth = getInnerWidth(this.trackHorizontal),
               trackVerticalInnerHeight  = getInnerHeight(this.trackVertical);
 
-        const thumbHorizontalWidth      = this.computeThumbHorizontalWidth(trackHorizontalInnerWidth),
-              thumbVerticalHeight       = this.computeThumbVerticalHeight(trackVerticalInnerHeight),
+        const thumbVerticalHeight       = this.computeThumbVerticalHeight(trackVerticalInnerHeight),
+              thumbHorizontalWidth      = this.computeThumbHorizontalWidth(trackHorizontalInnerWidth),
               oldVerticalTrackDisplay   = this.trackVertical.style.display,
               oldHorizontalTrackDisplay = this.trackHorizontal.style.display;
 
@@ -567,8 +567,8 @@ export default class Scrollbar extends Component
             return this;
         }
 
-        const thumbHorizontalOffset = thumbHorizontalWidth ? scrollLeft / (scrollWidth - clientWidth) * (trackHorizontalInnerWidth - thumbHorizontalWidth) : 0,
-              thumbVerticalOffset   = thumbVerticalHeight ? scrollTop / (scrollHeight - clientHeight) * (trackVerticalInnerHeight - thumbVerticalHeight) : 0;
+        const thumbVerticalOffset   = thumbVerticalHeight ? scrollTop / (scrollHeight - clientHeight) * (trackVerticalInnerHeight - thumbVerticalHeight) : 0,
+              thumbHorizontalOffset = thumbHorizontalWidth ? scrollLeft / (scrollWidth - clientWidth) * (trackHorizontalInnerWidth - thumbHorizontalWidth) : 0;
 
         this.thumbVertical.style.transform = `translateY(${thumbVerticalOffset}px)`;
         this.thumbVertical.style.height = thumbVerticalHeight + "px";

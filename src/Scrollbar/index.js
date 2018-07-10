@@ -29,7 +29,7 @@ export default class Scrollbar extends Component
         onScrollStop:  PropTypes.func,
 
         tagName:   PropTypes.string,
-        className: PropTypes.string,
+        className: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
 
         renderWrapper:         PropTypes.func,
         renderContent:         PropTypes.func,
@@ -56,7 +56,6 @@ export default class Scrollbar extends Component
         gridless: false,
 
         tagName:               "div",
-        className:             "CustomScrollbar",
         renderWrapper:         defaultElementRender.wrapper,
         renderContent:         defaultElementRender.content,
         renderTrackVertical:   defaultElementRender.trackVertical,
@@ -628,14 +627,15 @@ export default class Scrollbar extends Component
         const {
                   style, thumbSizeMin, defaultStyles, scrollDetectionThreshold, permanentScrollbars, permanentScrollbarVertical, permanentScrollbarHorizontal,
                   contentSizeTrack, contentSizeTrackInterval, noScroll, scrollX, scrollY, gridless,
-                  tagName, children, renderWrapper, renderContent, renderTrackVertical, renderTrackHorizontal, renderThumbVertical, renderThumbHorizontal,
+                  tagName, className, children, renderWrapper, renderContent, renderTrackVertical, renderTrackHorizontal, renderThumbVertical, renderThumbHorizontal,
                   onUpdate, onScroll, onScrollStart, onScrollStop,
                   ...props
               } = this.props;
 
         const browserScrollbarWidth = getScrollbarWidth();
 
-        const holderStyle          = {...style, ...(defaultStyles && (gridless ? defaultElementStyles.holderGridless : defaultElementStyles.holder))},
+        const holderClassName      = ['CustomScrollbar'],
+              holderStyle          = {...style, ...(defaultStyles && (gridless ? defaultElementStyles.holderGridless : defaultElementStyles.holder))},
               wrapperStyle         = {...(defaultStyles && (gridless ? defaultElementStyles.wrapperGridless : defaultElementStyles.wrapper)), position: "relative", overflow: "hidden"},
               contentStyle         = {...defaultElementStyles.content, overflowX: "scroll", overflowY: "scroll", marginRight: -browserScrollbarWidth, marginBottom: -browserScrollbarWidth},
               trackVerticalStyle   = {...(defaultStyles && (gridless ? defaultElementStyles.trackVerticalGridless : defaultElementStyles.trackVertical))},
@@ -686,9 +686,17 @@ export default class Scrollbar extends Component
             trackHorizontalStyle.display = "none";
         }
 
+        if (className) {
+            if (typeof className === 'string') {
+                holderClassName.push(className);
+            }else{
+                holderClassName.concat(className);
+            }
+        }
+
         return createElement(
                 tagName,
-                {...props, style: holderStyle, ref: (ref) => {this.holder = ref;}},
+                {...props, className: holderClassName.join(' '), style: holderStyle, ref: (ref) => {this.holder = ref;}},
                 [
                     renderWrapper({
                                       key:      "wrapper",

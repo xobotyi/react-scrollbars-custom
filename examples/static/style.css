@@ -160,7 +160,7 @@ body {
     display:    block;
     position:   relative;
     width:      100%;
-    min-height: 300px;
+    min-height: 250px;
 }
 
 #customScrollbarsRoot p {
@@ -266,9 +266,9 @@ body {
     left:  -1px;
 }
 
-#customScrollbarsRoot .CustomScrollbar-trackHorizontal:hover, #customScrollbarsRoot .CustomScrollbar-trackHorizontal.dragging,
-#autohideScrollbarsRoot .CustomScrollbar-trackHorizontal:hover, #autohideScrollbarsRoot .CustomScrollbar-trackHorizontal.dragging,
-#sandboxScrollbarsRoot .CustomScrollbar-trackHorizontal:hover, #sandboxScrollbarsRoot .CustomScrollbar-trackHorizontal.dragging {
+#customScrollbarsRoot .CustomScrollbar-thumbHorizontal:hover, #customScrollbarsRoot .CustomScrollbar-thumbHorizontal.dragging,
+#autohideScrollbarsRoot .CustomScrollbar-thumbHorizontal:hover, #autohideScrollbarsRoot .CustomScrollbar-thumbHorizontal.dragging,
+#sandboxScrollbarsRoot .CustomScrollbar-thumbHorizontal:hover, #sandboxScrollbarsRoot .CustomScrollbar-thumbHorizontal.dragging {
     height: calc(100% + 2px);
     top:    -1px;
 }

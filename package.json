@@ -60,9 +60,8 @@
     "webpack-dev-server": "^3.1.4"
   },
   "scripts": {
-    "run-examples": "cd ./examples/ && opn http://localhost:3000 && cross-env NODE_ENV=development node server.js",
-    "build-examples": "npm i && cd ./examples && cross-env NODE_ENV=production webpack",
-    "examples": "npm i && npm run run-examples",
+    "examples:build": "cd ./examples && cross-env NODE_ENV=production webpack",
+    "examples": "cd ./examples/ && opn http://localhost:3000 && cross-env NODE_ENV=development node server.js",
     "test": "cross-env NODE_ENV=test karma start",
     "test:watch": "cross-env NODE_ENV=test karma start --auto-watch --no-single-run",
     "test:coverage": "cross-env NODE_ENV=test COVERAGE=true karma start --single-run",

@@ -120,7 +120,7 @@ body {
 
 .scrollers .scroller > .description {
     display:       block;
-    position: relative;
+    position:      relative;
     width:         100%;
     margin:        0 0 1.5rem;
     padding:       0 0 1rem;
@@ -160,7 +160,12 @@ body {
     display:    block;
     position:   relative;
     width:      100%;
-    min-height: 300px;
+    min-height: 250px;
+}
+
+#customScrollbarsRoot p {
+    display: inline-block;
+    width:   150%;
 }
 
 #customScrollbarsRoot .CustomScrollbar-wrapper {
@@ -226,7 +231,7 @@ body {
     grid-area:     2 / 1 / auto / auto;
 }
 
-#autohideScrollbarsRoot .CustomScrollbar-trackVertical {
+#autohideScrollbarsRoot .CustomScrollbar-trackVertical, #autohideScrollbarsRoot .CustomScrollbar-trackHorizontal {
     opacity:     0;
     will-change: opacity;
     transition:  opacity ease-in .2s;
@@ -242,9 +247,28 @@ body {
     cursor:        pointer;
 }
 
+#customScrollbarsRoot .CustomScrollbar-thumbVertical,
+#autohideScrollbarsRoot .CustomScrollbar-thumbVertical,
+#sandboxScrollbarsRoot .CustomScrollbar-thumbVertical {
+    width: 100%;
+}
+
+#customScrollbarsRoot .CustomScrollbar-thumbHorizontal,
+#autohideScrollbarsRoot .CustomScrollbar-thumbHorizontal,
+#sandboxScrollbarsRoot .CustomScrollbar-thumbHorizontal {
+    height: 100%;
+}
+
 #customScrollbarsRoot .CustomScrollbar-thumbVertical:hover, #customScrollbarsRoot .CustomScrollbar-thumbVertical.dragging,
 #autohideScrollbarsRoot .CustomScrollbar-thumbVertical:hover, #autohideScrollbarsRoot .CustomScrollbar-thumbVertical.dragging,
 #sandboxScrollbarsRoot .CustomScrollbar-thumbVertical:hover, #sandboxScrollbarsRoot .CustomScrollbar-thumbVertical.dragging {
     width: calc(100% + 2px);
     left:  -1px;
+}
+
+#customScrollbarsRoot .CustomScrollbar-thumbHorizontal:hover, #customScrollbarsRoot .CustomScrollbar-thumbHorizontal.dragging,
+#autohideScrollbarsRoot .CustomScrollbar-thumbHorizontal:hover, #autohideScrollbarsRoot .CustomScrollbar-thumbHorizontal.dragging,
+#sandboxScrollbarsRoot .CustomScrollbar-thumbHorizontal:hover, #sandboxScrollbarsRoot .CustomScrollbar-thumbHorizontal.dragging {
+    height: calc(100% + 2px);
+    top:    -1px;
 }

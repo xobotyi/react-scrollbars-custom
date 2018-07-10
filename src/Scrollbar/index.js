@@ -634,7 +634,7 @@ export default class Scrollbar extends Component
 
         const browserScrollbarWidth = getScrollbarWidth();
 
-        const holderClassName      = ['CustomScrollbar'],
+        const holderClassName      = ["CustomScrollbar"],
               holderStyle          = {...style, ...(defaultStyles && (gridless ? defaultElementStyles.holderGridless : defaultElementStyles.holder))},
               wrapperStyle         = {...(defaultStyles && (gridless ? defaultElementStyles.wrapperGridless : defaultElementStyles.wrapper)), position: "relative", overflow: "hidden"},
               contentStyle         = {...defaultElementStyles.content, overflowX: "scroll", overflowY: "scroll", marginRight: -browserScrollbarWidth, marginBottom: -browserScrollbarWidth},
@@ -687,7 +687,7 @@ export default class Scrollbar extends Component
         }
 
         if (className) {
-            if (typeof className === 'string') {
+            if (typeof className === "string") {
                 holderClassName.push(className);
             }else{
                 holderClassName.concat(className);
@@ -696,7 +696,7 @@ export default class Scrollbar extends Component
 
         return createElement(
                 tagName,
-                {...props, className: holderClassName.join(' '), style: holderStyle, ref: (ref) => {this.holder = ref;}},
+                {...props, className: holderClassName.join(" "), style: holderStyle, ref: (ref) => {this.holder = ref;}},
                 [
                     renderWrapper({
                                       key:      "wrapper",

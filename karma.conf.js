@@ -66,7 +66,7 @@ module.exports = function karmaConfig(config) {
                    },
                    coverageIstanbulReporter: {
                        dir:                   path.join(__dirname, 'coverage'),
-                       reports:               ['lcov', 'html'],
+                       reports:               ['lcov', 'clover', 'html'],
                        combineBrowserReports: true,
                        fixWebpackSourcePaths: true,
                        'report-config':       {

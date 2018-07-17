@@ -14,7 +14,6 @@ var wrapper = exports.wrapper = {
     gridRow: 1
 };
 var trackVertical = exports.trackVertical = {
-    display: "block",
     position: "relative",
     width: 8,
     background: "rgba(0,0,0,.1)",
@@ -22,7 +21,6 @@ var trackVertical = exports.trackVertical = {
     gridRow: 1
 };
 var trackHorizontal = exports.trackHorizontal = {
-    display: "block",
     position: "relative",
     height: 8,
     background: "rgba(0,0,0,.1)",
@@ -30,7 +28,6 @@ var trackHorizontal = exports.trackHorizontal = {
     gridRow: 2
 };
 var thumbVertical = exports.thumbVertical = {
-    display: "block",
     position: "relative",
     width: "100%",
     height: 0,
@@ -38,7 +35,6 @@ var thumbVertical = exports.thumbVertical = {
     background: "rgba(0,0,0,.35)"
 };
 var thumbHorizontal = exports.thumbHorizontal = {
-    display: "block",
     position: "relative",
     height: "100%",
     width: 0,
@@ -55,11 +51,9 @@ var content = exports.content = {
 };
 
 var holderGridless = exports.holderGridless = {
-    display: "block",
     position: "relative"
 };
 var wrapperGridless = exports.wrapperGridless = {
-    display: "block",
     minHeight: "100%"
 };
 var trackVerticalGridless = exports.trackVerticalGridless = {

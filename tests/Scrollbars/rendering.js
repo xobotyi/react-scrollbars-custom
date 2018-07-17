@@ -171,5 +171,69 @@ export default function createTests(scrollbarWidth) {
                         });
             });
         });
+
+        describe('only vertical scroll should be blocked', () => {
+            it('if scrollY={false} is passed', (done) => {
+                render(<Scrollbar style={ {width: 100, height: 100} } scrollY={ false }>
+                            <div style={ {width: 200, height: 200} }></div>
+                        </Scrollbar>,
+                        node,
+                        function () {
+                            setTimeout(() => {
+                                expect(this.trackVertical.style.display).to.be.equal('none');
+                                expect(this.content.style.overflowY).to.be.equal('hidden');
+                                expect(this.content.style.marginRight).to.be.equal('');
+                                expect(this.trackHorizontal.style.display).to.not.be.equal('none');
+                                expect(this.content.style.overflowX).to.not.be.equal('hidden');
+                                expect(this.content.style.marginBottom).to.not.be.equal('');
+
+                                done();
+                            }, 50);
+                        });
+            });
+        });
+
+        describe('only horizontal scroll should be blocked', () => {
+            it('if scrollX={false} is passed', (done) => {
+                render(<Scrollbar style={ {width: 100, height: 100} } scrollX={ false }>
+                            <div style={ {width: 200, height: 200} }></div>
+                        </Scrollbar>,
+                        node,
+                        function () {
+                            setTimeout(() => {
+                                expect(this.trackVertical.style.display).to.not.be.equal('none');
+                                expect(this.content.style.overflowY).to.not.be.equal('hidden');
+                                expect(this.content.style.marginRight).to.not.be.equal('');
+                                expect(this.trackHorizontal.style.display).to.be.equal('none');
+                                expect(this.content.style.overflowX).to.be.equal('hidden');
+                                expect(this.content.style.marginBottom).to.be.equal('');
+
+                                done();
+                            }, 50);
+                        });
+            });
+        });
+
+        describe('both scrolls should be blocked', () => {
+            it('or no noScroll is passed', (done) => {
+                render(<Scrollbar style={ {width: 100, height: 100} } noScroll>
+                            <div style={ {width: 200, height: 200} }></div>
+                        </Scrollbar>,
+                        node,
+                        function () {
+                            setTimeout(() => {
+                                expect(this.trackHorizontal.style.display).to.be.equal('none');
+                                expect(this.trackVertical.style.display).to.be.equal('none');
+                                expect(this.content.style.overflowX).to.be.equal('hidden');
+                                expect(this.content.style.overflowY).to.be.equal('hidden');
+                                expect(this.content.style.overflow).to.be.equal('hidden');
+                                expect(this.content.style.marginBottom).to.be.equal('');
+                                expect(this.content.style.marginRight).to.be.equal('');
+
+                                done();
+                            }, 50);
+                        });
+            });
+        });
     });
 }

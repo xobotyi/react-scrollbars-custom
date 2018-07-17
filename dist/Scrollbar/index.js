@@ -752,7 +752,7 @@ var Scrollbar = function (_Component) {
 
             var browserScrollbarWidth = (0, _utilities.getScrollbarWidth)();
 
-            var holderClassName = ['CustomScrollbar'],
+            var holderClassName = ["CustomScrollbar"],
                 holderStyle = _extends({}, style, defaultStyles && (gridless ? defaultElementStyles.holderGridless : defaultElementStyles.holder)),
                 wrapperStyle = _extends({}, defaultStyles && (gridless ? defaultElementStyles.wrapperGridless : defaultElementStyles.wrapper), { position: "relative", overflow: "hidden" }),
                 contentStyle = _extends({}, defaultElementStyles.content, { overflowX: "scroll", overflowY: "scroll", marginRight: -browserScrollbarWidth, marginBottom: -browserScrollbarWidth }),
@@ -801,14 +801,14 @@ var Scrollbar = function (_Component) {
             }
 
             if (className) {
-                if (typeof className === 'string') {
+                if (typeof className === "string") {
                     holderClassName.push(className);
                 } else {
                     holderClassName.concat(className);
                 }
             }
 
-            return (0, _react.createElement)(tagName, _extends({}, props, { className: holderClassName.join(' '), style: holderStyle, ref: function ref(_ref3) {
+            return (0, _react.createElement)(tagName, _extends({}, props, { className: holderClassName.join(" "), style: holderStyle, ref: function ref(_ref3) {
                     _this7.holder = _ref3;
                 } }), [renderWrapper({
                 key: "wrapper",

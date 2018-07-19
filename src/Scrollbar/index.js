@@ -439,7 +439,7 @@ export default class Scrollbar extends Component
      * @param cb {function|undefined} Function to call in requested frame
      * @return {Scrollbar}
      */
-    raf(cb) {
+    raf(cb = undefined) {
         if (isset(this.requestFrame)) {raf.cancel(this.requestFrame);}
 
         this.requestFrame = raf(() => {
@@ -456,7 +456,7 @@ export default class Scrollbar extends Component
      * @param cb {function|undefined} The function to call after actualisation
      * @return {Scrollbar}
      */
-    update(cb) {
+    update(cb = undefined) {
         this.raf(() => this.actualizeScrollbars(cb));
 
         return this;
@@ -546,20 +546,36 @@ export default class Scrollbar extends Component
      * @param cb {function|undefined} The function to call after actualisation
      * @return {Scrollbar}
      */
-    actualizeScrollbars(cb) {
+    actualizeScrollbars(cb = undefined) {
         const scrollValues = this.getScrollValues();
         const {scrollLeft, scrollTop, clientWidth, scrollWidth, clientHeight, scrollHeight} = scrollValues;
+
+        const verticalScrollPossible   = scrollHeight <= clientHeight && !this.props.noScroll && !this.props.scrollY,
+              horizontalScrollPossible = scrollWidth <= clientWidth && !this.props.noScroll && !this.props.scrollX;
+
+        const oldVerticalTrackDisplay   = this.trackVertical.style.display,
+              oldHorizontalTrackDisplay = this.trackHorizontal.style.display;
+
+        if (this.trackVertical.style.display === 'none' && verticalScrollPossible) {
+            this.trackVertical.style.display = null;
+            this.trackVertical.visibility = 'hidden';
+        }
+        if (this.trackHorizontal.style.display === 'none' && horizontalScrollPossible) {
+            this.trackHorizontal.style.display = null;
+            this.trackHorizontal.visibility = 'hidden';
+        }
 
         const trackHorizontalInnerWidth = getInnerWidth(this.trackHorizontal),
               trackVerticalInnerHeight  = getInnerHeight(this.trackVertical);
 
-        const thumbVerticalHeight       = this.computeThumbVerticalHeight(trackVerticalInnerHeight),
-              thumbHorizontalWidth      = this.computeThumbHorizontalWidth(trackHorizontalInnerWidth),
-              oldVerticalTrackDisplay   = this.trackVertical.style.display,
-              oldHorizontalTrackDisplay = this.trackHorizontal.style.display;
+        const thumbVerticalHeight  = this.computeThumbVerticalHeight(trackVerticalInnerHeight),
+              thumbHorizontalWidth = this.computeThumbHorizontalWidth(trackHorizontalInnerWidth);
 
         this.trackVertical.style.display = this.props.permanentScrollbars || this.props.permanentScrollbarVertical || thumbVerticalHeight ? null : "none";
+        this.trackVertical.visibility = null;
+
         this.trackHorizontal.style.display = this.props.permanentScrollbars || this.props.permanentScrollbarHorizontal || thumbHorizontalWidth ? null : "none";
+        this.trackHorizontal.visibility = null;
 
         if (oldVerticalTrackDisplay !== this.trackVertical.style.display || oldHorizontalTrackDisplay !== this.trackHorizontal.style.display) {
             this.actualizeScrollbars(cb);
@@ -689,7 +705,8 @@ export default class Scrollbar extends Component
         if (className) {
             if (typeof className === "string") {
                 holderClassName.push(className);
-            }else{
+            }
+            else {
                 holderClassName.concat(className);
             }
         }

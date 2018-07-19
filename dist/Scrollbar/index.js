@@ -446,8 +446,10 @@ var Scrollbar = function (_Component) {
 
     }, {
         key: "raf",
-        value: function raf(cb) {
+        value: function raf() {
             var _this4 = this;
+
+            var cb = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : undefined;
 
             if ((0, _utilities.isset)(this.requestFrame)) {
                 _raf3.default.cancel(this.requestFrame);
@@ -470,8 +472,10 @@ var Scrollbar = function (_Component) {
 
     }, {
         key: "update",
-        value: function update(cb) {
+        value: function update() {
             var _this5 = this;
+
+            var cb = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : undefined;
 
             this.raf(function () {
                 return _this5.actualizeScrollbars(cb);
@@ -606,7 +610,9 @@ var Scrollbar = function (_Component) {
 
     }, {
         key: "actualizeScrollbars",
-        value: function actualizeScrollbars(cb) {
+        value: function actualizeScrollbars() {
+            var cb = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : undefined;
+
             var scrollValues = this.getScrollValues();
             var scrollLeft = scrollValues.scrollLeft,
                 scrollTop = scrollValues.scrollTop,
@@ -616,16 +622,32 @@ var Scrollbar = function (_Component) {
                 scrollHeight = scrollValues.scrollHeight;
 
 
+            var verticalScrollPossible = scrollHeight <= clientHeight && !this.props.noScroll && !this.props.scrollY,
+                horizontalScrollPossible = scrollWidth <= clientWidth && !this.props.noScroll && !this.props.scrollX;
+
+            var oldVerticalTrackDisplay = this.trackVertical.style.display,
+                oldHorizontalTrackDisplay = this.trackHorizontal.style.display;
+
+            if (this.trackVertical.style.display === 'none' && verticalScrollPossible) {
+                this.trackVertical.style.display = null;
+                this.trackVertical.visibility = 'hidden';
+            }
+            if (this.trackHorizontal.style.display === 'none' && horizontalScrollPossible) {
+                this.trackHorizontal.style.display = null;
+                this.trackHorizontal.visibility = 'hidden';
+            }
+
             var trackHorizontalInnerWidth = (0, _getInnerSizes.getInnerWidth)(this.trackHorizontal),
                 trackVerticalInnerHeight = (0, _getInnerSizes.getInnerHeight)(this.trackVertical);
 
             var thumbVerticalHeight = this.computeThumbVerticalHeight(trackVerticalInnerHeight),
-                thumbHorizontalWidth = this.computeThumbHorizontalWidth(trackHorizontalInnerWidth),
-                oldVerticalTrackDisplay = this.trackVertical.style.display,
-                oldHorizontalTrackDisplay = this.trackHorizontal.style.display;
+                thumbHorizontalWidth = this.computeThumbHorizontalWidth(trackHorizontalInnerWidth);
 
             this.trackVertical.style.display = this.props.permanentScrollbars || this.props.permanentScrollbarVertical || thumbVerticalHeight ? null : "none";
+            this.trackVertical.visibility = null;
+
             this.trackHorizontal.style.display = this.props.permanentScrollbars || this.props.permanentScrollbarHorizontal || thumbHorizontalWidth ? null : "none";
+            this.trackHorizontal.visibility = null;
 
             if (oldVerticalTrackDisplay !== this.trackVertical.style.display || oldHorizontalTrackDisplay !== this.trackHorizontal.style.display) {
                 this.actualizeScrollbars(cb);

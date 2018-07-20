@@ -439,7 +439,7 @@ export default class Scrollbar extends Component
      * @param cb {function|undefined} Function to call in requested frame
      * @return {Scrollbar}
      */
-    raf(cb = undefined) {
+    raf(cb) {
         if (isset(this.requestFrame)) {raf.cancel(this.requestFrame);}
 
         this.requestFrame = raf(() => {
@@ -456,7 +456,7 @@ export default class Scrollbar extends Component
      * @param cb {function|undefined} The function to call after actualisation
      * @return {Scrollbar}
      */
-    update(cb = undefined) {
+    update(cb) {
         this.raf(() => this.actualizeScrollbars(cb));
 
         return this;
@@ -546,23 +546,23 @@ export default class Scrollbar extends Component
      * @param cb {function|undefined} The function to call after actualisation
      * @return {Scrollbar}
      */
-    actualizeScrollbars(cb = undefined) {
+    actualizeScrollbars(cb) {
         const scrollValues = this.getScrollValues();
         const {scrollLeft, scrollTop, clientWidth, scrollWidth, clientHeight, scrollHeight} = scrollValues;
 
-        const verticalScrollPossible   = scrollHeight <= clientHeight && !this.props.noScroll && this.props.scrollY,
-              horizontalScrollPossible = scrollWidth <= clientWidth && !this.props.noScroll && this.props.scrollX;
+        const verticalScrollPossible   = scrollHeight >= clientHeight && !this.props.noScroll && this.props.scrollY,
+              horizontalScrollPossible = scrollWidth >= clientWidth && !this.props.noScroll && this.props.scrollX;
 
         const oldVerticalTrackDisplay   = this.trackVertical.style.display,
               oldHorizontalTrackDisplay = this.trackHorizontal.style.display;
 
-        if (this.trackVertical.style.display === 'none' && verticalScrollPossible) {
+        if (this.trackVertical.style.display === "none" && verticalScrollPossible) {
             this.trackVertical.style.display = null;
-            this.trackVertical.visibility = 'hidden';
+            this.trackVertical.visibility = "hidden";
         }
-        if (this.trackHorizontal.style.display === 'none' && horizontalScrollPossible) {
+        if (this.trackHorizontal.style.display === "none" && horizontalScrollPossible) {
             this.trackHorizontal.style.display = null;
-            this.trackHorizontal.visibility = 'hidden';
+            this.trackHorizontal.visibility = "hidden";
         }
 
         const trackHorizontalInnerWidth = getInnerWidth(this.trackHorizontal),

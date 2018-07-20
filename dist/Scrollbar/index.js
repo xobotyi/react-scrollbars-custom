@@ -446,10 +446,8 @@ var Scrollbar = function (_Component) {
 
     }, {
         key: "raf",
-        value: function raf() {
+        value: function raf(cb) {
             var _this4 = this;
-
-            var cb = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : undefined;
 
             if ((0, _utilities.isset)(this.requestFrame)) {
                 _raf3.default.cancel(this.requestFrame);
@@ -472,10 +470,8 @@ var Scrollbar = function (_Component) {
 
     }, {
         key: "update",
-        value: function update() {
+        value: function update(cb) {
             var _this5 = this;
-
-            var cb = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : undefined;
 
             this.raf(function () {
                 return _this5.actualizeScrollbars(cb);
@@ -610,9 +606,7 @@ var Scrollbar = function (_Component) {
 
     }, {
         key: "actualizeScrollbars",
-        value: function actualizeScrollbars() {
-            var cb = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : undefined;
-
+        value: function actualizeScrollbars(cb) {
             var scrollValues = this.getScrollValues();
             var scrollLeft = scrollValues.scrollLeft,
                 scrollTop = scrollValues.scrollTop,
@@ -622,19 +616,19 @@ var Scrollbar = function (_Component) {
                 scrollHeight = scrollValues.scrollHeight;
 
 
-            var verticalScrollPossible = scrollHeight <= clientHeight && !this.props.noScroll && this.props.scrollY,
-                horizontalScrollPossible = scrollWidth <= clientWidth && !this.props.noScroll && this.props.scrollX;
+            var verticalScrollPossible = scrollHeight >= clientHeight && !this.props.noScroll && this.props.scrollY,
+                horizontalScrollPossible = scrollWidth >= clientWidth && !this.props.noScroll && this.props.scrollX;
 
             var oldVerticalTrackDisplay = this.trackVertical.style.display,
                 oldHorizontalTrackDisplay = this.trackHorizontal.style.display;
 
-            if (this.trackVertical.style.display === 'none' && verticalScrollPossible) {
+            if (this.trackVertical.style.display === "none" && verticalScrollPossible) {
                 this.trackVertical.style.display = null;
-                this.trackVertical.visibility = 'hidden';
+                this.trackVertical.visibility = "hidden";
             }
-            if (this.trackHorizontal.style.display === 'none' && horizontalScrollPossible) {
+            if (this.trackHorizontal.style.display === "none" && horizontalScrollPossible) {
                 this.trackHorizontal.style.display = null;
-                this.trackHorizontal.visibility = 'hidden';
+                this.trackHorizontal.visibility = "hidden";
             }
 
             var trackHorizontalInnerWidth = (0, _getInnerSizes.getInnerWidth)(this.trackHorizontal),

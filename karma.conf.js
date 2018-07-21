@@ -22,7 +22,7 @@ module.exports = function karmaConfig(config) {
     config.set({
                    browsers:                 ['ChromeHeadless'],
                    singleRun:                true,
-                   frameworks:               ['mocha', 'chai'],
+                   frameworks:               ['mocha', 'chai-spies', 'chai'],
                    files:                    ['./test.js'],
                    preprocessors:            {'./test.js': 'webpack'},
                    reporters:                ['mocha'].concat(coverageReporters),

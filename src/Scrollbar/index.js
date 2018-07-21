@@ -64,24 +64,6 @@ export default class Scrollbar extends Component
         renderThumbHorizontal: defaultElementRender.thumbHorizontal,
     };
 
-    //==============//
-    //   bindings   //
-    //==============//
-    constructor(props, ...rest) {
-        super(props, ...rest);
-
-        // event handlers has to be hard binded to current instance
-        this.handleScrollEvent = this.handleScrollEvent.bind(this);
-        this.handleWindowResizeEvent = this.handleWindowResizeEvent.bind(this);
-        this.handleTrackVerticalMousedownEvent = this.handleTrackVerticalMousedownEvent.bind(this);
-        this.handleTrackHorizontalMousedownEvent = this.handleTrackHorizontalMousedownEvent.bind(this);
-        this.handleThumbVerticalMousedownEvent = this.handleThumbVerticalMousedownEvent.bind(this);
-        this.handleThumbHorizontalMousedownEvent = this.handleThumbHorizontalMousedownEvent.bind(this);
-        this.handleDragStart = this.handleDragStart.bind(this);
-        this.handleDragEnd = this.handleDragEnd.bind(this);
-        this.handleDragEvent = this.handleDragEvent.bind(this);
-    }
-
     /**
      * Return the vertical scroll position
      *
@@ -214,7 +196,7 @@ export default class Scrollbar extends Component
     /**
      * @return {Scrollbar}
      */
-    addListeners() {
+    addListeners = () => {
         if (!isset(document) || !this.content) { return this; }
 
         const {content, trackVertical, trackHorizontal, thumbVertical, thumbHorizontal} = this;
@@ -249,12 +231,12 @@ export default class Scrollbar extends Component
         }
 
         return this;
-    }
+    };
 
     /**
      * @return {Scrollbar}
      */
-    removeListeners() {
+    removeListeners = () => {
         if (!isset(document) || !this.content) { return this; }
 
         const {content, trackVertical, trackHorizontal, thumbVertical, thumbHorizontal} = this;
@@ -267,7 +249,7 @@ export default class Scrollbar extends Component
         thumbHorizontal.removeEventListener("mousedown", this.handleThumbHorizontalMousedownEvent);
 
         return this;
-    }
+    };
 
     /**
      * Scrol to the top border
@@ -320,15 +302,15 @@ export default class Scrollbar extends Component
     //==============//
     //   handlers   //
     //==============//
-    handleScrollEvent(e) {
+    handleScrollEvent = (e) => {
         this.update((values) => {
             if (isFunction(this.props.onScroll)) { this.props.onScroll({...values, event: e}); }
         });
 
         this.scrollDetect();
-    }
+    };
 
-    scrollDetect() {
+    scrollDetect = () => {
         if (this.scrolling) { return; }
 
         this.scrolling = true;
@@ -346,31 +328,31 @@ export default class Scrollbar extends Component
             this.scrollDetect.lastScrollTop = this.content.scrollTop;
             this.scrollDetect.lastScrollLeft = this.content.scrollLeft;
         }, this.props.scrollDetectionThreshold);
-    }
+    };
 
-    handleWindowResizeEvent() {
+    handleWindowResizeEvent = () => {
         this.update();
-    }
+    };
 
-    handleTrackVerticalMousedownEvent(e) {
+    handleTrackVerticalMousedownEvent = (e) => {
         if (e.which !== 1) {return;}
         e.preventDefault();
 
         const offset = Math.abs(e.target.getBoundingClientRect().top - e.clientY) - this.thumbVertical.clientHeight / 2;
 
         this.content.scrollTop = this.computeScrollTopForThumbOffset(offset);
-    }
+    };
 
-    handleTrackHorizontalMousedownEvent(e) {
+    handleTrackHorizontalMousedownEvent = (e) => {
         if (e.which !== 1) {return;}
         e.preventDefault();
 
         const offset = Math.abs(e.target.getBoundingClientRect().left - e.clientX) - this.thumbHorizontal.clientWidth / 2;
 
         this.content.scrollLeft = this.computeScrollLeftForThumbOffset(offset);
-    }
+    };
 
-    handleThumbVerticalMousedownEvent(e) {
+    handleThumbVerticalMousedownEvent = (e) => {
         if (e.which !== 1) {return;}
         e.preventDefault();
         e.stopImmediatePropagation();
@@ -380,9 +362,9 @@ export default class Scrollbar extends Component
         const {target, clientY} = e;
         this.dragPrevPageY = target.clientHeight - (clientY - target.getBoundingClientRect().top);
         this.thumbVertical.classList.add("dragging");
-    }
+    };
 
-    handleThumbHorizontalMousedownEvent(e) {
+    handleThumbHorizontalMousedownEvent = (e) => {
         if (e.which !== 1) {return;}
         e.preventDefault();
         e.stopImmediatePropagation();
@@ -392,9 +374,9 @@ export default class Scrollbar extends Component
         const {target, clientX} = e;
         this.dragPrevPageX = target.clientWidth - (clientX - target.getBoundingClientRect().left);
         this.thumbHorizontal.classList.add("dragging");
-    }
+    };
 
-    handleDragStart() {
+    handleDragStart = () => {
         this.drag = true;
         this.scrollDetect();
 
@@ -403,9 +385,9 @@ export default class Scrollbar extends Component
 
         document.body.style.userSelect = "none";
         document.onselectstart = () => false;
-    }
+    };
 
-    handleDragEnd() {
+    handleDragEnd = () => {
         this.drag = false;
         this.dragPrevPageX = this.dragPrevPageY = 0;
 
@@ -417,9 +399,9 @@ export default class Scrollbar extends Component
 
         this.thumbHorizontal.classList.remove("dragging");
         this.thumbVertical.classList.remove("dragging");
-    }
+    };
 
-    handleDragEvent(e) {
+    handleDragEvent = (e) => {
         if (this.dragPrevPageX) {
             const offset = -this.trackHorizontal.getBoundingClientRect().left + e.clientX - (this.thumbHorizontal.clientWidth - this.dragPrevPageX);
             this.content.scrollLeft = this.computeScrollLeftForThumbOffset(offset);
@@ -428,7 +410,7 @@ export default class Scrollbar extends Component
             const offset = -this.trackVertical.getBoundingClientRect().top + e.clientY - (this.thumbVertical.clientHeight - this.dragPrevPageY);
             this.content.scrollTop = this.computeScrollTopForThumbOffset(offset);
         }
-    }
+    };
 
     //================//
     //   assistance   //

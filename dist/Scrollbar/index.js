@@ -45,39 +45,195 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var Scrollbar = function (_Component) {
     _inherits(Scrollbar, _Component);
 
-    //==============//
-    //   bindings   //
-    //==============//
-    function Scrollbar(props) {
+    function Scrollbar() {
         var _ref;
+
+        var _temp, _this, _ret;
 
         _classCallCheck(this, Scrollbar);
 
-        for (var _len = arguments.length, rest = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-            rest[_key - 1] = arguments[_key];
+        for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+            args[_key] = arguments[_key];
         }
 
-        // event handlers has to be hard binded to current instance
-        var _this = _possibleConstructorReturn(this, (_ref = Scrollbar.__proto__ || Object.getPrototypeOf(Scrollbar)).call.apply(_ref, [this, props].concat(rest)));
+        return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Scrollbar.__proto__ || Object.getPrototypeOf(Scrollbar)).call.apply(_ref, [this].concat(args))), _this), _this.addListeners = function () {
+            if (!(0, _utilities.isset)(document) || !_this.content) {
+                return _this;
+            }
 
-        _this.handleScrollEvent = _this.handleScrollEvent.bind(_this);
-        _this.handleWindowResizeEvent = _this.handleWindowResizeEvent.bind(_this);
-        _this.handleTrackVerticalMousedownEvent = _this.handleTrackVerticalMousedownEvent.bind(_this);
-        _this.handleTrackHorizontalMousedownEvent = _this.handleTrackHorizontalMousedownEvent.bind(_this);
-        _this.handleThumbVerticalMousedownEvent = _this.handleThumbVerticalMousedownEvent.bind(_this);
-        _this.handleThumbHorizontalMousedownEvent = _this.handleThumbHorizontalMousedownEvent.bind(_this);
-        _this.handleDragStart = _this.handleDragStart.bind(_this);
-        _this.handleDragEnd = _this.handleDragEnd.bind(_this);
-        _this.handleDragEvent = _this.handleDragEvent.bind(_this);
-        return _this;
+            var _this2 = _this,
+                content = _this2.content,
+                trackVertical = _this2.trackVertical,
+                trackHorizontal = _this2.trackHorizontal,
+                thumbVertical = _this2.thumbVertical,
+                thumbHorizontal = _this2.thumbHorizontal;
+            var _this$props = _this.props,
+                noScroll = _this$props.noScroll,
+                scrollY = _this$props.scrollY,
+                scrollX = _this$props.scrollX;
+
+
+            if (noScroll) {
+                _this.removeListeners();
+
+                return _this;
+            } else {
+                window.addEventListener("resize", _this.handleWindowResizeEvent, { passive: true });
+                content.addEventListener("scroll", _this.handleScrollEvent, { passive: true });
+            }
+
+            if (scrollY) {
+                trackVertical.addEventListener("mousedown", _this.handleTrackVerticalMousedownEvent);
+                thumbVertical.addEventListener("mousedown", _this.handleThumbVerticalMousedownEvent);
+            } else {
+                trackVertical.removeEventListener("mousedown", _this.handleTrackVerticalMousedownEvent);
+                thumbVertical.removeEventListener("mousedown", _this.handleThumbVerticalMousedownEvent);
+            }
+
+            if (scrollX) {
+                trackHorizontal.addEventListener("mousedown", _this.handleTrackHorizontalMousedownEvent);
+                thumbHorizontal.addEventListener("mousedown", _this.handleThumbHorizontalMousedownEvent);
+            } else {
+                trackHorizontal.removeEventListener("mousedown", _this.handleTrackHorizontalMousedownEvent);
+                thumbHorizontal.removeEventListener("mousedown", _this.handleThumbHorizontalMousedownEvent);
+            }
+
+            return _this;
+        }, _this.removeListeners = function () {
+            if (!(0, _utilities.isset)(document) || !_this.content) {
+                return _this;
+            }
+
+            var _this3 = _this,
+                content = _this3.content,
+                trackVertical = _this3.trackVertical,
+                trackHorizontal = _this3.trackHorizontal,
+                thumbVertical = _this3.thumbVertical,
+                thumbHorizontal = _this3.thumbHorizontal;
+
+
+            window.removeEventListener("resize", _this.handleWindowResizeEvent);
+            content.removeEventListener("scroll", _this.handleScrollEvent);
+            trackVertical.removeEventListener("mousedown", _this.handleTrackVerticalMousedownEvent);
+            trackHorizontal.removeEventListener("mousedown", _this.handleTrackHorizontalMousedownEvent);
+            thumbVertical.removeEventListener("mousedown", _this.handleThumbVerticalMousedownEvent);
+            thumbHorizontal.removeEventListener("mousedown", _this.handleThumbHorizontalMousedownEvent);
+
+            return _this;
+        }, _this.handleScrollEvent = function (e) {
+            _this.update(function (values) {
+                if ((0, _utilities.isFunction)(_this.props.onScroll)) {
+                    _this.props.onScroll(_extends({}, values, { event: e }));
+                }
+            });
+
+            _this.scrollDetect();
+        }, _this.scrollDetect = function () {
+            if (_this.scrolling) {
+                return;
+            }
+
+            _this.scrolling = true;
+
+            if ((0, _utilities.isFunction)(_this.props.onScrollStart)) {
+                _this.props.onScrollStart(_this.getScrollValues());
+            }
+
+            _this.scrollDetect.interval = setInterval(function () {
+                if (_this.scrollDetect.lastScrollTop === _this.content.scrollTop && _this.scrollDetect.lastScrollLeft === _this.content.scrollLeft && !_this.drag) {
+                    clearInterval(_this.scrollDetect.interval);
+                    _this.scrolling = false;
+
+                    if ((0, _utilities.isFunction)(_this.props.onScrollStop)) {
+                        _this.props.onScrollStop(_this.getScrollValues());
+                    }
+                }
+
+                _this.scrollDetect.lastScrollTop = _this.content.scrollTop;
+                _this.scrollDetect.lastScrollLeft = _this.content.scrollLeft;
+            }, _this.props.scrollDetectionThreshold);
+        }, _this.handleWindowResizeEvent = function () {
+            _this.update();
+        }, _this.handleTrackVerticalMousedownEvent = function (e) {
+            if (e.which !== 1) {
+                return;
+            }
+            e.preventDefault();
+
+            var offset = Math.abs(e.target.getBoundingClientRect().top - e.clientY) - _this.thumbVertical.clientHeight / 2;
+
+            _this.content.scrollTop = _this.computeScrollTopForThumbOffset(offset);
+        }, _this.handleTrackHorizontalMousedownEvent = function (e) {
+            if (e.which !== 1) {
+                return;
+            }
+            e.preventDefault();
+
+            var offset = Math.abs(e.target.getBoundingClientRect().left - e.clientX) - _this.thumbHorizontal.clientWidth / 2;
+
+            _this.content.scrollLeft = _this.computeScrollLeftForThumbOffset(offset);
+        }, _this.handleThumbVerticalMousedownEvent = function (e) {
+            if (e.which !== 1) {
+                return;
+            }
+            e.preventDefault();
+            e.stopImmediatePropagation();
+
+            _this.handleDragStart();
+
+            var target = e.target,
+                clientY = e.clientY;
+
+            _this.dragPrevPageY = target.clientHeight - (clientY - target.getBoundingClientRect().top);
+            _this.thumbVertical.classList.add("dragging");
+        }, _this.handleThumbHorizontalMousedownEvent = function (e) {
+            if (e.which !== 1) {
+                return;
+            }
+            e.preventDefault();
+            e.stopImmediatePropagation();
+
+            _this.handleDragStart();
+
+            var target = e.target,
+                clientX = e.clientX;
+
+            _this.dragPrevPageX = target.clientWidth - (clientX - target.getBoundingClientRect().left);
+            _this.thumbHorizontal.classList.add("dragging");
+        }, _this.handleDragStart = function () {
+            _this.drag = true;
+            _this.scrollDetect();
+
+            document.addEventListener("mousemove", _this.handleDragEvent);
+            document.addEventListener("mouseup", _this.handleDragEnd);
+
+            document.body.style.userSelect = "none";
+            document.onselectstart = function () {
+                return false;
+            };
+        }, _this.handleDragEnd = function () {
+            _this.drag = false;
+            _this.dragPrevPageX = _this.dragPrevPageY = 0;
+
+            document.removeEventListener("mousemove", _this.handleDragEvent);
+            document.removeEventListener("mouseup", _this.handleDragEnd);
+
+            document.body.style.userSelect = null;
+            delete document.onselectstart;
+
+            _this.thumbHorizontal.classList.remove("dragging");
+            _this.thumbVertical.classList.remove("dragging");
+        }, _this.handleDragEvent = function (e) {
+            if (_this.dragPrevPageX) {
+                var offset = -_this.trackHorizontal.getBoundingClientRect().left + e.clientX - (_this.thumbHorizontal.clientWidth - _this.dragPrevPageX);
+                _this.content.scrollLeft = _this.computeScrollLeftForThumbOffset(offset);
+            }
+            if (_this.dragPrevPageY) {
+                var _offset = -_this.trackVertical.getBoundingClientRect().top + e.clientY - (_this.thumbVertical.clientHeight - _this.dragPrevPageY);
+                _this.content.scrollTop = _this.computeScrollTopForThumbOffset(_offset);
+            }
+        }, _temp), _possibleConstructorReturn(_this, _ret);
     }
-
-    /**
-     * Return the vertical scroll position
-     *
-     * @return {number}
-     */
-
 
     _createClass(Scrollbar, [{
         key: "componentWillUnmount",
@@ -141,88 +297,20 @@ var Scrollbar = function (_Component) {
          * @return {Scrollbar}
          */
 
-    }, {
-        key: "addListeners",
-        value: function addListeners() {
-            if (!(0, _utilities.isset)(document) || !this.content) {
-                return this;
-            }
-
-            var content = this.content,
-                trackVertical = this.trackVertical,
-                trackHorizontal = this.trackHorizontal,
-                thumbVertical = this.thumbVertical,
-                thumbHorizontal = this.thumbHorizontal;
-            var _props = this.props,
-                noScroll = _props.noScroll,
-                scrollY = _props.scrollY,
-                scrollX = _props.scrollX;
-
-
-            if (noScroll) {
-                this.removeListeners();
-
-                return this;
-            } else {
-                window.addEventListener("resize", this.handleWindowResizeEvent, { passive: true });
-                content.addEventListener("scroll", this.handleScrollEvent, { passive: true });
-            }
-
-            if (scrollY) {
-                trackVertical.addEventListener("mousedown", this.handleTrackVerticalMousedownEvent);
-                thumbVertical.addEventListener("mousedown", this.handleThumbVerticalMousedownEvent);
-            } else {
-                trackVertical.removeEventListener("mousedown", this.handleTrackVerticalMousedownEvent);
-                thumbVertical.removeEventListener("mousedown", this.handleThumbVerticalMousedownEvent);
-            }
-
-            if (scrollX) {
-                trackHorizontal.addEventListener("mousedown", this.handleTrackHorizontalMousedownEvent);
-                thumbHorizontal.addEventListener("mousedown", this.handleThumbHorizontalMousedownEvent);
-            } else {
-                trackHorizontal.removeEventListener("mousedown", this.handleTrackHorizontalMousedownEvent);
-                thumbHorizontal.removeEventListener("mousedown", this.handleThumbHorizontalMousedownEvent);
-            }
-
-            return this;
-        }
 
         /**
          * @return {Scrollbar}
          */
 
     }, {
-        key: "removeListeners",
-        value: function removeListeners() {
-            if (!(0, _utilities.isset)(document) || !this.content) {
-                return this;
-            }
+        key: "scrollToTop",
 
-            var content = this.content,
-                trackVertical = this.trackVertical,
-                trackHorizontal = this.trackHorizontal,
-                thumbVertical = this.thumbVertical,
-                thumbHorizontal = this.thumbHorizontal;
-
-
-            window.removeEventListener("resize", this.handleWindowResizeEvent);
-            content.removeEventListener("scroll", this.handleScrollEvent);
-            trackVertical.removeEventListener("mousedown", this.handleTrackVerticalMousedownEvent);
-            trackHorizontal.removeEventListener("mousedown", this.handleTrackHorizontalMousedownEvent);
-            thumbVertical.removeEventListener("mousedown", this.handleThumbVerticalMousedownEvent);
-            thumbHorizontal.removeEventListener("mousedown", this.handleThumbHorizontalMousedownEvent);
-
-            return this;
-        }
 
         /**
          * Scrol to the top border
          *
          * @return {Scrollbar}
          */
-
-    }, {
-        key: "scrollToTop",
         value: function scrollToTop() {
             if (!this.content) {
                 return this;
@@ -288,151 +376,8 @@ var Scrollbar = function (_Component) {
         //==============//
 
     }, {
-        key: "handleScrollEvent",
-        value: function handleScrollEvent(e) {
-            var _this2 = this;
+        key: "raf",
 
-            this.update(function (values) {
-                if ((0, _utilities.isFunction)(_this2.props.onScroll)) {
-                    _this2.props.onScroll(_extends({}, values, { event: e }));
-                }
-            });
-
-            this.scrollDetect();
-        }
-    }, {
-        key: "scrollDetect",
-        value: function scrollDetect() {
-            var _this3 = this;
-
-            if (this.scrolling) {
-                return;
-            }
-
-            this.scrolling = true;
-
-            if ((0, _utilities.isFunction)(this.props.onScrollStart)) {
-                this.props.onScrollStart(this.getScrollValues());
-            }
-
-            this.scrollDetect.interval = setInterval(function () {
-                if (_this3.scrollDetect.lastScrollTop === _this3.content.scrollTop && _this3.scrollDetect.lastScrollLeft === _this3.content.scrollLeft && !_this3.drag) {
-                    clearInterval(_this3.scrollDetect.interval);
-                    _this3.scrolling = false;
-
-                    if ((0, _utilities.isFunction)(_this3.props.onScrollStop)) {
-                        _this3.props.onScrollStop(_this3.getScrollValues());
-                    }
-                }
-
-                _this3.scrollDetect.lastScrollTop = _this3.content.scrollTop;
-                _this3.scrollDetect.lastScrollLeft = _this3.content.scrollLeft;
-            }, this.props.scrollDetectionThreshold);
-        }
-    }, {
-        key: "handleWindowResizeEvent",
-        value: function handleWindowResizeEvent() {
-            this.update();
-        }
-    }, {
-        key: "handleTrackVerticalMousedownEvent",
-        value: function handleTrackVerticalMousedownEvent(e) {
-            if (e.which !== 1) {
-                return;
-            }
-            e.preventDefault();
-
-            var offset = Math.abs(e.target.getBoundingClientRect().top - e.clientY) - this.thumbVertical.clientHeight / 2;
-
-            this.content.scrollTop = this.computeScrollTopForThumbOffset(offset);
-        }
-    }, {
-        key: "handleTrackHorizontalMousedownEvent",
-        value: function handleTrackHorizontalMousedownEvent(e) {
-            if (e.which !== 1) {
-                return;
-            }
-            e.preventDefault();
-
-            var offset = Math.abs(e.target.getBoundingClientRect().left - e.clientX) - this.thumbHorizontal.clientWidth / 2;
-
-            this.content.scrollLeft = this.computeScrollLeftForThumbOffset(offset);
-        }
-    }, {
-        key: "handleThumbVerticalMousedownEvent",
-        value: function handleThumbVerticalMousedownEvent(e) {
-            if (e.which !== 1) {
-                return;
-            }
-            e.preventDefault();
-            e.stopImmediatePropagation();
-
-            this.handleDragStart();
-
-            var target = e.target,
-                clientY = e.clientY;
-
-            this.dragPrevPageY = target.clientHeight - (clientY - target.getBoundingClientRect().top);
-            this.thumbVertical.classList.add("dragging");
-        }
-    }, {
-        key: "handleThumbHorizontalMousedownEvent",
-        value: function handleThumbHorizontalMousedownEvent(e) {
-            if (e.which !== 1) {
-                return;
-            }
-            e.preventDefault();
-            e.stopImmediatePropagation();
-
-            this.handleDragStart();
-
-            var target = e.target,
-                clientX = e.clientX;
-
-            this.dragPrevPageX = target.clientWidth - (clientX - target.getBoundingClientRect().left);
-            this.thumbHorizontal.classList.add("dragging");
-        }
-    }, {
-        key: "handleDragStart",
-        value: function handleDragStart() {
-            this.drag = true;
-            this.scrollDetect();
-
-            document.addEventListener("mousemove", this.handleDragEvent);
-            document.addEventListener("mouseup", this.handleDragEnd);
-
-            document.body.style.userSelect = "none";
-            document.onselectstart = function () {
-                return false;
-            };
-        }
-    }, {
-        key: "handleDragEnd",
-        value: function handleDragEnd() {
-            this.drag = false;
-            this.dragPrevPageX = this.dragPrevPageY = 0;
-
-            document.removeEventListener("mousemove", this.handleDragEvent);
-            document.removeEventListener("mouseup", this.handleDragEnd);
-
-            document.body.style.userSelect = null;
-            delete document.onselectstart;
-
-            this.thumbHorizontal.classList.remove("dragging");
-            this.thumbVertical.classList.remove("dragging");
-        }
-    }, {
-        key: "handleDragEvent",
-        value: function handleDragEvent(e) {
-            if (this.dragPrevPageX) {
-                var offset = -this.trackHorizontal.getBoundingClientRect().left + e.clientX - (this.thumbHorizontal.clientWidth - this.dragPrevPageX);
-                this.content.scrollLeft = this.computeScrollLeftForThumbOffset(offset);
-            }
-            if (this.dragPrevPageY) {
-                var _offset = -this.trackVertical.getBoundingClientRect().top + e.clientY - (this.thumbVertical.clientHeight - this.dragPrevPageY);
-                this.content.scrollTop = this.computeScrollTopForThumbOffset(_offset);
-            }
-        }
 
         //================//
         //   assistance   //
@@ -443,9 +388,6 @@ var Scrollbar = function (_Component) {
          * @param cb {function|undefined} Function to call in requested frame
          * @return {Scrollbar}
          */
-
-    }, {
-        key: "raf",
         value: function raf(cb) {
             var _this4 = this;
 
@@ -737,34 +679,34 @@ var Scrollbar = function (_Component) {
         value: function render() {
             var _this7 = this;
 
-            var _props2 = this.props,
-                style = _props2.style,
-                thumbSizeMin = _props2.thumbSizeMin,
-                defaultStyles = _props2.defaultStyles,
-                scrollDetectionThreshold = _props2.scrollDetectionThreshold,
-                permanentScrollbars = _props2.permanentScrollbars,
-                permanentScrollbarVertical = _props2.permanentScrollbarVertical,
-                permanentScrollbarHorizontal = _props2.permanentScrollbarHorizontal,
-                contentSizeTrack = _props2.contentSizeTrack,
-                contentSizeTrackInterval = _props2.contentSizeTrackInterval,
-                noScroll = _props2.noScroll,
-                scrollX = _props2.scrollX,
-                scrollY = _props2.scrollY,
-                gridless = _props2.gridless,
-                tagName = _props2.tagName,
-                className = _props2.className,
-                children = _props2.children,
-                renderWrapper = _props2.renderWrapper,
-                renderContent = _props2.renderContent,
-                renderTrackVertical = _props2.renderTrackVertical,
-                renderTrackHorizontal = _props2.renderTrackHorizontal,
-                renderThumbVertical = _props2.renderThumbVertical,
-                renderThumbHorizontal = _props2.renderThumbHorizontal,
-                onUpdate = _props2.onUpdate,
-                onScroll = _props2.onScroll,
-                onScrollStart = _props2.onScrollStart,
-                onScrollStop = _props2.onScrollStop,
-                props = _objectWithoutProperties(_props2, ["style", "thumbSizeMin", "defaultStyles", "scrollDetectionThreshold", "permanentScrollbars", "permanentScrollbarVertical", "permanentScrollbarHorizontal", "contentSizeTrack", "contentSizeTrackInterval", "noScroll", "scrollX", "scrollY", "gridless", "tagName", "className", "children", "renderWrapper", "renderContent", "renderTrackVertical", "renderTrackHorizontal", "renderThumbVertical", "renderThumbHorizontal", "onUpdate", "onScroll", "onScrollStart", "onScrollStop"]);
+            var _props = this.props,
+                style = _props.style,
+                thumbSizeMin = _props.thumbSizeMin,
+                defaultStyles = _props.defaultStyles,
+                scrollDetectionThreshold = _props.scrollDetectionThreshold,
+                permanentScrollbars = _props.permanentScrollbars,
+                permanentScrollbarVertical = _props.permanentScrollbarVertical,
+                permanentScrollbarHorizontal = _props.permanentScrollbarHorizontal,
+                contentSizeTrack = _props.contentSizeTrack,
+                contentSizeTrackInterval = _props.contentSizeTrackInterval,
+                noScroll = _props.noScroll,
+                scrollX = _props.scrollX,
+                scrollY = _props.scrollY,
+                gridless = _props.gridless,
+                tagName = _props.tagName,
+                className = _props.className,
+                children = _props.children,
+                renderWrapper = _props.renderWrapper,
+                renderContent = _props.renderContent,
+                renderTrackVertical = _props.renderTrackVertical,
+                renderTrackHorizontal = _props.renderTrackHorizontal,
+                renderThumbVertical = _props.renderThumbVertical,
+                renderThumbHorizontal = _props.renderThumbHorizontal,
+                onUpdate = _props.onUpdate,
+                onScroll = _props.onScroll,
+                onScrollStart = _props.onScrollStart,
+                onScrollStop = _props.onScrollStop,
+                props = _objectWithoutProperties(_props, ["style", "thumbSizeMin", "defaultStyles", "scrollDetectionThreshold", "permanentScrollbars", "permanentScrollbarVertical", "permanentScrollbarHorizontal", "contentSizeTrack", "contentSizeTrackInterval", "noScroll", "scrollX", "scrollY", "gridless", "tagName", "className", "children", "renderWrapper", "renderContent", "renderTrackVertical", "renderTrackHorizontal", "renderThumbVertical", "renderThumbHorizontal", "onUpdate", "onScroll", "onScrollStart", "onScrollStop"]);
 
             var browserScrollbarWidth = (0, _utilities.getScrollbarWidth)();
 
@@ -870,6 +812,13 @@ var Scrollbar = function (_Component) {
         }
     }, {
         key: "scrollTop",
+
+
+        /**
+         * Return the vertical scroll position
+         *
+         * @return {number}
+         */
         get: function get() {
             if (!this.content) {
                 return 0;

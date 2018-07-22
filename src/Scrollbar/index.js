@@ -85,6 +85,7 @@ export default class Scrollbar extends Component
         if (!this.content) { return; }
 
         this.content.scrollTop = top;
+        this.update();
     }
 
     /**
@@ -107,6 +108,7 @@ export default class Scrollbar extends Component
         if (!this.content) { return; }
 
         this.content.scrollLeft = left;
+        this.update();
     }
 
     /**

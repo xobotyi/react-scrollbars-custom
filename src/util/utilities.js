@@ -23,12 +23,12 @@ let scrollbarWidth;
  * @return {number}
  */
 export function getScrollbarWidth() {
-    if (isset(scrollbarWidth)) {
-        return scrollbarWidth;
+    if (!isset(document)) {
+        return 0;
     }
 
-    if (!isset(document)) {
-        return scrollbarWidth = 0;
+    if (isset(scrollbarWidth)) {
+        return scrollbarWidth;
     }
 
     let el = document.createElement("div");

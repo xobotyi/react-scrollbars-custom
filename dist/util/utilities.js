@@ -31,12 +31,12 @@ var scrollbarWidth = void 0;
  * @return {number}
  */
 function getScrollbarWidth() {
-    if (isset(scrollbarWidth)) {
-        return scrollbarWidth;
+    if (!isset(document)) {
+        return 0;
     }
 
-    if (!isset(document)) {
-        return scrollbarWidth = 0;
+    if (isset(scrollbarWidth)) {
+        return scrollbarWidth;
     }
 
     var el = document.createElement("div");

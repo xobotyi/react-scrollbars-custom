@@ -27,6 +27,7 @@ describe("utilities", () => {
 
                expect(sbWidth === 17 || sbWidth === 15).toBeTruthy();
            });
+
         it("second run must take previously calculated value (just for coverage)",
            () => {
                const sbWidth = getScrollbarWidth();

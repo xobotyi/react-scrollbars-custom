@@ -2,25 +2,15 @@ const path = require('path');
 const webpack = require('webpack');
 const widthCoverage = process.env.COVERAGE === 'true';
 
-let coverageRules     = [],
-    coverageReporters = [];
+let coverageReporters = [];
 
 if (widthCoverage) {
-    coverageRules.push({
-                           test:    /\.js$|\.jsx$/,
-                           enforce: 'post',
-                           use:     {
-                               loader:  'istanbul-instrumenter-loader',
-                               options: {esModules: true},
-                           },
-                           exclude: /node_modules|\.spec\.js$/,
-                       });
     coverageReporters.push('coverage-istanbul');
 }
 
 module.exports = function karmaConfig(config) {
     config.set({
-                   browsers:                 ['ChromeHeadless'],
+                   browsers:                 ['Chrome'],
                    singleRun:                true,
                    frameworks:               ['mocha'],
                    files:                    ['./test.js'],
@@ -37,31 +27,39 @@ module.exports = function karmaConfig(config) {
                        },
                        module:      {
                            rules: [
-                                      {
-                                          test:    /\.js$/,
-                                          exclude: /(node_modules)/,
-                                          use:     {
-                                              loader:  'babel-loader',
-                                              options: {
-                                                  sourceMaps:     false,
-                                                  comments:       false,
-                                                  cacheDirectory: false,
-                                                  presets:        [
-                                                      "stage-0",
-                                                      "react",
-                                                      [
-                                                          "env",
-                                                          {
-                                                              "targets": {
-                                                                  "chrome": 58,
-                                                              },
-                                                          },
-                                                      ],
-                                                  ],
-                                              },
-                                          },
-                                      },
-                                  ].concat(coverageRules),
+                               {
+                                   test:    /\.js$/,
+                                   exclude: /(node_modules)/,
+                                   use:     {
+                                       loader:  'babel-loader',
+                                       options: {
+                                           sourceMaps:     false,
+                                           comments:       false,
+                                           cacheDirectory: false,
+                                           presets:        [
+                                               "stage-0",
+                                               "react",
+                                               [
+                                                   "env",
+                                                   {
+                                                       "targets": {
+                                                           "chrome": 58,
+                                                       },
+                                                   },
+                                               ],
+                                           ],
+                                           plugins:        [
+                                               [
+                                                   "istanbul",
+                                                   {
+                                                       exclude: /node_modules|\.spec\.js$/,
+                                                   },
+                                               ],
+                                           ],
+                                       },
+                                   },
+                               },
+                           ],
                        },
                    },
                    coverageIstanbulReporter: {

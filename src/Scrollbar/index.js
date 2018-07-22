@@ -691,7 +691,7 @@ export default class Scrollbar extends Component
                 holderClassName.push(className);
             }
             else {
-                holderClassName.concat(className);
+                holderClassName.push(...className);
             }
         }
 

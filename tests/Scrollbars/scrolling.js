@@ -1,10 +1,13 @@
+import expect                             from "expect";
 import React                              from "react";
 import { render, unmountComponentAtNode } from "react-dom";
 import { Scrollbar }                      from "react-scrollbars-custom";
+import sinon                              from "sinon";
 
 export default function createTests(scrollbarWidth) {
     describe("scrolling", () => {
         let node;
+
         beforeEach(() => {
             node = document.createElement("div");
             document.body.appendChild(node);
@@ -15,8 +18,25 @@ export default function createTests(scrollbarWidth) {
         });
 
         describe("when scrolling vertically", function () {
+            it("should not trigger a rerender", (done) => {
+                render(<Scrollbar style={ {width: 100, height: 100} } gridless>
+                            <div style={ {width: 200, height: 200} }></div>
+                        </Scrollbar>,
+                        node,
+                        function () {
+                            const updateSpy = sinon.spy(Scrollbar.prototype, 'update');
+                            const renderSpy = sinon.spy(Scrollbar.prototype, 'render');
+
+                            this.scrollTop = 50;
+
+                            expect(updateSpy.callCount).toBe(1);
+                            expect(renderSpy.callCount).toBe(0);
+                            done();
+                        });
+            });
+
             it("onScroll should be called", (done) => {
-                const spy = chai.spy();
+                const spy = sinon.spy();
                 render(<Scrollbar style={ {width: 100, height: 100} } onScroll={ spy } gridless>
                             <div style={ {width: 200, height: 200} }></div>
                         </Scrollbar>,
@@ -24,14 +44,14 @@ export default function createTests(scrollbarWidth) {
                         function () {
                             this.scrollTop = 50;
                             setTimeout(() => {
-                                spy.should.have.been.called.once;
+                                expect(spy.callCount).toBe(1);
                                 done();
                             }, 50);
                         });
             });
 
             it("onScrollStart should be called once", (done) => {
-                const spy = chai.spy();
+                const spy = sinon.spy();
                 render(<Scrollbar style={ {width: 100, height: 100} } onScrollStart={ spy } gridless>
                             <div style={ {width: 200, height: 200} }></div>
                         </Scrollbar>,
@@ -43,7 +63,7 @@ export default function createTests(scrollbarWidth) {
 
                                 if (this.scrollTop >= 10) {
                                     clearInterval(interval);
-                                    spy.should.have.been.called.once;
+                                    expect(spy.callCount).toBe(1);
                                     done();
                                 }
                             }, 5);
@@ -51,7 +71,7 @@ export default function createTests(scrollbarWidth) {
             });
 
             it("onScrollStop should be called once ", (done) => {
-                const spy = chai.spy();
+                const spy = sinon.spy();
                 render(<Scrollbar style={ {width: 100, height: 100} } onScrollStop={ spy } scrollDetectionThreshold={ 50 } gridless>
                             <div style={ {width: 200, height: 200} }></div>
                         </Scrollbar>,
@@ -65,7 +85,7 @@ export default function createTests(scrollbarWidth) {
                                     clearInterval(interval);
 
                                     setTimeout(() => {
-                                        spy.should.have.been.called.once;
+                                        expect(spy.callCount).toBe(1);
                                         done();
                                     }, 75);
                                 }
@@ -76,7 +96,7 @@ export default function createTests(scrollbarWidth) {
 
         describe("when scrolling horizontally", function () {
             it("onScroll should be called", (done) => {
-                const spy = chai.spy();
+                const spy = sinon.spy();
                 render(<Scrollbar style={ {width: 100, height: 100} } onScroll={ spy } gridless>
                             <div style={ {width: 200, height: 200} }></div>
                         </Scrollbar>,
@@ -84,14 +104,14 @@ export default function createTests(scrollbarWidth) {
                         function () {
                             this.scrollLeft = 50;
                             setTimeout(() => {
-                                spy.should.have.been.called.once;
+                                expect(spy.callCount).toBe(1);
                                 done();
                             }, 50);
                         });
             });
 
             it("onScrollStart should be called once", (done) => {
-                const spy = chai.spy();
+                const spy = sinon.spy();
                 render(<Scrollbar style={ {width: 100, height: 100} } onScrollStart={ spy } gridless>
                             <div style={ {width: 200, height: 200} }></div>
                         </Scrollbar>,
@@ -103,7 +123,7 @@ export default function createTests(scrollbarWidth) {
 
                                 if (this.scrollLeft >= 10) {
                                     clearInterval(interval);
-                                    spy.should.have.been.called.once;
+                                    expect(spy.callCount).toBe(1);
                                     done();
                                 }
                             }, 5);
@@ -111,7 +131,7 @@ export default function createTests(scrollbarWidth) {
             });
 
             it("onScrollStop should be called once ", (done) => {
-                const spy = chai.spy();
+                const spy = sinon.spy();
                 render(<Scrollbar style={ {width: 100, height: 100} } onScrollStop={ spy } scrollDetectionThreshold={ 50 } gridless>
                             <div style={ {width: 200, height: 200} }></div>
                         </Scrollbar>,
@@ -125,7 +145,7 @@ export default function createTests(scrollbarWidth) {
                                     clearInterval(interval);
 
                                     setTimeout(() => {
-                                        spy.should.have.been.called.once;
+                                        expect(spy.callCount).toBe(1);
                                         done();
                                     }, 75);
                                 }

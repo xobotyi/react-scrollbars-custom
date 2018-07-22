@@ -1,6 +1,6 @@
-import {getScrollbarWidth} from "./../src/util/utilities";
-import createTests from "./Scrollbars";
+import { getScrollbarWidth } from "./../src/util/utilities";
+import createTests           from "./Scrollbars";
 
-describe("on desktop browser", ()=>{
+describe("on desktop browser", () => {
     createTests(getScrollbarWidth());
 });

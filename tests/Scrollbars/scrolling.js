@@ -31,6 +31,9 @@ export default function createTests(scrollbarWidth) {
 
                             expect(updateSpy.callCount).toBe(1);
                             expect(renderSpy.callCount).toBe(0);
+
+                            updateSpy.restore();
+                            renderSpy.restore();
                             done();
                         });
             });
@@ -45,6 +48,16 @@ export default function createTests(scrollbarWidth) {
                             this.scrollTop = 50;
                             setTimeout(() => {
                                 expect(spy.callCount).toBe(1);
+                                expect(spy.getCall(0).args[0]).toMatchObject({
+                                                                                 left:         0,
+                                                                                 top:          0.5,
+                                                                                 scrollLeft:   0,
+                                                                                 scrollTop:    50,
+                                                                                 scrollHeight: 200,
+                                                                                 scrollWidth:  200,
+                                                                                 clientWidth:  100,
+                                                                                 clientHeight: 100,
+                                                                             });
                                 done();
                             }, 50);
                         });
@@ -95,6 +108,26 @@ export default function createTests(scrollbarWidth) {
         });
 
         describe("when scrolling horizontally", function () {
+            it("should not trigger a rerender", (done) => {
+                render(<Scrollbar style={ {width: 100, height: 100} } gridless>
+                            <div style={ {width: 200, height: 200} }></div>
+                        </Scrollbar>,
+                        node,
+                        function () {
+                            const updateSpy = sinon.spy(Scrollbar.prototype, 'update');
+                            const renderSpy = sinon.spy(Scrollbar.prototype, 'render');
+
+                            this.scrollTop = 50;
+
+                            expect(updateSpy.callCount).toBe(1);
+                            expect(renderSpy.callCount).toBe(0);
+
+                            updateSpy.restore();
+                            renderSpy.restore();
+                            done();
+                        });
+            });
+
             it("onScroll should be called", (done) => {
                 const spy = sinon.spy();
                 render(<Scrollbar style={ {width: 100, height: 100} } onScroll={ spy } gridless>
@@ -105,6 +138,16 @@ export default function createTests(scrollbarWidth) {
                             this.scrollLeft = 50;
                             setTimeout(() => {
                                 expect(spy.callCount).toBe(1);
+                                expect(spy.getCall(0).args[0]).toMatchObject({
+                                                                                 top:          0,
+                                                                                 left:         0.5,
+                                                                                 scrollTop:    0,
+                                                                                 scrollLeft:   50,
+                                                                                 scrollHeight: 200,
+                                                                                 scrollWidth:  200,
+                                                                                 clientWidth:  100,
+                                                                                 clientHeight: 100,
+                                                                             });
                                 done();
                             }, 50);
                         });

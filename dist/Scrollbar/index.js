@@ -840,6 +840,7 @@ var Scrollbar = function (_Component) {
             }
 
             this.content.scrollTop = top;
+            this.update();
         }
 
         /**
@@ -870,6 +871,7 @@ var Scrollbar = function (_Component) {
             }
 
             this.content.scrollLeft = left;
+            this.update();
         }
 
         /**

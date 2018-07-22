@@ -1,7 +1,7 @@
-import expect                                          from "expect";
-import React                                           from "react";
-import { findDOMNode, render, unmountComponentAtNode } from "react-dom";
-import { Scrollbar }                                   from "react-scrollbars-custom";
+import expect                             from "expect";
+import React                              from "react";
+import { render, unmountComponentAtNode } from "react-dom";
+import { Scrollbar }                      from "react-scrollbars-custom";
 
 export default function createTests(scrollbarWidth) {
     describe("rendering", () => {
@@ -93,8 +93,87 @@ export default function createTests(scrollbarWidth) {
                 render(<Scrollbar tagName="label" />,
                         node,
                         function () {
-                            expect(findDOMNode(this).tagName.toLowerCase()).toBe("label");
+                            expect(this.holder.tagName.toLowerCase()).toBe("label");
 
+                            done();
+                        });
+            });
+        });
+        describe("when using custom classname", () => {
+            it("should apply if it is string", (done) => {
+                render(<Scrollbar className="myAwesomeClassName" />,
+                        node,
+                        function () {
+                            expect(this.holder.classList.contains('myAwesomeClassName')).toBeTruthy();
+
+                            done();
+                        });
+            });
+            it("should apply if it is an array", (done) => {
+                render(<Scrollbar className={ ['awesome', 'classname'] } />,
+                        node,
+                        function () {
+                            expect(this.holder.classList.contains('awesome')).toBeTruthy();
+                            expect(this.holder.classList.contains('classname')).toBeTruthy();
+
+                            done();
+                        });
+            });
+        });
+
+        describe("when defining gridless", () => {
+            it("should use non gridless styles", (done) => {
+                render(<Scrollbar gridless />,
+                        node,
+                        function () {
+                            expect(this.holder.style.display).not.toBe("grid");
+                            expect(this.holder.style.gridTemplateColumns).not.toBe("1fr min-content");
+                            expect(this.holder.style.gridTemplateRows).not.toBe("1fr min-content");
+
+                            done();
+                        });
+            });
+        });
+
+        describe("when disabling default styles", () => {
+            it("holder should has no styles", (done) => {
+                render(<Scrollbar defaultStyles={ false } />,
+                        node,
+                        function () {
+                            expect(this.holder.getAttribute('style')).toBe(null);
+                            done();
+                        });
+            });
+            it("tracks should has no styles", (done) => {
+                render(<Scrollbar defaultStyles={ false } />,
+                        node,
+                        function () {
+                            expect(this.trackVertical.getAttribute('style')).toBe(null);
+                            expect(this.trackHorizontal.getAttribute('style')).toBe(null);
+                            done();
+                        });
+            });
+            it("wrapper should has position relative and overflow hidden", (done) => {
+                render(<Scrollbar defaultStyles={ false } />,
+                        node,
+                        function () {
+                            expect(this.wrapper.style.position).toBe("relative");
+                            expect(this.wrapper.style.overflow).toBe("hidden");
+                            done();
+                        });
+            });
+            it("content should still has default styles", (done) => {
+                render(<Scrollbar defaultStyles={ false } />,
+                        node,
+                        function () {
+                            expect(this.content.style.position).toBe("absolute");
+                            expect(this.content.style.top).toBe(0 + 'px');
+                            expect(this.content.style.bottom).toBe(0 + 'px');
+                            expect(this.content.style.left).toBe(0 + 'px');
+                            expect(this.content.style.right).toBe(0 + 'px');
+                            expect(this.content.style.overflow).toBe("scroll");
+                            expect(this.content.style.marginRight).toBe(-scrollbarWidth + 'px');
+                            expect(this.content.style.marginBottom).toBe(-scrollbarWidth + 'px');
                             done();
                         });
             });
@@ -105,8 +184,8 @@ export default function createTests(scrollbarWidth) {
                 render(<Scrollbar style={ {maxWidth: "100%"} } />,
                         node,
                         function () {
-                            expect(findDOMNode(this).style.maxWidth).toBe("100%");
-                            expect(findDOMNode(this).style.display).toBe("grid");
+                            expect(this.holder.style.maxWidth).toBe("100%");
+                            expect(this.holder.style.display).toBe("grid");
 
                             done();
                         });

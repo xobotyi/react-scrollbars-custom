@@ -10,7 +10,7 @@ if (widthCoverage) {
 
 module.exports = function karmaConfig(config) {
     config.set({
-                   browsers:                 ['Chrome'],
+                   browsers:                 ['ChromeHeadless'],
                    singleRun:                true,
                    frameworks:               ['mocha'],
                    files:                    ['./test.js'],

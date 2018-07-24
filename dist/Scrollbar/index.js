@@ -215,7 +215,8 @@ var Scrollbar = function (_Component) {
             };
         }, _this.handleDragEnd = function () {
             _this.drag = false;
-            _this.dragPrevPageX = _this.dragPrevPageY = 0;
+            _this.dragPrevPageX = undefined;
+            _this.dragPrevPageY = undefined;
 
             document.removeEventListener("mousemove", _this.handleDragEvent);
             document.removeEventListener("mouseup", _this.handleDragEnd);
@@ -226,13 +227,17 @@ var Scrollbar = function (_Component) {
             _this.thumbHorizontal.classList.remove("dragging");
             _this.thumbVertical.classList.remove("dragging");
         }, _this.handleDragEvent = function (e) {
-            if (_this.dragPrevPageX) {
-                var offset = -_this.trackHorizontal.getBoundingClientRect().left + e.clientX - (_this.thumbHorizontal.clientWidth - _this.dragPrevPageX);
-                _this.content.scrollLeft = _this.computeScrollLeftForThumbOffset(offset);
+            if (!_this.drag) {
+                return;
             }
-            if (_this.dragPrevPageY) {
-                var _offset = -_this.trackVertical.getBoundingClientRect().top + e.clientY - (_this.thumbVertical.clientHeight - _this.dragPrevPageY);
-                _this.content.scrollTop = _this.computeScrollTopForThumbOffset(_offset);
+
+            if (_this.dragPrevPageY !== undefined) {
+                var offset = -_this.trackVertical.getBoundingClientRect().top + e.clientY - (_this.thumbVertical.clientHeight - _this.dragPrevPageY);
+                _this.content.scrollTop = _this.computeScrollTopForThumbOffset(offset);
+            }
+            if (_this.dragPrevPageX !== undefined) {
+                var _offset = -_this.trackHorizontal.getBoundingClientRect().left + e.clientX - (_this.thumbHorizontal.clientWidth - _this.dragPrevPageX);
+                _this.content.scrollLeft = _this.computeScrollLeftForThumbOffset(_offset);
             }
         }, _temp), _possibleConstructorReturn(_this, _ret);
     }
@@ -263,7 +268,18 @@ var Scrollbar = function (_Component) {
         }
     }, {
         key: "componentDidUpdate",
-        value: function componentDidUpdate() {
+        value: function componentDidUpdate(prevProps) {
+            if (prevProps.contentSizeTrack !== this.props.contentSizeTrack) {
+                if (prevProps.contentSizeTrack) {
+                    this.contentSizeTrackStop();
+                } else {
+                    this.contentSizeTrackStart();
+                }
+            } else if (this.props.contentSizeTrack && this.props.contentSizeTrackInterval !== prevProps.contentSizeTrackInterval) {
+                this.contentSizeTrackStop();
+                this.contentSizeTrackStart();
+            }
+
             this.update();
 
             var _content = this.content,
@@ -279,20 +295,6 @@ var Scrollbar = function (_Component) {
             this.contentSizeTrackPreviousSize = { scrollHeight: scrollHeight, scrollWidth: scrollWidth, clientHeight: clientHeight, clientWidth: clientWidth };
 
             this.addListeners();
-        }
-    }, {
-        key: "componentWillUpdate",
-        value: function componentWillUpdate(nextProps) {
-            if (nextProps.contentSizeTrack !== this.props.contentSizeTrack) {
-                if (nextProps.contentSizeTrack) {
-                    this.contentSizeTrackStart();
-                } else {
-                    this.contentSizeTrackStop();
-                }
-            } else if (nextProps.contentSizeTrack && nextProps.contentSizeTrackInterval !== this.props.contentSizeTrackInterval) {
-                this.contentSizeTrackStop();
-                this.contentSizeTrackStart();
-            }
         }
 
         /**

@@ -535,8 +535,8 @@ export default class Scrollbar extends Component
         const scrollValues = this.getScrollValues();
         const {scrollLeft, scrollTop, clientWidth, scrollWidth, clientHeight, scrollHeight} = scrollValues;
 
-        const verticalScrollPossible   = scrollHeight >= clientHeight && !this.props.noScroll && this.props.scrollY,
-              horizontalScrollPossible = scrollWidth >= clientWidth && !this.props.noScroll && this.props.scrollX;
+        const verticalScrollPossible   = scrollHeight > clientHeight && !this.props.noScroll && this.props.scrollY,
+              horizontalScrollPossible = scrollWidth > clientWidth && !this.props.noScroll && this.props.scrollX;
 
         const oldVerticalTrackDisplay   = this.trackVertical.style.display,
               oldHorizontalTrackDisplay = this.trackHorizontal.style.display;

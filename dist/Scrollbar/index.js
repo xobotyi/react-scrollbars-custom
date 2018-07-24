@@ -562,8 +562,8 @@ var Scrollbar = function (_Component) {
                 scrollHeight = scrollValues.scrollHeight;
 
 
-            var verticalScrollPossible = scrollHeight >= clientHeight && !this.props.noScroll && this.props.scrollY,
-                horizontalScrollPossible = scrollWidth >= clientWidth && !this.props.noScroll && this.props.scrollX;
+            var verticalScrollPossible = scrollHeight > clientHeight && !this.props.noScroll && this.props.scrollY,
+                horizontalScrollPossible = scrollWidth > clientWidth && !this.props.noScroll && this.props.scrollX;
 
             var oldVerticalTrackDisplay = this.trackVertical.style.display,
                 oldHorizontalTrackDisplay = this.trackHorizontal.style.display;

@@ -601,8 +601,8 @@ var Scrollbar = function (_Component) {
             this.thumbHorizontal.style.transform = "translateX(" + thumbHorizontalOffset + "px)";
             this.thumbHorizontal.style.width = thumbHorizontalWidth + "px";
 
-            if ((0, _utilities.isFunction)(this.refs.onUpdate)) {
-                this.refs.onUpdate(scrollValues);
+            if ((0, _utilities.isFunction)(this.props.onUpdate)) {
+                this.props.onUpdate(scrollValues);
             }
             if ((0, _utilities.isFunction)(cb)) {
                 cb(scrollValues);

@@ -575,8 +575,8 @@ export default class Scrollbar extends Component
         this.thumbHorizontal.style.transform = `translateX(${thumbHorizontalOffset}px)`;
         this.thumbHorizontal.style.width = thumbHorizontalWidth + "px";
 
-        if (isFunction(this.refs.onUpdate)) {
-            this.refs.onUpdate(scrollValues);
+        if (isFunction(this.props.onUpdate)) {
+            this.props.onUpdate(scrollValues);
         }
         if (isFunction(cb)) {
             cb(scrollValues);

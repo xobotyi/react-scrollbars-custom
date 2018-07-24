@@ -63,6 +63,31 @@ export default function createTests(scrollbarWidth) {
                         });
             });
 
+            it("onUpdate should be called", (done) => {
+                const spy = sinon.spy();
+                render(<Scrollbar style={ {width: 100, height: 100} } onUpdate={ spy } gridless>
+                            <div style={ {width: 200, height: 200} }></div>
+                        </Scrollbar>,
+                        node,
+                        function () {
+                            this.scrollTop = 50;
+                            setTimeout(() => {
+                                expect(spy.callCount).toBe(1);
+                                expect(spy.getCall(0).args[0]).toMatchObject({
+                                                                                 left:         0,
+                                                                                 top:          0.5,
+                                                                                 scrollLeft:   0,
+                                                                                 scrollTop:    50,
+                                                                                 scrollHeight: 200,
+                                                                                 scrollWidth:  200,
+                                                                                 clientWidth:  100,
+                                                                                 clientHeight: 100,
+                                                                             });
+                                done();
+                            }, 50);
+                        });
+            });
+
             it("onScrollStart should be called once", (done) => {
                 const spy = sinon.spy();
                 render(<Scrollbar style={ {width: 100, height: 100} } onScrollStart={ spy } gridless>
@@ -131,6 +156,30 @@ export default function createTests(scrollbarWidth) {
             it("onScroll should be called", (done) => {
                 const spy = sinon.spy();
                 render(<Scrollbar style={ {width: 100, height: 100} } onScroll={ spy } gridless>
+                            <div style={ {width: 200, height: 200} }></div>
+                        </Scrollbar>,
+                        node,
+                        function () {
+                            this.scrollLeft = 50;
+                            setTimeout(() => {
+                                expect(spy.callCount).toBe(1);
+                                expect(spy.getCall(0).args[0]).toMatchObject({
+                                                                                 top:          0,
+                                                                                 left:         0.5,
+                                                                                 scrollTop:    0,
+                                                                                 scrollLeft:   50,
+                                                                                 scrollHeight: 200,
+                                                                                 scrollWidth:  200,
+                                                                                 clientWidth:  100,
+                                                                                 clientHeight: 100,
+                                                                             });
+                                done();
+                            }, 50);
+                        });
+            });
+            it("onUpdate should be called", (done) => {
+                const spy = sinon.spy();
+                render(<Scrollbar style={ {width: 100, height: 100} } onUpdate={ spy } gridless>
                             <div style={ {width: 200, height: 200} }></div>
                         </Scrollbar>,
                         node,

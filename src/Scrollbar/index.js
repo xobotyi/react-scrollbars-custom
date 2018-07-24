@@ -171,28 +171,26 @@ export default class Scrollbar extends Component
         }
     }
 
-    componentDidUpdate() {
+    componentDidUpdate(prevProps) {
+        if (prevProps.contentSizeTrack !== this.props.contentSizeTrack) {
+            if (prevProps.contentSizeTrack) {
+                this.contentSizeTrackStop();
+            }
+            else {
+                this.contentSizeTrackStart();
+            }
+        }
+        else if (this.props.contentSizeTrack && this.props.contentSizeTrackInterval !== prevProps.contentSizeTrackInterval) {
+            this.contentSizeTrackStop();
+            this.contentSizeTrackStart();
+        }
+
         this.update();
 
         const {scrollHeight = 0, scrollWidth = 0, clientHeight = 0, clientWidth = 0} = this.content;
         this.contentSizeTrackPreviousSize = {scrollHeight, scrollWidth, clientHeight, clientWidth};
 
         this.addListeners();
-    }
-
-    componentWillUpdate(nextProps) {
-        if (nextProps.contentSizeTrack !== this.props.contentSizeTrack) {
-            if (nextProps.contentSizeTrack) {
-                this.contentSizeTrackStart();
-            }
-            else {
-                this.contentSizeTrackStop();
-            }
-        }
-        else if (nextProps.contentSizeTrack && nextProps.contentSizeTrackInterval !== this.props.contentSizeTrackInterval) {
-            this.contentSizeTrackStop();
-            this.contentSizeTrackStart();
-        }
     }
 
     /**
@@ -391,7 +389,8 @@ export default class Scrollbar extends Component
 
     handleDragEnd = () => {
         this.drag = false;
-        this.dragPrevPageX = this.dragPrevPageY = 0;
+        this.dragPrevPageX = undefined;
+        this.dragPrevPageY = undefined;
 
         document.removeEventListener("mousemove", this.handleDragEvent);
         document.removeEventListener("mouseup", this.handleDragEnd);
@@ -404,13 +403,15 @@ export default class Scrollbar extends Component
     };
 
     handleDragEvent = (e) => {
-        if (this.dragPrevPageX) {
-            const offset = -this.trackHorizontal.getBoundingClientRect().left + e.clientX - (this.thumbHorizontal.clientWidth - this.dragPrevPageX);
-            this.content.scrollLeft = this.computeScrollLeftForThumbOffset(offset);
-        }
-        if (this.dragPrevPageY) {
+        if (!this.drag) {return;}
+
+        if (this.dragPrevPageY !== undefined) {
             const offset = -this.trackVertical.getBoundingClientRect().top + e.clientY - (this.thumbVertical.clientHeight - this.dragPrevPageY);
             this.content.scrollTop = this.computeScrollTopForThumbOffset(offset);
+        }
+        if (this.dragPrevPageX !== undefined) {
+            const offset = -this.trackHorizontal.getBoundingClientRect().left + e.clientX - (this.thumbHorizontal.clientWidth - this.dragPrevPageX);
+            this.content.scrollLeft = this.computeScrollLeftForThumbOffset(offset);
         }
     };
 

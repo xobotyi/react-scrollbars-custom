@@ -59,7 +59,7 @@ export default function createTests(scrollbarWidth) {
                                                                                  clientHeight: 100,
                                                                              });
                                 done();
-                            }, 50);
+                            }, 100);
                         });
             });
 
@@ -84,7 +84,7 @@ export default function createTests(scrollbarWidth) {
                                                                                  clientHeight: 100,
                                                                              });
                                 done();
-                            }, 50);
+                            }, 100);
                         });
             });
 
@@ -125,7 +125,7 @@ export default function createTests(scrollbarWidth) {
                                     setTimeout(() => {
                                         expect(spy.callCount).toBe(1);
                                         done();
-                                    }, 75);
+                                    }, 100);
                                 }
                             }, 5);
                         });
@@ -174,7 +174,7 @@ export default function createTests(scrollbarWidth) {
                                                                                  clientHeight: 100,
                                                                              });
                                 done();
-                            }, 50);
+                            }, 100);
                         });
             });
             it("onUpdate should be called", (done) => {
@@ -198,7 +198,7 @@ export default function createTests(scrollbarWidth) {
                                                                                  clientHeight: 100,
                                                                              });
                                 done();
-                            }, 50);
+                            }, 100);
                         });
             });
 
@@ -239,7 +239,7 @@ export default function createTests(scrollbarWidth) {
                                     setTimeout(() => {
                                         expect(spy.callCount).toBe(1);
                                         done();
-                                    }, 75);
+                                    }, 100);
                                 }
                             }, 5);
                         });

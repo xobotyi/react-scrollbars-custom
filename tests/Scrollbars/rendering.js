@@ -69,7 +69,7 @@ export default function createTests(scrollbarWidth) {
                                 expect(this.thumbHorizontal.style.width).toBe("43px");
 
                                 done();
-                            }, 50);
+                            }, 100);
                         });
             });
             it("thumbs size should not be less than `thumbSizeMin`", (done) => {
@@ -83,7 +83,7 @@ export default function createTests(scrollbarWidth) {
                                 expect(this.thumbHorizontal.style.width).toBe("50px");
 
                                 done();
-                            }, 50);
+                            }, 100);
                         });
             });
         });
@@ -204,7 +204,7 @@ export default function createTests(scrollbarWidth) {
                                 expect(this.trackHorizontal.style.display).toBe("none");
 
                                 done();
-                            }, 50);
+                            }, 100);
                         });
             });
 
@@ -219,7 +219,7 @@ export default function createTests(scrollbarWidth) {
                                 expect(this.trackHorizontal.style.display).not.toBe("none");
 
                                 done();
-                            }, 50);
+                            }, 100);
                         });
             });
 
@@ -233,7 +233,7 @@ export default function createTests(scrollbarWidth) {
                                 expect(this.trackVertical.style.display).not.toBe("none");
 
                                 done();
-                            }, 50);
+                            }, 100);
                         });
             });
 
@@ -247,7 +247,7 @@ export default function createTests(scrollbarWidth) {
                                 expect(this.trackHorizontal.style.display).not.toBe("none");
 
                                 done();
-                            }, 50);
+                            }, 100);
                         });
             });
         });
@@ -268,13 +268,32 @@ export default function createTests(scrollbarWidth) {
                                 expect(this.content.style.marginBottom).not.toBe("");
 
                                 done();
-                            }, 50);
+                            }, 100);
+                        });
+            });
+        });
+
+        describe("vertical track should be displayed without thumb", () => {
+            it("if `scrollY={false}` and `permanentScrollbarVertical={true}` are passed", (done) => {
+                render(<Scrollbar style={ {width: 100, height: 100} } scrollY={ false } permanentScrollbarVertical>
+                            <div style={ {width: 200, height: 200} }></div>
+                        </Scrollbar>,
+                        node,
+                        function () {
+                            setTimeout(() => {
+                                expect(this.trackVertical.style.display).toBe("");
+                                expect(this.thumbVertical.style.display).toBe("none");
+                                expect(this.content.style.overflowY).toBe("hidden");
+                                expect(this.content.style.marginRight).toBe("");
+
+                                done();
+                            }, 100);
                         });
             });
         });
 
         describe("only horizontal scroll should be blocked", () => {
-            it("if scrollX={false} is passed", (done) => {
+            it("if `scrollX={false}` is passed", (done) => {
                 render(<Scrollbar style={ {width: 100, height: 100} } scrollX={ false }>
                             <div style={ {width: 200, height: 200} }></div>
                         </Scrollbar>,
@@ -289,13 +308,33 @@ export default function createTests(scrollbarWidth) {
                                 expect(this.content.style.marginBottom).toBe("");
 
                                 done();
-                            }, 50);
+                            }, 100);
+                        });
+            });
+
+        });
+
+        describe("horizontal track should be displayed without thumb", () => {
+            it("if `scrollX={false}` and `permanentScrollbarHorizontal={true}` are passed", (done) => {
+                render(<Scrollbar style={ {width: 100, height: 100} } scrollX={ false } permanentScrollbarHorizontal>
+                            <div style={ {width: 200, height: 200} }></div>
+                        </Scrollbar>,
+                        node,
+                        function () {
+                            setTimeout(() => {
+                                expect(this.trackHorizontal.style.display).toBe("");
+                                expect(this.thumbHorizontal.style.display).toBe("none");
+                                expect(this.content.style.overflowX).toBe("hidden");
+                                expect(this.content.style.marginBottom).toBe("");
+
+                                done();
+                            }, 100);
                         });
             });
         });
 
         describe("both scrolls should be blocked", () => {
-            it("or no noScroll is passed", (done) => {
+            it("or no `noScroll` is passed", (done) => {
                 render(<Scrollbar style={ {width: 100, height: 100} } noScroll>
                             <div style={ {width: 200, height: 200} }></div>
                         </Scrollbar>,
@@ -311,7 +350,31 @@ export default function createTests(scrollbarWidth) {
                                 expect(this.content.style.marginRight).toBe("");
 
                                 done();
-                            }, 50);
+                            }, 100);
+                        });
+            });
+
+        });
+        describe("both tracks should be displayed withut thumb", () => {
+            it("if `noScroll` and `permanentScrollbars={true}`", (done) => {
+                render(<Scrollbar style={ {width: 100, height: 100} } noScroll permanentScrollbars>
+                            <div style={ {width: 200, height: 200} }></div>
+                        </Scrollbar>,
+                        node,
+                        function () {
+                            setTimeout(() => {
+                                expect(this.trackHorizontal.style.display).toBe("");
+                                expect(this.trackVertical.style.display).toBe("");
+                                expect(this.thumbHorizontal.style.display).toBe("none");
+                                expect(this.thumbVertical.style.display).toBe("none");
+                                expect(this.content.style.overflowX).toBe("hidden");
+                                expect(this.content.style.overflowY).toBe("hidden");
+                                expect(this.content.style.overflow).toBe("hidden");
+                                expect(this.content.style.marginBottom).toBe("");
+                                expect(this.content.style.marginRight).toBe("");
+
+                                done();
+                            }, 100);
                         });
             });
         });

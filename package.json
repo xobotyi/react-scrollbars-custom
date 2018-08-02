@@ -69,7 +69,7 @@
     "test:watch": "cross-env NODE_ENV=test karma start --auto-watch --no-single-run",
     "test:coverage": "cross-env NODE_ENV=test COVERAGE=true karma start --single-run",
     "push-codacy-coverage": "cat ./coverage/lcov.info | codacy-coverage -p .",
-    "build": "rimraf lib && babel src -d dist",
+    "build": "rimraf dist && babel src -d dist",
     "prepublishOnly": "npm test && npm run build"
   }
 }

@@ -12,11 +12,12 @@
     <a href="https://xobotyi.github.io/react-scrollbars-custom/">DEMO</a> · <a href="https://github.com/xobotyi/react-scrollbars-custom/tree/master/docs">DOCUMENTATION</a>
 </p>
 
+* Native browser scrolling
+* Native scrollbars on mobile devices
 * Fully customizable
 * `requestAnimationFrame` for 60fps
 * No extra stylesheets necessary
 * Cross-browser
-* Native scrollbars on mobile devices
 
 >**IMPORTANT:** default component styles uses [grid layout](https://developer.mozilla.org/docs/Web/CSS/CSS_Grid_Layout/Basic_Concepts_of_Grid_Layout) for proper scrollbars display.  
 >But you can change it by passing `gridless` parameter on initialisation. 

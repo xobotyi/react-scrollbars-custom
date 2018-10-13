@@ -22,7 +22,7 @@
     "custom"
   ],
   "dependencies": {
-    "prop-types": "^15.0.0"
+    "raf": "^3.4.0"
   },
   "peerDependencies": {
     "react": "^0.14.0 || ^15.0.0 || ^16.0.0",
@@ -44,6 +44,7 @@
     "node-sass": "^4.9.3",
     "react": "^16.5.2",
     "react-dom": "^16.5.2",
+    "prop-types": "^15.0.0",
     "sass-loader": "^7.1.0",
     "webpack": "^4.20.2",
     "webpack-cli": "^3.1.2",

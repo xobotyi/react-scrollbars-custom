@@ -1,12 +1,239 @@
 // reset default styles;
 * {
-    vertical-align: baseline;
-    font-weight:    inherit;
-    font-family:    inherit;
-    font-style:     inherit;
-    font-size:      100%;
-    border:         0 none;
-    outline:        0;
-    padding:        0;
-    margin:         0;
+    font-weight: inherit;
+    font-family: inherit;
+    font-style:  inherit;
+    font-size:   100%;
+    border:      0 none;
+    outline:     0;
+    padding:     0;
+    margin:      0;
+}
+
+@import url('https://fonts.googleapis.com/css?family=Roboto:400,400i,500,700');
+
+html, body {
+    height: 100%;
+}
+
+html {
+    font-size:   8px;
+    font-family: "Roboto", sans-serif;
+}
+
+body {
+    display:        flex;
+    flex-direction: column;
+    font-size:      2rem;
+    position:       relative;
+    width:          100vw;
+    height:         100%;
+    background:     #202028;
+}
+
+#AppRoot {
+    position:  relative;
+    flex-grow: 1;
+    width:     100%;
+    height:    100%;
+    color:     #FFFFFF;
+    max-width: 1400px;
+    margin:    0 auto;
+
+    & > .ScrollbarsCustom-holder {
+        position: relative;
+        display:  flex;
+        width:    100%;
+        height:   100%;
+
+        & > .ScrollbarsCustom-wrapper {
+            width:  100%;
+            height: 100%;
+
+            & > .AppContent {
+                display:        flex;
+                flex-direction: column;
+            }
+        }
+
+        & > .ScrollbarsCustom-track {
+            display:       block;
+            position:      relative;
+            height:        calc(100% - 2rem);
+            width:         1rem;
+            margin:        1rem .5rem;
+            background:    rgba(255, 255, 255, .05);
+            border-radius: 1rem;
+
+            & > .ScrollbarsCustom-thumb {
+                width:         100%;
+                background:    rgba(255, 255, 255, .2);
+                cursor:        pointer;
+                border-radius: 1rem;
+                box-shadow:    0 0 0 .5rem #202028;
+            }
+        }
+    }
+}
+
+#AppHead {
+    display:       flex;
+    align-content: center;
+    align-items:   center;
+    margin:        1.5rem 2rem;
+    flex-grow:     0;
+    flex-shrink:   0;
+
+    h1 {
+        font-size: 3rem;
+        flex-grow: 1;
+    }
+
+    a {
+        font-size: 4rem;
+        color:     #AAAAAE;
+        cursor:    pointer;
+
+        &:hover {
+            color: #FFFFFF;
+        }
+    }
+
+    @media (min-width: 961px) {
+        margin: 2rem 3rem;
+
+        h1 {
+            font-size: 4rem;
+        }
+
+        a {
+            font-size: 6rem;
+        }
+    }
+}
+
+#AppBody {
+    flex-grow:   0;
+    flex-shrink: 0;
+    position:    relative;
+    display:     flex;
+    padding:     0 0 0 .5rem;
+    flex-wrap:   wrap;
+    box-sizing:  border-box;
+
+    & > .block {
+        display:        flex;
+        flex-direction: column;
+        width:          100%;
+        height:         300px;
+        background:     rgba(255, 255, 255, .07);
+        padding:        1.5rem 1rem 1.5rem 2rem;
+        flex-grow:      0;
+        margin:         1rem;
+        box-sizing:     border-box;
+        border-radius:  .25rem;
+
+        @media (min-width: 961px) {
+            width:   calc(50% - 2rem);
+            height:  400px;
+            padding: 2rem 1.5rem 2rem 2.5rem;
+        }
+
+        & > .title, & > .description {
+            position: relative;
+            width:    100%;
+        }
+
+        & > .title {
+            text-transform: uppercase;
+            font-size:      2rem;
+            font-weight:    500;
+            color:          #FFFFFF;
+        }
+
+        & > .description {
+            font-size: 1.75rem;
+            margin:    .5rem 0 0;
+
+            @media (min-width: 961px) {
+                margin: 1rem 0 0;
+            }
+
+            &:empty {
+                display: none;
+            }
+        }
+
+        & > .content {
+            position:  relative;
+            flex-grow: 1;
+            margin:    .5rem 0 0;
+            padding:   .5rem 0 0;
+
+            @media (min-width: 961px) {
+                margin:  1rem 0 0;
+                padding: 1rem 0 0;
+            }
+
+            &:before {
+                content:    "";
+                display:    block;
+                position:   absolute;
+                top:        0;
+                left:       0;
+                width:      100%;
+                height:     1px;
+                background: rgba(255, 255, 255, .05);
+            }
+
+            .ScrollbarsCustom-content {
+                font-size: 1.5rem;
+                color:     #AAAAAE;
+
+                @media (min-width: 961px) {
+                    font-size: 1.75rem;
+                }
+
+                p {
+                    margin:     1rem 1.5rem 0 0;
+                    box-sizing: border-box;
+                }
+            }
+        }
+    }
+}
+
+#AppFooter {
+    display:        flex;
+    flex-direction: column;
+    width:          100%;
+    align-items:    center;
+    margin:         2rem 0;
+    flex-grow:      0;
+    flex-shrink:    0;
+
+    .projectLink, .authorLink {
+        cursor:          pointer;
+        text-decoration: none;
+
+        &:hover {
+            color:           #FFFFFF;
+            text-decoration: underline;
+        }
+    }
+
+    .projectLink {
+        text-transform: uppercase;
+        font-weight:    500;
+    }
+    .projectLink, .projectLink:active {
+        color: #B6B6B7;
+    }
+
+    .authorLink {
+        margin: .5rem 0 0;
+    }
+    .authorLink, .authorLink:active {
+        color: #636369;
+    }
 }

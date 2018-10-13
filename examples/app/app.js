@@ -1,11 +1,9 @@
 import React      from 'react';
 import { render } from 'react-dom';
 
-import DefaultScrollbars from "./components/DefaultScrollbars";
+import App from "./components/App";
 
 render(
-        [
-            <DefaultScrollbars key="default" />,
-        ],
+        <App />,
         document.getElementById('AppRoot'),
 );

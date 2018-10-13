@@ -1,7 +1,7 @@
 import PropTypes                         from "prop-types";
 import React                             from "react";
 import { getInnerHeight, getInnerWidth } from "./util/getInnerSizes";
-import { LoopController }                from "./util/LoopController";
+import LoopController                    from "./util/LoopController";
 import { getScrollbarWidth, isset }      from "./util/utilities";
 
 function divRenderer(props) {
@@ -11,10 +11,10 @@ function divRenderer(props) {
 const defaultElementsStyles = {
     holder:          {
         position: "relative",
-        flex:     1,
+        display:  "flex",
     },
     wrapper:         {
-        minHeight: "100%",
+        flexGrow: 1,
     },
     content:         {
         position: "absolute",
@@ -115,11 +115,172 @@ export default class Scrollbar extends React.Component
         this.addListeners();
     }
 
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if (prevProps.noScroll !== this.props.noScroll || prevProps.noScrollY !== this.props.noScrollY || prevProps.noScrollX !== this.props.noScrollX
+            || prevProps.permanentScrollbars !== this.props.permanentScrollbars || prevProps.permanentScrollbarX !== this.props.permanentScrollbarX || prevProps.permanentScrollbarY !== this.props.permanentScrollbarY) {
+            this.update(true);
+        }
+    }
+
     componentWillUnmount() {
         LoopController.unregisterScrollbar(this);
 
         this.handleDragEnd();
         this.removeListeners();
+    }
+
+    /**
+     * Return the vertical scroll position
+     *
+     * @return {number}
+     */
+    get scrollTop() {
+        if (!this.content) { return 0; }
+
+        return this.content.scrollTop;
+    }
+
+    /**
+     * Set the vertical scroll to given amount of pixels
+     *
+     * @param top {number} Pixels amount
+     */
+    set scrollTop(top) {
+        if (!this.content) { return; }
+
+        this.content.scrollTop = top;
+        this.update();
+    }
+
+    /**
+     * Return the horizontal scroll position
+     *
+     * @return {number}
+     */
+    get scrollLeft() {
+        if (!this.content) { return 0; }
+
+        return this.content.scrollLeft;
+    }
+
+    /**
+     * Set the horizontal scroll to given amount of pixels
+     *
+     * @param left {number} Pixels amount
+     */
+    set scrollLeft(left) {
+        if (!this.content) { return; }
+
+        this.content.scrollLeft = left;
+        this.update();
+    }
+
+    /**
+     * @return {number}
+     */
+    get scrollHeight() {
+        if (!this.content) { return 0; }
+
+        return this.content.scrollHeight;
+    }
+
+    /**
+     * @return {number}
+     */
+    get scrollWidth() {
+        if (!this.content) { return 0; }
+        return this.content.scrollWidth;
+    }
+
+    /**
+     * @return {number}
+     */
+    get clientHeight() {
+        if (!this.content) { return 0; }
+
+        return this.content.clientHeight;
+    }
+
+    /**
+     * @return {number}
+     */
+    get clientWidth() {
+        if (!this.content) { return 0; }
+
+        return this.content.clientWidth;
+    }
+
+    /**
+     * Scrol to the top border
+     *
+     * @return {Scrollbar}
+     */
+    scrollToTop() {
+        if (!this.content) { return this; }
+        this.content.scrollTop = 0;
+
+        return this;
+    }
+
+    /**
+     * Scroll to the bottom border
+     *
+     * @return {Scrollbar}
+     */
+    scrollToBottom() {
+        if (!this.content) { return this; }
+        this.content.scrollTop = this.content.scrollHeight;
+
+        return this;
+    }
+
+    /**
+     * Scrolls to the left border
+     *
+     * @return {Scrollbar}
+     */
+    scrollToLeft() {
+        if (!this.content) { return this; }
+        this.content.scrollLeft = 0;
+
+        return this;
+    }
+
+    /**
+     * Scroll to the right border
+     *
+     * @return {Scrollbar}
+     */
+    scrollToRight() {
+        if (!this.content) { return this; }
+        this.content.scrollLeft = this.content.scrollWidth;
+
+        return this;
+    }
+
+    /**
+     * @typedef {Object} ScrollValues
+     * @property {number} scrollTop Scroll value from top n pixels
+     * @property {number} scrollLeft Scroll value from left n pixels
+     * @property {number} scrollHeight Full height of content
+     * @property {number} scrollWidth Full width of content
+     * @property {number} clientHeight Height of scroll viewport
+     * @property {number} clientWidth Width of scroll viewport
+     */
+    /**
+     * Return current scroll values
+     *
+     * @return {ScrollValues}
+     */
+    get scrollValues() {
+        return {
+            scrollTop:    this.content.scrollTop,
+            scrollLeft:   this.content.scrollLeft,
+            scrollHeight: this.content.scrollHeight,
+            scrollWidth:  this.content.scrollWidth,
+            clientHeight: this.content.clientHeight,
+            clientWidth:  this.content.clientWidth,
+        };
     }
 
     /**
@@ -182,7 +343,7 @@ export default class Scrollbar extends React.Component
 
         this.scrolling = true;
 
-        if (this.props.onScrollStart) { this.props.onScrollStart(); }
+        if (this.props.onScrollStart) { this.props.onScrollStart(this); }
 
         this.scrollDetect.interval = setInterval(
                 () => {
@@ -190,7 +351,7 @@ export default class Scrollbar extends React.Component
                         clearInterval(this.scrollDetect.interval);
                         this.scrolling = false;
 
-                        if (this.props.onScrollStop) { this.props.onScrollStop(); }
+                        if (this.props.onScrollStop) { this.props.onScrollStop(this); }
                     }
 
                     this.scrollDetect.lastScrollTop = this.content.scrollTop;
@@ -355,15 +516,6 @@ export default class Scrollbar extends React.Component
             return;
         }
 
-        this.previousScrollValues = {
-            scrollTop:    this.content.scrollTop,
-            scrollLeft:   this.content.scrollLeft,
-            scrollHeight: this.content.scrollHeight,
-            scrollWidth:  this.content.scrollWidth,
-            clientHeight: this.content.clientHeight,
-            clientWidth:  this.content.clientWidth,
-        };
-
         const verticalScrollPossible   = this.content.scrollHeight > this.content.clientHeight && !this.props.noScroll && !this.props.noScrollY,
               horizontalScrollPossible = this.content.scrollWidth > this.content.clientWidth && !this.props.noScroll && !this.props.noScrollX;
 
@@ -399,7 +551,11 @@ export default class Scrollbar extends React.Component
             this.thumbHorizontal.style.width = "0px";
         }
 
-        this.props.onScroll && this.props.onScroll(this.previousScrollValues, this);
+        const currentScrollValues = this.scrollValues;
+
+        (this.previousScrollValues || false) && this.props.onScroll && this.props.onScroll(currentScrollValues, this);
+
+        this.previousScrollValues = currentScrollValues;
     }
 
     render() {

@@ -4,44 +4,62 @@ let loopIsActive = false;
 let animationFrame = null;
 const loopRegister = [];
 
-export const LoopController = {
-    registerScrollbar: (scrollbar) => {
+class LoopController
+{
+    constructor() {
+        this.rafStep = this.rafStep.bind(this);
+    }
+
+    registerScrollbar(scrollbar) {
         if (!loopRegister.includes(scrollbar)) {
             loopRegister.push(scrollbar);
 
             loopIsActive = true;
-            LoopController.start();
+            this.start();
         }
-    },
 
-    unregisterScrollbar: (scrollbar) => {
+        return this;
+    };
+
+    unregisterScrollbar(scrollbar) {
         let index = loopRegister.indexOf(scrollbar);
+
         if (index !== -1) {
             loopRegister.splice(index, 1);
 
-            loopRegister.length && LoopController.stop();
+            loopRegister.length && this.stop();
         }
-    },
 
-    start: () => {
-        animationFrame = raf(LoopController.rafStep);
-    },
+        return this;
+    };
 
-    rafStep: () => {
+    start() {
+        animationFrame = raf(this.rafStep);
+
+        return this;
+    };
+
+    rafStep() {
         if (!loopIsActive) {return;}
 
         loopRegister.forEach(LoopController.registerCrawler);
 
-        animationFrame = raf(LoopController.rafStep);
-    },
+        animationFrame = raf(this.rafStep);
+    };
 
-    registerCrawler: (scrollbar) => {
+    static registerCrawler(scrollbar) {
         scrollbar.update();
-    },
+    };
 
-    stop: () => {
+    stop() {
         loopIsActive = false;
 
         animationFrame && raf.cancel(animationFrame);
-    },
-};
+
+        return this;
+    };
+}
+
+const instance = new LoopController();
+
+export default instance;

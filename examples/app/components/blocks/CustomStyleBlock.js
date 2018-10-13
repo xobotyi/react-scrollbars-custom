@@ -13,10 +13,12 @@ export default class CustomStyleBlock extends React.Component
         return (
                 <div className="block" id="CustomStyleExampleBlock">
                     <div className="title">Custom style</div>
-                    <div className="description">In this example styles are applied via imported CSS file, width help of grid layout.</div>
-                    <Scrollbar className="content">
-                        { this.getParagraphs(15) }
-                    </Scrollbar>
+                    <div className="description">In this example, styles are applied via imported CSS file, with help of grid layout.</div>
+                    <div className="content">
+                        <Scrollbar defaultStyles={ false }>
+                            { this.getParagraphs(15) }
+                        </Scrollbar>
+                    </div>
                 </div>
         );
     }

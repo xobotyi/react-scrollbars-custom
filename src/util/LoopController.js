@@ -1,5 +1,3 @@
-import raf from "raf";
-
 let loopIsActive = false;
 let animationFrame = null;
 const loopRegister = [];
@@ -36,8 +34,8 @@ class LoopController
         if (!loopIsActive) {
             loopIsActive = true;
 
-            animationFrame && raf.cancel(animationFrame);
-            animationFrame = raf(this.rafStep);
+            animationFrame && cancelAnimationFrame(animationFrame);
+            animationFrame = requestAnimationFrame(this.rafStep);
         }
 
         return this;
@@ -50,14 +48,14 @@ class LoopController
             loopRegister[i].update();
         }
 
-        animationFrame = raf(this.rafStep);
+        animationFrame = requestAnimationFrame(this.rafStep);
     };
 
     stop() {
         if (loopIsActive) {
             loopIsActive = false;
 
-            animationFrame && raf.cancel(animationFrame);
+            animationFrame && cancelAnimationFrame(animationFrame);
         }
 
         return this;

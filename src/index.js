@@ -44,14 +44,12 @@ const defaultElementsStyles = {
         borderRadius: 4,
     },
     thumbVertical:   {
-        position:     "relative",
         cursor:       "pointer",
         width:        "100%",
         borderRadius: 4,
         background:   "rgba(0,0,0,.4)",
     },
     thumbHorizontal: {
-        position:     "relative",
         cursor:       "pointer",
         height:       "100%",
         borderRadius: 4,
@@ -273,31 +271,6 @@ export default class Scrollbar extends React.Component
         this.content.scrollLeft = this.content.scrollWidth;
 
         return this;
-    }
-
-    /**
-     * @typedef {Object} ScrollValues
-     * @property {number} scrollTop Scroll value from top n pixels
-     * @property {number} scrollLeft Scroll value from left n pixels
-     * @property {number} scrollHeight Full height of content
-     * @property {number} scrollWidth Full width of content
-     * @property {number} clientHeight Height of scroll viewport
-     * @property {number} clientWidth Width of scroll viewport
-     */
-    /**
-     * Return current scroll values
-     *
-     * @return {ScrollValues}
-     */
-    get scrollValues() {
-        return {
-            scrollTop:    this.content.scrollTop,
-            scrollLeft:   this.content.scrollLeft,
-            scrollHeight: this.content.scrollHeight,
-            scrollWidth:  this.content.scrollWidth,
-            clientHeight: this.content.clientHeight,
-            clientWidth:  this.content.clientWidth,
-        };
     }
 
     /**
@@ -523,8 +496,15 @@ export default class Scrollbar extends React.Component
      */
     update(forced = false) {
         // No need to update scrollbars if values had not changed
-        if (!forced && (this.previousScrollValues || false) && Object.keys(this.previousScrollValues).every((prop) => {return this.previousScrollValues[prop] === this.content[prop]; })) {
-            return this;
+        if (!forced && (this.previousScrollValues || false)) {
+            if (this.previousScrollValues.scrollTop === this.content.scrollTop &&
+                this.previousScrollValues.scrollLeft === this.content.scrollLeft &&
+                this.previousScrollValues.scrollHeight === this.content.scrollHeight &&
+                this.previousScrollValues.scrollWidth === this.content.scrollWidth &&
+                this.previousScrollValues.clientHeight === this.content.clientHeight &&
+                this.previousScrollValues.clientWidth === this.content.clientWidth) {
+                return this;
+            }
         }
 
         const verticalScrollPossible   = this.content.scrollHeight > this.content.clientHeight && !this.props.noScroll && !this.props.noScrollY,
@@ -562,7 +542,14 @@ export default class Scrollbar extends React.Component
             this.thumbHorizontal.style.width = "0px";
         }
 
-        const currentScrollValues = this.scrollValues;
+        const currentScrollValues = {
+            scrollTop:    this.content.scrollTop,
+            scrollLeft:   this.content.scrollLeft,
+            scrollHeight: this.content.scrollHeight,
+            scrollWidth:  this.content.scrollWidth,
+            clientHeight: this.content.clientHeight,
+            clientWidth:  this.content.clientWidth,
+        };
 
         (this.previousScrollValues || false) && this.props.onScroll && this.props.onScroll(currentScrollValues, this);
 

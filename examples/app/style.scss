@@ -34,7 +34,6 @@ body {
 }
 
 #AppRoot {
-    position:  relative;
     flex-grow: 1;
     width:     100%;
     height:    100%;
@@ -57,7 +56,6 @@ body {
 
         & > .ScrollbarsCustom-track {
             display:       block;
-            position:      relative;
             background:    #D0D3D7;
             border-radius: 1rem;
 
@@ -136,7 +134,6 @@ body {
 #AppBody {
     flex-grow:     1;
     flex-shrink:   0;
-    position:      relative;
     display:       flex;
     padding:       0 0 0 .5rem;
     flex-wrap:     wrap;
@@ -152,7 +149,6 @@ body {
 
     & > .packageDescription {
         display:    block;
-        position:   relative;
         width:      100%;
         box-sizing: border-box;
         padding:    0 2rem;
@@ -275,7 +271,6 @@ body {
 
         & > .content {
             display:    block;
-            position:   relative;
             flex-grow:  1;
             flex-basis: 100%;
             margin:     2rem 0 0;
@@ -363,13 +358,11 @@ body {
             display:               grid;
             width:                 100%;
             height:                100%;
-            position:              relative;
             grid-template-columns: 1fr min-content;
             grid-template-rows:    1fr min-content;
 
             & > .ScrollbarsCustom-wrapper {
                 grid-area: 1 / 1 / auto / auto;
-                position:  relative;
 
                 & > .ScrollbarsCustom-content {
                     p {
@@ -381,7 +374,6 @@ body {
             }
 
             & > .ScrollbarsCustom-trackVertical {
-                position:   relative;
                 width:      8px;
                 background: rgba(0, 0, 0, 0.1);
                 grid-area:  1 / 2 / auto / auto;
@@ -394,7 +386,6 @@ body {
             }
 
             & > .ScrollbarsCustom-trackHorizontal {
-                position:   relative;
                 height:     8px;
                 background: rgba(0, 0, 0, 0.1);
                 grid-area:  2 / 1 / auto / auto;
@@ -444,7 +435,6 @@ body {
 
             & > .ScrollbarsCustom-wrapper {
                 grid-area: 1 / 1 / auto / auto;
-                position:  relative;
 
                 & > .ScrollbarsCustom-content {
                     p {

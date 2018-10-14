@@ -3,18 +3,32 @@
 ### `<Scrollbar>`
 #### Properties
 * **Setups**
-    * `gridless`: _(boolean)_ Forces to use non-grid styles _(default: false)_
     * `defaultStyles`: _(boolean)_ Apply default inline styles _(default: false)_
-    * `thumbSizeMin`: _(number)_ Minimal size of thumb in pixels _(default: 30)_
-    * `noScroll`: _(boolean)_ Disable both scrollings, vertical and horizontal _(default: false)_
-    * `scrollY`: _(boolean)_ If false, vertical scrolling will be disabled _(default: true)_
-    * `scrollX`: _(boolean)_ If false, horizontal scrolling will be disabled _(default: true)_
+    * `fallbackScrollbarWidth`: _(number)_ Number of pixels that will be treated as scrollbar width if automated scrollbar width detection will fail. _This parameter used on mobiles, because scrollbars there has an absolute positioning and can't be measured._ _(default: 20)_
+    * `minimalThumbsSize`: _(number)_ Minimal size of thumb in pixels _(default: 30)_
+    * `noScroll`: _(boolean)_ Disable both vertical and horizontal scrolling_(default: false)_
+    * `noScrollY`: _(boolean)_ Disable vertical scrolling _(default: false)_
+    * `noScrollX`: _(boolean)_ Disable horizontal scrolling _(default: false)_
     * `permanentScrollbars`: _(boolean)_ Display both, vertical and horizontal scrollbars permanently, in spite of scrolling possibility _(default: false)_
-    * `permanentScrollbarVertical`: _(boolean)_ Display vertical scrollbar permanently, in spite of scrolling possibility  _(default: false)_
-    * `permanentScrollbarHorizontal`: _(boolean)_ Display horizontal scrollbar permanently, in spite of scrolling possibility  _(default: false)_
+    * `permanentScrollbarY`: _(boolean)_ Display vertical scrollbar permanently, in spite of scrolling possibility  _(default: false)_
+    * `permanentScrollbarX`: _(boolean)_ Display horizontal scrollbar permanently, in spite of scrolling possibility  _(default: false)_
     * `scrollDetectionThreshold`: _(number)_ Scroll process check interval in milliseconds _(default: 100)_
     * `contentSizeTrack`: _(boolean)_ Automatically check content's sizes to actualize the scrollbars. Useful when dom is changed not only by react. _(default: false)_
     * `contentSizeTrackInterval`: _(number)_ Interval between content's size check, in milliseconds _(default: 200)_
+    * `className`: _(string|array)_ Additional classnames to add to holder element _(default: undefined)_
+    * `wrapperClassName`: _(string|array)_ Additional classnames to add to wrapper element _(default: undefined)_
+    * `contentClassName`: _(string|array)_ Additional classnames to add to content element _(default: undefined)_
+    * `trackVerticalClassName`: _(string|array)_ Additional classnames to add to vertical track element _(default: undefined)_
+    * `trackHorizontalClassName`: _(string|array)_ Additional classnames to add to horizontal track element _(default: undefined)_
+    * `thumbVerticalClassName`: _(string|array)_ Additional classnames to add to vertical track element _(default: undefined)_
+    * `thumbHorizontalClassName`: _(string|array)_ Additional classnames to add to horizontal track element _(default: undefined)_
+    * `style`: _(object)_ Additional styles for holder element _(default: undefined)_
+    * `wrapperStyle`: _(object)_ Additional styles for wrapper element _(default: undefined)_
+    * `contentStyle`: _(object)_ Additional styles for content element _(default: undefined)_
+    * `trackVerticalStyle`: _(object)_ Additional styles for vertical track element _(default: undefined)_
+    * `trackHorizontalStyle`: _(object)_ Additional styles for horizontal track element _(default: undefined)_
+    * `thumbVerticalStyle`: _(object)_ Additional styles for vertical track element _(default: undefined)_
+    * `thumbHorizontalStyle`: _(object)_ Additional styles for horizontal track element _(default: undefined)_
 * **Rendering**
     * `renderWrapper`: _(function)_ The element that wraps the content in order to hide browser's scrollbars
     * `renderContent`: _(function)_ The element where content will be rendered
@@ -22,25 +36,20 @@
     * `renderTrackHorizontal`: _(function)_ Horizontal track element
     * `renderThumbVertical`: _(function)_ Vertical thumb element
     * `renderThumbHorizontal`: _(function)_ Horizontal thumb element
-* **Events handling**  
-All of these event handlers will be called inside the animation frame  
-    * `onScroll ({event, ...values})`: _(function)_ Scroll event handler
-        * `event`: Native scroll event
-        * `values`: _(object)_ Values representing current scrolling position
-            * `values.top`: _(number)_ scrollTop progress, from 0 to 1
-            * `values.left`: _(number)_ scrollLeft progress, from 0  to 1
-            * `values.scrollTop`: _(number)_ Native scrollTop
-            * `values.scrollLeft`: _(number)_ Native scrollLeft
-            * `values.scrollHeight`: _(number)_ Native scrollHeight
-            * `values.scrollWidth`: _(number)_ Native scrollWidth
-            * `values.clientWidth`: _(number)_ Native clientWidth
-            * `values.clientHeight`: _(number)_ Native clientHeight
-    * `onUpdate (values)`: _(function)_ Called when the component is updated
-        * `values`: _(object)_ Values representing scrolling position for the scroll start moment
-    * `onScrollStart (values)`: _(function)_ Called when scrolling has started
-        * `values`: _(object)_ Values representing scrolling position for the scroll start moment
-    * `onScrollStop (values)`: _(function)_ Called when scrolling has stopped
-        * `values`: _(object)_ Values representing scrolling position for the scroll stop moment
+* **Events handling**
+    * `onScroll (scrollValues, scrollbar)`: _(function)_ Called when any scroll related property has changed, including forced update call
+        * `scrollValues`  _(object)_ Values representing current scrolling position
+            * `scrollTop`: _(number)_ Native scrollTop
+            * `scrollLeft`: _(number)_ Native scrollLeft
+            * `scrollHeight`: _(number)_ Native scrollHeight
+            * `scrollWidth`: _(number)_ Native scrollWidth
+            * `clientWidth`: _(number)_ Native clientWidth
+            * `clientHeight`: _(number)_ Native clientHeight
+        * `scrollbar`: _(Scrollbar)_ Scrollbar instance
+    * `onScrollStart (scrollbar)`: _(function)_ Called when scrolling has started
+        * `scrollbar`: _(Scrollbar)_ Scrollbar instance
+    * `onScrollStop (scrollbar)`: _(function)_ Called when scrolling has stopped
+        * `scrollbar`: _(Scrollbar)_ Scrollbar instance
 
 
 #### Methods
@@ -50,9 +59,10 @@ All of these event handlers will be called inside the animation frame
 * `(get) scrollWidth`: _(number)_ Get the scrollWidth value _(as in vanila JS)_
 * `(get) clientHeight`: _(number)_ Get the clientHeight value _(as in vanila JS)_
 * `(get) clientWidth`: _(number)_ Get the clientWidth value _(as in vanila JS)_
+* `(get) scrollValues`: _(object)_ all of previous values in one object _(as in vanila JS)_
 * `scrollToTop()`: _(Scrollbar)_ Scroll to the top border
 * `scrollToBottom()`: _(Scrollbar)_ Scroll to the bottom border
 * `scrollToLeft()`: _(Scrollbar)_ Scroll to the left border
 * `scrollToRight()`: _(Scrollbar)_ Scroll to the right border
-* `update()`: _(Scrollbar)_ Updates the scrollbars. Useful when external, non-react libraries are changing scrollable content
-* `getScrollValues()`: _(object)_ Get values representing current scrolling position
+* `update(forced=false)`: _(Scrollbar)_ Updates the scrollbars. By default if content or wrapper sizes did not changed - update will not be performed. But you can force the update by passing `true` as first parameter.  
+Keep in mind that forced update will either trigger `onScroll`, `onScrollStart` and `onScrollStop` callbacks as if the scroll was performed.  

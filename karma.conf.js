@@ -34,13 +34,12 @@ module.exports = function karmaConfig(config) {
                                        loader:  'babel-loader',
                                        options: {
                                            sourceMaps:     false,
-                                           comments:       false,
+                                           comments:       true,
                                            cacheDirectory: false,
                                            presets:        [
-                                               "stage-0",
-                                               "react",
+                                               "@babel/preset-react",
                                                [
-                                                   "env",
+                                                   "@babel/preset-env",
                                                    {
                                                        "targets": {
                                                            "chrome": 58,
@@ -55,6 +54,7 @@ module.exports = function karmaConfig(config) {
                                                        exclude: /node_modules|\.spec\.js$/,
                                                    },
                                                ],
+                                               "@babel/plugin-proposal-class-properties",
                                            ],
                                        },
                                    },

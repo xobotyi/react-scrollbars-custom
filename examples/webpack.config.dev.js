@@ -81,12 +81,6 @@ module.exports = {
                         ],
                         plugins:        [
                             "@babel/plugin-proposal-class-properties",
-                            // next not needed yet, but who knows
-                            //"@babel/plugin-proposal-optional-chaining",
-                            //"@babel/plugin-proposal-function-bind",
-                            //"@babel/plugin-proposal-nullish-coalescing-operator",
-                            //"@babel/plugin-proposal-do-expressions",
-                            //"@babel/plugin-proposal-logical-assignment-operators",
                         ],
                     },
                 },

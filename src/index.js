@@ -456,11 +456,9 @@ export default class Scrollbar extends React.Component
      * @return {number}
      */
     computeThumbVerticalHeight(trackHeight) {
-        const {scrollHeight, clientHeight} = this.content;
-        const {minimalThumbsSize} = this.props;
-        const height = Math.ceil(clientHeight / scrollHeight * trackHeight);
+        const height = Math.ceil(this.content.clientHeight / this.content.scrollHeight * trackHeight);
 
-        return trackHeight === height ? 0 : Math.max(height, minimalThumbsSize);
+        return trackHeight === height ? 0 : Math.max(height, this.props.minimalThumbsSize);
     }
 
     /**
@@ -470,11 +468,9 @@ export default class Scrollbar extends React.Component
      * @return {number}
      */
     computeThumbHorizontalWidth(trackWidth) {
-        const {scrollWidth, clientWidth} = this.content;
-        const {minimalThumbsSize} = this.props;
-        const width = Math.ceil(clientWidth / scrollWidth * trackWidth);
+        const width = Math.ceil(this.content.clientWidth / this.content.scrollWidth * trackWidth);
 
-        return trackWidth === width ? 0 : Math.max(width, minimalThumbsSize);
+        return trackWidth === width ? 0 : Math.max(width, this.props.minimalThumbsSize);
     }
 
     /**
@@ -484,11 +480,10 @@ export default class Scrollbar extends React.Component
      * @return {number}
      */
     computeScrollTopForThumbOffset(offset) {
-        const {clientHeight, scrollHeight} = this.content;
         const trackVerticalInnerHeight = getInnerHeight(this.trackVertical);
         const thumbVerticalHeight = this.thumbVertical.clientHeight;
 
-        return offset / (trackVerticalInnerHeight - thumbVerticalHeight) * (scrollHeight - clientHeight);
+        return offset / (trackVerticalInnerHeight - thumbVerticalHeight) * (this.content.scrollHeight - this.content.clientHeight);
     }
 
     /**
@@ -498,11 +493,10 @@ export default class Scrollbar extends React.Component
      * @return {number}
      */
     computeScrollLeftForThumbOffset(offset) {
-        const {clientWidth, scrollWidth} = this.content;
         const trackHorizontalInnerWidth = getInnerWidth(this.trackHorizontal);
         const thumbHorizontalWidth = this.thumbHorizontal.clientWidth;
 
-        return offset / (trackHorizontalInnerWidth - thumbHorizontalWidth) * (scrollWidth - clientWidth);
+        return offset / (trackHorizontalInnerWidth - thumbHorizontalWidth) * (this.content.scrollWidth - this.content.clientWidth);
     }
 
     /**

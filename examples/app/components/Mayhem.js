@@ -8,7 +8,7 @@ export default class Mayhem extends React.Component
     constructor(props) {
         super(props);
 
-        this.state = {scrollbarsCount: 100};
+        this.state = {scrollbarsCount: 25};
 
         this.incrementScrollbars = this.incrementScrollbars.bind(this);
         this.decrementScrollbars = this.decrementScrollbars.bind(this);
@@ -31,7 +31,7 @@ export default class Mayhem extends React.Component
     decrementScrollbars() {
         this.setState({
                           ...this.state,
-                          scrollbarsCount: this.state.scrollbarsCount - 1,
+                          scrollbarsCount: Math.max(this.state.scrollbarsCount - 1, 0),
                       });
     };
 
@@ -41,7 +41,7 @@ export default class Mayhem extends React.Component
         return <div id="AppBody">
             <div className="packageDescription">
                 Scrollbars rendered: { scrollbarsCount }
-                <br /><span className="button" key="plus" onClick={ this.incrementScrollbars }>increase</span>
+                <br /><span className="button" key="plus" onClick={ this.incrementScrollbars }>increase</span><span className="button" key="minus" onClick={ this.decrementScrollbars }>decrease</span>
             </div>
             <div className="mayhemScrollbarsHolder">{ this.drawScrollbars(scrollbarsCount) }</div>
         </div>;

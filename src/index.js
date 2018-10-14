@@ -62,8 +62,8 @@ const defaultElementsStyles = {
 export default class Scrollbar extends React.Component
 {
     static propTypes = {
-        minimalThumbsSize:     PropTypes.number,
-        browserScrollbarWidth: PropTypes.number,
+        minimalThumbsSize:      PropTypes.number,
+        fallbackScrollbarWidth: PropTypes.number,
 
         defaultStyles: PropTypes.bool,
 
@@ -75,7 +75,8 @@ export default class Scrollbar extends React.Component
         noScrollX: PropTypes.bool,
         noScrollY: PropTypes.bool,
 
-        tagName:                  PropTypes.string,
+        tagName: PropTypes.string,
+
         className:                PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
         wrapperClassName:         PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
         contentClassName:         PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
@@ -84,10 +85,25 @@ export default class Scrollbar extends React.Component
         thumbVerticalClassName:   PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
         thumbHorizontalClassName: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
 
+        style:                PropTypes.object,
+        wrapperStyle:         PropTypes.object,
+        contentStyle:         PropTypes.object,
+        trackVerticalStyle:   PropTypes.object,
+        trackHorizontalStyle: PropTypes.object,
+        thumbVerticalStyle:   PropTypes.object,
+        thumbHorizontalStyle: PropTypes.object,
+
         onScroll:                 PropTypes.func,
         onScrollStart:            PropTypes.func,
         onScrollStop:             PropTypes.func,
         scrollDetectionThreshold: PropTypes.number,
+
+        renderWrapper:         PropTypes.func,
+        renderContent:         PropTypes.func,
+        renderTrackVertical:   PropTypes.func,
+        renderTrackHorizontal: PropTypes.func,
+        renderThumbVertical:   PropTypes.func,
+        renderThumbHorizontal: PropTypes.func,
     };
 
     static defaultProps = {
@@ -141,6 +157,7 @@ export default class Scrollbar extends React.Component
     }
 
     /**
+     *
      * Set the vertical scroll to given amount of pixels
      *
      * @param top {number} Pixels amount
@@ -507,7 +524,7 @@ export default class Scrollbar extends React.Component
     update(forced = false) {
         // No need to update scrollbars if values had not changed
         if (!forced && (this.previousScrollValues || false) && Object.keys(this.previousScrollValues).every((prop) => {return this.previousScrollValues[prop] === this.content[prop]; })) {
-            return;
+            return this;
         }
 
         const verticalScrollPossible   = this.content.scrollHeight > this.content.clientHeight && !this.props.noScroll && !this.props.noScrollY,
@@ -550,6 +567,8 @@ export default class Scrollbar extends React.Component
         (this.previousScrollValues || false) && this.props.onScroll && this.props.onScroll(currentScrollValues, this);
 
         this.previousScrollValues = currentScrollValues;
+
+        return this;
     }
 
     render() {
@@ -569,6 +588,10 @@ export default class Scrollbar extends React.Component
 
                   // callbacks
                   onScroll, onScrollStart, onScrollStop,
+
+                  // custom renderers
+                  renderWrapper, renderContent, renderTrackVertical, renderTrackHorizontal, renderThumbVertical, renderThumbHorizontal,
+
                   ...props
               } = this.props;
 
@@ -642,43 +665,43 @@ export default class Scrollbar extends React.Component
                     ref:       (ref) => {this.holder = ref;},
                 },
                 [
-                    divRenderer({
-                                    key:       "wrapper",
-                                    ref:       (ref) => {this.wrapper = ref;},
-                                    className: wrapperClassNames,
-                                    style:     wrapperStyles,
-                                    children:  divRenderer({
-                                                               key:       "content",
-                                                               ref:       (ref) => {this.content = ref;},
-                                                               className: contentClassNames,
-                                                               style:     contentStyles,
-                                                               children,
+                    (renderWrapper || divRenderer)({
+                                                       key:       "wrapper",
+                                                       ref:       (ref) => {this.wrapper = ref;},
+                                                       className: wrapperClassNames,
+                                                       style:     wrapperStyles,
+                                                       children:  (renderContent || divRenderer)({
+                                                                                                     key:       "content",
+                                                                                                     ref:       (ref) => {this.content = ref;},
+                                                                                                     className: contentClassNames,
+                                                                                                     style:     contentStyles,
+                                                                                                     children,
+                                                                                                 }),
+                                                   }),
+                    (renderTrackVertical || divRenderer)({
+                                                             key:       "trackVertical",
+                                                             ref:       (ref) => {this.trackVertical = ref;},
+                                                             className: trackVerticalClassNames,
+                                                             style:     trackVerticalStyles,
+                                                             children:  (renderThumbVertical || divRenderer)({
+                                                                                                                 key:       "thumbVertical",
+                                                                                                                 ref:       (ref) => {this.thumbVertical = ref;},
+                                                                                                                 className: thumbVerticalClassNames,
+                                                                                                                 style:     thumbVerticalStyles,
+                                                                                                             }),
+                                                         }),
+                    (renderTrackHorizontal || divRenderer)({
+                                                               key:       "trackHorizontal",
+                                                               ref:       (ref) => {this.trackHorizontal = ref;},
+                                                               className: trackHorizontalClassNames,
+                                                               style:     trackHorizontalStyles,
+                                                               children:  (renderThumbHorizontal || divRenderer)({
+                                                                                                                     key:       "thumbHorizontal",
+                                                                                                                     ref:       (ref) => {this.thumbHorizontal = ref;},
+                                                                                                                     className: thumbHorizontalClassNames,
+                                                                                                                     style:     thumbHorizontalStyles,
+                                                                                                                 }),
                                                            }),
-                                }),
-                    divRenderer({
-                                    key:       "trackVertical",
-                                    ref:       (ref) => {this.trackVertical = ref;},
-                                    className: trackVerticalClassNames,
-                                    style:     trackVerticalStyles,
-                                    children:  divRenderer({
-                                                               key:       "thumbVertical",
-                                                               ref:       (ref) => {this.thumbVertical = ref;},
-                                                               className: thumbVerticalClassNames,
-                                                               style:     thumbVerticalStyles,
-                                                           }),
-                                }),
-                    divRenderer({
-                                    key:       "trackHorizontal",
-                                    ref:       (ref) => {this.trackHorizontal = ref;},
-                                    className: trackHorizontalClassNames,
-                                    style:     trackHorizontalStyles,
-                                    children:  divRenderer({
-                                                               key:       "thumbHorizontal",
-                                                               ref:       (ref) => {this.thumbHorizontal = ref;},
-                                                               className: thumbHorizontalClassNames,
-                                                               style:     thumbHorizontalStyles,
-                                                           }),
-                                }),
                 ],
         );
     }

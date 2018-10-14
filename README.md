@@ -12,15 +12,17 @@
     <a href="https://xobotyi.github.io/react-scrollbars-custom/">DEMO</a> · <a href="https://github.com/xobotyi/react-scrollbars-custom/tree/master/docs">DOCUMENTATION</a>
 </p>
 
-* Native browser scrolling
-* Native scrollbars on mobile devices
-* Fully customizable
-* `requestAnimationFrame` for 60fps
-* No extra stylesheets necessary
-* Cross-browser
+* Native browser scrolling behaviour - component don't emulate scrolling, only showing custom scrollbars
+* Ultimate performance - 60 fps with help of RAF loop
+* Desktop or mobile - scrollbars looks the same on any device
+* No extra stylesheets required - minimum inline styles out of the box
+* Fully customizable - want a hippo as a scrollbar thumb? Well.. I don't judge you
+* No matter what changes the content - scrollbars always stay actual
+* Total tests coverage
+* Scrollbars nesting
 
->**IMPORTANT:** default component styles uses [grid layout](https://developer.mozilla.org/docs/Web/CSS/CSS_Grid_Layout/Basic_Concepts_of_Grid_Layout) for proper scrollbars display.  
->But you can change it by passing `gridless` parameter on initialisation. 
+>**IMPORTANT:** default component styles uses [Flexible Box Layout](https://developer.mozilla.org/ru/docs/Web/CSS/CSS_Flexible_Box_Layout) for proper scrollbars display.  
+>But you can customize it with help pf inline or linked styles as you wish ([see docs](https://github.com/xobotyi/react-scrollbars-custom/blob/master/docs/CUSTOMISATION.md)). 
 
 ## Installation
 ```bash
@@ -37,7 +39,7 @@ class App extends Component
 {
     render() {
         return (
-                <Scrollbar style={ {width: '100%', minHeight: 300} } >
+                <Scrollbar style={ {width: '100%', height: '100%', minHeight: 300} } >
                     <p>Hello world!</p>
                 </Scrollbar>
         );

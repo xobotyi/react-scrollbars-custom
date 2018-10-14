@@ -8,7 +8,7 @@ export default class Mayhem extends React.Component
     constructor(props) {
         super(props);
 
-        this.state = {scrollbarsCount: 25};
+        this.state = {scrollbarsCount: 28};
 
         this.incrementScrollbars = this.incrementScrollbars.bind(this);
         this.decrementScrollbars = this.decrementScrollbars.bind(this);

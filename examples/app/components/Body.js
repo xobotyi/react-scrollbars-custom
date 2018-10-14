@@ -14,12 +14,13 @@ export default class Head extends React.Component
                 </p>
                 <h2>Features</h2>
                 <ul className="features">
-                    <li>Native browser scrolling behaviour</li>
-                    <li>Ultimate performance</li>
-                    <li>Desktop or mobile - scrollbars looks the same</li>
-                    <li>Fully customizable</li>
+                    <li>Native browser scrolling behaviour - component don't emulate scrolling, only showing custom scrollbars</li>
+                    <li>Ultimate performance - 60 fps with help of RAF loop</li>
+                    <li>Desktop or mobile - scrollbars looks the same on any device</li>
+                    <li>No extra stylesheets required - minimum inline styles out of the box</li>
+                    <li>Fully customizable - want a hippo as a scrollbar thumb? Well.. I don't judge you</li>
+                    <li>No matter what changes the content - scrollbars always stay actual</li>
                     <li>Total tests coverage</li>
-                    <li>No extra stylesheets required</li>
                     <li>Scrollbars nesting</li>
                 </ul>
                 <p><a href="https://github.com/xobotyi/react-scrollbars-custom/tree/master/docs">Docs on GitHub</a> | <a href="/#benchmark" target="_blank">Benchmark</a></p>

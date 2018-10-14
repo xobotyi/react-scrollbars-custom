@@ -19,23 +19,23 @@ class App extends Component
 ```
 Component creates next structure:
 ```html
-<div class="CustomScrollbar">
-    <div class="CustomScrollbar-wrapper">
-        <div class="CustomScrollbar-content">
+<div class="ScrollbarsCustom-holder">
+    <div class="ScrollbarsCustom-wrapper">
+        <div class="ScrollbarsCustom-content">
           !YOUR CONTENT IS HERE!
         </div>
     </div>
-    <div class="CustomScrollbar-track CustomScrollbar-trackVertical">
-      <div class="CustomScrollbar-thumb CustomScrollbar-thumbVertical"></div>
+    <div class="ScrollbarsCustom-track ScrollbarsCustom-trackVertical">
+      <div class="ScrollbarsCustom-thumb ScrollbarsCustom-thumbVertical"></div>
     </div>
-    <div class="CustomScrollbar-track CustomScrollbar-trackHorizontal">
-      <div class="CustomScrollbar-thumb CustomScrollbar-thumbHorizontal"></div>
+    <div class="ScrollbarsCustom-track ScrollbarsCustom-trackHorizontal">
+      <div class="ScrollbarsCustom-thumb ScrollbarsCustom-thumbHorizontal"></div>
     </div>
 </div>
 ```
 
 ### Scroll disabling
-The most common need is to disable scrolling fully or partially. You can do it simply adding `noScroll` to disable all scrolls and `scrollY={false}`/`scrollX={false}` to disable scrolls separately.  
+The most common need is to disable scrolling fully or partially. You can do it simply adding `noScroll` to disable all scrolls and `noScrollY={true}`/`noScrollX={true}` to disable scrolls separately.  
 Note, that if `scrollY={false}` and `scrollX={false}` will be set simultaneously, it will be treated like `noScroll={true}`.
 
 ### Default styles
@@ -55,22 +55,22 @@ class App extends Component
 ```
 It will generate next structure:
 ```html
-<div class="CustomScrollbar">
-  <div class="CustomScrollbar-wrapper" style="position: relative; overflow: hidden;">
-    <div class="CustomScrollbar-content" style="position: absolute; top: 0; bottom: 0; left: 0; right: 0; overflow: scroll; margin-right: -{browsersScrollbarsWidth}; margin-bottom: -{browsersScrollbarsWidth};"></div>
-  </div>
-  <div class="CustomScrollbar-track CustomScrollbar-trackVertical">
-    <div class="CustomScrollbar-thumb CustomScrollbar-thumbVertical" style="transform: translateY({offset}px); height: {height}px;"></div>
-  </div>
-  <div class="CustomScrollbar-track CustomScrollbar-trackHorizontal">
-    <div class="CustomScrollbar-thumb CustomScrollbar-thumbHorizontal" style="transform: translateX({offset}px); width: {width}px;"></div>
-  </div>
+<div class="ScrollbarsCustom-holder">
+    <div class="ScrollbarsCustom-wrapper" style="position: relative; overflow: hidden;">
+      <div class="ScrollbarsCustom-content" style="position: absolute; top: 0px; bottom: 0px; right: 0px; left: 0px; overflow: scroll; margin-right: -{browsersScrollbarsWidth}px; margin-bottom: -{browsersScrollbarsWidth}px;"></div>
+    </div>
+    <div class="ScrollbarsCustom-track ScrollbarsCustom-trackVertical" style="display: none;">
+      <div class="ScrollbarsCustom-thumb ScrollbarsCustom-thumbVertical" style="transform: translateY({offset}px); height: {height}px;"></div>
+    </div>
+    <div class="ScrollbarsCustom-track ScrollbarsCustom-trackHorizontal" style="display: none;">
+      <div class="ScrollbarsCustom-thumb ScrollbarsCustom-thumbHorizontal" style="transform: translateX({offset}px); width: {width}px;"></div>
+    </div>
 </div>
 ```
 Styles presented in markup above are not removable and needed to proper component work. 
 
 ### Events handling
-There are several events you can listen to. Each listener will be called _inside the animation frame_.
+There are three events you can add callbacks to (read more in [API docs](https://github.com/xobotyi/react-scrollbars-custom/blob/master/docs/API.md)).
 ```javascript
 import React, { Component }  from 'react';
 import Scrollbar from 'react-scrollbars-custom';
@@ -80,7 +80,6 @@ class App extends Component
     render() {
         return (
                 <Scrollbar 
-                onUpdate={this.handleUpdate}
                 onScroll={this.handleScroll}
                 onScrollStart={this.handleScrollStart}
                 onScrollStop={this.handleScrollStop}/>
@@ -88,20 +87,3 @@ class App extends Component
     }
 }
 ```
-
-### Automatic size tracking
-It is possible that DOM will be changed not only with React: for these cases `<Scrollbar />` has automatic content tracker.
-```javascript
-import React, { Component }  from 'react';
-import Scrollbar from 'react-scrollbars-custom';
-
-class App extends Component
-{
-    render() {
-        return (
-                <Scrollbar contentSizeTrack={true} contentSizeTrack={500}/>
-        );
-    }
-}
-```
-Now `<Scrollbar/>` will check content's sizes every 500ms and trigger `Scrollbar.update()` if they're changed.

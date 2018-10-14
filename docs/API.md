@@ -59,7 +59,6 @@
 * `(get) scrollWidth`: _(number)_ Get the scrollWidth value _(as in vanila JS)_
 * `(get) clientHeight`: _(number)_ Get the clientHeight value _(as in vanila JS)_
 * `(get) clientWidth`: _(number)_ Get the clientWidth value _(as in vanila JS)_
-* `(get) scrollValues`: _(object)_ all of previous values in one object _(as in vanila JS)_
 * `scrollToTop()`: _(Scrollbar)_ Scroll to the top border
 * `scrollToBottom()`: _(Scrollbar)_ Scroll to the bottom border
 * `scrollToLeft()`: _(Scrollbar)_ Scroll to the left border

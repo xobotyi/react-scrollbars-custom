@@ -14,7 +14,6 @@ class LoopController
         if (!loopRegister.includes(scrollbar)) {
             loopRegister.push(scrollbar);
 
-            loopIsActive = true;
             this.start();
         }
 
@@ -25,16 +24,21 @@ class LoopController
         let index = loopRegister.indexOf(scrollbar);
 
         if (index !== -1) {
-            loopRegister.splice(index, 1);
+            loopRegister.length === 1 && this.stop();
 
-            loopRegister.length && this.stop();
+            loopRegister.splice(index, 1);
         }
 
         return this;
     };
 
     start() {
-        animationFrame = raf(this.rafStep);
+        if (!loopIsActive) {
+            loopIsActive = true;
+
+            animationFrame && raf.cancel(animationFrame);
+            animationFrame = raf(this.rafStep);
+        }
 
         return this;
     };
@@ -42,19 +46,19 @@ class LoopController
     rafStep() {
         if (!loopIsActive) {return;}
 
-        loopRegister.forEach(LoopController.registerCrawler);
+        for (let i = 0; i < loopRegister.length; i++) {
+            loopRegister[i].update();
+        }
 
         animationFrame = raf(this.rafStep);
     };
 
-    static registerCrawler(scrollbar) {
-        scrollbar.update();
-    };
-
     stop() {
-        loopIsActive = false;
+        if (loopIsActive) {
+            loopIsActive = false;
 
-        animationFrame && raf.cancel(animationFrame);
+            animationFrame && raf.cancel(animationFrame);
+        }
 
         return this;
     };

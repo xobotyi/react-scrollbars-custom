@@ -23,21 +23,21 @@ describe("LoopController", () => {
     });
 
     it("should call stop the loop when .stop() executed", (done) => {
-        let calllCount = spy.callCount * 1;
+        let callCount = spy.callCount * 1;
         LoopController.stop();
 
         setTimeout(() => {
-            expect(spy.callCount).toEqual(calllCount);
+            expect(spy.callCount).toEqual(callCount);
             done();
         }, 500);
     });
 
     it("should call start the loop when .start() executed", (done) => {
-        let calllCount = spy.callCount * 1;
+        let callCount = spy.callCount * 1;
         LoopController.start();
 
         setTimeout(() => {
-            expect(spy.callCount).toBeGreaterThan(calllCount);
+            expect(spy.callCount).toBeGreaterThan(callCount);
             done();
         }, 500);
     });

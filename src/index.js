@@ -145,9 +145,9 @@ export default class Scrollbar extends React.Component
         this.handleDragEnd();
         this.removeListeners();
 
-        if (this.scrollDetect.interval) {
-            clearInterval(this.scrollDetect.interval);
-            delete this.scrollDetect.interval;
+        if (this.scrollDetect.timeout) {
+            clearTimeout(this.scrollDetect.timeout);
+            this.scrollDetect.timeout = null;
 
             if (this.props.onScrollStop) { this.props.onScrollStop(this); }
         }
@@ -339,26 +339,22 @@ export default class Scrollbar extends React.Component
     };
 
     scrollDetect = () => {
-        if (this.scrolling) { return; }
+        if (!this.scrollDetect.timeout && this.props.onScrollStart) {
+            this.props.onScrollStart(this);
+        }
 
-        this.scrolling = true;
+        this.scrollDetect.timeout && clearTimeout(this.scrollDetect.timeout);
 
-        if (this.props.onScrollStart) { this.props.onScrollStart(this); }
+        this.scrollDetect.timeout = setTimeout(() => {
+                                                   if (this.drag) {
+                                                       this.scrollDetect();
+                                                       return;
+                                                   }
 
-        this.scrollDetect.interval = setInterval(
-                () => {
-                    if (this.scrollDetect.lastScrollTop === this.content.scrollTop && this.scrollDetect.lastScrollLeft === this.content.scrollLeft && !this.drag) {
-                        clearInterval(this.scrollDetect.interval);
-                        this.scrolling = false;
-
-                        if (this.props.onScrollStop) { this.props.onScrollStop(this); }
-                    }
-
-                    this.scrollDetect.lastScrollTop = this.content.scrollTop;
-                    this.scrollDetect.lastScrollLeft = this.content.scrollLeft;
-                },
-                this.props.scrollDetectionThreshold,
-        );
+                                                   this.scrollDetect.timeout = null;
+                                                   if (this.props.onScrollStop) { this.props.onScrollStop(this); }
+                                               },
+                                               this.props.scrollDetectionThreshold);
     };
 
     handleScrollEvent = () => {
@@ -438,6 +434,7 @@ export default class Scrollbar extends React.Component
 
     handleDragEvent = (e) => {
         if (!this.drag) {return;}
+        this.scrollDetect();
 
         if (this.dragPrevPageY !== undefined) {
             const offset = -this.trackVertical.getBoundingClientRect().top + e.clientY - (this.thumbVertical.clientHeight - this.dragPrevPageY);
@@ -682,9 +679,6 @@ export default class Scrollbar extends React.Component
                 thumbVerticalStyles.display = "none";
             }
         }
-        else if (!browserScrollbarWidth) {
-            trackVerticalStyles.display = "none";
-        }
 
         if ((permanentScrollbars || permanentScrollbarX)) {
             trackHorizontalStyles.display = null;
@@ -692,9 +686,6 @@ export default class Scrollbar extends React.Component
             if (noScroll || !scrollX) {
                 thumbHorizontalStyles.display = "none";
             }
-        }
-        else if (!browserScrollbarWidth) {
-            trackHorizontalStyles.display = "none";
         }
 
         return React.createElement(

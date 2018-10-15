@@ -389,7 +389,8 @@ export default function performTests() {
             });
 
         });
-        describe("both tracks should be displayed withut thumb", () => {
+
+        describe("both tracks should be displayed without thumb", () => {
             it("if `noScroll` and `permanentScrollbars={true}`", (done) => {
                 render(<Scrollbar style={ {width: 100, height: 100} } noScroll permanentScrollbars>
                             <div style={ {width: 200, height: 200} } />
@@ -406,6 +407,43 @@ export default function performTests() {
                                 expect(this.content.style.overflow).toBe("hidden");
                                 expect(this.content.style.marginBottom).toBe("");
                                 expect(this.content.style.marginRight).toBe("");
+
+                                done();
+                            }, 100);
+                        });
+            });
+        });
+
+        describe("update should be performed", () => {
+            it("if props has changed", (done) => {
+                class TestComponent extends React.Component
+                {
+                    constructor(props) {
+                        super(props);
+
+                        this.state = {noScroll: false};
+                    }
+
+                    render() {
+                        return <Scrollbar style={ {width: 100, height: 100} } noScroll={ this.state.noScroll } ref={ (ref) => {this.scrollbar = ref;} }>
+                            <div style={ {width: 200, height: 200} } />
+                        </Scrollbar>;
+                    };
+                }
+
+                render(<TestComponent />,
+                        node,
+                        function () {
+                            this.setState({noScroll: true});
+
+                            setTimeout(() => {
+                                expect(this.scrollbar.trackHorizontal.style.display).toBe("none");
+                                expect(this.scrollbar.trackVertical.style.display).toBe("none");
+                                expect(this.scrollbar.content.style.overflowX).toBe("hidden");
+                                expect(this.scrollbar.content.style.overflowY).toBe("hidden");
+                                expect(this.scrollbar.content.style.overflow).toBe("hidden");
+                                expect(this.scrollbar.content.style.marginBottom).toBe("");
+                                expect(this.scrollbar.content.style.marginRight).toBe("");
 
                                 done();
                             }, 100);

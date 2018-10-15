@@ -643,6 +643,52 @@ export default class Scrollbar extends React.Component
                   ...(defaultStyles && defaultElementsStyles.thumbHorizontal),
               };
 
+        if (noScroll || (noScrollX && noScrollY)) {
+            contentStyles.marginRight = contentStyles.marginBottom = null;
+            !browserScrollbarWidth && (contentStyles.paddingRight = contentStyles.paddingBottom = null);
+            contentStyles.overflowX = contentStyles.overflowY = "hidden";
+
+            trackVerticalStyles.display = trackHorizontalStyles.display = "none";
+        }
+        else if (noScrollY) {
+            contentStyles.marginRight = null;
+            !browserScrollbarWidth && (contentStyles.paddingRight = null);
+            contentStyles.overflowX = "scroll";
+            contentStyles.overflowY = "hidden";
+
+            trackVerticalStyles.display = "none";
+        }
+        else if (noScrollX) {
+            contentStyles.marginBottom = null;
+            !browserScrollbarWidth && (contentStyles.paddingBottom = null);
+            contentStyles.overflowY = "scroll";
+            contentStyles.overflowX = "hidden";
+
+            trackHorizontalStyles.display = "none";
+        }
+
+        if ((permanentScrollbars || permanentScrollbarY)) {
+            trackVerticalStyles.display = null;
+
+            if (noScroll || !scrollY) {
+                thumbVerticalStyles.display = "none";
+            }
+        }
+        else if (!browserScrollbarWidth) {
+            trackVerticalStyles.display = "none";
+        }
+
+        if ((permanentScrollbars || permanentScrollbarX)) {
+            trackHorizontalStyles.display = null;
+
+            if (noScroll || !scrollX) {
+                thumbHorizontalStyles.display = "none";
+            }
+        }
+        else if (!browserScrollbarWidth) {
+            trackHorizontalStyles.display = "none";
+        }
+
         return React.createElement(
                 tagName,
                 {

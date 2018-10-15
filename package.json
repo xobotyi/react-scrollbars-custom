@@ -29,12 +29,14 @@
     "react-dom": "^0.14.0 || ^15.0.0 || ^16.0.0"
   },
   "devDependencies": {
+    "@babel/cli": "^7.1.2",
     "@babel/core": "^7.1.2",
     "@babel/plugin-proposal-class-properties": "^7.1.0",
     "@babel/preset-env": "^7.1.0",
     "@babel/preset-react": "^7.0.0",
     "babel-loader": "^8.0.4",
     "babel-plugin-istanbul": "^5.1.0",
+    "cleandir-webpack-plugin": "^0.1.4",
     "codacy-coverage": "^3.1.0",
     "cross-env": "^5.2.0",
     "css-loader": "^1.0.0",
@@ -64,8 +66,10 @@
     "webpack-dev-server": "^3.1.9"
   },
   "scripts": {
-    "examples:devserver": "cd ./examples && webpack-dev-server --mode development --hot --colors --progress --config webpack.config.dev.js",
+    "build": "rimraf ./dist && babel src -d dist --ignore \"node-modules/**\" --presets \"@babel/preset-react,@babel/preset-env\" --plugins \"@babel/plugin-proposal-class-properties\"",
     "push-codacy-coverage": "cat ./coverage/lcov.info | codacy-coverage -p .",
+    "examples": "cd ./examples && webpack-dev-server --mode development --hot --colors --progress --config webpack.config.dev.js",
+    "examples:build": "cd ./examples && rimraf ./static && cross-env NODE_ENV=production webpack --colors --progress --config webpack.config.prod.js",
     "test": "cross-env NODE_ENV=test karma start",
     "test:watch": "cross-env NODE_ENV=test karma start --auto-watch --no-single-run",
     "test:coverage": "cross-env NODE_ENV=test COVERAGE=true karma start --single-run",

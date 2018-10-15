@@ -1,5 +1,5 @@
 node_modules/
 coverage/
 .idea/
-examples/static/bundle.js
+examples/static/
 package-lock.json

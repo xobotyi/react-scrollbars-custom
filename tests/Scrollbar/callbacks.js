@@ -28,7 +28,6 @@ export default function performTests() {
                         </Scrollbar>,
                         node,
                         function () {
-                            console.log({...this});
                             const {trackVertical} = this;
                             const {top, height} = trackVertical.getBoundingClientRect();
 

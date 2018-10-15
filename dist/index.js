@@ -275,8 +275,8 @@ function (_React$Component) {
 
     _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "handleDragEnd", function () {
       _this.drag = false;
-      _this.dragPrevPageX = undefined;
-      _this.dragPrevPageY = undefined;
+      _this.dragPrevPageX = null;
+      _this.dragPrevPageY = null;
       document.removeEventListener("mousemove", _this.handleDragEvent);
       document.removeEventListener("mouseup", _this.handleDragEnd);
       document.body.style.userSelect = _this.bodySelectPrevValue;
@@ -294,12 +294,12 @@ function (_React$Component) {
 
       _this.scrollDetect();
 
-      if (_this.dragPrevPageY !== undefined) {
+      if (_this.dragPrevPageY !== null) {
         var offset = -_this.trackVertical.getBoundingClientRect().top + e.clientY - (_this.thumbVertical.clientHeight - _this.dragPrevPageY);
         _this.content.scrollTop = _this.computeScrollTopForThumbOffset(offset);
       }
 
-      if (_this.dragPrevPageX !== undefined) {
+      if (_this.dragPrevPageX !== null) {
         var _offset = -_this.trackHorizontal.getBoundingClientRect().left + e.clientX - (_this.thumbHorizontal.clientWidth - _this.dragPrevPageX);
 
         _this.content.scrollLeft = _this.computeScrollLeftForThumbOffset(_offset);

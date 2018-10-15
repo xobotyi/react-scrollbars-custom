@@ -419,8 +419,8 @@ export default class Scrollbar extends React.Component
 
     handleDragEnd = () => {
         this.drag = false;
-        this.dragPrevPageX = undefined;
-        this.dragPrevPageY = undefined;
+        this.dragPrevPageX = null;
+        this.dragPrevPageY = null;
 
         document.removeEventListener("mousemove", this.handleDragEvent);
         document.removeEventListener("mouseup", this.handleDragEnd);
@@ -436,11 +436,11 @@ export default class Scrollbar extends React.Component
         if (!this.drag) {return;}
         this.scrollDetect();
 
-        if (this.dragPrevPageY !== undefined) {
+        if (this.dragPrevPageY !== null) {
             const offset = -this.trackVertical.getBoundingClientRect().top + e.clientY - (this.thumbVertical.clientHeight - this.dragPrevPageY);
             this.content.scrollTop = this.computeScrollTopForThumbOffset(offset);
         }
-        if (this.dragPrevPageX !== undefined) {
+        if (this.dragPrevPageX !== null) {
             const offset = -this.trackHorizontal.getBoundingClientRect().left + e.clientX - (this.thumbHorizontal.clientWidth - this.dragPrevPageX);
             this.content.scrollLeft = this.computeScrollLeftForThumbOffset(offset);
         }

@@ -134,6 +134,8 @@ export default class Scrollbar extends React.Component
             || prevProps.permanentScrollbars !== this.props.permanentScrollbars || prevProps.permanentScrollbarX !== this.props.permanentScrollbarX || prevProps.permanentScrollbarY !== this.props.permanentScrollbarY) {
             this.update(true);
         }
+
+        this.addListeners();
     }
 
     componentWillUnmount() {
@@ -141,6 +143,13 @@ export default class Scrollbar extends React.Component
 
         this.handleDragEnd();
         this.removeListeners();
+
+        if (this.scrollDetect.interval) {
+            clearInterval(this.scrollDetect.interval);
+            delete this.scrollDetect.interval;
+
+            if (this.props.onScrollStop) { this.props.onScrollStop(this); }
+        }
     }
 
     /**

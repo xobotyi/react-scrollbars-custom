@@ -64,4 +64,4 @@
 * `scrollToLeft()`: _(Scrollbar)_ Scroll to the left border
 * `scrollToRight()`: _(Scrollbar)_ Scroll to the right border
 * `update(forced=false)`: _(Scrollbar)_ Updates the scrollbars. By default if content or wrapper sizes did not changed - update will not be performed. But you can force the update by passing `true` as first parameter.  
-Keep in mind that forced update will either trigger `onScroll`, `onScrollStart` and `onScrollStop` callbacks as if the scroll was performed.  
+Keep in mind that forced update will either trigger `onScroll` callback.  

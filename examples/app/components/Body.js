@@ -23,7 +23,7 @@ export default class Head extends React.Component
                     <li>Total tests coverage</li>
                     <li>Scrollbars nesting</li>
                 </ul>
-                <p><a href="https://github.com/xobotyi/react-scrollbars-custom/tree/master/docs">Docs on GitHub</a> | <a href="/#benchmark" target="_blank">Benchmark</a></p>
+                <p><a href="https://github.com/xobotyi/react-scrollbars-custom/tree/master/docs">Docs on GitHub</a> | <a href="./#benchmark" target="_blank">Benchmark</a></p>
             </div>
 
             <h2>Examples</h2>

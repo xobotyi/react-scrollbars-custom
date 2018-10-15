@@ -172,8 +172,8 @@ export default function performTests() {
                 render(<Scrollbar defaultStyles={ false } />,
                         node,
                         function () {
-                            expect(this.trackVertical.getAttribute('style')).toBe(null);
-                            expect(this.trackHorizontal.getAttribute('style')).toBe(null);
+                            expect(this.trackVertical.getAttribute('style')).toBe("display: none;");
+                            expect(this.trackHorizontal.getAttribute('style')).toBe("display: none;");
                             done();
                         });
             });

@@ -127,6 +127,7 @@ export default class Scrollbar extends React.Component
         LoopController.registerScrollbar(this);
 
         this.addListeners();
+        this.update();
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
@@ -370,7 +371,7 @@ export default class Scrollbar extends React.Component
 
         const offset = Math.abs(e.target.getBoundingClientRect().top - e.clientY) - this.thumbVertical.clientHeight / 2;
 
-        this.content.scrollTop = this.computeScrollTopForThumbOffset(offset);
+        this.content.scrollTop = this.computeScrollTopForThumbOffset(Math.max(offset, 0));
     };
 
     handleTrackHorizontalMousedownEvent = (e) => {
@@ -379,7 +380,7 @@ export default class Scrollbar extends React.Component
 
         const offset = Math.abs(e.target.getBoundingClientRect().left - e.clientX) - this.thumbHorizontal.clientWidth / 2;
 
-        this.content.scrollLeft = this.computeScrollLeftForThumbOffset(offset);
+        this.content.scrollLeft = this.computeScrollLeftForThumbOffset(Math.max(offset, 0));
     };
 
     handleThumbVerticalMousedownEvent = (e) => {
@@ -454,11 +455,11 @@ export default class Scrollbar extends React.Component
      * @param trackHeight {number} Height of track where thumb placed
      * @return {number}
      */
-    computeThumbVerticalHeight(trackHeight) {
+    computeThumbVerticalHeight = (trackHeight) => {
         const height = Math.ceil(this.content.clientHeight / this.content.scrollHeight * trackHeight);
 
         return trackHeight === height ? 0 : Math.max(height, this.props.minimalThumbsSize);
-    }
+    };
 
     /**
      * Returns horizontal thumb width corresponding viewport width to scrollable content width ratio
@@ -466,11 +467,11 @@ export default class Scrollbar extends React.Component
      * @param trackWidth {number} Width of track where thumb placed
      * @return {number}
      */
-    computeThumbHorizontalWidth(trackWidth) {
+    computeThumbHorizontalWidth = (trackWidth) => {
         const width = Math.ceil(this.content.clientWidth / this.content.scrollWidth * trackWidth);
 
         return trackWidth === width ? 0 : Math.max(width, this.props.minimalThumbsSize);
-    }
+    };
 
     /**
      * Returns content's scrollTop value corresponding given thumb offset
@@ -478,12 +479,11 @@ export default class Scrollbar extends React.Component
      * @param offset {number} Thumb's offset top, in pixels
      * @return {number}
      */
-    computeScrollTopForThumbOffset(offset) {
+    computeScrollTopForThumbOffset = (offset) => {
         const trackVerticalInnerHeight = getInnerHeight(this.trackVertical);
-        const thumbVerticalHeight = this.thumbVertical.clientHeight;
 
-        return offset / (trackVerticalInnerHeight - thumbVerticalHeight) * (this.content.scrollHeight - this.content.clientHeight);
-    }
+        return offset / (trackVerticalInnerHeight - this.thumbVertical.clientHeight) * (this.content.scrollHeight - this.content.clientHeight);
+    };
 
     /**
      * Returns content's scrollLeft value corresponding given thumb offset
@@ -491,19 +491,18 @@ export default class Scrollbar extends React.Component
      * @param offset {number} Thumb's offset left, in pixels
      * @return {number}
      */
-    computeScrollLeftForThumbOffset(offset) {
+    computeScrollLeftForThumbOffset = (offset) => {
         const trackHorizontalInnerWidth = getInnerWidth(this.trackHorizontal);
-        const thumbHorizontalWidth = this.thumbHorizontal.clientWidth;
 
-        return offset / (trackHorizontalInnerWidth - thumbHorizontalWidth) * (this.content.scrollWidth - this.content.clientWidth);
-    }
+        return offset / (trackHorizontalInnerWidth - this.thumbHorizontal.clientWidth) * (this.content.scrollWidth - this.content.clientWidth);
+    };
 
     /**
      * Performs an actualisation of scrollbars and its thumbs
      *
      * @param forced {boolean} Whether to perform an update even if nothing has changed
      */
-    update(forced = false) {
+    update = (forced = false) => {
         // No need to update scrollbars if values had not changed
         if (!forced && (this.previousScrollValues || false)) {
             if (this.previousScrollValues.scrollTop === this.content.scrollTop &&
@@ -565,7 +564,7 @@ export default class Scrollbar extends React.Component
         this.previousScrollValues = currentScrollValues;
 
         return this;
-    }
+    };
 
     render() {
         const {

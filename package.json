@@ -36,6 +36,7 @@
     "babel-loader": "^8.0.4",
     "babel-plugin-istanbul": "^5.1.0",
     "codacy-coverage": "^3.1.0",
+    "cross-env": "^5.2.0",
     "css-loader": "^1.0.0",
     "enzyme": "^3.7.0",
     "enzyme-adapter-react-16": "^1.6.0",
@@ -56,6 +57,7 @@
     "react-dom": "^16.5.2",
     "rimraf": "^2.6.2",
     "sass-loader": "^7.1.0",
+    "sinon": "^7.0.0",
     "webpack": "^4.20.2",
     "webpack-cli": "^3.1.2",
     "webpack-dev-server": "^3.1.9"

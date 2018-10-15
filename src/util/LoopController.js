@@ -8,6 +8,10 @@ class LoopController
         this.rafStep = this.rafStep.bind(this);
     }
 
+    getRegisteredItems() {
+        return [...loopRegister];
+    }
+
     registerScrollbar(scrollbar) {
         if (!loopRegister.includes(scrollbar)) {
             loopRegister.push(scrollbar);

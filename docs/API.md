@@ -6,7 +6,8 @@
     * `defaultStyles`: _(boolean)_ Apply default inline styles _(default: false)_
     * `fallbackScrollbarWidth`: _(number)_ Number of pixels that will be treated as scrollbar width if automated scrollbar width detection will fail. _This parameter used on mobiles, because scrollbars there has an absolute positioning and can't be measured._ _(default: 20)_
     * `minimalThumbsSize`: _(number)_ Minimal size of thumb in pixels _(default: 30)_
-    * `noScroll`: _(boolean)_ Disable both vertical and horizontal scrolling_(default: false)_
+    * `rtl`: _(boolean)_ Override the direction style parameter _(default: undefined)_
+    * `noScroll`: _(boolean)_ Disable both vertical and horizontal scrolling _(default: false)_
     * `noScrollY`: _(boolean)_ Disable vertical scrolling _(default: false)_
     * `noScrollX`: _(boolean)_ Disable horizontal scrolling _(default: false)_
     * `permanentScrollbars`: _(boolean)_ Display both, vertical and horizontal scrollbars permanently, in spite of scrolling possibility _(default: false)_
@@ -63,5 +64,7 @@
 * `scrollToBottom()`: _(Scrollbar)_ Scroll to the bottom border
 * `scrollToLeft()`: _(Scrollbar)_ Scroll to the left border
 * `scrollToRight()`: _(Scrollbar)_ Scroll to the right border
-* `update(forced=false)`: _(Scrollbar)_ Updates the scrollbars. By default if content or wrapper sizes did not changed - update will not be performed. But you can force the update by passing `true` as first parameter.  
+* `update(forced=false, rtlAutodetect=false)`: _(Scrollbar)_ Updates the scrollbars. By default if content or wrapper sizes did not changed - update will not be performed.
+    * `forced`: _(boolean)_ Whether to update the scrollbars even nothing has changed _(default: false)_
+    * `rtlAutodetect`: _(boolean)_ Whether to check and actualize CSS direction value _(default: false)_
 Keep in mind that forced update will either trigger `onScroll` callback.  

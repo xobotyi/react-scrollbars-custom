@@ -127,13 +127,13 @@ export default class Scrollbar extends React.Component
         LoopController.registerScrollbar(this);
 
         this.addListeners();
-        this.update();
+        this.update(true, true);
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        if (prevProps.noScroll !== this.props.noScroll || prevProps.noScrollY !== this.props.noScrollY || prevProps.noScrollX !== this.props.noScrollX
+        if (prevProps.noScroll !== this.props.noScroll || prevProps.noScrollY !== this.props.noScrollY || prevProps.noScrollX !== this.props.noScrollX || prevProps.rtl !== this.props.rtl
             || prevProps.permanentScrollbars !== this.props.permanentScrollbars || prevProps.permanentScrollbarX !== this.props.permanentScrollbarX || prevProps.permanentScrollbarY !== this.props.permanentScrollbarY) {
-            this.update(true);
+            this.update(true, prevProps.rtl !== this.props.rtl);
         }
 
         this.addListeners();
@@ -498,8 +498,9 @@ export default class Scrollbar extends React.Component
      * Performs an actualisation of scrollbars and its thumbs
      *
      * @param forced {boolean} Whether to perform an update even if nothing has changed
+     * @param rtlAutodetect {boolean} Whether to check the CSS value `direction`
      */
-    update = (forced = false) => {
+    update = (forced = false, rtlAutodetect = false) => {
         // No need to update scrollbars if values had not changed
         if (!forced && (this.previousScrollValues || false)) {
             if (this.previousScrollValues.scrollTop === this.content.scrollTop &&
@@ -512,8 +513,22 @@ export default class Scrollbar extends React.Component
             }
         }
 
+        this.isRtl = this.props.rtl || this.isRtl || (rtlAutodetect ? getComputedStyle(this.content).direction === "rtl" : false);
+
+        this.holder.classList.toggle("ScrollbarsCustom-RTL", this.isRtl);
+
         const verticalScrollPossible   = this.content.scrollHeight > this.content.clientHeight && !this.props.noScroll && !this.props.noScrollY,
               horizontalScrollPossible = this.content.scrollWidth > this.content.clientWidth && !this.props.noScroll && !this.props.noScrollX;
+
+        if (verticalScrollPossible && ((this.previousScrollValues || true) || this.isRtl !== (this.previousScrollValues.rtl || false))) {
+            const browserScrollbarWidth  = getScrollbarWidth(),
+                  fallbackScrollbarWidth = this.props.fallbackScrollbarWidth;
+
+            this.content.style.marginLeft = this.isRtl ? -(browserScrollbarWidth || fallbackScrollbarWidth) + "px" : null;
+            this.content.style.paddingLeft = this.isRtl ? (browserScrollbarWidth ? null : fallbackScrollbarWidth) + "px" : null;
+            this.content.style.marginRight = this.isRtl ? null : -(browserScrollbarWidth || fallbackScrollbarWidth) + "px";
+            this.content.style.paddingRight = this.isRtl ? null : (browserScrollbarWidth ? null : fallbackScrollbarWidth) + "px";
+        }
 
         this.trackVertical.style.display = (verticalScrollPossible || this.props.permanentScrollbars || this.props.permanentScrollbarY) ? null : "none";
         this.trackVertical.visibility = (verticalScrollPossible || this.props.permanentScrollbars || this.props.permanentScrollbarY) ? null : "hidden";
@@ -524,7 +539,9 @@ export default class Scrollbar extends React.Component
         if (verticalScrollPossible) {
             const trackVerticalInnerHeight = getInnerHeight(this.trackVertical);
             const thumbVerticalHeight = this.computeThumbVerticalHeight(trackVerticalInnerHeight);
-            const thumbVerticalOffset = thumbVerticalHeight ? this.content.scrollTop / (this.content.scrollHeight - this.content.clientHeight) * (trackVerticalInnerHeight - thumbVerticalHeight) : 0;
+            const thumbVerticalOffset = thumbVerticalHeight
+                                        ? this.content.scrollTop / (this.content.scrollHeight - this.content.clientHeight) * (trackVerticalInnerHeight - thumbVerticalHeight)
+                                        : 0;
 
             this.thumbVertical.style.transform = `translateY(${thumbVerticalOffset}px)`;
             this.thumbVertical.style.height = thumbVerticalHeight + "px";
@@ -537,7 +554,13 @@ export default class Scrollbar extends React.Component
         if (horizontalScrollPossible) {
             const trackHorizontalInnerWidth = getInnerWidth(this.trackHorizontal);
             const thumbHorizontalWidth = this.computeThumbHorizontalWidth(trackHorizontalInnerWidth);
-            const thumbHorizontalOffset = thumbHorizontalWidth ? this.content.scrollLeft / (this.content.scrollWidth - this.content.clientWidth) * (trackHorizontalInnerWidth - thumbHorizontalWidth) : 0;
+            let thumbHorizontalOffset = thumbHorizontalWidth
+                                        ? this.content.scrollLeft / (this.content.scrollWidth - this.content.clientWidth) * (trackHorizontalInnerWidth - thumbHorizontalWidth)
+                                        : 0;
+
+            if (this.isRtl) {
+                thumbHorizontalOffset = -(trackHorizontalInnerWidth - thumbHorizontalWidth - thumbHorizontalOffset);
+            }
 
             this.thumbHorizontal.style.transform = `translateX(${thumbHorizontalOffset}px)`;
             this.thumbHorizontal.style.width = thumbHorizontalWidth + "px";
@@ -554,6 +577,7 @@ export default class Scrollbar extends React.Component
             scrollWidth:  this.content.scrollWidth,
             clientHeight: this.content.clientHeight,
             clientWidth:  this.content.clientWidth,
+            rtl:          this.props.rtl,
         };
 
         (this.previousScrollValues || false) && this.props.onScroll && this.props.onScroll(currentScrollValues, this);
@@ -569,7 +593,7 @@ export default class Scrollbar extends React.Component
                   minimalThumbsSize, fallbackScrollbarWidth, scrollDetectionThreshold,
 
                   // boolean props
-                  defaultStyles, noScroll, noScrollX, noScrollY, permanentScrollbars, permanentScrollbarX, permanentScrollbarY,
+                  defaultStyles, noScroll, noScrollX, noScrollY, permanentScrollbars, permanentScrollbarX, permanentScrollbarY, rtl,
 
                   // holder element props
                   tagName, children, style, className,
@@ -614,6 +638,7 @@ export default class Scrollbar extends React.Component
         const holderStyles          = {
                   ...style,
                   ...(defaultStyles && defaultElementsStyles.holder),
+                  ...({direction: (rtl === true && "rtl") || (rtl === false && "ltr") || null}),
               },
               wrapperStyles         = {
                   ...wrapperStyle,
@@ -626,9 +651,7 @@ export default class Scrollbar extends React.Component
                   ...defaultElementsStyles.content,
                   overflowX:     "scroll",
                   overflowY:     "scroll",
-                  marginRight:   -(browserScrollbarWidth || fallbackScrollbarWidth),
                   marginBottom:  -(browserScrollbarWidth || fallbackScrollbarWidth),
-                  paddingRight:  (browserScrollbarWidth ? null : fallbackScrollbarWidth),
                   paddingBottom: (browserScrollbarWidth ? null : fallbackScrollbarWidth),
               },
               trackVerticalStyles   = {

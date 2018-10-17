@@ -87,3 +87,19 @@ class App extends Component
     }
 }
 ```
+
+### RTL support
+`react-scrollbars-custom` supports right-to-left direction out of the box, you don't have to pass extra properties to make it work, everything is automated, but you can override it.  
+But it has several nuances you should know: 
+* Due to performance reasons, direction detection happens in 3 situations:
+    * On component mount;
+    * On rtl property change;
+    * On call `scrollbar.update(undefined, true);`;
+* When rtl direction detected - `ScrollbarsCustom-RTL` classname will be added to the holder;
+* If `rtl` property has not set at all (undefined) - direction will be determined according to CSS;
+* If `rtl` property has `true` - `direction: rtl;` style will be applied to holder;
+* If `rtl` property has `false` - `direction: ltr;` style will be applied to holder;
+* `rtl` property has priority over the `style` property.  
+```javascript
+<Scrollbar style={{direction: 'ltr'}} rtl /> // will have RTL direction
+```

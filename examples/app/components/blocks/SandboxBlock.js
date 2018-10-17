@@ -20,11 +20,14 @@ export default class SandboxBlock extends React.Component
         this.handleScrollBottomClick = this.handleScrollBottomClick.bind(this);
         this.handleScrollLeftClick = this.handleScrollLeftClick.bind(this);
         this.handleScrollRightClick = this.handleScrollRightClick.bind(this);
+        this.toggleRtl = this.toggleRtl.bind(this);
 
         this.state = {
             noScroll:  false,
             noScrollY: false,
             noScrollX: false,
+
+            rtl: false,
 
             permanentTracks: false,
             permanentTrackY: false,
@@ -91,6 +94,13 @@ export default class SandboxBlock extends React.Component
                       });
     }
 
+    toggleRtl() {
+        this.setState({
+                          ...this.state,
+                          rtl: !this.state.rtl,
+                      });
+    }
+
     handleAddParagraphClick() {
         this.setState({
                           ...this.state,
@@ -120,7 +130,7 @@ export default class SandboxBlock extends React.Component
     }
 
     render() {
-        const {noScroll, noScrollY, noScrollX, permanentTracks, permanentTrackY, permanentTrackX} = this.state;
+        const {noScroll, noScrollY, noScrollX, permanentTracks, permanentTrackY, permanentTrackX, rtl} = this.state;
 
         return (
                 <div className="block" id="SandboxBlock">
@@ -133,6 +143,7 @@ export default class SandboxBlock extends React.Component
                         <div className="button" key="permanentTracks" onClick={ this.togglePermanentTracks }>{ permanentTracks ? "Show tracks if needed" : "Always show tracks" }</div>
                         <div className="button" key="permanentTracksY" onClick={ this.togglePermanentTrackY }>{ permanentTrackY || permanentTracks ? "Show track Y if needed" : "Always show track Y" }</div>
                         <div className="button" key="permanentTracksX" onClick={ this.togglePermanentTrackX }>{ permanentTrackX || permanentTracks ? "Show track X if needed" : "Always show track X" }</div>
+                        <div className="button" key="direction" onClick={ this.toggleRtl }>{ rtl ? "set direction LRT" : "set direction RTL" }</div>
                         <br />
                         <div className="button" key="randomPosition" onClick={ this.handleRandomPositionClick }>Random position</div>
                         <div className="button" key="scrollTop" onClick={ this.handleScrollTopClick }>Scroll top</div>
@@ -149,6 +160,7 @@ export default class SandboxBlock extends React.Component
                                 noScroll={ noScroll }
                                 noScrollY={ noScrollY }
                                 noScrollX={ noScrollX }
+                                rtl={ rtl }
                                 permanentScrollbars={ permanentTracks }
                                 permanentScrollbarY={ permanentTrackY }
                                 permanentScrollbarX={ permanentTrackX }>

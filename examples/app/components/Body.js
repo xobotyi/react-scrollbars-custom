@@ -22,6 +22,7 @@ export default class Head extends React.Component
                     <li>No matter what changes the content - scrollbars always stay actual</li>
                     <li>Total tests coverage</li>
                     <li>Scrollbars nesting</li>
+                    <li>RTL support</li>
                 </ul>
                 <p><a href="https://github.com/xobotyi/react-scrollbars-custom/tree/master/docs">Docs on GitHub</a> | <a href="./#benchmark" target="_blank">Benchmark</a></p>
             </div>

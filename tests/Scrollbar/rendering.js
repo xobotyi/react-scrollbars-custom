@@ -198,7 +198,6 @@ export default function performTests() {
                             expect(this.content.style.left).toBe(0 + 'px');
                             expect(this.content.style.right).toBe(0 + 'px');
                             expect(this.content.style.overflow).toBe("scroll");
-                            expect(this.content.style.marginRight).toBe(-getScrollbarWidth() + 'px');
                             expect(this.content.style.marginBottom).toBe(-getScrollbarWidth() + 'px');
                             done();
                         });
@@ -279,6 +278,76 @@ export default function performTests() {
                         function () {
                             setTimeout(() => {
                                 expect(this.trackHorizontal.style.display).not.toBe("none");
+
+                                done();
+                            }, 100);
+                        });
+            });
+        });
+
+        describe("when RTL is set", () => {
+            it("left part of content should be hidden", (done) => {
+                render(<Scrollbar style={ {width: 100, height: 100} } rtl>
+                            <div style={ {width: 200, height: 200} } />
+                        </Scrollbar>,
+                        node,
+                        function () {
+                            setTimeout(() => {
+                                expect(this.content.style.marginRight).toBe("");
+                                expect(this.content.style.marginLeft).toBe(-getScrollbarWidth() + 'px');
+
+                                done();
+                            }, 100);
+                        });
+            });
+
+            it("should override direction value", (done) => {
+                let scrollbar = null;
+                render(<div style={ {direction: "rtl"} }>
+                            <Scrollbar style={ {width: 100, height: 100} } ref={ (ref) => {scrollbar = ref;} } rtl={ false }>
+                                <div style={ {width: 200, height: 200} } />
+                            </Scrollbar>
+                        </div>,
+                        node,
+                        function () {
+                            setTimeout(() => {
+                                expect(scrollbar.holder.classList.contains("ScrollbarsCustom-RTL")).toBeFalsy();
+
+                                done();
+                            }, 100);
+                        });
+            });
+        });
+
+        describe("when RTL is not set", () => {
+            it("should autodetect direction (when set rtl)", (done) => {
+                let scrollbar = null;
+                render(<div style={ {direction: "rtl"} }>
+                            <Scrollbar style={ {width: 100, height: 100} } ref={ (ref) => {scrollbar = ref;} }>
+                                <div style={ {width: 200, height: 200} } />
+                            </Scrollbar>
+                        </div>,
+                        node,
+                        function () {
+                            setTimeout(() => {
+                                expect(scrollbar.holder.classList.contains("ScrollbarsCustom-RTL")).toBeTruthy();
+
+                                done();
+                            }, 100);
+                        });
+            });
+
+            it("should autodetect direction (when set ltr)", (done) => {
+                let scrollbar = null;
+                render(<div style={ {direction: "ltr"} }>
+                            <Scrollbar style={ {width: 100, height: 100} } ref={ (ref) => {scrollbar = ref;} } rtl={ false }>
+                                <div style={ {width: 200, height: 200} } />
+                            </Scrollbar>
+                        </div>,
+                        node,
+                        function () {
+                            setTimeout(() => {
+                                expect(scrollbar.holder.classList.contains("ScrollbarsCustom-RTL")).toBeFalsy();
 
                                 done();
                             }, 100);

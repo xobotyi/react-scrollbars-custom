@@ -1,7 +1,10 @@
 import { Component, CSSProperties, SFC } from "react";
 
+/**
+ * Props passed to custom renderers by `Scrollbar`.
+ */
 export interface ScrollbarRendererProps {
-    className?: string | string[];
+    className: string;
     style?: CSSProperties;
 }
 

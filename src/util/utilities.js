@@ -27,3 +27,16 @@ export function getScrollbarWidth() {
 
     return scrollbarWidth;
 }
+
+/**
+ * Limit a number to fall in a specified range.
+ *
+ * @param {number} min The smallest allowed value
+ * @param {number} value The value to clamp
+ * @param {number} max The largest allowed value
+ *
+ * @returns {number} The clamped value.
+ */
+export function clamp(min, value, max) {
+    return Math.max(min, Math.min(value, max));
+}

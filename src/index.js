@@ -1,8 +1,8 @@
-import PropTypes                         from "prop-types";
-import React                             from "react";
-import { getInnerHeight, getInnerWidth } from "./util/getInnerSizes";
-import LoopController                    from "./util/LoopController";
-import { getScrollbarWidth, isset }      from "./util/utilities";
+import PropTypes                            from "prop-types";
+import React                                from "react";
+import { getInnerHeight, getInnerWidth }    from "./util/getInnerSizes";
+import LoopController                       from "./util/LoopController";
+import { clamp, getScrollbarWidth, isset }  from "./util/utilities";
 
 function divRenderer(props) {
     return <div { ...props } />;
@@ -565,7 +565,7 @@ export default class Scrollbar extends React.Component
             const trackVerticalInnerHeight = getInnerHeight(this.trackVertical);
             const thumbVerticalHeight = this.computeThumbVerticalHeight(trackVerticalInnerHeight);
             const thumbVerticalOffset = thumbVerticalHeight
-                                        ? this.content.scrollTop / (this.content.scrollHeight - this.content.clientHeight) * (trackVerticalInnerHeight - thumbVerticalHeight)
+                                        ? clamp(0, this.content.scrollTop / (this.content.scrollHeight - this.content.clientHeight), 1) * (trackVerticalInnerHeight - thumbVerticalHeight)
                                         : 0;
 
             this.thumbVertical.style.transform = `translateY(${thumbVerticalOffset}px)`;
@@ -580,7 +580,7 @@ export default class Scrollbar extends React.Component
             const trackHorizontalInnerWidth = getInnerWidth(this.trackHorizontal);
             const thumbHorizontalWidth = this.computeThumbHorizontalWidth(trackHorizontalInnerWidth);
             let thumbHorizontalOffset = thumbHorizontalWidth
-                                        ? this.content.scrollLeft / (this.content.scrollWidth - this.content.clientWidth) * (trackHorizontalInnerWidth - thumbHorizontalWidth)
+                                        ? clamp(0, this.content.scrollLeft / (this.content.scrollWidth - this.content.clientWidth), 1) * (trackHorizontalInnerWidth - thumbHorizontalWidth)
                                         : 0;
 
             if (this.isRtl) {

@@ -43,4 +43,18 @@ describe("utilities", () => {
                expect(sbWidth === 17 || sbWidth === 15).toBeTruthy();
            });
     });
+
+    describe("clamp", () => {
+        it("allows valid values", () => {
+            expect(clamp(0, 0.5, 1)).toBe(0.5);
+        });
+
+        it("applies a minimum", () => {
+            expect(clamp(0, -2, 1)).toBe(0);
+        });
+
+        it("applies a maximum", () => {
+            expect(clamp(0, 1.02, 1)).toBe(1);
+        })
+    })
 });

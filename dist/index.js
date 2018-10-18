@@ -328,6 +328,7 @@ function (_React$Component) {
 
     _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "update", function () {
       var forced = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
+      var rtlAutodetect = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
 
       // No need to update scrollbars if values had not changed
       if (!forced && (_this.previousScrollValues || false)) {
@@ -336,8 +337,22 @@ function (_React$Component) {
         }
       }
 
+      _this.isRtl = _this.props.rtl || _this.isRtl || (rtlAutodetect ? getComputedStyle(_this.content).direction === "rtl" : false);
+
+      _this.holder.classList.toggle("ScrollbarsCustom-RTL", _this.isRtl);
+
       var verticalScrollPossible = _this.content.scrollHeight > _this.content.clientHeight && !_this.props.noScroll && !_this.props.noScrollY,
           horizontalScrollPossible = _this.content.scrollWidth > _this.content.clientWidth && !_this.props.noScroll && !_this.props.noScrollX;
+
+      if (verticalScrollPossible && (_this.previousScrollValues || true || _this.isRtl !== (_this.previousScrollValues.rtl || false))) {
+        var browserScrollbarWidth = (0, _utilities.getScrollbarWidth)(),
+            fallbackScrollbarWidth = _this.props.fallbackScrollbarWidth;
+        _this.content.style.marginLeft = _this.isRtl ? -(browserScrollbarWidth || fallbackScrollbarWidth) + "px" : null;
+        _this.content.style.paddingLeft = _this.isRtl ? (browserScrollbarWidth ? null : fallbackScrollbarWidth) + "px" : null;
+        _this.content.style.marginRight = _this.isRtl ? null : -(browserScrollbarWidth || fallbackScrollbarWidth) + "px";
+        _this.content.style.paddingRight = _this.isRtl ? null : (browserScrollbarWidth ? null : fallbackScrollbarWidth) + "px";
+      }
+
       _this.trackVertical.style.display = verticalScrollPossible || _this.props.permanentScrollbars || _this.props.permanentScrollbarY ? null : "none";
       _this.trackVertical.visibility = verticalScrollPossible || _this.props.permanentScrollbars || _this.props.permanentScrollbarY ? null : "hidden";
       _this.trackHorizontal.style.display = horizontalScrollPossible || _this.props.permanentScrollbars || _this.props.permanentScrollbarX ? null : "none";
@@ -362,6 +377,11 @@ function (_React$Component) {
         var thumbHorizontalWidth = _this.computeThumbHorizontalWidth(trackHorizontalInnerWidth);
 
         var thumbHorizontalOffset = thumbHorizontalWidth ? _this.content.scrollLeft / (_this.content.scrollWidth - _this.content.clientWidth) * (trackHorizontalInnerWidth - thumbHorizontalWidth) : 0;
+
+        if (_this.isRtl) {
+          thumbHorizontalOffset = -(trackHorizontalInnerWidth - thumbHorizontalWidth - thumbHorizontalOffset);
+        }
+
         _this.thumbHorizontal.style.transform = "translateX(".concat(thumbHorizontalOffset, "px)");
         _this.thumbHorizontal.style.width = thumbHorizontalWidth + "px";
       } else {
@@ -375,7 +395,8 @@ function (_React$Component) {
         scrollHeight: _this.content.scrollHeight,
         scrollWidth: _this.content.scrollWidth,
         clientHeight: _this.content.clientHeight,
-        clientWidth: _this.content.clientWidth
+        clientWidth: _this.content.clientWidth,
+        rtl: _this.props.rtl
       };
       (_this.previousScrollValues || false) && _this.props.onScroll && _this.props.onScroll(currentScrollValues, _assertThisInitialized(_assertThisInitialized(_this)));
       _this.previousScrollValues = currentScrollValues;
@@ -391,13 +412,13 @@ function (_React$Component) {
       _LoopController.default.registerScrollbar(this);
 
       this.addListeners();
-      this.update();
+      this.update(true, true);
     }
   }, {
     key: "componentDidUpdate",
     value: function componentDidUpdate(prevProps, prevState, snapshot) {
-      if (prevProps.noScroll !== this.props.noScroll || prevProps.noScrollY !== this.props.noScrollY || prevProps.noScrollX !== this.props.noScrollX || prevProps.permanentScrollbars !== this.props.permanentScrollbars || prevProps.permanentScrollbarX !== this.props.permanentScrollbarX || prevProps.permanentScrollbarY !== this.props.permanentScrollbarY) {
-        this.update(true);
+      if (prevProps.noScroll !== this.props.noScroll || prevProps.noScrollY !== this.props.noScrollY || prevProps.noScrollX !== this.props.noScrollX || prevProps.rtl !== this.props.rtl || prevProps.permanentScrollbars !== this.props.permanentScrollbars || prevProps.permanentScrollbarX !== this.props.permanentScrollbarX || prevProps.permanentScrollbarY !== this.props.permanentScrollbarY) {
+        this.update(true, prevProps.rtl !== this.props.rtl);
       }
 
       this.addListeners();
@@ -509,6 +530,9 @@ function (_React$Component) {
           permanentScrollbars = _this$props2.permanentScrollbars,
           permanentScrollbarX = _this$props2.permanentScrollbarX,
           permanentScrollbarY = _this$props2.permanentScrollbarY,
+          rtl = _this$props2.rtl,
+          _this$props2$momentum = _this$props2.momentum,
+          momentum = _this$props2$momentum === void 0 ? true : _this$props2$momentum,
           tagName = _this$props2.tagName,
           children = _this$props2.children,
           style = _this$props2.style,
@@ -534,7 +558,7 @@ function (_React$Component) {
           renderTrackHorizontal = _this$props2.renderTrackHorizontal,
           renderThumbVertical = _this$props2.renderThumbVertical,
           renderThumbHorizontal = _this$props2.renderThumbHorizontal,
-          props = _objectWithoutProperties(_this$props2, ["minimalThumbsSize", "fallbackScrollbarWidth", "scrollDetectionThreshold", "defaultStyles", "noScroll", "noScrollX", "noScrollY", "permanentScrollbars", "permanentScrollbarX", "permanentScrollbarY", "tagName", "children", "style", "className", "wrapperStyle", "contentStyle", "trackVerticalStyle", "trackHorizontalStyle", "thumbVerticalStyle", "thumbHorizontalStyle", "wrapperClassName", "contentClassName", "trackVerticalClassName", "trackHorizontalClassName", "thumbVerticalClassName", "thumbHorizontalClassName", "onScroll", "onScrollStart", "onScrollStop", "renderWrapper", "renderContent", "renderTrackVertical", "renderTrackHorizontal", "renderThumbVertical", "renderThumbHorizontal"]);
+          props = _objectWithoutProperties(_this$props2, ["minimalThumbsSize", "fallbackScrollbarWidth", "scrollDetectionThreshold", "defaultStyles", "noScroll", "noScrollX", "noScrollY", "permanentScrollbars", "permanentScrollbarX", "permanentScrollbarY", "rtl", "momentum", "tagName", "children", "style", "className", "wrapperStyle", "contentStyle", "trackVerticalStyle", "trackHorizontalStyle", "thumbVerticalStyle", "thumbHorizontalStyle", "wrapperClassName", "contentClassName", "trackVerticalClassName", "trackHorizontalClassName", "thumbVerticalClassName", "thumbHorizontalClassName", "onScroll", "onScrollStart", "onScrollStop", "renderWrapper", "renderContent", "renderTrackVertical", "renderTrackHorizontal", "renderThumbVertical", "renderThumbHorizontal"]);
 
       var browserScrollbarWidth = (0, _utilities.getScrollbarWidth)();
       var holderClassNames = ["ScrollbarsCustom-holder"].concat(className || false ? typeof className === "string" ? [className] : className : []).join(" "),
@@ -545,7 +569,9 @@ function (_React$Component) {
           thumbVerticalClassNames = ["ScrollbarsCustom-thumb", "ScrollbarsCustom-thumbVertical"].concat(trackHorizontalClassName || false ? typeof trackHorizontalClassName === "string" ? [trackHorizontalClassName] : trackHorizontalClassName : []).join(" "),
           thumbHorizontalClassNames = ["ScrollbarsCustom-thumb", "ScrollbarsCustom-thumbHorizontal"].concat(thumbHorizontalClassName || false ? typeof thumbHorizontalClassName === "string" ? [thumbHorizontalClassName] : thumbHorizontalClassName : []).join(" ");
 
-      var holderStyles = _objectSpread({}, style, defaultStyles && defaultElementsStyles.holder),
+      var holderStyles = _objectSpread({}, style, defaultStyles && defaultElementsStyles.holder, {
+        direction: rtl === true && "rtl" || rtl === false && "ltr" || null
+      }),
           wrapperStyles = _objectSpread({}, wrapperStyle, defaultStyles && defaultElementsStyles.wrapper, {
         position: "relative",
         overflow: "hidden"
@@ -553,10 +579,10 @@ function (_React$Component) {
           contentStyles = _objectSpread({}, contentStyle, defaultElementsStyles.content, {
         overflowX: "scroll",
         overflowY: "scroll",
-        marginRight: -(browserScrollbarWidth || fallbackScrollbarWidth),
         marginBottom: -(browserScrollbarWidth || fallbackScrollbarWidth),
-        paddingRight: browserScrollbarWidth ? null : fallbackScrollbarWidth,
         paddingBottom: browserScrollbarWidth ? null : fallbackScrollbarWidth
+      }, momentum && {
+        WebkitOverflowScrolling: "touch"
       }),
           trackVerticalStyles = _objectSpread({}, trackVerticalStyle, defaultStyles && defaultElementsStyles.trackVertical),
           trackHorizontalStyles = _objectSpread({}, trackHorizontalStyle, defaultStyles && defaultElementsStyles.trackHorizontal),
@@ -767,6 +793,8 @@ exports.default = Scrollbar;
 _defineProperty(Scrollbar, "propTypes", {
   minimalThumbsSize: _propTypes.default.number,
   fallbackScrollbarWidth: _propTypes.default.number,
+  rtl: _propTypes.default.bool,
+  momentum: _propTypes.default.bool,
   defaultStyles: _propTypes.default.bool,
   permanentScrollbars: _propTypes.default.bool,
   permanentScrollbarX: _propTypes.default.bool,

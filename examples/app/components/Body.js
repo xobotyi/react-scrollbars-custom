@@ -23,6 +23,7 @@ export default class Head extends React.Component
                     <li>Total tests coverage</li>
                     <li>Scrollbars nesting</li>
                     <li>RTL support</li>
+                    <li>momentum scrolling for iOS</li>
                 </ul>
                 <p><a href="https://github.com/xobotyi/react-scrollbars-custom/tree/master/docs">Docs on GitHub</a> | <a href="./#benchmark" target="_blank">Benchmark</a></p>
             </div>

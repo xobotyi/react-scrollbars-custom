@@ -35,13 +35,13 @@ export interface ScrollbarProps {
 
     tagName?: string;
 
-    className?: string | string[];
-    wrapperClassName?: string | string[];
-    contentClassName?: string | string[];
-    trackVerticalClassName?: string | string[];
-    trackHorizontalClassName?: string | string[];
-    thumbVerticalClassName?: string | string[];
-    thumbHorizontalClassName?: string | string[];
+    className?: string;
+    wrapperClassName?: string;
+    contentClassName?: string;
+    trackVerticalClassName?: string;
+    trackHorizontalClassName?: string;
+    thumbVerticalClassName?: string;
+    thumbHorizontalClassName?: string;
 
     style?: CSSProperties;
     wrapperStyle?: CSSProperties;

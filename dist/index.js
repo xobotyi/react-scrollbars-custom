@@ -345,9 +345,9 @@ function (_React$Component) {
       !(0, _utilities.isset)(isRtl) && (isRtl = rtlAutodetect ? getComputedStyle(_this.content).direction === "rtl" : _this.isRtl || false);
 
       if (forced || _this.isRtl !== isRtl) {
-        _this.holder.classList.toggle("ScrollbarsCustom-RTL", isRtl);
-
         _this.isRtl = isRtl;
+
+        _this.holder.classList.toggle("ScrollbarsCustom-RTL", _this.isRtl);
       }
 
       if (forced) {
@@ -355,10 +355,15 @@ function (_React$Component) {
             fallbackScrollbarWidth = _this.props.fallbackScrollbarWidth;
 
         if (verticalScrollNotBlocked) {
-          _this.content.style.marginLeft = isRtl ? -(browserScrollbarWidth || fallbackScrollbarWidth) + "px" : null;
-          _this.content.style.paddingLeft = isRtl ? (browserScrollbarWidth ? null : fallbackScrollbarWidth) + "px" : null;
-          _this.content.style.marginRight = isRtl ? null : -(browserScrollbarWidth || fallbackScrollbarWidth) + "px";
-          _this.content.style.paddingRight = isRtl ? null : (browserScrollbarWidth ? null : fallbackScrollbarWidth) + "px";
+          _this.content.style.marginLeft = _this.isRtl ? -(browserScrollbarWidth || fallbackScrollbarWidth) + "px" : null;
+          _this.content.style.paddingLeft = _this.isRtl ? (browserScrollbarWidth ? null : fallbackScrollbarWidth) + "px" : null;
+          _this.content.style.marginRight = _this.isRtl ? null : -(browserScrollbarWidth || fallbackScrollbarWidth) + "px";
+          _this.content.style.paddingRight = _this.isRtl ? null : (browserScrollbarWidth ? null : fallbackScrollbarWidth) + "px";
+
+          if (_this.props.defaultStyles) {
+            _this.trackVertical.style.left = _this.isRtl ? 0 : null;
+            _this.trackVertical.style.right = _this.isRtl ? null : 0;
+          }
         } else {
           _this.content.style.marginLeft = _this.content.style.paddingLeft = _this.content.style.marginRight = _this.content.style.paddingRight = null;
         }
@@ -429,7 +434,7 @@ function (_React$Component) {
   }, {
     key: "componentDidUpdate",
     value: function componentDidUpdate(prevProps, prevState, snapshot) {
-      if (prevProps.noScroll !== this.props.noScroll || prevProps.noScrollY !== this.props.noScrollY || prevProps.noScrollX !== this.props.noScrollX || prevProps.rtl !== this.props.rtl || prevProps.permanentScrollbars !== this.props.permanentScrollbars || prevProps.permanentScrollbarX !== this.props.permanentScrollbarX || prevProps.permanentScrollbarY !== this.props.permanentScrollbarY) {
+      if (prevProps.noScroll !== this.props.noScroll || prevProps.noScrollY !== this.props.noScrollY || prevProps.noScrollX !== this.props.noScrollX || prevProps.rtl !== this.props.rtl || prevProps.defaultStyles !== this.props.defaultStyles || prevProps.permanentScrollbars !== this.props.permanentScrollbars || prevProps.permanentScrollbarX !== this.props.permanentScrollbarX || prevProps.permanentScrollbarY !== this.props.permanentScrollbarY) {
         this.update(true, prevProps.rtl !== this.props.rtl);
       }
 

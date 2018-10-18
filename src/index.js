@@ -134,7 +134,8 @@ export default class Scrollbar extends React.Component
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        if (prevProps.noScroll !== this.props.noScroll || prevProps.noScrollY !== this.props.noScrollY || prevProps.noScrollX !== this.props.noScrollX || prevProps.rtl !== this.props.rtl
+        if (prevProps.noScroll !== this.props.noScroll || prevProps.noScrollY !== this.props.noScrollY || prevProps.noScrollX !== this.props.noScrollX
+            || prevProps.rtl !== this.props.rtl || prevProps.defaultStyles !== this.props.defaultStyles
             || prevProps.permanentScrollbars !== this.props.permanentScrollbars || prevProps.permanentScrollbarX !== this.props.permanentScrollbarX || prevProps.permanentScrollbarY !== this.props.permanentScrollbarY) {
             this.update(true, prevProps.rtl !== this.props.rtl);
         }
@@ -526,9 +527,9 @@ export default class Scrollbar extends React.Component
         !isset(isRtl) && (isRtl = rtlAutodetect ? getComputedStyle(this.content).direction === "rtl" : this.isRtl || false);
 
         if (forced || this.isRtl !== isRtl) {
-            this.holder.classList.toggle("ScrollbarsCustom-RTL", isRtl);
-
             this.isRtl = isRtl;
+            this.holder.classList.toggle("ScrollbarsCustom-RTL", this.isRtl);
+
         }
 
         if (forced) {
@@ -536,10 +537,15 @@ export default class Scrollbar extends React.Component
                   fallbackScrollbarWidth = this.props.fallbackScrollbarWidth;
 
             if (verticalScrollNotBlocked) {
-                this.content.style.marginLeft = isRtl ? -(browserScrollbarWidth || fallbackScrollbarWidth) + "px" : null;
-                this.content.style.paddingLeft = isRtl ? (browserScrollbarWidth ? null : fallbackScrollbarWidth) + "px" : null;
-                this.content.style.marginRight = isRtl ? null : -(browserScrollbarWidth || fallbackScrollbarWidth) + "px";
-                this.content.style.paddingRight = isRtl ? null : (browserScrollbarWidth ? null : fallbackScrollbarWidth) + "px";
+                this.content.style.marginLeft = this.isRtl ? -(browserScrollbarWidth || fallbackScrollbarWidth) + "px" : null;
+                this.content.style.paddingLeft = this.isRtl ? (browserScrollbarWidth ? null : fallbackScrollbarWidth) + "px" : null;
+                this.content.style.marginRight = this.isRtl ? null : -(browserScrollbarWidth || fallbackScrollbarWidth) + "px";
+                this.content.style.paddingRight = this.isRtl ? null : (browserScrollbarWidth ? null : fallbackScrollbarWidth) + "px";
+
+                if (this.props.defaultStyles) {
+                    this.trackVertical.style.left = this.isRtl ? 0 : null;
+                    this.trackVertical.style.right = this.isRtl ? null : 0;
+                }
             }
             else {
                 this.content.style.marginLeft =

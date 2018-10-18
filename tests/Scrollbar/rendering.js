@@ -130,32 +130,6 @@ export default function performTests() {
                             done();
                         });
             });
-
-            it("should apply if it is an array", (done) => {
-                render(<Scrollbar className={ ['awesome', 'classname'] }
-                                  wrapperClassName={ ['awesome', 'classname'] } contentClassName={ ['awesome', 'classname'] }
-                                  trackHorizontalClassName={ ['awesome', 'classname'] } trackVerticalClassName={ ['awesome', 'classname'] }
-                                  thumbHorizontalClassName={ ['awesome', 'classname'] } thumbVerticalClassName={ ['awesome', 'classname'] } />,
-                        node,
-                        function () {
-                            expect(this.holder.classList.contains('awesome')).toBeTruthy();
-                            expect(this.holder.classList.contains('classname')).toBeTruthy();
-                            expect(this.wrapper.classList.contains('awesome')).toBeTruthy();
-                            expect(this.wrapper.classList.contains('classname')).toBeTruthy();
-                            expect(this.content.classList.contains('awesome')).toBeTruthy();
-                            expect(this.content.classList.contains('classname')).toBeTruthy();
-                            expect(this.trackHorizontal.classList.contains('awesome')).toBeTruthy();
-                            expect(this.trackHorizontal.classList.contains('classname')).toBeTruthy();
-                            expect(this.trackVertical.classList.contains('awesome')).toBeTruthy();
-                            expect(this.trackVertical.classList.contains('classname')).toBeTruthy();
-                            expect(this.thumbHorizontal.classList.contains('awesome')).toBeTruthy();
-                            expect(this.thumbHorizontal.classList.contains('classname')).toBeTruthy();
-                            expect(this.thumbVertical.classList.contains('awesome')).toBeTruthy();
-                            expect(this.thumbVertical.classList.contains('classname')).toBeTruthy();
-
-                            done();
-                        });
-            });
         });
 
         describe("when disabling default styles", () => {

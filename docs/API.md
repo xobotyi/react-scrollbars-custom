@@ -17,13 +17,13 @@
     * `scrollDetectionThreshold`: _(number)_ Scroll process check interval in milliseconds _(default: 100)_
     * `contentSizeTrack`: _(boolean)_ Automatically check content's sizes to actualize the scrollbars. Useful when dom is changed not only by react. _(default: false)_
     * `contentSizeTrackInterval`: _(number)_ Interval between content's size check, in milliseconds _(default: 200)_
-    * `className`: _(string|array)_ Additional classnames to add to holder element _(default: undefined)_
-    * `wrapperClassName`: _(string|array)_ Additional classnames to add to wrapper element _(default: undefined)_
-    * `contentClassName`: _(string|array)_ Additional classnames to add to content element _(default: undefined)_
-    * `trackVerticalClassName`: _(string|array)_ Additional classnames to add to vertical track element _(default: undefined)_
-    * `trackHorizontalClassName`: _(string|array)_ Additional classnames to add to horizontal track element _(default: undefined)_
-    * `thumbVerticalClassName`: _(string|array)_ Additional classnames to add to vertical track element _(default: undefined)_
-    * `thumbHorizontalClassName`: _(string|array)_ Additional classnames to add to horizontal track element _(default: undefined)_
+    * `className`: _(string)_ Additional classname to add to holder element _(default: undefined)_
+    * `wrapperClassName`: _(string)_ Additional classname to add to wrapper element _(default: undefined)_
+    * `contentClassName`: _(string)_ Additional classname to add to content element _(default: undefined)_
+    * `trackVerticalClassName`: _(string)_ Additional classname to add to vertical track element _(default: undefined)_
+    * `trackHorizontalClassName`: _(string)_ Additional classname to add to horizontal track element _(default: undefined)_
+    * `thumbVerticalClassName`: _(string)_ Additional classname to add to vertical track element _(default: undefined)_
+    * `thumbHorizontalClassName`: _(string)_ Additional classname to add to horizontal track element _(default: undefined)_
     * `style`: _(object)_ Additional styles for holder element _(default: undefined)_
     * `wrapperStyle`: _(object)_ Additional styles for wrapper element _(default: undefined)_
     * `contentStyle`: _(object)_ Additional styles for content element _(default: undefined)_

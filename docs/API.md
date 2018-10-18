@@ -7,6 +7,7 @@
     * `fallbackScrollbarWidth`: _(number)_ Number of pixels that will be treated as scrollbar width if automated scrollbar width detection will fail. _This parameter used on mobiles, because scrollbars there has an absolute positioning and can't be measured._ _(default: 20)_
     * `minimalThumbsSize`: _(number)_ Minimal size of thumb in pixels _(default: 30)_
     * `rtl`: _(boolean)_ Override the direction style parameter _(default: undefined)_
+    * `momentum`: _(boolean)_ Whether to use momentum scrolling on iOS _(default: true)_
     * `noScroll`: _(boolean)_ Disable both vertical and horizontal scrolling _(default: false)_
     * `noScrollY`: _(boolean)_ Disable vertical scrolling _(default: false)_
     * `noScrollX`: _(boolean)_ Disable horizontal scrolling _(default: false)_

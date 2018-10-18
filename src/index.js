@@ -63,6 +63,8 @@ export default class Scrollbar extends React.Component
         minimalThumbsSize:      PropTypes.number,
         fallbackScrollbarWidth: PropTypes.number,
 
+        rtl:           PropTypes.bool,
+        momentum:      PropTypes.bool,
         defaultStyles: PropTypes.bool,
 
         permanentScrollbars: PropTypes.bool,
@@ -593,7 +595,7 @@ export default class Scrollbar extends React.Component
                   minimalThumbsSize, fallbackScrollbarWidth, scrollDetectionThreshold,
 
                   // boolean props
-                  defaultStyles, noScroll, noScrollX, noScrollY, permanentScrollbars, permanentScrollbarX, permanentScrollbarY, rtl,
+                  defaultStyles, noScroll, noScrollX, noScrollY, permanentScrollbars, permanentScrollbarX, permanentScrollbarY, rtl, momentum = true,
 
                   // holder element props
                   tagName, children, style, className,
@@ -653,6 +655,7 @@ export default class Scrollbar extends React.Component
                   overflowY:     "scroll",
                   marginBottom:  -(browserScrollbarWidth || fallbackScrollbarWidth),
                   paddingBottom: (browserScrollbarWidth ? null : fallbackScrollbarWidth),
+                  ...(momentum && {WebkitOverflowScrolling: "touch"}),
               },
               trackVerticalStyles   = {
                   ...trackVerticalStyle,

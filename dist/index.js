@@ -337,20 +337,31 @@ function (_React$Component) {
         }
       }
 
-      _this.isRtl = _this.props.rtl || _this.isRtl || (rtlAutodetect ? getComputedStyle(_this.content).direction === "rtl" : false);
+      var verticalScrollNotBlocked = !_this.props.noScroll && !_this.props.noScrollY,
+          horizontalScrollNotBlocked = !_this.props.noScroll && !_this.props.noScrollX,
+          verticalScrollPossible = verticalScrollNotBlocked && _this.content.scrollHeight > _this.content.clientHeight,
+          horizontalScrollPossible = horizontalScrollNotBlocked && _this.content.scrollWidth > _this.content.clientWidth;
+      var isRtl = _this.props.rtl;
+      !(0, _utilities.isset)(isRtl) && (isRtl = rtlAutodetect ? getComputedStyle(_this.content).direction === "rtl" : _this.isRtl || false);
 
-      _this.holder.classList.toggle("ScrollbarsCustom-RTL", _this.isRtl);
+      if (forced || _this.isRtl !== isRtl) {
+        _this.holder.classList.toggle("ScrollbarsCustom-RTL", isRtl);
 
-      var verticalScrollPossible = _this.content.scrollHeight > _this.content.clientHeight && !_this.props.noScroll && !_this.props.noScrollY,
-          horizontalScrollPossible = _this.content.scrollWidth > _this.content.clientWidth && !_this.props.noScroll && !_this.props.noScrollX;
+        _this.isRtl = isRtl;
+      }
 
-      if (verticalScrollPossible && (_this.previousScrollValues || true || _this.isRtl !== (_this.previousScrollValues.rtl || false))) {
+      if (forced) {
         var browserScrollbarWidth = (0, _utilities.getScrollbarWidth)(),
             fallbackScrollbarWidth = _this.props.fallbackScrollbarWidth;
-        _this.content.style.marginLeft = _this.isRtl ? -(browserScrollbarWidth || fallbackScrollbarWidth) + "px" : null;
-        _this.content.style.paddingLeft = _this.isRtl ? (browserScrollbarWidth ? null : fallbackScrollbarWidth) + "px" : null;
-        _this.content.style.marginRight = _this.isRtl ? null : -(browserScrollbarWidth || fallbackScrollbarWidth) + "px";
-        _this.content.style.paddingRight = _this.isRtl ? null : (browserScrollbarWidth ? null : fallbackScrollbarWidth) + "px";
+
+        if (verticalScrollNotBlocked) {
+          _this.content.style.marginLeft = isRtl ? -(browserScrollbarWidth || fallbackScrollbarWidth) + "px" : null;
+          _this.content.style.paddingLeft = isRtl ? (browserScrollbarWidth ? null : fallbackScrollbarWidth) + "px" : null;
+          _this.content.style.marginRight = isRtl ? null : -(browserScrollbarWidth || fallbackScrollbarWidth) + "px";
+          _this.content.style.paddingRight = isRtl ? null : (browserScrollbarWidth ? null : fallbackScrollbarWidth) + "px";
+        } else {
+          _this.content.style.marginLeft = _this.content.style.paddingLeft = _this.content.style.marginRight = _this.content.style.paddingRight = null;
+        }
       }
 
       _this.trackVertical.style.display = verticalScrollPossible || _this.props.permanentScrollbars || _this.props.permanentScrollbarY ? null : "none";
@@ -395,8 +406,7 @@ function (_React$Component) {
         scrollHeight: _this.content.scrollHeight,
         scrollWidth: _this.content.scrollWidth,
         clientHeight: _this.content.clientHeight,
-        clientWidth: _this.content.clientWidth,
-        rtl: _this.props.rtl
+        clientWidth: _this.content.clientWidth
       };
       (_this.previousScrollValues || false) && _this.props.onScroll && _this.props.onScroll(currentScrollValues, _assertThisInitialized(_assertThisInitialized(_this)));
       _this.previousScrollValues = currentScrollValues;
@@ -409,6 +419,8 @@ function (_React$Component) {
   _createClass(Scrollbar, [{
     key: "componentDidMount",
     value: function componentDidMount() {
+      this.isRtl = null;
+
       _LoopController.default.registerScrollbar(this);
 
       this.addListeners();

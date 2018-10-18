@@ -15,6 +15,7 @@ export default class SandboxBlock extends React.Component
         this.togglePermanentTrackY = this.togglePermanentTrackY.bind(this);
         this.togglePermanentTrackX = this.togglePermanentTrackX.bind(this);
         this.handleAddParagraphClick = this.handleAddParagraphClick.bind(this);
+        this.handleRemoveParagraphClick = this.handleRemoveParagraphClick.bind(this);
         this.handleRandomPositionClick = this.handleRandomPositionClick.bind(this);
         this.handleScrollTopClick = this.handleScrollTopClick.bind(this);
         this.handleScrollBottomClick = this.handleScrollBottomClick.bind(this);
@@ -108,6 +109,13 @@ export default class SandboxBlock extends React.Component
                       });
     }
 
+    handleRemoveParagraphClick() {
+        this.setState({
+                          ...this.state,
+                          paragraphsCount: Math.max(0, this.state.paragraphsCount - 1),
+                      });
+    }
+
     handleRandomPositionClick() {
         this.scrollbar.scrollTop = Math.floor(Math.random() * (this.scrollbar.scrollHeight + 1));
         this.scrollbar.scrollLeft = Math.floor(Math.random() * (this.scrollbar.scrollWidth + 1));
@@ -152,6 +160,7 @@ export default class SandboxBlock extends React.Component
                         <div className="button" key="scrollRight" onClick={ this.handleScrollRightClick }>Scroll right</div>
                         <br />
                         <div className="button" key="addParagraph" onClick={ this.handleAddParagraphClick }>Add paragraph</div>
+                        { !!this.state.paragraphsCount && <div className="button" key="removeParagraph" onClick={ this.handleRemoveParagraphClick }>Remove paragraph</div> }
                     </div>
                     <div className="content" style={ {height: 280} }>
                         <Scrollbar

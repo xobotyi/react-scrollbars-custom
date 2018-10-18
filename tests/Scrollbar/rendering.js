@@ -226,6 +226,20 @@ export default function performTests() {
         });
 
         describe("when content does not overflow wrapper", () => {
+            it("native scrollbars should still be hidden", (done) => {
+                render(<Scrollbar style={ {width: 100, height: 100} }>
+                            <div style={ {width: 50, height: 50} } />
+                        </Scrollbar>,
+                        node,
+                        function () {
+                            setTimeout(() => {
+                                expect(this.content.style.marginRight).toBe(-getScrollbarWidth() + 'px');
+
+                                done();
+                            }, 100);
+                        });
+            });
+
             it("tracks should be hidden", (done) => {
                 render(<Scrollbar style={ {width: 100, height: 100} }>
                             <div style={ {width: 50, height: 50} } />

@@ -639,13 +639,13 @@ export default class Scrollbar extends React.Component
 
         const browserScrollbarWidth = getScrollbarWidth();
 
-        const holderClassNames          = "ScrollbarsCustom-holder" + (!!className ? (" " + className) : ""),
-              wrapperClassNames         = "ScrollbarsCustom-wrapper" + (!!wrapperClassName ? (" " + wrapperClassName) : ""),
-              contentClassNames         = "ScrollbarsCustom-content" + (!!contentClassName ? (" " + contentClassName) : ""),
-              trackVerticalClassNames   = "ScrollbarsCustom-track ScrollbarsCustom-trackVertical" + (!!trackVerticalClassName ? (" " + trackVerticalClassName) : ""),
-              trackHorizontalClassNames = "ScrollbarsCustom-track ScrollbarsCustom-trackHorizontal" + (!!trackHorizontalClassName ? (" " + trackHorizontalClassName) : ""),
-              thumbVerticalClassNames   = "ScrollbarsCustom-thumb ScrollbarsCustom-thumbHorizontal" + (!!thumbVerticalClassName ? (" " + thumbVerticalClassName) : ""),
-              thumbHorizontalClassNames = "ScrollbarsCustom-thumb ScrollbarsCustom-thumbHorizontal" + (!!thumbHorizontalClassName ? (" " + thumbHorizontalClassName) : "");
+        const holderClassNames          = "ScrollbarsCustom-holder" + (className ? (" " + className) : ""),
+              wrapperClassNames         = "ScrollbarsCustom-wrapper" + (wrapperClassName ? (" " + wrapperClassName) : ""),
+              contentClassNames         = "ScrollbarsCustom-content" + (contentClassName ? (" " + contentClassName) : ""),
+              trackVerticalClassNames   = "ScrollbarsCustom-track ScrollbarsCustom-trackVertical" + (trackVerticalClassName ? (" " + trackVerticalClassName) : ""),
+              trackHorizontalClassNames = "ScrollbarsCustom-track ScrollbarsCustom-trackHorizontal" + (trackHorizontalClassName ? (" " + trackHorizontalClassName) : ""),
+              thumbVerticalClassNames   = "ScrollbarsCustom-thumb ScrollbarsCustom-thumbHorizontal" + (thumbVerticalClassName ? (" " + thumbVerticalClassName) : ""),
+              thumbHorizontalClassNames = "ScrollbarsCustom-thumb ScrollbarsCustom-thumbHorizontal" + (thumbHorizontalClassName ? (" " + thumbHorizontalClassName) : "");
 
         const holderStyles          = {
                   ...style,

@@ -61,6 +61,8 @@ const defaultElementsStyles = {
 
 export default class Scrollbar extends React.Component
 {
+    static displayName = "Scrollbar";
+
     static propTypes = {
         minimalThumbsSize:      PropTypes.number,
         fallbackScrollbarWidth: PropTypes.number,

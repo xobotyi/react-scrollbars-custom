@@ -336,8 +336,9 @@ export default class Scrollbar extends React.Component
     removeListeners = () => {
         if (!isset(document) || !this.content) { return this; }
 
-        const {trackVertical, trackHorizontal, thumbVertical, thumbHorizontal} = this;
+        const {content, trackVertical, trackHorizontal, thumbVertical, thumbHorizontal} = this;
 
+        content.removeEventListener("scroll", this.handleScrollEvent, { passive: true });
         trackVertical.removeEventListener("mousedown", this.handleTrackVerticalMousedownEvent);
         trackHorizontal.removeEventListener("mousedown", this.handleTrackHorizontalMousedownEvent);
         thumbVertical.removeEventListener("mousedown", this.handleThumbVerticalMousedownEvent);

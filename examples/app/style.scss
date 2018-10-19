@@ -58,6 +58,7 @@ body {
             display:       block;
             background:    #D0D3D7;
             border-radius: 1rem;
+            overflow:      hidden;
 
             &.ScrollbarsCustom-trackVertical {
                 height: calc(100% - 2rem);
@@ -377,6 +378,7 @@ body {
                 width:      8px;
                 background: rgba(0, 0, 0, 0.1);
                 grid-area:  1 / 2 / auto / auto;
+                overflow:      hidden;
 
                 & > .ScrollbarsCustom-thumb {
                     cursor:     pointer;
@@ -450,6 +452,7 @@ body {
                 width:      8px;
                 background: rgba(0, 0, 0, 0.1);
                 grid-area:  1 / 2 / auto / auto;
+                overflow:      hidden;
 
                 & > .ScrollbarsCustom-thumb {
                     cursor:     pointer;

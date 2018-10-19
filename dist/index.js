@@ -70,7 +70,8 @@ var defaultElementsStyles = {
     top: 0,
     margin: "8px 0",
     background: "rgba(0,0,0,.1)",
-    borderRadius: 4
+    borderRadius: 4,
+    overflow: "hidden"
   },
   trackHorizontal: {
     position: "absolute",
@@ -80,7 +81,8 @@ var defaultElementsStyles = {
     left: 0,
     margin: "0 8px",
     background: "rgba(0,0,0,.1)",
-    borderRadius: 4
+    borderRadius: 4,
+    overflow: "hidden"
   },
   thumbVertical: {
     cursor: "pointer",
@@ -578,13 +580,13 @@ function (_React$Component) {
           props = _objectWithoutProperties(_this$props2, ["minimalThumbsSize", "fallbackScrollbarWidth", "scrollDetectionThreshold", "defaultStyles", "noScroll", "noScrollX", "noScrollY", "permanentScrollbars", "permanentScrollbarX", "permanentScrollbarY", "rtl", "momentum", "tagName", "children", "style", "className", "wrapperStyle", "contentStyle", "trackVerticalStyle", "trackHorizontalStyle", "thumbVerticalStyle", "thumbHorizontalStyle", "wrapperClassName", "contentClassName", "trackVerticalClassName", "trackHorizontalClassName", "thumbVerticalClassName", "thumbHorizontalClassName", "onScroll", "onScrollStart", "onScrollStop", "renderWrapper", "renderContent", "renderTrackVertical", "renderTrackHorizontal", "renderThumbVertical", "renderThumbHorizontal"]);
 
       var browserScrollbarWidth = (0, _utilities.getScrollbarWidth)();
-      var holderClassNames = "ScrollbarsCustom-holder" + (className && " " + className),
-          wrapperClassNames = "ScrollbarsCustom-wrapper" + (wrapperClassName && " " + wrapperClassName),
-          contentClassNames = "ScrollbarsCustom-content" + (contentClassName && " " + contentClassName),
-          trackVerticalClassNames = "ScrollbarsCustom-track ScrollbarsCustom-trackVertical" + (trackVerticalClassName && " " + trackVerticalClassName),
-          trackHorizontalClassNames = "ScrollbarsCustom-track ScrollbarsCustom-trackHorizontal" + (trackHorizontalClassName && " " + trackHorizontalClassName),
-          thumbVerticalClassNames = "ScrollbarsCustom-thumb ScrollbarsCustom-thumbHorizontal" + (thumbVerticalClassName && " " + thumbVerticalClassName),
-          thumbHorizontalClassNames = "ScrollbarsCustom-thumb ScrollbarsCustom-thumbHorizontal" + (thumbHorizontalClassName && " " + thumbHorizontalClassName);
+      var holderClassNames = "ScrollbarsCustom-holder" + (!!className ? " " + className : ""),
+          wrapperClassNames = "ScrollbarsCustom-wrapper" + (!!wrapperClassName ? " " + wrapperClassName : ""),
+          contentClassNames = "ScrollbarsCustom-content" + (!!contentClassName ? " " + contentClassName : ""),
+          trackVerticalClassNames = "ScrollbarsCustom-track ScrollbarsCustom-trackVertical" + (!!trackVerticalClassName ? " " + trackVerticalClassName : ""),
+          trackHorizontalClassNames = "ScrollbarsCustom-track ScrollbarsCustom-trackHorizontal" + (!!trackHorizontalClassName ? " " + trackHorizontalClassName : ""),
+          thumbVerticalClassNames = "ScrollbarsCustom-thumb ScrollbarsCustom-thumbHorizontal" + (!!thumbVerticalClassName ? " " + thumbVerticalClassName : ""),
+          thumbHorizontalClassNames = "ScrollbarsCustom-thumb ScrollbarsCustom-thumbHorizontal" + (!!thumbHorizontalClassName ? " " + thumbHorizontalClassName : "");
 
       var holderStyles = _objectSpread({}, style, defaultStyles && defaultElementsStyles.holder, {
         direction: rtl === true && "rtl" || rtl === false && "ltr" || null

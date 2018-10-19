@@ -713,7 +713,7 @@ export default class Scrollbar extends React.Component
         if ((permanentScrollbars || permanentScrollbarY)) {
             trackVerticalStyles.display = null;
 
-            if (noScroll || !scrollY) {
+            if (noScroll || noScrollY) {
                 thumbVerticalStyles.display = "none";
             }
         }
@@ -721,7 +721,7 @@ export default class Scrollbar extends React.Component
         if ((permanentScrollbars || permanentScrollbarX)) {
             trackHorizontalStyles.display = null;
 
-            if (noScroll || !scrollX) {
+            if (noScroll || noScrollX) {
                 thumbHorizontalStyles.display = "none";
             }
         }

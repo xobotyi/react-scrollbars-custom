@@ -168,11 +168,15 @@ function (_React$Component) {
       }
 
       var _assertThisInitialize2 = _assertThisInitialized(_assertThisInitialized(_this)),
+          content = _assertThisInitialize2.content,
           trackVertical = _assertThisInitialize2.trackVertical,
           trackHorizontal = _assertThisInitialize2.trackHorizontal,
           thumbVertical = _assertThisInitialize2.thumbVertical,
           thumbHorizontal = _assertThisInitialize2.thumbHorizontal;
 
+      content.removeEventListener("scroll", _this.handleScrollEvent, {
+        passive: true
+      });
       trackVertical.removeEventListener("mousedown", _this.handleTrackVerticalMousedownEvent);
       trackHorizontal.removeEventListener("mousedown", _this.handleTrackHorizontalMousedownEvent);
       thumbVertical.removeEventListener("mousedown", _this.handleThumbVerticalMousedownEvent);
@@ -580,13 +584,13 @@ function (_React$Component) {
           props = _objectWithoutProperties(_this$props2, ["minimalThumbsSize", "fallbackScrollbarWidth", "scrollDetectionThreshold", "defaultStyles", "noScroll", "noScrollX", "noScrollY", "permanentScrollbars", "permanentScrollbarX", "permanentScrollbarY", "rtl", "momentum", "tagName", "children", "style", "className", "wrapperStyle", "contentStyle", "trackVerticalStyle", "trackHorizontalStyle", "thumbVerticalStyle", "thumbHorizontalStyle", "wrapperClassName", "contentClassName", "trackVerticalClassName", "trackHorizontalClassName", "thumbVerticalClassName", "thumbHorizontalClassName", "onScroll", "onScrollStart", "onScrollStop", "renderWrapper", "renderContent", "renderTrackVertical", "renderTrackHorizontal", "renderThumbVertical", "renderThumbHorizontal"]);
 
       var browserScrollbarWidth = (0, _utilities.getScrollbarWidth)();
-      var holderClassNames = "ScrollbarsCustom-holder" + (!!className ? " " + className : ""),
-          wrapperClassNames = "ScrollbarsCustom-wrapper" + (!!wrapperClassName ? " " + wrapperClassName : ""),
-          contentClassNames = "ScrollbarsCustom-content" + (!!contentClassName ? " " + contentClassName : ""),
-          trackVerticalClassNames = "ScrollbarsCustom-track ScrollbarsCustom-trackVertical" + (!!trackVerticalClassName ? " " + trackVerticalClassName : ""),
-          trackHorizontalClassNames = "ScrollbarsCustom-track ScrollbarsCustom-trackHorizontal" + (!!trackHorizontalClassName ? " " + trackHorizontalClassName : ""),
-          thumbVerticalClassNames = "ScrollbarsCustom-thumb ScrollbarsCustom-thumbHorizontal" + (!!thumbVerticalClassName ? " " + thumbVerticalClassName : ""),
-          thumbHorizontalClassNames = "ScrollbarsCustom-thumb ScrollbarsCustom-thumbHorizontal" + (!!thumbHorizontalClassName ? " " + thumbHorizontalClassName : "");
+      var holderClassNames = "ScrollbarsCustom-holder" + (className ? " " + className : ""),
+          wrapperClassNames = "ScrollbarsCustom-wrapper" + (wrapperClassName ? " " + wrapperClassName : ""),
+          contentClassNames = "ScrollbarsCustom-content" + (contentClassName ? " " + contentClassName : ""),
+          trackVerticalClassNames = "ScrollbarsCustom-track ScrollbarsCustom-trackVertical" + (trackVerticalClassName ? " " + trackVerticalClassName : ""),
+          trackHorizontalClassNames = "ScrollbarsCustom-track ScrollbarsCustom-trackHorizontal" + (trackHorizontalClassName ? " " + trackHorizontalClassName : ""),
+          thumbVerticalClassNames = "ScrollbarsCustom-thumb ScrollbarsCustom-thumbHorizontal" + (thumbVerticalClassName ? " " + thumbVerticalClassName : ""),
+          thumbHorizontalClassNames = "ScrollbarsCustom-thumb ScrollbarsCustom-thumbHorizontal" + (thumbHorizontalClassName ? " " + thumbHorizontalClassName : "");
 
       var holderStyles = _objectSpread({}, style, defaultStyles && defaultElementsStyles.holder, {
         direction: rtl === true && "rtl" || rtl === false && "ltr" || null
@@ -630,7 +634,7 @@ function (_React$Component) {
       if (permanentScrollbars || permanentScrollbarY) {
         trackVerticalStyles.display = null;
 
-        if (noScroll || !scrollY) {
+        if (noScroll || noScrollY) {
           thumbVerticalStyles.display = "none";
         }
       }
@@ -638,7 +642,7 @@ function (_React$Component) {
       if (permanentScrollbars || permanentScrollbarX) {
         trackHorizontalStyles.display = null;
 
-        if (noScroll || !scrollX) {
+        if (noScroll || noScrollX) {
           thumbHorizontalStyles.display = "none";
         }
       }
@@ -808,6 +812,8 @@ function (_React$Component) {
 }(_react.default.Component);
 
 exports.default = Scrollbar;
+
+_defineProperty(Scrollbar, "displayName", "Scrollbar");
 
 _defineProperty(Scrollbar, "propTypes", {
   minimalThumbsSize: _propTypes.default.number,

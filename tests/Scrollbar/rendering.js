@@ -343,6 +343,23 @@ export default function performTests() {
             });
         });
 
+        describe("when always showing scrollbars", () => {
+            it("should render thumb when content taller than viewport", (done) => {
+                render(<Scrollbar style={{ width: 100, height: 100 }} permanentScrollbarY>
+                        <div style={{width: 100, height: 200}} />
+                    </Scrollbar>,
+                    node,
+                    function() {
+                        setTimeout(() => {
+                            expect(this.trackVertical.style.display).not.toBe("none");
+                            expect(this.thumbVertical.style.display).not.toBe("none");
+                            done();
+                        }, 100);
+                    }
+                );
+            });
+        })
+
         describe("only vertical scroll should be blocked", () => {
             it("if noScrollY={ true } is passed", (done) => {
                 render(<Scrollbar style={ {width: 100, height: 100} } noScrollY={ true }>

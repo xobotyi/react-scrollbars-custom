@@ -1,71 +1,107 @@
-let loopIsActive = false;
-let animationFrame = null;
-const loopRegister = [];
+function LoopControllerClass() {
+    /**
+     * @typedef {Object} Scrollbar
+     * @property {function} update
+     */
 
-class LoopController
-{
-    constructor() {
-        this.rafStep = this.rafStep.bind(this);
-    }
+    /**
+     * @type {Scrollbar[]}
+     */
+    const scrollbarsRegister = [];
 
-    getRegisteredItems() {
-        return [...loopRegister];
-    }
+    /**
+     * true if loop is active
+     * @type {boolean}
+     */
+    let isActive = false;
+    /**
+     * ID of requested animation frame
+     * @type {null|number}
+     */
+    let animationFrameId = null;
 
-    registerScrollbar(scrollbar) {
-        if (!loopRegister.includes(scrollbar)) {
-            loopRegister.push(scrollbar);
+    /**
+     * Function that called in animation frame
+     */
+    const animationFrameCallback = () => {
+        if (!isActive) {return;}
+
+        for (let scrollbar of scrollbarsRegister) {
+            scrollbar.update();
+        }
+
+        requestAnimationFrame(animationFrameCallback);
+    };
+
+    /**
+     * Stop the loop if it wasn't active
+     * @return {LoopControllerClass}
+     */
+    this.start = () => {
+        if (isActive) {return this;}
+
+        isActive = true;
+
+        animationFrameId && cancelAnimationFrame(animationFrameId);
+        requestAnimationFrame(animationFrameCallback);
+    };
+    /**
+     * Stop the loop if it is active
+     * @return {LoopControllerClass}
+     */
+    this.stop = () => {
+        if (!isActive) {return this;}
+
+        isActive = false;
+
+        animationFrameId && cancelAnimationFrame(animationFrameId);
+        animationFrameId = null;
+    };
+
+    /**
+     * Return the array pf registered scrollbars
+     * @return {Scrollbar[]}
+     */
+    this.getRegisteredScrollbars = () => {
+        return [...scrollbarsRegister];
+    };
+    /**
+     * Add the scrollbar to list to iterate each loop
+     * @param {Scrollbar} scrollbar
+     * @return {LoopControllerClass}
+     */
+    this.registerScrollbar = (scrollbar) => {
+        if (scrollbarsRegister.indexOf(scrollbar) === -1) {
+            scrollbarsRegister.push(scrollbar);
 
             this.start();
         }
 
         return this;
     };
-
-    unregisterScrollbar(scrollbar) {
-        let index = loopRegister.indexOf(scrollbar);
+    /**
+     * Remove the scrollbar from list to iterate each loop
+     * @param {Scrollbar} scrollbar
+     * @return {LoopControllerClass}
+     */
+    this.unregisterScrollbar = (scrollbar) => {
+        const index = scrollbarsRegister.indexOf(scrollbar);
 
         if (index !== -1) {
-            loopRegister.length === 1 && this.stop();
-
-            loopRegister.splice(index, 1);
-        }
-
-        return this;
-    };
-
-    start() {
-        if (!loopIsActive) {
-            loopIsActive = true;
-
-            animationFrame && cancelAnimationFrame(animationFrame);
-            animationFrame = requestAnimationFrame(this.rafStep);
-        }
-
-        return this;
-    };
-
-    rafStep() {
-        if (!loopIsActive) {return;}
-
-        for (let i = 0; i < loopRegister.length; i++) {
-            loopRegister[i].update();
-        }
-
-        animationFrame = requestAnimationFrame(this.rafStep);
-    };
-
-    stop() {
-        if (loopIsActive) {
-            loopIsActive = false;
-
-            animationFrame && cancelAnimationFrame(animationFrame);
+            scrollbarsRegister.splice(index, 1);
         }
 
         return this;
     };
 }
 
-const instance = new LoopController();
+export const LoopController = new LoopControllerClass();
+export default LoopController;
 
-export default instance;
+/**
+ * Return new instance of LoopControllerClass
+ * @return {LoopControllerClass}
+ */
+export function createLoopController() {
+    return new LoopControllerClass();
+}

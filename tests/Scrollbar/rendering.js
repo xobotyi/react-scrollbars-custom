@@ -17,32 +17,32 @@ export default function performTests() {
         });
 
         describe("when <Scrollbar /> rendered", () => {
-            it("should render holder", done => {
+            it("should render holder", (done) => {
                 render(<Scrollbar />, node, function() {
                     expect(this.holder).toBeInstanceOf(Node);
 
                     done();
                 });
             });
-            it("should render wrapper with overflow:hidden", done => {
+            it("should render wrapper with overflow:hidden", (done) => {
                 render(<Scrollbar />, node, function() {
                     expect(this.wrapper).toBeInstanceOf(Node);
                     done();
                 });
             });
-            it("wrapper should have overflow:hidden", done => {
+            it("wrapper should have overflow:hidden", (done) => {
                 render(<Scrollbar />, node, function() {
                     expect(this.wrapper.style.overflow).toEqual("hidden");
                     done();
                 });
             });
-            it("should render content", done => {
+            it("should render content", (done) => {
                 render(<Scrollbar />, node, function() {
                     expect(this.content).toBeInstanceOf(Node);
                     done();
                 });
             });
-            it("content should have position absolute and stretched to the wrapper's size", done => {
+            it("content should have position absolute and stretched to the wrapper's size", (done) => {
                 render(<Scrollbar />, node, function() {
                     expect(this.content.style.left).toEqual("0px");
                     expect(this.content.style.right).toEqual("0px");
@@ -52,14 +52,14 @@ export default function performTests() {
                     done();
                 });
             });
-            it("should render tracks", done => {
+            it("should render tracks", (done) => {
                 render(<Scrollbar />, node, function() {
                     expect(this.trackVertical).toBeInstanceOf(Node);
                     expect(this.trackHorizontal).toBeInstanceOf(Node);
                     done();
                 });
             });
-            it("should render thumbs", done => {
+            it("should render thumbs", (done) => {
                 render(<Scrollbar />, node, function() {
                     expect(this.thumbVertical).toBeInstanceOf(Node);
                     expect(this.thumbHorizontal).toBeInstanceOf(Node);
@@ -67,7 +67,7 @@ export default function performTests() {
                 });
             });
 
-            it("thumbs should be proper size", done => {
+            it("thumbs should be proper size", (done) => {
                 render(
                     <Scrollbar style={{ width: 100, height: 100 }}>
                         <div style={{ width: 200, height: 200 }} />
@@ -89,7 +89,7 @@ export default function performTests() {
                 );
             });
 
-            it("thumbs size should not be less than 'minimalThumbsSize'", done => {
+            it("thumbs size should not be less than 'minimalThumbsSize'", (done) => {
                 render(
                     <Scrollbar
                         style={{ width: 100, height: 100 }}
@@ -115,7 +115,7 @@ export default function performTests() {
         });
 
         describe("when using custom tagName", () => {
-            it("should use it", done => {
+            it("should use it", (done) => {
                 render(<Scrollbar tagName="label" />, node, function() {
                     expect(this.holder.tagName.toLowerCase()).toBe("label");
 
@@ -125,7 +125,7 @@ export default function performTests() {
         });
 
         describe("when using custom classname", () => {
-            it("should apply if it is string", done => {
+            it("should apply if it is string", (done) => {
                 render(
                     <Scrollbar
                         className="myAwesomeClassName"
@@ -181,14 +181,14 @@ export default function performTests() {
         });
 
         describe("when disabling default styles", () => {
-            it("holder should has no styles", done => {
+            it("holder should has no styles", (done) => {
                 render(<Scrollbar defaultStyles={false} />, node, function() {
                     expect(this.holder.getAttribute("style")).toBe(null);
                     done();
                 });
             });
 
-            it("tracks should has no styles", done => {
+            it("tracks should has no styles", (done) => {
                 render(<Scrollbar defaultStyles={false} />, node, function() {
                     expect(this.trackVertical.getAttribute("style")).toBe(
                         "display: none;",
@@ -200,7 +200,7 @@ export default function performTests() {
                 });
             });
 
-            it("wrapper should has position relative and overflow hidden", done => {
+            it("wrapper should has position relative and overflow hidden", (done) => {
                 render(<Scrollbar defaultStyles={false} />, node, function() {
                     expect(this.wrapper.style.position).toBe("relative");
                     expect(this.wrapper.style.overflow).toBe("hidden");
@@ -208,7 +208,7 @@ export default function performTests() {
                 });
             });
 
-            it("content should still has default styles", done => {
+            it("content should still has default styles", (done) => {
                 render(<Scrollbar defaultStyles={false} />, node, function() {
                     expect(this.content.style.position).toBe("absolute");
                     expect(this.content.style.top).toBe(0 + "px");
@@ -225,7 +225,7 @@ export default function performTests() {
         });
 
         describe("when using custom style", () => {
-            it("should use it", done => {
+            it("should use it", (done) => {
                 render(
                     <Scrollbar
                         style={{ maxWidth: "100%" }}
@@ -257,7 +257,7 @@ export default function performTests() {
         });
 
         describe("when content does not overflow wrapper", () => {
-            it("native scrollbars should still be hidden", done => {
+            it("native scrollbars should still be hidden", (done) => {
                 render(
                     <Scrollbar style={{ width: 100, height: 100 }}>
                         <div style={{ width: 50, height: 50 }} />
@@ -275,7 +275,7 @@ export default function performTests() {
                 );
             });
 
-            it("tracks should be hidden", done => {
+            it("tracks should be hidden", (done) => {
                 render(
                     <Scrollbar style={{ width: 100, height: 100 }}>
                         <div style={{ width: 50, height: 50 }} />
@@ -296,7 +296,7 @@ export default function performTests() {
                 );
             });
 
-            it("except situation when `permanentScrollbars={true}`", done => {
+            it("except situation when `permanentScrollbars={true}`", (done) => {
                 render(
                     <Scrollbar
                         style={{ width: 100, height: 100 }}
@@ -320,7 +320,7 @@ export default function performTests() {
                 );
             });
 
-            it("or `permanentScrollbarY={true}`", done => {
+            it("or `permanentScrollbarY={true}`", (done) => {
                 render(
                     <Scrollbar
                         style={{ width: 100, height: 100 }}
@@ -341,7 +341,7 @@ export default function performTests() {
                 );
             });
 
-            it("or `permanentScrollbarX={true}`", done => {
+            it("or `permanentScrollbarX={true}`", (done) => {
                 render(
                     <Scrollbar
                         style={{ width: 100, height: 100 }}
@@ -364,7 +364,7 @@ export default function performTests() {
         });
 
         describe("when RTL is set", () => {
-            it("left part of content should be hidden", done => {
+            it("left part of content should be hidden", (done) => {
                 render(
                     <Scrollbar style={{ width: 100, height: 100 }} rtl>
                         <div style={{ width: 200, height: 200 }} />
@@ -383,13 +383,13 @@ export default function performTests() {
                 );
             });
 
-            it("should override direction value", done => {
+            it("should override direction value", (done) => {
                 let scrollbar = null;
                 render(
                     <div style={{ direction: "rtl" }}>
                         <Scrollbar
                             style={{ width: 100, height: 100 }}
-                            ref={ref => {
+                            ref={(ref) => {
                                 scrollbar = ref;
                             }}
                             rtl={false}
@@ -414,13 +414,13 @@ export default function performTests() {
         });
 
         describe("when RTL is not set", () => {
-            it("should autodetect direction (when set rtl)", done => {
+            it("should autodetect direction (when set rtl)", (done) => {
                 let scrollbar = null;
                 render(
                     <div style={{ direction: "rtl" }}>
                         <Scrollbar
                             style={{ width: 100, height: 100 }}
-                            ref={ref => {
+                            ref={(ref) => {
                                 scrollbar = ref;
                             }}
                         >
@@ -442,13 +442,13 @@ export default function performTests() {
                 );
             });
 
-            it("should autodetect direction (when set ltr)", done => {
+            it("should autodetect direction (when set ltr)", (done) => {
                 let scrollbar = null;
                 render(
                     <div style={{ direction: "ltr" }}>
                         <Scrollbar
                             style={{ width: 100, height: 100 }}
-                            ref={ref => {
+                            ref={(ref) => {
                                 scrollbar = ref;
                             }}
                             rtl={false}
@@ -473,7 +473,7 @@ export default function performTests() {
         });
 
         describe("when always showing scrollbars", () => {
-            it("should render thumb when content taller than viewport", done => {
+            it("should render thumb when content taller than viewport", (done) => {
                 render(
                     <Scrollbar
                         style={{ width: 100, height: 100 }}
@@ -498,7 +498,7 @@ export default function performTests() {
         });
 
         describe("only vertical scroll should be blocked", () => {
-            it("if noScrollY={ true } is passed", done => {
+            it("if noScrollY={ true } is passed", (done) => {
                 render(
                     <Scrollbar
                         style={{ width: 100, height: 100 }}
@@ -532,7 +532,7 @@ export default function performTests() {
         });
 
         describe("vertical track should be displayed without thumb", () => {
-            it("if `scrollY={ true }` and `permanentScrollbarY={true}` are passed", done => {
+            it("if `scrollY={ true }` and `permanentScrollbarY={true}` are passed", (done) => {
                 render(
                     <Scrollbar
                         style={{ width: 100, height: 100 }}
@@ -559,7 +559,7 @@ export default function performTests() {
         });
 
         describe("only horizontal scroll should be blocked", () => {
-            it("if `noScrollX={ true }` is passed", done => {
+            it("if `noScrollX={ true }` is passed", (done) => {
                 render(
                     <Scrollbar
                         style={{ width: 100, height: 100 }}
@@ -591,7 +591,7 @@ export default function performTests() {
         });
 
         describe("horizontal track should be displayed without thumb", () => {
-            it("if `noScrollX={ true }` and `permanentScrollbarX={true}` are passed", done => {
+            it("if `noScrollX={ true }` and `permanentScrollbarX={true}` are passed", (done) => {
                 render(
                     <Scrollbar
                         style={{ width: 100, height: 100 }}
@@ -618,7 +618,7 @@ export default function performTests() {
         });
 
         describe("both scrolls should be blocked", () => {
-            it("or no `noScroll` is passed", done => {
+            it("or no `noScroll` is passed", (done) => {
                 render(
                     <Scrollbar style={{ width: 100, height: 100 }} noScroll>
                         <div style={{ width: 200, height: 200 }} />
@@ -646,7 +646,7 @@ export default function performTests() {
         });
 
         describe("both tracks should be displayed without thumb", () => {
-            it("if `noScroll` and `permanentScrollbars={true}`", done => {
+            it("if `noScroll` and `permanentScrollbars={true}`", (done) => {
                 render(
                     <Scrollbar
                         style={{ width: 100, height: 100 }}
@@ -680,7 +680,7 @@ export default function performTests() {
         });
 
         describe("update should be performed", () => {
-            it("if props has changed", done => {
+            it("if props has changed", (done) => {
                 class TestComponent extends React.Component {
                     constructor(props) {
                         super(props);
@@ -693,7 +693,7 @@ export default function performTests() {
                             <Scrollbar
                                 style={{ width: 100, height: 100 }}
                                 noScroll={this.state.noScroll}
-                                ref={ref => {
+                                ref={(ref) => {
                                     this.scrollbar = ref;
                                 }}
                             >

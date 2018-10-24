@@ -474,7 +474,7 @@ export default class Scrollbar extends React.Component {
         this.scrollDetect();
     };
 
-    handleTrackVerticalMousedownEvent = e => {
+    handleTrackVerticalMousedownEvent = (e) => {
         if (e.which !== 1) {
             return;
         }
@@ -489,7 +489,7 @@ export default class Scrollbar extends React.Component {
         );
     };
 
-    handleTrackHorizontalMousedownEvent = e => {
+    handleTrackHorizontalMousedownEvent = (e) => {
         if (e.which !== 1) {
             return;
         }
@@ -504,7 +504,7 @@ export default class Scrollbar extends React.Component {
         );
     };
 
-    handleThumbVerticalMousedownEvent = e => {
+    handleThumbVerticalMousedownEvent = (e) => {
         if (e.which !== 1) {
             return;
         }
@@ -520,7 +520,7 @@ export default class Scrollbar extends React.Component {
         this.thumbVertical.classList.add("dragging");
     };
 
-    handleThumbHorizontalMousedownEvent = e => {
+    handleThumbHorizontalMousedownEvent = (e) => {
         if (e.which !== 1) {
             return;
         }
@@ -565,7 +565,7 @@ export default class Scrollbar extends React.Component {
         this.thumbVertical.classList.remove("dragging");
     };
 
-    handleDragEvent = e => {
+    handleDragEvent = (e) => {
         if (!this.drag) {
             return;
         }
@@ -597,7 +597,7 @@ export default class Scrollbar extends React.Component {
      * @param trackHeight {number} Height of track where thumb placed
      * @return {number}
      */
-    computeThumbVerticalHeight = trackHeight => {
+    computeThumbVerticalHeight = (trackHeight) => {
         const height = Math.ceil(
             (this.content.clientHeight / this.content.scrollHeight) *
                 trackHeight,
@@ -614,7 +614,7 @@ export default class Scrollbar extends React.Component {
      * @param trackWidth {number} Width of track where thumb placed
      * @return {number}
      */
-    computeThumbHorizontalWidth = trackWidth => {
+    computeThumbHorizontalWidth = (trackWidth) => {
         const width = Math.ceil(
             (this.content.clientWidth / this.content.scrollWidth) * trackWidth,
         );
@@ -630,7 +630,7 @@ export default class Scrollbar extends React.Component {
      * @param offset {number} Thumb's offset top, in pixels
      * @return {number}
      */
-    computeScrollTopForThumbOffset = offset => {
+    computeScrollTopForThumbOffset = (offset) => {
         const trackVerticalInnerHeight = getInnerHeight(this.trackVertical);
 
         return (
@@ -646,7 +646,7 @@ export default class Scrollbar extends React.Component {
      * @param offset {number} Thumb's offset left, in pixels
      * @return {number}
      */
-    computeScrollLeftForThumbOffset = offset => {
+    computeScrollLeftForThumbOffset = (offset) => {
         const trackHorizontalInnerWidth = getInnerWidth(this.trackHorizontal);
 
         return (
@@ -973,21 +973,21 @@ export default class Scrollbar extends React.Component {
                 ...props,
                 className: holderClassNames,
                 style: holderStyles,
-                ref: ref => {
+                ref: (ref) => {
                     this.holder = ref;
                 },
             },
             [
                 (renderWrapper || divRenderer)({
                     key: "wrapper",
-                    ref: ref => {
+                    ref: (ref) => {
                         this.wrapper = ref;
                     },
                     className: wrapperClassNames,
                     style: wrapperStyles,
                     children: (renderContent || divRenderer)({
                         key: "content",
-                        ref: ref => {
+                        ref: (ref) => {
                             this.content = ref;
                         },
                         className: contentClassNames,
@@ -997,14 +997,14 @@ export default class Scrollbar extends React.Component {
                 }),
                 (renderTrackVertical || divRenderer)({
                     key: "trackVertical",
-                    ref: ref => {
+                    ref: (ref) => {
                         this.trackVertical = ref;
                     },
                     className: trackVerticalClassNames,
                     style: trackVerticalStyles,
                     children: (renderThumbVertical || divRenderer)({
                         key: "thumbVertical",
-                        ref: ref => {
+                        ref: (ref) => {
                             this.thumbVertical = ref;
                         },
                         className: thumbVerticalClassNames,
@@ -1013,14 +1013,14 @@ export default class Scrollbar extends React.Component {
                 }),
                 (renderTrackHorizontal || divRenderer)({
                     key: "trackHorizontal",
-                    ref: ref => {
+                    ref: (ref) => {
                         this.trackHorizontal = ref;
                     },
                     className: trackHorizontalClassNames,
                     style: trackHorizontalStyles,
                     children: (renderThumbHorizontal || divRenderer)({
                         key: "thumbHorizontal",
-                        ref: ref => {
+                        ref: (ref) => {
                             this.thumbHorizontal = ref;
                         },
                         className: thumbHorizontalClassNames,

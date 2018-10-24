@@ -74,7 +74,7 @@ export default class AutohideTracksBlock extends React.Component {
                 <div className="content" style={{ height: 280 }}>
                     <Scrollbar
                         trackVerticalStyle={{ opacity: 0 }}
-                        ref={ref => {
+                        ref={(ref) => {
                             this.scrollbar = ref;
                         }}
                         onScrollStart={this.handleScrollStart}

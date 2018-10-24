@@ -76,7 +76,7 @@ function LoopControllerClass() {
      * @param {Scrollbar} scrollbar
      * @return {LoopControllerClass}
      */
-    this.registerScrollbar = scrollbar => {
+    this.registerScrollbar = (scrollbar) => {
         if (scrollbarsRegister.indexOf(scrollbar) === -1) {
             scrollbarsRegister.push(scrollbar);
 
@@ -90,7 +90,7 @@ function LoopControllerClass() {
      * @param {Scrollbar} scrollbar
      * @return {LoopControllerClass}
      */
-    this.unregisterScrollbar = scrollbar => {
+    this.unregisterScrollbar = (scrollbar) => {
         const index = scrollbarsRegister.indexOf(scrollbar);
 
         if (index !== -1) {

@@ -18,7 +18,7 @@ export default function performTests() {
         });
 
         describe("when click vertical track", function() {
-            it("should scroll to relative position", done => {
+            it("should scroll to relative position", (done) => {
                 render(
                     <Scrollbar style={{ width: 100, height: 100 }}>
                         <div style={{ width: 200, height: 200 }} />
@@ -44,7 +44,7 @@ export default function performTests() {
         });
 
         describe("when click horizontal track", function() {
-            it("should scroll to relative position", done => {
+            it("should scroll to relative position", (done) => {
                 render(
                     <Scrollbar style={{ width: 100, height: 100 }}>
                         <div style={{ width: 200, height: 200 }} />

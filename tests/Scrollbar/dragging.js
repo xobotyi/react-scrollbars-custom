@@ -18,7 +18,7 @@ export default function performTests() {
         });
 
         describe("when dragging vertical thumb", function() {
-            it("should scroll to respective position", done => {
+            it("should scroll to respective position", (done) => {
                 render(
                     <Scrollbar style={{ width: 100, height: 100 }}>
                         <div style={{ width: 200, height: 200 }} />
@@ -49,7 +49,7 @@ export default function performTests() {
                     },
                 );
             });
-            it("should add dragging class to thumb", done => {
+            it("should add dragging class to thumb", (done) => {
                 render(
                     <Scrollbar style={{ width: 100, height: 100 }}>
                         <div style={{ width: 200, height: 200 }} />
@@ -85,7 +85,7 @@ export default function performTests() {
                     },
                 );
             });
-            it("should disable selection on the body element", done => {
+            it("should disable selection on the body element", (done) => {
                 render(
                     <Scrollbar style={{ width: 100, height: 100 }}>
                         <div style={{ width: 200, height: 200 }} />
@@ -120,7 +120,7 @@ export default function performTests() {
         });
 
         describe("when dragging horizontal thumb", function() {
-            it("should scroll to respective position", done => {
+            it("should scroll to respective position", (done) => {
                 render(
                     <Scrollbar style={{ width: 100, height: 100 }}>
                         <div style={{ width: 200, height: 200 }} />
@@ -151,7 +151,7 @@ export default function performTests() {
                     },
                 );
             });
-            it("should add dragging class to thumb", done => {
+            it("should add dragging class to thumb", (done) => {
                 render(
                     <Scrollbar style={{ width: 100, height: 100 }}>
                         <div style={{ width: 200, height: 200 }} />
@@ -187,7 +187,7 @@ export default function performTests() {
                     },
                 );
             });
-            it("should disable selection on the body element", done => {
+            it("should disable selection on the body element", (done) => {
                 render(
                     <Scrollbar style={{ width: 100, height: 100 }}>
                         <div style={{ width: 200, height: 200 }} />

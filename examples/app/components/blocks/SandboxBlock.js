@@ -293,7 +293,7 @@ export default class SandboxBlock extends React.Component {
                 <div className="content" style={{ height: 280 }}>
                     <Scrollbar
                         defaultStyles={false}
-                        ref={ref => {
+                        ref={(ref) => {
                             this.scrollbar = ref;
                         }}
                         noScroll={noScroll}

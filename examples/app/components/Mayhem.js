@@ -21,7 +21,7 @@ export default class Mayhem extends React.Component {
                 <Scrollbar
                     key={i}
                     style={{ width: 150, height: 150, margin: "1rem" }}
-                    ref={ref => {
+                    ref={(ref) => {
                         scrollbar = ref;
                     }}
                 >

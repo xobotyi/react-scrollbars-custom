@@ -19,7 +19,7 @@ describe("getInnerSizes", () => {
     });
 
     describe("getInnerHeight()", () => {
-        it("returns the height of an element without padding", done => {
+        it("returns the height of an element without padding", (done) => {
             render(
                 <div
                     style={{
@@ -39,7 +39,7 @@ describe("getInnerSizes", () => {
     });
 
     describe("getInnerWidth()", () => {
-        it("returns the width of an element without padding", done => {
+        it("returns the width of an element without padding", (done) => {
             render(
                 <div
                     style={{
@@ -59,7 +59,7 @@ describe("getInnerSizes", () => {
     });
 
     describe("getInnerSizes()", () => {
-        it("returns the width and height of an element without padding", done => {
+        it("returns the width and height of an element without padding", (done) => {
             render(
                 <div
                     style={{

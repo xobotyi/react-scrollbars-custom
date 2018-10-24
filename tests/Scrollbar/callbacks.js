@@ -22,7 +22,7 @@ export default function performTests() {
         describe("onScroll", function() {
             const onScroll = sinon.spy();
 
-            it("should should be called once after the scroll", done => {
+            it("should should be called once after the scroll", (done) => {
                 render(
                     <Scrollbar
                         style={{ width: 100, height: 100 }}
@@ -58,7 +58,7 @@ export default function performTests() {
             const onScrollStart = sinon.spy();
             const onScrollStop = sinon.spy();
 
-            it("should should be called once before the onScrollStop", done => {
+            it("should should be called once before the onScrollStop", (done) => {
                 render(
                     <Scrollbar
                         style={{ width: 100, height: 100 }}
@@ -123,7 +123,7 @@ export default function performTests() {
         describe("onScrollStop", function() {
             const onScrollStop = sinon.spy();
 
-            it("should not be triggered while thumb dragging is processed", done => {
+            it("should not be triggered while thumb dragging is processed", (done) => {
                 render(
                     <Scrollbar
                         style={{ width: 100, height: 100 }}

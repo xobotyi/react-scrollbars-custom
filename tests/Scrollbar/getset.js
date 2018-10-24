@@ -15,7 +15,7 @@ export default function performTests() {
             document.body.removeChild(node);
         });
 
-        let sbRender = cb =>
+        let sbRender = (cb) =>
             render(
                 <Scrollbar style={{ width: 100, height: 100 }}>
                     <div style={{ width: 200, height: 200 }} />
@@ -25,7 +25,7 @@ export default function performTests() {
             );
 
         describe("getters", function() {
-            it("should return scrollTop", done =>
+            it("should return scrollTop", (done) =>
                 sbRender(function() {
                     this.scrollTop = 50;
                     expect(this.scrollTop).toBe(50);
@@ -34,7 +34,7 @@ export default function performTests() {
                     done();
                 }));
 
-            it("should return scrollLeft", done =>
+            it("should return scrollLeft", (done) =>
                 sbRender(function() {
                     this.scrollLeft = 50;
                     expect(this.scrollLeft).toBe(50);
@@ -43,7 +43,7 @@ export default function performTests() {
                     done();
                 }));
 
-            it("should return scrollHeight", done =>
+            it("should return scrollHeight", (done) =>
                 sbRender(function() {
                     expect(this.scrollHeight).toBe(200);
                     expect(this.content.scrollHeight).toBe(200);
@@ -51,7 +51,7 @@ export default function performTests() {
                     done();
                 }));
 
-            it("should return scrollWidth", done =>
+            it("should return scrollWidth", (done) =>
                 sbRender(function() {
                     expect(this.scrollWidth).toBe(200);
                     expect(this.content.scrollWidth).toBe(200);
@@ -59,7 +59,7 @@ export default function performTests() {
                     done();
                 }));
 
-            it("should return clientHeight", done =>
+            it("should return clientHeight", (done) =>
                 sbRender(function() {
                     expect(this.clientHeight).toBe(100);
                     expect(this.content.clientHeight).toBe(100);
@@ -67,7 +67,7 @@ export default function performTests() {
                     done();
                 }));
 
-            it("should return clientWidth", done =>
+            it("should return clientWidth", (done) =>
                 sbRender(function() {
                     expect(this.clientWidth).toBe(100);
                     expect(this.content.clientWidth).toBe(100);
@@ -77,7 +77,7 @@ export default function performTests() {
         });
 
         describe("setters", function() {
-            it("scrollTop/scrollToTop/scrollToBottom", done =>
+            it("scrollTop/scrollToTop/scrollToBottom", (done) =>
                 sbRender(function() {
                     this.scrollTop = 50;
                     expect(this.scrollTop).toBe(50);
@@ -92,7 +92,7 @@ export default function performTests() {
                     done();
                 }));
 
-            it("scrollLeft/scrollToLeft/scrollToRight", done =>
+            it("scrollLeft/scrollToLeft/scrollToRight", (done) =>
                 sbRender(function() {
                     this.scrollLeft = 50;
                     expect(this.scrollLeft).toBe(50);
@@ -107,7 +107,7 @@ export default function performTests() {
                     done();
                 }));
 
-            it("scrollHeight should not be settable", done =>
+            it("scrollHeight should not be settable", (done) =>
                 sbRender(function() {
                     expect(() => {
                         this.scrollHeight = 0;
@@ -116,7 +116,7 @@ export default function performTests() {
                     done();
                 }));
 
-            it("scrollWidth should not be settable", done =>
+            it("scrollWidth should not be settable", (done) =>
                 sbRender(function() {
                     expect(() => {
                         this.scrollWidth = 0;
@@ -125,7 +125,7 @@ export default function performTests() {
                     done();
                 }));
 
-            it("clientHeight should not be settable", done =>
+            it("clientHeight should not be settable", (done) =>
                 sbRender(function() {
                     expect(() => {
                         this.clientHeight = 0;
@@ -134,7 +134,7 @@ export default function performTests() {
                     done();
                 }));
 
-            it("clientWidth should not be settable", done =>
+            it("clientWidth should not be settable", (done) =>
                 sbRender(function() {
                     expect(() => {
                         this.clientWidth = 0;

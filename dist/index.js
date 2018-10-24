@@ -592,14 +592,14 @@ function (_React$Component) {
           thumbVerticalClassNames = "ScrollbarsCustom-thumb ScrollbarsCustom-thumbHorizontal" + (thumbVerticalClassName ? " " + thumbVerticalClassName : ""),
           thumbHorizontalClassNames = "ScrollbarsCustom-thumb ScrollbarsCustom-thumbHorizontal" + (thumbHorizontalClassName ? " " + thumbHorizontalClassName : "");
 
-      var holderStyles = _objectSpread({}, style, defaultStyles && defaultElementsStyles.holder, {
+      var holderStyles = _objectSpread({}, defaultStyles && defaultElementsStyles.holder, style, {
         direction: rtl === true && "rtl" || rtl === false && "ltr" || null
       }),
-          wrapperStyles = _objectSpread({}, wrapperStyle, defaultStyles && defaultElementsStyles.wrapper, {
+          wrapperStyles = _objectSpread({}, defaultStyles && defaultElementsStyles.wrapper, wrapperStyle, {
         position: "relative",
         overflow: "hidden"
       }),
-          contentStyles = _objectSpread({}, contentStyle, defaultElementsStyles.content, {
+          contentStyles = _objectSpread({}, defaultElementsStyles.content, contentStyle, {
         overflowX: "scroll",
         overflowY: "scroll",
         marginBottom: -(browserScrollbarWidth || fallbackScrollbarWidth),
@@ -608,9 +608,9 @@ function (_React$Component) {
         WebkitOverflowScrolling: "touch"
       }),
           trackVerticalStyles = _objectSpread({}, trackVerticalStyle, defaultStyles && defaultElementsStyles.trackVertical),
-          trackHorizontalStyles = _objectSpread({}, trackHorizontalStyle, defaultStyles && defaultElementsStyles.trackHorizontal),
-          thumbVerticalStyles = _objectSpread({}, thumbVerticalStyle, defaultStyles && defaultElementsStyles.thumbVertical),
-          thumbHorizontalStyles = _objectSpread({}, thumbHorizontalStyle, defaultStyles && defaultElementsStyles.thumbHorizontal);
+          trackHorizontalStyles = _objectSpread({}, defaultStyles && defaultElementsStyles.trackHorizontal, trackHorizontalStyle),
+          thumbVerticalStyles = _objectSpread({}, defaultStyles && defaultElementsStyles.thumbVertical, thumbVerticalStyle),
+          thumbHorizontalStyles = _objectSpread({}, defaultStyles && defaultElementsStyles.thumbHorizontal, thumbHorizontalStyle);
 
       if (noScroll || noScrollX && noScrollY) {
         contentStyles.marginRight = contentStyles.marginBottom = null;

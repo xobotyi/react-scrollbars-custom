@@ -671,8 +671,8 @@ export default class Scrollbar extends React.Component
                   ...(momentum && {WebkitOverflowScrolling: "touch"}),
               },
               trackVerticalStyles   = {
-                  ...trackVerticalStyle,
                   ...(defaultStyles && defaultElementsStyles.trackVertical),
+                  ...trackVerticalStyle,
               },
               trackHorizontalStyles = {
                   ...(defaultStyles && defaultElementsStyles.trackHorizontal),

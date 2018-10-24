@@ -607,7 +607,7 @@ function (_React$Component) {
       }, momentum && {
         WebkitOverflowScrolling: "touch"
       }),
-          trackVerticalStyles = _objectSpread({}, trackVerticalStyle, defaultStyles && defaultElementsStyles.trackVertical),
+          trackVerticalStyles = _objectSpread({}, defaultStyles && defaultElementsStyles.trackVertical, trackVerticalStyle),
           trackHorizontalStyles = _objectSpread({}, defaultStyles && defaultElementsStyles.trackHorizontal, trackHorizontalStyle),
           thumbVerticalStyles = _objectSpread({}, defaultStyles && defaultElementsStyles.thumbVertical, thumbVerticalStyle),
           thumbHorizontalStyles = _objectSpread({}, defaultStyles && defaultElementsStyles.thumbHorizontal, thumbHorizontalStyle);

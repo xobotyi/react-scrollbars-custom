@@ -338,7 +338,7 @@ export default class Scrollbar extends React.Component
 
         const {content, trackVertical, trackHorizontal, thumbVertical, thumbHorizontal} = this;
 
-        content.removeEventListener("scroll", this.handleScrollEvent, { passive: true });
+        content.removeEventListener("scroll", this.handleScrollEvent, {passive: true});
         trackVertical.removeEventListener("mousedown", this.handleTrackVerticalMousedownEvent);
         trackHorizontal.removeEventListener("mousedown", this.handleTrackHorizontalMousedownEvent);
         thumbVertical.removeEventListener("mousedown", this.handleThumbVerticalMousedownEvent);
@@ -651,19 +651,19 @@ export default class Scrollbar extends React.Component
               thumbHorizontalClassNames = "ScrollbarsCustom-thumb ScrollbarsCustom-thumbHorizontal" + (thumbHorizontalClassName ? (" " + thumbHorizontalClassName) : "");
 
         const holderStyles          = {
-                  ...style,
                   ...(defaultStyles && defaultElementsStyles.holder),
+                  ...style,
                   ...({direction: (rtl === true && "rtl") || (rtl === false && "ltr") || null}),
               },
               wrapperStyles         = {
-                  ...wrapperStyle,
                   ...(defaultStyles && defaultElementsStyles.wrapper),
+                  ...wrapperStyle,
                   position: "relative",
                   overflow: "hidden",
               },
               contentStyles         = {
-                  ...contentStyle,
                   ...defaultElementsStyles.content,
+                  ...contentStyle,
                   overflowX:     "scroll",
                   overflowY:     "scroll",
                   marginBottom:  -(browserScrollbarWidth || fallbackScrollbarWidth),
@@ -675,16 +675,16 @@ export default class Scrollbar extends React.Component
                   ...(defaultStyles && defaultElementsStyles.trackVertical),
               },
               trackHorizontalStyles = {
-                  ...trackHorizontalStyle,
                   ...(defaultStyles && defaultElementsStyles.trackHorizontal),
+                  ...trackHorizontalStyle,
               },
               thumbVerticalStyles   = {
-                  ...thumbVerticalStyle,
                   ...(defaultStyles && defaultElementsStyles.thumbVertical),
+                  ...thumbVerticalStyle,
               },
               thumbHorizontalStyles = {
-                  ...thumbHorizontalStyle,
                   ...(defaultStyles && defaultElementsStyles.thumbHorizontal),
+                  ...thumbHorizontalStyle,
               };
 
         if (noScroll || (noScrollX && noScrollY)) {

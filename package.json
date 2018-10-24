@@ -56,9 +56,10 @@
     "mini-css-extract-plugin": "^0.4.4",
     "mocha": "^5.2.0",
     "node-sass": "^4.9.3",
+    "prettier": "^1.14.3",
+    "prop-types": "^15.0.0",
     "react": "^16.5.2",
     "react-dom": "^16.5.2",
-    "prop-types": "^15.0.0",
     "rimraf": "^2.6.2",
     "sass-loader": "^7.1.0",
     "simulant": "^0.2.2",
@@ -75,6 +76,8 @@
     "test": "cross-env NODE_ENV=test karma start",
     "test:watch": "cross-env NODE_ENV=test karma start --auto-watch --no-single-run",
     "test:coverage": "cross-env NODE_ENV=test COVERAGE=true karma start --single-run",
-    "prepublishOnly": "npm test && npm run build"
+    "prepublishOnly": "npm test && npm run build",
+    "format:list": "prettier --list-different 'src/**/*.js' 'tests/**/*.js' 'examples/**/*.js'",
+    "format:fix": "prettier --write 'src/**/*.js' 'tests/**/*.js' 'examples/**/*.js'"
   }
 }

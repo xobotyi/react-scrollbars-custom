@@ -24,7 +24,9 @@ function LoopControllerClass() {
      * Function that called in animation frame
      */
     const animationFrameCallback = () => {
-        if (!isActive) {return;}
+        if (!isActive) {
+            return;
+        }
 
         for (let scrollbar of scrollbarsRegister) {
             scrollbar.update();
@@ -38,7 +40,9 @@ function LoopControllerClass() {
      * @return {LoopControllerClass}
      */
     this.start = () => {
-        if (isActive) {return this;}
+        if (isActive) {
+            return this;
+        }
 
         isActive = true;
 
@@ -50,7 +54,9 @@ function LoopControllerClass() {
      * @return {LoopControllerClass}
      */
     this.stop = () => {
-        if (!isActive) {return this;}
+        if (!isActive) {
+            return this;
+        }
 
         isActive = false;
 
@@ -70,7 +76,7 @@ function LoopControllerClass() {
      * @param {Scrollbar} scrollbar
      * @return {LoopControllerClass}
      */
-    this.registerScrollbar = (scrollbar) => {
+    this.registerScrollbar = scrollbar => {
         if (scrollbarsRegister.indexOf(scrollbar) === -1) {
             scrollbarsRegister.push(scrollbar);
 
@@ -84,7 +90,7 @@ function LoopControllerClass() {
      * @param {Scrollbar} scrollbar
      * @return {LoopControllerClass}
      */
-    this.unregisterScrollbar = (scrollbar) => {
+    this.unregisterScrollbar = scrollbar => {
         const index = scrollbarsRegister.indexOf(scrollbar);
 
         if (index !== -1) {

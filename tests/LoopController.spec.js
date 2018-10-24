@@ -1,7 +1,10 @@
-import expect                                   from "expect";
-import React                                    from "react";
-import sinon                                    from 'sinon';
-import { createLoopController, LoopController } from '../src/util/LoopController';
+import expect from "expect";
+import React from "react";
+import sinon from "sinon";
+import {
+    createLoopController,
+    LoopController,
+} from "../src/util/LoopController";
 
 describe("LoopController", () => {
     const ScrollbarMock = {
@@ -13,17 +16,19 @@ describe("LoopController", () => {
     it("should register the scrollbar", () => {
         LoopController.registerScrollbar(ScrollbarMock);
         expect(LoopController.getRegisteredScrollbars().length).toEqual(1);
-        expect(LoopController.getRegisteredScrollbars()[0]).toEqual(ScrollbarMock);
+        expect(LoopController.getRegisteredScrollbars()[0]).toEqual(
+            ScrollbarMock,
+        );
     });
 
-    it("should call an 'update' method of registered scrollbar", (done) => {
+    it("should call an 'update' method of registered scrollbar", done => {
         setTimeout(() => {
             expect(spy.callCount).toBeGreaterThanOrEqual(30);
             done();
         }, 500);
     });
 
-    it("should stop the loop when .stop() executed", (done) => {
+    it("should stop the loop when .stop() executed", done => {
         let callCount = spy.callCount * 1;
         LoopController.stop();
 
@@ -33,7 +38,7 @@ describe("LoopController", () => {
         }, 500);
     });
 
-    it("should start the loop when .start() executed", (done) => {
+    it("should start the loop when .start() executed", done => {
         let callCount = spy.callCount * 1;
         LoopController.start();
 

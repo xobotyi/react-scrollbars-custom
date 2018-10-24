@@ -6,7 +6,11 @@
 export function getInnerHeight(el) {
     let styles = getComputedStyle(el);
 
-    return el.clientHeight - styles.paddingTop.slice(0, -2) - styles.paddingBottom.slice(0, -2);
+    return (
+        el.clientHeight -
+        styles.paddingTop.slice(0, -2) -
+        styles.paddingBottom.slice(0, -2)
+    );
 }
 
 /**
@@ -17,7 +21,11 @@ export function getInnerHeight(el) {
 export function getInnerWidth(el) {
     let styles = getComputedStyle(el);
 
-    return el.clientWidth - styles.paddingLeft.slice(0, -2) - styles.paddingRight.slice(0, -2);
+    return (
+        el.clientWidth -
+        styles.paddingLeft.slice(0, -2) -
+        styles.paddingRight.slice(0, -2)
+    );
 }
 
 /**
@@ -29,7 +37,13 @@ export function getInnerSizes(el) {
     let styles = getComputedStyle(el);
 
     return {
-        width:  el.clientHeight - styles.paddingLeft.slice(0, -2) - styles.paddingRight.slice(0, -2),
-        height: el.clientHeight - styles.paddingTop.slice(0, -2) - styles.paddingBottom.slice(0, -2),
+        width:
+            el.clientHeight -
+            styles.paddingLeft.slice(0, -2) -
+            styles.paddingRight.slice(0, -2),
+        height:
+            el.clientHeight -
+            styles.paddingTop.slice(0, -2) -
+            styles.paddingBottom.slice(0, -2),
     };
 }

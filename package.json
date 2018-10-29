@@ -77,7 +77,7 @@
     "test:coverage": "cross-env NODE_ENV=test COVERAGE=true karma start --single-run",
     "format": "prettier --write src/**/*.js tests/**/*.js examples/**/*.js",
     "format:list": "prettier -l src/**/*.js tests/**/*.js examples/**/*.js",
-    "precommit": "npm run format",
+    "precommit": "npm run format && git add",
     "prepublishOnly": "npm run test && npm run build"
   }
 }

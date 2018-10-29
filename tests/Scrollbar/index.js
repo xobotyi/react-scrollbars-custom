@@ -1,7 +1,7 @@
-import callbacks   from "./callbacks";
-import dragging    from "./dragging";
-import getset      from "./getset";
-import rendering   from "./rendering";
+import callbacks from "./callbacks";
+import dragging from "./dragging";
+import getset from "./getset";
+import rendering from "./rendering";
 import tracksClick from "./tracksClick";
 
 export default function performTests() {

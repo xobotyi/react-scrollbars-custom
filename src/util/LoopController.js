@@ -48,6 +48,8 @@ function LoopControllerClass() {
 
         animationFrameId && cancelAnimationFrame(animationFrameId);
         requestAnimationFrame(animationFrameCallback);
+
+        return this;
     };
     /**
      * Stop the loop if it is active
@@ -62,6 +64,8 @@ function LoopControllerClass() {
 
         animationFrameId && cancelAnimationFrame(animationFrameId);
         animationFrameId = null;
+
+        return this;
     };
 
     /**

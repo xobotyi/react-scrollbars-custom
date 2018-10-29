@@ -27,6 +27,8 @@ describe("LoopController", () => {
         let callCount = spy.callCount * 1;
         LoopController.stop();
 
+        LoopController.stop(); // 2nd call is just for coverage
+
         setTimeout(() => {
             expect(spy.callCount).toEqual(callCount);
             done();

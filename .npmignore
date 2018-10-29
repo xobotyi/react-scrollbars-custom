@@ -3,6 +3,8 @@ tests/
 examples/
 .idea/
 src/
+.prettierignore
+.prettierrc
 .travis.yml
 CODE_OF_CONDUCT.md
 karma.conf.js

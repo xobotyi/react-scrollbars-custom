@@ -3,6 +3,7 @@
 ### `<Scrollbar>`
 #### Properties
 * **Setups**
+    * `nativeScrollbars`: _(boolean)_ User browser's native scrollbars instead of custom _(default: false)_
     * `defaultStyles`: _(boolean)_ Apply default inline styles _(default: false)_
     * `fallbackScrollbarWidth`: _(number)_ Number of pixels that will be treated as scrollbar width if automated scrollbar width detection will fail. _This parameter used on mobiles, because scrollbars there has an absolute positioning and can't be measured._ _(default: 20)_
     * `minimalThumbsSize`: _(number)_ Minimal size of thumb in pixels _(default: 30)_

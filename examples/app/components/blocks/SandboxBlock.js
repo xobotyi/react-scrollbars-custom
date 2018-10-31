@@ -22,11 +22,14 @@ export default class SandboxBlock extends React.Component {
         this.handleScrollLeftClick = this.handleScrollLeftClick.bind(this);
         this.handleScrollRightClick = this.handleScrollRightClick.bind(this);
         this.toggleRtl = this.toggleRtl.bind(this);
+        this.toggleNativeScrollbarClick = this.toggleNativeScrollbarClick.bind(this);
 
         this.state = {
             noScroll: false,
             noScrollY: false,
             noScrollX: false,
+
+            nativeScrollbar: false,
 
             rtl: false,
 
@@ -43,7 +46,6 @@ export default class SandboxBlock extends React.Component {
 
     toggleNoScroll() {
         this.setState({
-            ...this.state,
             noScroll: !this.state.noScroll,
             noScrollY: !this.state.noScroll,
             noScrollX: !this.state.noScroll,
@@ -52,7 +54,6 @@ export default class SandboxBlock extends React.Component {
 
     toggleNoScrollY() {
         this.setState({
-            ...this.state,
             noScroll: (this.state.noScroll ? true : this.state.noScrollX) && !this.state.noScrollY,
             noScrollY: !this.state.noScrollY,
             noScrollX: this.state.noScroll ? true : this.state.noScrollX,
@@ -61,7 +62,6 @@ export default class SandboxBlock extends React.Component {
 
     toggleNoScrollX() {
         this.setState({
-            ...this.state,
             noScroll: !this.state.noScrollX && (this.state.noScroll ? true : this.state.noScrollY),
             noScrollX: !this.state.noScrollX,
             noScrollY: this.state.noScroll ? true : this.state.noScrollY,
@@ -70,7 +70,6 @@ export default class SandboxBlock extends React.Component {
 
     togglePermanentTracks() {
         this.setState({
-            ...this.state,
             permanentTracks: !this.state.permanentTracks,
             permanentTrackY: !this.state.permanentTracks,
             permanentTrackX: !this.state.permanentTracks,
@@ -79,7 +78,6 @@ export default class SandboxBlock extends React.Component {
 
     togglePermanentTrackY() {
         this.setState({
-            ...this.state,
             permanentTracks:
                 (this.state.permanentTracks ? true : this.state.permanentTrackX) && !this.state.permanentTrackY,
             permanentTrackY: !this.state.permanentTrackY,
@@ -89,7 +87,6 @@ export default class SandboxBlock extends React.Component {
 
     togglePermanentTrackX() {
         this.setState({
-            ...this.state,
             permanentTracks:
                 !this.state.permanentTrackX && (this.state.permanentTracks ? true : this.state.permanentTrackY),
             permanentTrackX: !this.state.permanentTrackX,
@@ -99,21 +96,24 @@ export default class SandboxBlock extends React.Component {
 
     toggleRtl() {
         this.setState({
-            ...this.state,
             rtl: !this.state.rtl,
+        });
+    }
+
+    toggleNativeScrollbarClick() {
+        this.setState({
+            nativeScrollbar: !this.state.nativeScrollbar,
         });
     }
 
     handleAddParagraphClick() {
         this.setState({
-            ...this.state,
             paragraphsCount: this.state.paragraphsCount + 1,
         });
     }
 
     handleRemoveParagraphClick() {
         this.setState({
-            ...this.state,
             paragraphsCount: Math.max(0, this.state.paragraphsCount - 1),
         });
     }
@@ -140,12 +140,25 @@ export default class SandboxBlock extends React.Component {
     }
 
     render() {
-        const {noScroll, noScrollY, noScrollX, permanentTracks, permanentTrackY, permanentTrackX, rtl} = this.state;
+        const {
+            noScroll,
+            noScrollY,
+            noScrollX,
+            permanentTracks,
+            permanentTrackY,
+            permanentTrackX,
+            rtl,
+            nativeScrollbar,
+        } = this.state;
 
         return (
             <div className="block" id="SandboxBlock">
                 <div className="title">Sandbox</div>
                 <div className="description">
+                    <div className="button" key="nativeScrollbar" onClick={this.toggleNativeScrollbarClick}>
+                        {nativeScrollbar ? "Custom scrollbars" : "Native scrollbars"}
+                    </div>
+                    <br />
                     <div className="button" key="noScroll" onClick={this.toggleNoScroll}>
                         {noScroll ? "Enable scroll" : "Disable scroll"}
                     </div>
@@ -196,6 +209,7 @@ export default class SandboxBlock extends React.Component {
                 </div>
                 <div className="content" style={{height: 280}}>
                     <Scrollbar
+                        nativeScrollbars={nativeScrollbar}
                         defaultStyles={false}
                         ref={ref => {
                             this.scrollbar = ref;

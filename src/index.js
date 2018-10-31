@@ -10,8 +10,13 @@ function divRenderer(props) {
 
 const defaultElementsStyles = {
     holder: {
-        position: "relative",
-        display: "flex",
+        regular: {
+            position: "relative",
+            display: "flex",
+        },
+        native: {
+            position: "relative",
+        },
     },
     wrapper: {
         flexGrow: 1,
@@ -69,6 +74,7 @@ export default class Scrollbar extends React.Component {
         rtl: PropTypes.bool,
         momentum: PropTypes.bool,
         defaultStyles: PropTypes.bool,
+        nativeScrollbars: PropTypes.bool,
 
         permanentScrollbars: PropTypes.bool,
         permanentScrollbarX: PropTypes.bool,
@@ -113,6 +119,7 @@ export default class Scrollbar extends React.Component {
         minimalThumbsSize: 30,
         fallbackScrollbarWidth: 20,
 
+        nativeScrollbars: false,
         defaultStyles: true,
 
         permanentScrollbarX: false,
@@ -130,13 +137,32 @@ export default class Scrollbar extends React.Component {
 
     componentDidMount() {
         this.isRtl = null;
+
+        if (this.props.nativeScrollbars) {
+            return;
+        }
+
         LoopController.registerScrollbar(this);
 
-        this.addListeners();
+        this.addListeners(true);
         this.update(true, true);
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
+        if (this.props.nativeScrollbars !== prevProps.nativeScrollbars) {
+            if (this.props.nativeScrollbars) {
+                LoopController.unregisterScrollbar(this);
+                this.removeListeners();
+            } else {
+                LoopController.registerScrollbar(this);
+                this.addListeners(true);
+            }
+        }
+
+        if (this.props.nativeScrollbars) {
+            return;
+        }
+
         if (
             prevProps.noScroll !== this.props.noScroll ||
             prevProps.noScrollY !== this.props.noScrollY ||
@@ -148,25 +174,31 @@ export default class Scrollbar extends React.Component {
             prevProps.permanentScrollbarY !== this.props.permanentScrollbarY
         ) {
             this.update(true, prevProps.rtl !== this.props.rtl);
+
+            this.addListeners(
+                prevProps.noScroll === this.props.noScroll,
+                prevProps.noScrollY === this.props.noScrollY,
+                prevProps.noScrollX === this.props.noScrollX
+            );
         }
 
-        this.addListeners();
+        if (
+            prevProps.noScroll !== this.props.noScroll ||
+            prevProps.onScrollStart !== this.props.onScrollStart ||
+            prevProps.onScrollStop !== this.props.onScrollStop
+        ) {
+            if (!this.props.noScroll && (this.props.onScrollStart || this.props.onScrollStop)) {
+                this.content.addEventListener("scroll", this.handleScrollEvent, {passive: true});
+            } else {
+                this.content.removeEventListener("scroll", this.handleScrollEvent, {passive: true});
+            }
+        }
     }
 
     componentWillUnmount() {
         LoopController.unregisterScrollbar(this);
 
-        this.handleDragEnd();
         this.removeListeners();
-
-        if (this.scrollDetect.timeout) {
-            clearTimeout(this.scrollDetect.timeout);
-            this.scrollDetect.timeout = null;
-
-            if (this.props.onScrollStop) {
-                this.props.onScrollStop(this);
-            }
-        }
     }
 
     /**
@@ -175,11 +207,13 @@ export default class Scrollbar extends React.Component {
      * @return {number}
      */
     get scrollTop() {
-        if (!this.content) {
-            return 0;
+        if (this.content) {
+            return this.content.scrollTop;
+        } else if (this.props.nativeScrollbars) {
+            return this.holder.scrollTop;
         }
 
-        return this.content.scrollTop;
+        return 0;
     }
 
     /**
@@ -189,12 +223,12 @@ export default class Scrollbar extends React.Component {
      * @param top {number} Pixels amount
      */
     set scrollTop(top) {
-        if (!this.content) {
-            return;
+        if (this.content) {
+            this.content.scrollTop = top;
+            this.update();
+        } else if (this.props.nativeScrollbars) {
+            this.holder.scrollTop = top;
         }
-
-        this.content.scrollTop = top;
-        this.update();
     }
 
     /**
@@ -203,11 +237,13 @@ export default class Scrollbar extends React.Component {
      * @return {number}
      */
     get scrollLeft() {
-        if (!this.content) {
-            return 0;
+        if (this.content) {
+            return this.content.scrollLeft;
+        } else if (this.props.nativeScrollbars) {
+            return this.holder.scrollLeft;
         }
 
-        return this.content.scrollLeft;
+        return 0;
     }
 
     /**
@@ -216,55 +252,64 @@ export default class Scrollbar extends React.Component {
      * @param left {number} Pixels amount
      */
     set scrollLeft(left) {
-        if (!this.content) {
-            return;
+        if (this.content) {
+            this.content.scrollLeft = left;
+            this.update();
+        } else if (this.props.nativeScrollbars) {
+            this.holder.scrollLeft = left;
         }
-
-        this.content.scrollLeft = left;
-        this.update();
     }
 
     /**
      * @return {number}
      */
     get scrollHeight() {
-        if (!this.content) {
-            return 0;
+        if (this.content) {
+            return this.content.scrollHeight;
+        } else if (this.props.nativeScrollbars) {
+            return this.holder.scrollHeight;
         }
 
-        return this.content.scrollHeight;
+        return 0;
     }
 
     /**
      * @return {number}
      */
     get scrollWidth() {
-        if (!this.content) {
-            return 0;
+        if (this.content) {
+            return this.content.scrollWidth;
+        } else if (this.props.nativeScrollbars) {
+            return this.holder.scrollWidth;
         }
-        return this.content.scrollWidth;
+
+        return 0;
     }
 
     /**
      * @return {number}
      */
     get clientHeight() {
-        if (!this.content) {
-            return 0;
+        if (this.content) {
+            return this.content.clientHeight;
+        } else if (this.props.nativeScrollbars) {
+            return this.holder.clientHeight;
         }
 
-        return this.content.clientHeight;
+        return 0;
     }
 
     /**
      * @return {number}
      */
     get clientWidth() {
-        if (!this.content) {
-            return 0;
+        if (this.content) {
+            return this.content.clientWidth;
+        } else if (this.props.nativeScrollbars) {
+            return this.holder.clientWidth;
         }
 
-        return this.content.clientWidth;
+        return 0;
     }
 
     /**
@@ -273,10 +318,11 @@ export default class Scrollbar extends React.Component {
      * @return {Scrollbar}
      */
     scrollToTop() {
-        if (!this.content) {
-            return this;
+        if (this.content) {
+            this.content.scrollTop = 0;
+        } else if (this.props.nativeScrollbars) {
+            this.holder.scrollTop = 0;
         }
-        this.content.scrollTop = 0;
 
         return this;
     }
@@ -287,10 +333,11 @@ export default class Scrollbar extends React.Component {
      * @return {Scrollbar}
      */
     scrollToBottom() {
-        if (!this.content) {
-            return this;
+        if (this.content) {
+            this.content.scrollTop = this.content.scrollHeight;
+        } else if (this.props.nativeScrollbars) {
+            this.holder.scrollTop = this.holder.scrollHeight;
         }
-        this.content.scrollTop = this.content.scrollHeight;
 
         return this;
     }
@@ -301,10 +348,11 @@ export default class Scrollbar extends React.Component {
      * @return {Scrollbar}
      */
     scrollToLeft() {
-        if (!this.content) {
-            return this;
+        if (this.content) {
+            this.content.scrollLeft = 0;
+        } else if (this.props.nativeScrollbars) {
+            this.holder.scrollLeft = 0;
         }
-        this.content.scrollLeft = 0;
 
         return this;
     }
@@ -315,10 +363,11 @@ export default class Scrollbar extends React.Component {
      * @return {Scrollbar}
      */
     scrollToRight() {
-        if (!this.content) {
-            return this;
+        if (this.content) {
+            this.content.scrollLeft = this.content.scrollWidth;
+        } else if (this.props.nativeScrollbars) {
+            this.holder.scrollLeft = this.holder.scrollWidth;
         }
-        this.content.scrollLeft = this.content.scrollWidth;
 
         return this;
     }
@@ -326,36 +375,41 @@ export default class Scrollbar extends React.Component {
     /**
      * @return {Scrollbar}
      */
-    addListeners = () => {
+    addListeners = (noScrollChanged = false, noScrollYChanged = false, noScrollXChanged = false) => {
         if (!isset(document) || !this.content) {
             return this;
         }
 
-        const {content, trackVertical, trackHorizontal, thumbVertical, thumbHorizontal} = this;
         const {noScroll, noScrollY, noScrollX} = this.props;
 
-        if (noScroll) {
-            this.removeListeners();
+        if (noScrollChanged) {
+            if (noScroll) {
+                this.removeListeners();
 
-            return this;
-        } else {
-            content.addEventListener("scroll", this.handleScrollEvent, {passive: true});
+                return this;
+            } else if (this.props.onScrollStart || this.props.onScrollStop) {
+                this.content.addEventListener("scroll", this.handleScrollEvent, {passive: true});
+            }
         }
 
-        if (noScrollY) {
-            trackVertical.removeEventListener("mousedown", this.handleTrackVerticalMousedownEvent);
-            thumbVertical.removeEventListener("mousedown", this.handleThumbVerticalMousedownEvent);
-        } else {
-            trackVertical.addEventListener("mousedown", this.handleTrackVerticalMousedownEvent);
-            thumbVertical.addEventListener("mousedown", this.handleThumbVerticalMousedownEvent);
+        if (noScrollChanged || noScrollYChanged) {
+            if (noScrollY) {
+                this.trackVertical.removeEventListener("mousedown", this.handleTrackVerticalMousedownEvent);
+                this.thumbVertical.removeEventListener("mousedown", this.handleThumbVerticalMousedownEvent);
+            } else {
+                this.trackVertical.addEventListener("mousedown", this.handleTrackVerticalMousedownEvent);
+                this.thumbVertical.addEventListener("mousedown", this.handleThumbVerticalMousedownEvent);
+            }
         }
 
-        if (noScrollX) {
-            trackHorizontal.removeEventListener("mousedown", this.handleTrackHorizontalMousedownEvent);
-            thumbHorizontal.removeEventListener("mousedown", this.handleThumbHorizontalMousedownEvent);
-        } else {
-            trackHorizontal.addEventListener("mousedown", this.handleTrackHorizontalMousedownEvent);
-            thumbHorizontal.addEventListener("mousedown", this.handleThumbHorizontalMousedownEvent);
+        if (noScrollChanged || noScrollXChanged) {
+            if (noScrollX) {
+                this.trackHorizontal.removeEventListener("mousedown", this.handleTrackHorizontalMousedownEvent);
+                this.thumbHorizontal.removeEventListener("mousedown", this.handleThumbHorizontalMousedownEvent);
+            } else {
+                this.trackHorizontal.addEventListener("mousedown", this.handleTrackHorizontalMousedownEvent);
+                this.thumbHorizontal.addEventListener("mousedown", this.handleThumbHorizontalMousedownEvent);
+            }
         }
 
         return this;
@@ -376,6 +430,17 @@ export default class Scrollbar extends React.Component {
         trackHorizontal.removeEventListener("mousedown", this.handleTrackHorizontalMousedownEvent);
         thumbVertical.removeEventListener("mousedown", this.handleThumbVerticalMousedownEvent);
         thumbHorizontal.removeEventListener("mousedown", this.handleThumbHorizontalMousedownEvent);
+
+        this.handleDragEnd();
+
+        if (this.scrollDetect.timeout) {
+            clearTimeout(this.scrollDetect.timeout);
+            this.scrollDetect.timeout = null;
+
+            if (this.props.onScrollStop) {
+                this.props.onScrollStop(this);
+            }
+        }
 
         return this;
     };
@@ -567,6 +632,10 @@ export default class Scrollbar extends React.Component {
      * @param rtlAutodetect {boolean} Whether to check the CSS value `direction`
      */
     update = (forced = false, rtlAutodetect = false) => {
+        if (this.props.nativeScrollbars) {
+            return;
+        }
+
         // No need to update scrollbars if values had not changed
         if (!forced && (this.previousScrollValues || false)) {
             if (
@@ -690,12 +759,32 @@ export default class Scrollbar extends React.Component {
         return this;
     };
 
+    nativeOnScrollHandler = () => {
+        const currentScrollValues = {
+            scrollTop: this.holder.scrollTop,
+            scrollLeft: this.holder.scrollLeft,
+            scrollHeight: this.holder.scrollHeight,
+            scrollWidth: this.holder.scrollWidth,
+            clientHeight: this.holder.clientHeight,
+            clientWidth: this.holder.clientWidth,
+        };
+
+        (this.previousScrollValues || false) &&
+            this.props.onScroll &&
+            this.props.onScroll.call(this, currentScrollValues);
+
+        this.previousScrollValues = currentScrollValues;
+
+        this.scrollDetect();
+    };
+
     render() {
         const {
             // numeric props
             minimalThumbsSize,
             fallbackScrollbarWidth,
             scrollDetectionThreshold,
+            nativeScrollbars,
 
             // boolean props
             defaultStyles,
@@ -744,6 +833,38 @@ export default class Scrollbar extends React.Component {
             ...props
         } = this.props;
 
+        if (nativeScrollbars) {
+            return React.createElement(
+                tagName,
+                {
+                    ...props,
+                    className: "ScrollbarsCustom-holder ScrollbarsCustom-native" + (className ? " " + className : ""),
+                    style: {
+                        ...(defaultStyles && defaultStyles.holder.native),
+                        ...style,
+                        overflowX:
+                            noScroll || noScrollX
+                                ? "hidden"
+                                : permanentScrollbars || permanentScrollbarX
+                                    ? "scroll"
+                                    : "auto",
+                        overflowY:
+                            noScroll || noScrollY
+                                ? "hidden"
+                                : permanentScrollbars || permanentScrollbarY
+                                    ? "scroll"
+                                    : "auto",
+                        direction: (rtl === true && "rtl") || (rtl === false && "ltr") || null,
+                    },
+                    ref: ref => {
+                        this.holder = ref;
+                    },
+                    onScroll: this.nativeOnScrollHandler,
+                },
+                children
+            );
+        }
+
         const browserScrollbarWidth = getScrollbarWidth();
 
         const holderClassNames = "ScrollbarsCustom-holder" + (className ? " " + className : ""),
@@ -763,9 +884,9 @@ export default class Scrollbar extends React.Component {
                 (thumbHorizontalClassName ? " " + thumbHorizontalClassName : "");
 
         const holderStyles = {
-                ...(defaultStyles && defaultElementsStyles.holder),
+                ...(defaultStyles && defaultElementsStyles.holder.regular),
                 ...style,
-                ...{direction: (rtl === true && "rtl") || (rtl === false && "ltr") || null},
+                direction: (rtl === true && "rtl") || (rtl === false && "ltr") || null,
             },
             wrapperStyles = {
                 ...(defaultStyles && defaultElementsStyles.wrapper),

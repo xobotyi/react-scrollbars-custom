@@ -49,8 +49,13 @@ function divRenderer(props) {
 
 var defaultElementsStyles = {
   holder: {
-    position: "relative",
-    display: "flex"
+    regular: {
+      position: "relative",
+      display: "flex"
+    },
+    native: {
+      position: "relative"
+    }
   },
   wrapper: {
     flexGrow: 1
@@ -117,6 +122,59 @@ function (_React$Component) {
     _this = _possibleConstructorReturn(this, (_getPrototypeOf2 = _getPrototypeOf(Scrollbar)).call.apply(_getPrototypeOf2, [this].concat(args)));
 
     _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "addListeners", function () {
+      var noScrollChanged = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
+      var noScrollYChanged = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+      var noScrollXChanged = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+
+      if (!(0, _utilities.isset)(document) || !_this.content) {
+        return _assertThisInitialized(_assertThisInitialized(_this));
+      }
+
+      var _this$props = _this.props,
+          noScroll = _this$props.noScroll,
+          noScrollY = _this$props.noScrollY,
+          noScrollX = _this$props.noScrollX;
+
+      if (noScrollChanged) {
+        if (noScroll) {
+          _this.removeListeners();
+
+          return _assertThisInitialized(_assertThisInitialized(_this));
+        } else if (_this.props.onScrollStart || _this.props.onScrollStop) {
+          _this.content.addEventListener("scroll", _this.handleScrollEvent, {
+            passive: true
+          });
+        }
+      }
+
+      if (noScrollChanged || noScrollYChanged) {
+        if (noScrollY) {
+          _this.trackVertical.removeEventListener("mousedown", _this.handleTrackVerticalMousedownEvent);
+
+          _this.thumbVertical.removeEventListener("mousedown", _this.handleThumbVerticalMousedownEvent);
+        } else {
+          _this.trackVertical.addEventListener("mousedown", _this.handleTrackVerticalMousedownEvent);
+
+          _this.thumbVertical.addEventListener("mousedown", _this.handleThumbVerticalMousedownEvent);
+        }
+      }
+
+      if (noScrollChanged || noScrollXChanged) {
+        if (noScrollX) {
+          _this.trackHorizontal.removeEventListener("mousedown", _this.handleTrackHorizontalMousedownEvent);
+
+          _this.thumbHorizontal.removeEventListener("mousedown", _this.handleThumbHorizontalMousedownEvent);
+        } else {
+          _this.trackHorizontal.addEventListener("mousedown", _this.handleTrackHorizontalMousedownEvent);
+
+          _this.thumbHorizontal.addEventListener("mousedown", _this.handleThumbHorizontalMousedownEvent);
+        }
+      }
+
+      return _assertThisInitialized(_assertThisInitialized(_this));
+    });
+
+    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "removeListeners", function () {
       if (!(0, _utilities.isset)(document) || !_this.content) {
         return _assertThisInitialized(_assertThisInitialized(_this));
       }
@@ -128,52 +186,6 @@ function (_React$Component) {
           thumbVertical = _assertThisInitialize.thumbVertical,
           thumbHorizontal = _assertThisInitialize.thumbHorizontal;
 
-      var _this$props = _this.props,
-          noScroll = _this$props.noScroll,
-          noScrollY = _this$props.noScrollY,
-          noScrollX = _this$props.noScrollX;
-
-      if (noScroll) {
-        _this.removeListeners();
-
-        return _assertThisInitialized(_assertThisInitialized(_this));
-      } else {
-        content.addEventListener("scroll", _this.handleScrollEvent, {
-          passive: true
-        });
-      }
-
-      if (noScrollY) {
-        trackVertical.removeEventListener("mousedown", _this.handleTrackVerticalMousedownEvent);
-        thumbVertical.removeEventListener("mousedown", _this.handleThumbVerticalMousedownEvent);
-      } else {
-        trackVertical.addEventListener("mousedown", _this.handleTrackVerticalMousedownEvent);
-        thumbVertical.addEventListener("mousedown", _this.handleThumbVerticalMousedownEvent);
-      }
-
-      if (noScrollX) {
-        trackHorizontal.removeEventListener("mousedown", _this.handleTrackHorizontalMousedownEvent);
-        thumbHorizontal.removeEventListener("mousedown", _this.handleThumbHorizontalMousedownEvent);
-      } else {
-        trackHorizontal.addEventListener("mousedown", _this.handleTrackHorizontalMousedownEvent);
-        thumbHorizontal.addEventListener("mousedown", _this.handleThumbHorizontalMousedownEvent);
-      }
-
-      return _assertThisInitialized(_assertThisInitialized(_this));
-    });
-
-    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "removeListeners", function () {
-      if (!(0, _utilities.isset)(document) || !_this.content) {
-        return _assertThisInitialized(_assertThisInitialized(_this));
-      }
-
-      var _assertThisInitialize2 = _assertThisInitialized(_assertThisInitialized(_this)),
-          content = _assertThisInitialize2.content,
-          trackVertical = _assertThisInitialize2.trackVertical,
-          trackHorizontal = _assertThisInitialize2.trackHorizontal,
-          thumbVertical = _assertThisInitialize2.thumbVertical,
-          thumbHorizontal = _assertThisInitialize2.thumbHorizontal;
-
       content.removeEventListener("scroll", _this.handleScrollEvent, {
         passive: true
       });
@@ -181,6 +193,18 @@ function (_React$Component) {
       trackHorizontal.removeEventListener("mousedown", _this.handleTrackHorizontalMousedownEvent);
       thumbVertical.removeEventListener("mousedown", _this.handleThumbVerticalMousedownEvent);
       thumbHorizontal.removeEventListener("mousedown", _this.handleThumbHorizontalMousedownEvent);
+
+      _this.handleDragEnd();
+
+      if (_this.scrollDetect.timeout) {
+        clearTimeout(_this.scrollDetect.timeout);
+        _this.scrollDetect.timeout = null;
+
+        if (_this.props.onScrollStop) {
+          _this.props.onScrollStop(_assertThisInitialized(_assertThisInitialized(_this)));
+        }
+      }
+
       return _assertThisInitialized(_assertThisInitialized(_this));
     });
 
@@ -336,7 +360,11 @@ function (_React$Component) {
       var forced = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
       var rtlAutodetect = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
 
-      // No need to update scrollbars if values had not changed
+      if (_this.props.nativeScrollbars) {
+        return;
+      } // No need to update scrollbars if values had not changed
+
+
       if (!forced && (_this.previousScrollValues || false)) {
         if (_this.previousScrollValues.scrollTop === _this.content.scrollTop && _this.previousScrollValues.scrollLeft === _this.content.scrollLeft && _this.previousScrollValues.scrollHeight === _this.content.scrollHeight && _this.previousScrollValues.scrollWidth === _this.content.scrollWidth && _this.previousScrollValues.clientHeight === _this.content.clientHeight && _this.previousScrollValues.clientWidth === _this.content.clientWidth) {
           return _assertThisInitialized(_assertThisInitialized(_this));
@@ -424,6 +452,21 @@ function (_React$Component) {
       return _assertThisInitialized(_assertThisInitialized(_this));
     });
 
+    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "nativeOnScrollHandler", function () {
+      var currentScrollValues = {
+        scrollTop: _this.holder.scrollTop,
+        scrollLeft: _this.holder.scrollLeft,
+        scrollHeight: _this.holder.scrollHeight,
+        scrollWidth: _this.holder.scrollWidth,
+        clientHeight: _this.holder.clientHeight,
+        clientWidth: _this.holder.clientWidth
+      };
+      (_this.previousScrollValues || false) && _this.props.onScroll && _this.props.onScroll.call(_assertThisInitialized(_assertThisInitialized(_this)), currentScrollValues);
+      _this.previousScrollValues = currentScrollValues;
+
+      _this.scrollDetect();
+    });
+
     return _this;
   }
 
@@ -432,36 +475,57 @@ function (_React$Component) {
     value: function componentDidMount() {
       this.isRtl = null;
 
+      if (this.props.nativeScrollbars) {
+        return;
+      }
+
       _LoopController.default.registerScrollbar(this);
 
-      this.addListeners();
+      this.addListeners(true);
       this.update(true, true);
     }
   }, {
     key: "componentDidUpdate",
     value: function componentDidUpdate(prevProps, prevState, snapshot) {
-      if (prevProps.noScroll !== this.props.noScroll || prevProps.noScrollY !== this.props.noScrollY || prevProps.noScrollX !== this.props.noScrollX || prevProps.rtl !== this.props.rtl || prevProps.defaultStyles !== this.props.defaultStyles || prevProps.permanentScrollbars !== this.props.permanentScrollbars || prevProps.permanentScrollbarX !== this.props.permanentScrollbarX || prevProps.permanentScrollbarY !== this.props.permanentScrollbarY) {
-        this.update(true, prevProps.rtl !== this.props.rtl);
+      if (this.props.nativeScrollbars !== prevProps.nativeScrollbars) {
+        if (this.props.nativeScrollbars) {
+          _LoopController.default.unregisterScrollbar(this);
+
+          this.removeListeners();
+        } else {
+          _LoopController.default.registerScrollbar(this);
+
+          this.addListeners(true);
+        }
       }
 
-      this.addListeners();
+      if (this.props.nativeScrollbars) {
+        return;
+      }
+
+      if (prevProps.noScroll !== this.props.noScroll || prevProps.noScrollY !== this.props.noScrollY || prevProps.noScrollX !== this.props.noScrollX || prevProps.rtl !== this.props.rtl || prevProps.defaultStyles !== this.props.defaultStyles || prevProps.permanentScrollbars !== this.props.permanentScrollbars || prevProps.permanentScrollbarX !== this.props.permanentScrollbarX || prevProps.permanentScrollbarY !== this.props.permanentScrollbarY) {
+        this.update(true, prevProps.rtl !== this.props.rtl);
+        this.addListeners(prevProps.noScroll === this.props.noScroll, prevProps.noScrollY === this.props.noScrollY, prevProps.noScrollX === this.props.noScrollX);
+      }
+
+      if (prevProps.noScroll !== this.props.noScroll || prevProps.onScrollStart !== this.props.onScrollStart || prevProps.onScrollStop !== this.props.onScrollStop) {
+        if (!this.props.noScroll && (this.props.onScrollStart || this.props.onScrollStop)) {
+          this.content.addEventListener("scroll", this.handleScrollEvent, {
+            passive: true
+          });
+        } else {
+          this.content.removeEventListener("scroll", this.handleScrollEvent, {
+            passive: true
+          });
+        }
+      }
     }
   }, {
     key: "componentWillUnmount",
     value: function componentWillUnmount() {
       _LoopController.default.unregisterScrollbar(this);
 
-      this.handleDragEnd();
       this.removeListeners();
-
-      if (this.scrollDetect.timeout) {
-        clearTimeout(this.scrollDetect.timeout);
-        this.scrollDetect.timeout = null;
-
-        if (this.props.onScrollStop) {
-          this.props.onScrollStop(this);
-        }
-      }
     }
     /**
      * Return the vertical scroll position
@@ -478,11 +542,12 @@ function (_React$Component) {
      * @return {Scrollbar}
      */
     value: function scrollToTop() {
-      if (!this.content) {
-        return this;
+      if (this.content) {
+        this.content.scrollTop = 0;
+      } else if (this.props.nativeScrollbars) {
+        this.holder.scrollTop = 0;
       }
 
-      this.content.scrollTop = 0;
       return this;
     }
     /**
@@ -494,11 +559,12 @@ function (_React$Component) {
   }, {
     key: "scrollToBottom",
     value: function scrollToBottom() {
-      if (!this.content) {
-        return this;
+      if (this.content) {
+        this.content.scrollTop = this.content.scrollHeight;
+      } else if (this.props.nativeScrollbars) {
+        this.holder.scrollTop = this.holder.scrollHeight;
       }
 
-      this.content.scrollTop = this.content.scrollHeight;
       return this;
     }
     /**
@@ -510,11 +576,12 @@ function (_React$Component) {
   }, {
     key: "scrollToLeft",
     value: function scrollToLeft() {
-      if (!this.content) {
-        return this;
+      if (this.content) {
+        this.content.scrollLeft = 0;
+      } else if (this.props.nativeScrollbars) {
+        this.holder.scrollLeft = 0;
       }
 
-      this.content.scrollLeft = 0;
       return this;
     }
     /**
@@ -526,11 +593,12 @@ function (_React$Component) {
   }, {
     key: "scrollToRight",
     value: function scrollToRight() {
-      if (!this.content) {
-        return this;
+      if (this.content) {
+        this.content.scrollLeft = this.content.scrollWidth;
+      } else if (this.props.nativeScrollbars) {
+        this.holder.scrollLeft = this.holder.scrollWidth;
       }
 
-      this.content.scrollLeft = this.content.scrollWidth;
       return this;
     }
     /**
@@ -546,6 +614,7 @@ function (_React$Component) {
           minimalThumbsSize = _this$props2.minimalThumbsSize,
           fallbackScrollbarWidth = _this$props2.fallbackScrollbarWidth,
           scrollDetectionThreshold = _this$props2.scrollDetectionThreshold,
+          nativeScrollbars = _this$props2.nativeScrollbars,
           defaultStyles = _this$props2.defaultStyles,
           noScroll = _this$props2.noScroll,
           noScrollX = _this$props2.noScrollX,
@@ -581,7 +650,22 @@ function (_React$Component) {
           renderTrackHorizontal = _this$props2.renderTrackHorizontal,
           renderThumbVertical = _this$props2.renderThumbVertical,
           renderThumbHorizontal = _this$props2.renderThumbHorizontal,
-          props = _objectWithoutProperties(_this$props2, ["minimalThumbsSize", "fallbackScrollbarWidth", "scrollDetectionThreshold", "defaultStyles", "noScroll", "noScrollX", "noScrollY", "permanentScrollbars", "permanentScrollbarX", "permanentScrollbarY", "rtl", "momentum", "tagName", "children", "style", "className", "wrapperStyle", "contentStyle", "trackVerticalStyle", "trackHorizontalStyle", "thumbVerticalStyle", "thumbHorizontalStyle", "wrapperClassName", "contentClassName", "trackVerticalClassName", "trackHorizontalClassName", "thumbVerticalClassName", "thumbHorizontalClassName", "onScroll", "onScrollStart", "onScrollStop", "renderWrapper", "renderContent", "renderTrackVertical", "renderTrackHorizontal", "renderThumbVertical", "renderThumbHorizontal"]);
+          props = _objectWithoutProperties(_this$props2, ["minimalThumbsSize", "fallbackScrollbarWidth", "scrollDetectionThreshold", "nativeScrollbars", "defaultStyles", "noScroll", "noScrollX", "noScrollY", "permanentScrollbars", "permanentScrollbarX", "permanentScrollbarY", "rtl", "momentum", "tagName", "children", "style", "className", "wrapperStyle", "contentStyle", "trackVerticalStyle", "trackHorizontalStyle", "thumbVerticalStyle", "thumbHorizontalStyle", "wrapperClassName", "contentClassName", "trackVerticalClassName", "trackHorizontalClassName", "thumbVerticalClassName", "thumbHorizontalClassName", "onScroll", "onScrollStart", "onScrollStop", "renderWrapper", "renderContent", "renderTrackVertical", "renderTrackHorizontal", "renderThumbVertical", "renderThumbHorizontal"]);
+
+      if (nativeScrollbars) {
+        return _react.default.createElement(tagName, _objectSpread({}, props, {
+          className: "ScrollbarsCustom-holder ScrollbarsCustom-native" + (className ? " " + className : ""),
+          style: _objectSpread({}, defaultStyles && defaultStyles.holder.native, style, {
+            overflowX: noScroll || noScrollX ? "hidden" : permanentScrollbars || permanentScrollbarX ? "scroll" : "auto",
+            overflowY: noScroll || noScrollY ? "hidden" : permanentScrollbars || permanentScrollbarY ? "scroll" : "auto",
+            direction: rtl === true && "rtl" || rtl === false && "ltr" || null
+          }),
+          ref: function ref(_ref) {
+            _this2.holder = _ref;
+          },
+          onScroll: this.nativeOnScrollHandler
+        }), children);
+      }
 
       var browserScrollbarWidth = (0, _utilities.getScrollbarWidth)();
       var holderClassNames = "ScrollbarsCustom-holder" + (className ? " " + className : ""),
@@ -592,7 +676,7 @@ function (_React$Component) {
           thumbVerticalClassNames = "ScrollbarsCustom-thumb ScrollbarsCustom-thumbHorizontal" + (thumbVerticalClassName ? " " + thumbVerticalClassName : ""),
           thumbHorizontalClassNames = "ScrollbarsCustom-thumb ScrollbarsCustom-thumbHorizontal" + (thumbHorizontalClassName ? " " + thumbHorizontalClassName : "");
 
-      var holderStyles = _objectSpread({}, defaultStyles && defaultElementsStyles.holder, style, {
+      var holderStyles = _objectSpread({}, defaultStyles && defaultElementsStyles.holder.regular, style, {
         direction: rtl === true && "rtl" || rtl === false && "ltr" || null
       }),
           wrapperStyles = _objectSpread({}, defaultStyles && defaultElementsStyles.wrapper, wrapperStyle, {
@@ -650,20 +734,20 @@ function (_React$Component) {
       return _react.default.createElement(tagName, _objectSpread({}, props, {
         className: holderClassNames,
         style: holderStyles,
-        ref: function ref(_ref) {
-          _this2.holder = _ref;
+        ref: function ref(_ref2) {
+          _this2.holder = _ref2;
         }
       }), [(renderWrapper || divRenderer)({
         key: "wrapper",
-        ref: function ref(_ref2) {
-          _this2.wrapper = _ref2;
+        ref: function ref(_ref3) {
+          _this2.wrapper = _ref3;
         },
         className: wrapperClassNames,
         style: wrapperStyles,
         children: (renderContent || divRenderer)({
           key: "content",
-          ref: function ref(_ref3) {
-            _this2.content = _ref3;
+          ref: function ref(_ref4) {
+            _this2.content = _ref4;
           },
           className: contentClassNames,
           style: contentStyles,
@@ -671,30 +755,30 @@ function (_React$Component) {
         })
       }), (renderTrackVertical || divRenderer)({
         key: "trackVertical",
-        ref: function ref(_ref4) {
-          _this2.trackVertical = _ref4;
+        ref: function ref(_ref5) {
+          _this2.trackVertical = _ref5;
         },
         className: trackVerticalClassNames,
         style: trackVerticalStyles,
         children: (renderThumbVertical || divRenderer)({
           key: "thumbVertical",
-          ref: function ref(_ref5) {
-            _this2.thumbVertical = _ref5;
+          ref: function ref(_ref6) {
+            _this2.thumbVertical = _ref6;
           },
           className: thumbVerticalClassNames,
           style: thumbVerticalStyles
         })
       }), (renderTrackHorizontal || divRenderer)({
         key: "trackHorizontal",
-        ref: function ref(_ref6) {
-          _this2.trackHorizontal = _ref6;
+        ref: function ref(_ref7) {
+          _this2.trackHorizontal = _ref7;
         },
         className: trackHorizontalClassNames,
         style: trackHorizontalStyles,
         children: (renderThumbHorizontal || divRenderer)({
           key: "thumbHorizontal",
-          ref: function ref(_ref7) {
-            _this2.thumbHorizontal = _ref7;
+          ref: function ref(_ref8) {
+            _this2.thumbHorizontal = _ref8;
           },
           className: thumbHorizontalClassNames,
           style: thumbHorizontalStyles
@@ -704,11 +788,13 @@ function (_React$Component) {
   }, {
     key: "scrollTop",
     get: function get() {
-      if (!this.content) {
-        return 0;
+      if (this.content) {
+        return this.content.scrollTop;
+      } else if (this.props.nativeScrollbars) {
+        return this.holder.scrollTop;
       }
 
-      return this.content.scrollTop;
+      return 0;
     }
     /**
      *
@@ -718,12 +804,12 @@ function (_React$Component) {
      */
     ,
     set: function set(top) {
-      if (!this.content) {
-        return;
+      if (this.content) {
+        this.content.scrollTop = top;
+        this.update();
+      } else if (this.props.nativeScrollbars) {
+        this.holder.scrollTop = top;
       }
-
-      this.content.scrollTop = top;
-      this.update();
     }
     /**
      * Return the horizontal scroll position
@@ -734,11 +820,13 @@ function (_React$Component) {
   }, {
     key: "scrollLeft",
     get: function get() {
-      if (!this.content) {
-        return 0;
+      if (this.content) {
+        return this.content.scrollLeft;
+      } else if (this.props.nativeScrollbars) {
+        return this.holder.scrollLeft;
       }
 
-      return this.content.scrollLeft;
+      return 0;
     }
     /**
      * Set the horizontal scroll to given amount of pixels
@@ -747,12 +835,12 @@ function (_React$Component) {
      */
     ,
     set: function set(left) {
-      if (!this.content) {
-        return;
+      if (this.content) {
+        this.content.scrollLeft = left;
+        this.update();
+      } else if (this.props.nativeScrollbars) {
+        this.holder.scrollLeft = left;
       }
-
-      this.content.scrollLeft = left;
-      this.update();
     }
     /**
      * @return {number}
@@ -761,11 +849,13 @@ function (_React$Component) {
   }, {
     key: "scrollHeight",
     get: function get() {
-      if (!this.content) {
-        return 0;
+      if (this.content) {
+        return this.content.scrollHeight;
+      } else if (this.props.nativeScrollbars) {
+        return this.holder.scrollHeight;
       }
 
-      return this.content.scrollHeight;
+      return 0;
     }
     /**
      * @return {number}
@@ -774,11 +864,13 @@ function (_React$Component) {
   }, {
     key: "scrollWidth",
     get: function get() {
-      if (!this.content) {
-        return 0;
+      if (this.content) {
+        return this.content.scrollWidth;
+      } else if (this.props.nativeScrollbars) {
+        return this.holder.scrollWidth;
       }
 
-      return this.content.scrollWidth;
+      return 0;
     }
     /**
      * @return {number}
@@ -787,11 +879,13 @@ function (_React$Component) {
   }, {
     key: "clientHeight",
     get: function get() {
-      if (!this.content) {
-        return 0;
+      if (this.content) {
+        return this.content.clientHeight;
+      } else if (this.props.nativeScrollbars) {
+        return this.holder.clientHeight;
       }
 
-      return this.content.clientHeight;
+      return 0;
     }
     /**
      * @return {number}
@@ -800,11 +894,13 @@ function (_React$Component) {
   }, {
     key: "clientWidth",
     get: function get() {
-      if (!this.content) {
-        return 0;
+      if (this.content) {
+        return this.content.clientWidth;
+      } else if (this.props.nativeScrollbars) {
+        return this.holder.clientWidth;
       }
 
-      return this.content.clientWidth;
+      return 0;
     }
   }]);
 
@@ -821,6 +917,7 @@ _defineProperty(Scrollbar, "propTypes", {
   rtl: _propTypes.default.bool,
   momentum: _propTypes.default.bool,
   defaultStyles: _propTypes.default.bool,
+  nativeScrollbars: _propTypes.default.bool,
   permanentScrollbars: _propTypes.default.bool,
   permanentScrollbarX: _propTypes.default.bool,
   permanentScrollbarY: _propTypes.default.bool,
@@ -857,6 +954,7 @@ _defineProperty(Scrollbar, "propTypes", {
 _defineProperty(Scrollbar, "defaultProps", {
   minimalThumbsSize: 30,
   fallbackScrollbarWidth: 20,
+  nativeScrollbars: false,
   defaultStyles: true,
   permanentScrollbarX: false,
   permanentScrollbars: false,

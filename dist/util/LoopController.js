@@ -60,6 +60,7 @@ function LoopControllerClass() {
     isActive = true;
     animationFrameId && cancelAnimationFrame(animationFrameId);
     requestAnimationFrame(animationFrameCallback);
+    return _this;
   };
   /**
    * Stop the loop if it is active
@@ -75,6 +76,7 @@ function LoopControllerClass() {
     isActive = false;
     animationFrameId && cancelAnimationFrame(animationFrameId);
     animationFrameId = null;
+    return _this;
   };
   /**
    * Return the array pf registered scrollbars

@@ -69,7 +69,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npm run format && git add .",
+      "pre-commit": "npm run build && npm run format && git add .",
       "post-commit": "git update-index -g"
     }
   },

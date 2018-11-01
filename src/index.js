@@ -840,7 +840,7 @@ export default class Scrollbar extends React.Component {
                     ...props,
                     className: "ScrollbarsCustom-holder ScrollbarsCustom-native" + (className ? " " + className : ""),
                     style: {
-                        ...(defaultStyles && defaultStyles.holder.native),
+                        ...(defaultStyles && defaultElementsStyles.holder.native),
                         ...style,
                         overflowX:
                             noScroll || noScrollX

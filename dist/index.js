@@ -655,7 +655,7 @@ function (_React$Component) {
       if (nativeScrollbars) {
         return _react.default.createElement(tagName, _objectSpread({}, props, {
           className: "ScrollbarsCustom-holder ScrollbarsCustom-native" + (className ? " " + className : ""),
-          style: _objectSpread({}, defaultStyles && defaultStyles.holder.native, style, {
+          style: _objectSpread({}, defaultStyles && defaultElementsStyles.holder.native, style, {
             overflowX: noScroll || noScrollX ? "hidden" : permanentScrollbars || permanentScrollbarX ? "scroll" : "auto",
             overflowY: noScroll || noScrollY ? "hidden" : permanentScrollbars || permanentScrollbarY ? "scroll" : "auto",
             direction: rtl === true && "rtl" || rtl === false && "ltr" || null

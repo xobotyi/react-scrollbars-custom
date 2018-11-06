@@ -376,7 +376,7 @@ export default class Scrollbar extends React.Component {
      * @return {Scrollbar}
      */
     addListeners = (noScrollChanged = false, noScrollYChanged = false, noScrollXChanged = false) => {
-        if (!isset(document) || !this.content) {
+        if (typeof document === "undefined" || !this.content) {
             return this;
         }
 
@@ -419,7 +419,7 @@ export default class Scrollbar extends React.Component {
      * @return {Scrollbar}
      */
     removeListeners = () => {
-        if (!isset(document) || !this.content) {
+        if (typeof document === "undefined" || !this.content) {
             return this;
         }
 

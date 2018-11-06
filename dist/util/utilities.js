@@ -26,7 +26,7 @@ function getScrollbarWidth() {
     return scrollbarWidth;
   }
 
-  if (!isset(document)) {
+  if (typeof document === "undefined") {
     return scrollbarWidth = 0;
   }
 

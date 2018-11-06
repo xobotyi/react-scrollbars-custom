@@ -126,7 +126,7 @@ function (_React$Component) {
       var noScrollYChanged = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
       var noScrollXChanged = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
 
-      if (!(0, _utilities.isset)(document) || !_this.content) {
+      if (typeof document === "undefined" || !_this.content) {
         return _assertThisInitialized(_assertThisInitialized(_this));
       }
 
@@ -175,7 +175,7 @@ function (_React$Component) {
     });
 
     _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "removeListeners", function () {
-      if (!(0, _utilities.isset)(document) || !_this.content) {
+      if (typeof document === "undefined" || !_this.content) {
         return _assertThisInitialized(_assertThisInitialized(_this));
       }
 

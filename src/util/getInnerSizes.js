@@ -29,7 +29,7 @@ export function getInnerSizes(el) {
     let styles = getComputedStyle(el);
 
     return {
-        width:  el.clientHeight - styles.paddingLeft.slice(0, -2) - styles.paddingRight.slice(0, -2),
+        width: el.clientHeight - styles.paddingLeft.slice(0, -2) - styles.paddingRight.slice(0, -2),
         height: el.clientHeight - styles.paddingTop.slice(0, -2) - styles.paddingBottom.slice(0, -2),
     };
 }

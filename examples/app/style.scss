@@ -38,13 +38,13 @@ body {
     width:     100%;
     height:    100%;
 
-    & > .ScrollbarsCustom-holder {
+    & > .ScrollbarsCustom {
         position: relative;
         display:  flex;
         width:    100%;
         height:   100%;
 
-        & > .ScrollbarsCustom-wrapper {
+        & > .wrapper {
             width:  100%;
             height: 100%;
 
@@ -54,18 +54,18 @@ body {
             }
         }
 
-        & > .ScrollbarsCustom-track {
+        & > .track {
             display:       block;
             background:    #D0D3D7;
             border-radius: 1rem;
             overflow:      hidden;
 
-            &.ScrollbarsCustom-trackVertical {
+            &.trackY {
                 height: calc(100% - 2rem);
                 width:  1rem;
                 margin: 1rem .5rem;
             }
-            &.ScrollbarsCustom-trackHorizontal {
+            &.trackX {
                 position: absolute;
                 bottom:   .5rem;
                 left:     1.5rem;
@@ -73,16 +73,16 @@ body {
                 width:    calc(100% - 3rem);
             }
 
-            & > .ScrollbarsCustom-thumb {
+            & > .thumb {
                 background:    #B6BDC9;
                 cursor:        pointer;
                 border-radius: 1rem;
                 box-shadow:    0 0 0 .5rem #E8EAED;
 
-                &.ScrollbarsCustom-thumbVertical {
+                &.thumbY {
                     width: 100%;
                 }
-                &.ScrollbarsCustom-thumbHorizontal {
+                &.thumbX {
                     height:     100%;
                     box-shadow: none;
                 }
@@ -291,7 +291,7 @@ body {
                 background: rgba(0, 0, 0, .05);
             }
 
-            & > .ScrollbarsCustom-holder {
+            & > .ScrollbarsCustom {
                 height: 100%;
                 width:  100%;
             }
@@ -355,14 +355,14 @@ body {
 
 #CustomStyleExampleBlock {
     & > .content {
-        & > .ScrollbarsCustom-holder {
+        & > .ScrollbarsCustom {
             display:               grid;
             width:                 100%;
             height:                100%;
             grid-template-columns: 1fr min-content;
             grid-template-rows:    1fr min-content;
 
-            & > .ScrollbarsCustom-wrapper {
+            & > .wrapper {
                 grid-area: 1 / 1 / auto / auto;
 
                 & > .ScrollbarsCustom-content {
@@ -374,25 +374,25 @@ body {
                 }
             }
 
-            & > .ScrollbarsCustom-trackVertical {
+            & > .trackY {
                 width:      8px;
                 background: rgba(0, 0, 0, 0.1);
                 grid-area:  1 / 2 / auto / auto;
                 overflow:   hidden;
 
-                & > .ScrollbarsCustom-thumb {
+                & > .thumb {
                     cursor:     pointer;
                     width:      100%;
                     background: rgba(0, 0, 0, 0.35);
                 }
             }
 
-            & > .ScrollbarsCustom-trackHorizontal {
+            & > .trackX {
                 height:     8px;
                 background: rgba(0, 0, 0, 0.1);
                 grid-area:  2 / 1 / auto / auto;
 
-                & > .ScrollbarsCustom-thumb {
+                & > .thumb {
                     cursor:     pointer;
                     height:     100%;
                     background: rgba(0, 0, 0, 0.35);
@@ -427,14 +427,14 @@ body {
 
     & > .content {
         margin: 2rem 0 0;
-        & > .ScrollbarsCustom-holder.ScrollbarsCustom-native {
+        & > .ScrollbarsCustom.ScrollbarsCustom-native {
             p {
                 display:  inline-block;
                 position: relative;
                 width:    150%;
             }
         }
-        & > .ScrollbarsCustom-holder:not(.ScrollbarsCustom-native) {
+        & > .ScrollbarsCustom:not(.ScrollbarsCustom-native) {
             display:               grid;
             width:                 100%;
             height:                100%;
@@ -442,7 +442,7 @@ body {
             grid-template-columns: 1fr min-content;
             grid-template-rows:    1fr min-content;
 
-            & > .ScrollbarsCustom-wrapper {
+            & > .wrapper {
                 grid-area: 1 / 1 / auto / auto;
 
                 & > .ScrollbarsCustom-content {
@@ -454,27 +454,27 @@ body {
                 }
             }
 
-            & > .ScrollbarsCustom-trackVertical {
+            & > .trackY {
                 position:   relative;
                 width:      8px;
                 background: rgba(0, 0, 0, 0.1);
                 grid-area:  1 / 2 / auto / auto;
                 overflow:   hidden;
 
-                & > .ScrollbarsCustom-thumb {
+                & > .thumb {
                     cursor:     pointer;
                     width:      100%;
                     background: rgba(0, 0, 0, 0.35);
                 }
             }
 
-            & > .ScrollbarsCustom-trackHorizontal {
+            & > .trackX {
                 position:   relative;
                 height:     8px;
                 background: rgba(0, 0, 0, 0.1);
                 grid-area:  2 / 1 / auto / auto;
 
-                & > .ScrollbarsCustom-thumb {
+                & > .thumb {
                     cursor:     pointer;
                     height:     100%;
                     background: rgba(0, 0, 0, 0.35);
@@ -490,7 +490,7 @@ body {
     width:     100%;
     flex-grow: 1;
 
-    & > .ScrollbarsCustom-holder {
+    & > .ScrollbarsCustom {
         flex-grow:   0;
         flex-shrink: 0;
 

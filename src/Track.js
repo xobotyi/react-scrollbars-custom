@@ -11,25 +11,21 @@ export default class Track extends React.Component
 
         type: PropTypes.oneOf(['x', 'y']).isRequired,
 
-        renderer: PropTypes.func,
+        elementRef: PropTypes.func,
+        renderer:   PropTypes.func,
     };
 
     constructor(props) {
         super(props);
     }
 
-    handleClick = () => {
-
-    };
-
     render() {
-        const {className, renderer, type, ...props} = this.props;
+        const {className, renderer, type, elementRef, ...props} = this.props;
 
-        props.onClick = this.handleClick;
         props.className = "track " + (type === 'x' ? "trackX" : "trackY") + (className ? " " + className : "");
 
         return renderer
                ? renderer(props)
-               : (<div { ...props } />);
+               : (<div { ...props } ref={ elementRef } />);
     }
 }

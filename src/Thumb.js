@@ -11,21 +11,21 @@ export default class Thumb extends React.Component
 
         type: PropTypes.oneOf(['x', 'y']).isRequired,
 
+        elementRef: PropTypes.func,
         renderer: PropTypes.func,
     };
 
     constructor(props) {
         super(props);
-
     }
 
     render() {
-        const {className, renderer, type, ...props} = this.props;
+        const {className, renderer, type, elementRef, ...props} = this.props;
 
-        props.className = "thumb " + (type === 'x' ? "thumbX" : "thumb") + (className ? " " + className : "");
+        props.className = "thumb " + (type === 'x' ? "thumbX" : "thumbY") + (className ? " " + className : "");
 
         return renderer
                ? renderer(props)
-               : (<div { ...props } />);
+               : (<div { ...props } ref={ elementRef } />);
     }
 }

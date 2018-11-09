@@ -655,14 +655,14 @@ export default class Scrollbar extends React.Component
         }
 
         // No need to update scrollbars if values had not changed
-        if (!forced && (this.previousScrollValues || false)) {
+        if (!forced && (this.scrollValues || false)) {
             if (
-                    this.previousScrollValues.scrollTop === this.content.scrollTop &&
-                    this.previousScrollValues.scrollLeft === this.content.scrollLeft &&
-                    this.previousScrollValues.scrollHeight === this.content.scrollHeight &&
-                    this.previousScrollValues.scrollWidth === this.content.scrollWidth &&
-                    this.previousScrollValues.clientHeight === this.content.clientHeight &&
-                    this.previousScrollValues.clientWidth === this.content.clientWidth
+                    this.scrollValues.scrollTop === this.content.scrollTop &&
+                    this.scrollValues.scrollLeft === this.content.scrollLeft &&
+                    this.scrollValues.scrollHeight === this.content.scrollHeight &&
+                    this.scrollValues.scrollWidth === this.content.scrollWidth &&
+                    this.scrollValues.clientHeight === this.content.clientHeight &&
+                    this.scrollValues.clientWidth === this.content.clientWidth
             ) {
                 return this;
             }
@@ -773,9 +773,9 @@ export default class Scrollbar extends React.Component
             clientWidth:  this.content.clientWidth,
         };
 
-        (this.previousScrollValues || false) && this.props.onScroll && this.props.onScroll(currentScrollValues, this);
+        (this.scrollValues || false) && this.props.onScroll && this.props.onScroll(currentScrollValues, this);
 
-        this.previousScrollValues = currentScrollValues;
+        this.scrollValues = currentScrollValues;
 
         return this;
     };
@@ -790,11 +790,11 @@ export default class Scrollbar extends React.Component
             clientWidth:  this.holder.clientWidth,
         };
 
-        (this.previousScrollValues || false) &&
+        (this.scrollValues || false) &&
         this.props.onScroll &&
         this.props.onScroll.call(this, currentScrollValues);
 
-        this.previousScrollValues = currentScrollValues;
+        this.scrollValues = currentScrollValues;
 
         this.scrollDetect();
     };

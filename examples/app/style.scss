@@ -296,7 +296,7 @@ body {
                 width:  100%;
             }
 
-            .ScrollbarsCustom-content {
+            .content {
                 font-size: 1.5rem;
 
                 @media (min-width: 961px) {
@@ -306,6 +306,7 @@ body {
                 p {
                     margin:     1rem 1.5rem 0 0;
                     box-sizing: border-box;
+                    width:      150%;
 
                     &:first-child {
                         margin-top: 0;
@@ -365,7 +366,7 @@ body {
             & > .wrapper {
                 grid-area: 1 / 1 / auto / auto;
 
-                & > .ScrollbarsCustom-content {
+                & > .content {
                     p {
                         display:  inline-block;
                         position: relative;
@@ -445,7 +446,7 @@ body {
             & > .wrapper {
                 grid-area: 1 / 1 / auto / auto;
 
-                & > .ScrollbarsCustom-content {
+                & > .content {
                     p {
                         display:  inline-block;
                         position: relative;

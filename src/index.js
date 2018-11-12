@@ -106,7 +106,7 @@ export default class Scrollbar extends React.Component
         minimalThumbsSize:      30,
         fallbackScrollbarWidth: 20,
 
-        trackClickBehavior: "step",
+        trackClickBehavior: "jump",
 
         momentum: false,
 
@@ -197,12 +197,12 @@ export default class Scrollbar extends React.Component
             scrollWidth:  this.contentEl.scrollWidth * 1,
             scrollLeft:   this.contentEl.scrollLeft * 1,
         };
-        currentScrollValues.scrollYBlocked = this.props.noScroll || this.props.noScrollY;
         currentScrollValues.scrollXBlocked = this.props.noScroll || this.props.noScrollX;
-        currentScrollValues.scrollYPossible = !currentScrollValues.scrollYBlocked && currentScrollValues.scrollHeight > currentScrollValues.clientHeight;
+        currentScrollValues.scrollYBlocked = this.props.noScroll || this.props.noScrollY;
         currentScrollValues.scrollXPossible = !currentScrollValues.scrollXBlocked && currentScrollValues.scrollWidth > currentScrollValues.clientWidth;
-        currentScrollValues.trackYVisible = currentScrollValues.scrollYPossible || this.props.permanentTracks || this.props.permanentTrackY;
+        currentScrollValues.scrollYPossible = !currentScrollValues.scrollYBlocked && currentScrollValues.scrollHeight > currentScrollValues.clientHeight;
         currentScrollValues.trackXVisible = currentScrollValues.scrollXPossible || this.props.permanentTracks || this.props.permanentTrackX;
+        currentScrollValues.trackYVisible = currentScrollValues.scrollYPossible || this.props.permanentTracks || this.props.permanentTrackY;
 
         let mask = 0;
 
@@ -224,12 +224,13 @@ export default class Scrollbar extends React.Component
 
         // if scrollbars visibility has changed
         if ((mask & (1 << 10)) || (mask & (1 << 11))) {
+            this.scrollValues.trackYVisible = currentScrollValues.trackYVisible;
+            this.scrollValues.trackXVisible = currentScrollValues.trackXVisible;
+
             this.setState({
                               trackYVisible: currentScrollValues.trackYVisible,
                               trackXVisible: currentScrollValues.trackXVisible,
                           });
-            this.scrollValues.trackYVisible = currentScrollValues.trackYVisible;
-            this.scrollValues.trackXVisible = currentScrollValues.trackXVisible;
 
             return this.update(true);
         }
@@ -267,7 +268,7 @@ export default class Scrollbar extends React.Component
             (mask & (1 << 11)) && (this.trackXEl.style.display = currentScrollValues.trackXVisible ? null : "none");
 
             if ((mask & (1 << 1)) || (mask & (1 << 3)) || (mask & (1 << 5)) || (mask & (1 << 7)) || (mask & (1 << 9))) {
-                if (currentScrollValues.scrollYPossible) {
+                if (currentScrollValues.scrollXPossible) {
                     const trackSize = getInnerWidth(this.trackXEl);
                     const thumbSize = this.computeThumbSize(trackSize,
                                                             currentScrollValues.scrollWidth,
@@ -277,6 +278,8 @@ export default class Scrollbar extends React.Component
                                                               currentScrollValues.scrollWidth,
                                                               currentScrollValues.clientWidth,
                                                               currentScrollValues.scrollLeft);
+
+                    console.log(trackSize, thumbSize, thumbOffset);
 
                     if (this.state.isRtl) {
                         thumbOffset = thumbSize + thumbOffset - trackSize;

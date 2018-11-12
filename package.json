@@ -14,38 +14,41 @@
   "author": "Anton Zinovyev",
   "license": "MIT",
   "keywords": [
+    "customizable",
+    "scrollbars",
     "scroll",
-    "scrollbar",
     "scroller",
+    "scrollbar",
     "react",
+    "component",
     "react-component",
     "custom"
   ],
-  "dependencies": {
-    "raf": "^3.4.0"
-  },
+  "dependencies": {},
   "peerDependencies": {
     "react": "^0.14.0 || ^15.0.0 || ^16.0.0",
-    "react-dom": "^0.14.0 || ^15.0.0 || ^16.0.0"
+    "react-dom": "^0.14.0 || ^15.0.0 || ^16.0.0",
+    "prop-types": "^15.0.0"
   },
   "devDependencies": {
-    "@babel/cli": "^7.1.2",
-    "@babel/core": "^7.1.2",
+    "@babel/cli": "^7.1.5",
+    "@babel/core": "^7.1.5",
     "@babel/plugin-proposal-class-properties": "^7.1.0",
-    "@babel/preset-env": "^7.1.0",
+    "@babel/preset-env": "^7.1.5",
     "@babel/preset-react": "^7.0.0",
     "babel-loader": "^8.0.4",
     "babel-plugin-istanbul": "^5.1.0",
     "cleandir-webpack-plugin": "^0.1.4",
-    "codacy-coverage": "^3.1.0",
+    "codacy-coverage": "^3.2.0",
     "cross-env": "^5.2.0",
-    "css-loader": "^1.0.0",
+    "css-loader": "^1.0.1",
     "enzyme": "^3.7.0",
-    "enzyme-adapter-react-16": "^1.6.0",
+    "enzyme-adapter-react-16": "^1.7.0",
     "expect": "^23.6.0",
     "html-loader": "^0.5.5",
     "html-webpack-plugin": "^3.2.0",
-    "karma": "^3.0.0",
+    "husky": "^1.1.3",
+    "karma": "^3.1.1",
     "karma-chrome-launcher": "^2.2.0",
     "karma-coverage-istanbul-reporter": "^2.0.4",
     "karma-mocha": "^1.3.0",
@@ -53,17 +56,24 @@
     "karma-webpack": "^3.0.5",
     "mini-css-extract-plugin": "^0.4.4",
     "mocha": "^5.2.0",
-    "node-sass": "^4.9.3",
-    "prop-types": "^15.0.0",
-    "react": "^16.5.2",
-    "react-dom": "^16.5.2",
+    "node-sass": "^4.10.0",
+    "prettier": "^1.15.2",
+    "prop-types": "^15.6.2",
+    "react": "^16.6.1",
+    "react-dom": "^16.6.1",
     "rimraf": "^2.6.2",
     "sass-loader": "^7.1.0",
     "simulant": "^0.2.2",
-    "sinon": "^7.0.0",
-    "webpack": "^4.20.2",
+    "sinon": "^7.1.1",
+    "webpack": "^4.25.1",
     "webpack-cli": "^3.1.2",
-    "webpack-dev-server": "^3.1.9"
+    "webpack-dev-server": "^3.1.10"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run build && npm run format && git add .",
+      "post-commit": "git update-index -g"
+    }
   },
   "scripts": {
     "build": "rimraf ./dist && babel src -d dist --ignore \"node-modules/**\" --presets \"@babel/preset-react,@babel/preset-env\" --plugins \"@babel/plugin-proposal-class-properties\"",
@@ -73,6 +83,10 @@
     "test": "cross-env NODE_ENV=test karma start",
     "test:watch": "cross-env NODE_ENV=test karma start --auto-watch --no-single-run",
     "test:coverage": "cross-env NODE_ENV=test COVERAGE=true karma start --single-run",
-    "prepublishOnly": "npm test && npm run build"
+    "format": "prettier --write src/**/*.js tests/**/*.js examples/**/*.js",
+    "format:list": "prettier -l src/**/*.js tests/**/*.js examples/**/*.js",
+    "preversion": "npm run test && npm run build && npm run format",
+    "postversion": "git push && git push --tags",
+    "prepublishOnly": "npm run test && npm run build"
   }
 }

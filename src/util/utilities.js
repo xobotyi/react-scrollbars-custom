@@ -4,7 +4,7 @@
  * @return {boolean}
  */
 export function isset(v) {
-    return typeof v !== "undefined" && v !== null;
+  return typeof v !== "undefined" && v !== null;
 }
 
 let scrollbarWidth = null;
@@ -14,20 +14,23 @@ let scrollbarWidth = null;
  * @return {number}
  */
 export function getScrollbarWidth() {
-    if (scrollbarWidth !== null) {
-        return scrollbarWidth;
-    }
-
-    if (typeof document === "undefined") {
-        return (scrollbarWidth = 0);
-    }
-
-    let el = document.createElement("div");
-    el.setAttribute("style", "display:block;position:absolute;width:100px;height:100px;top:-9999px;overflow:scroll;");
-
-    document.body.appendChild(el);
-    scrollbarWidth = el.offsetWidth - el.clientWidth || 0;
-    document.body.removeChild(el);
-
+  if (scrollbarWidth !== null) {
     return scrollbarWidth;
+  }
+
+  if (typeof document === "undefined") {
+    return (scrollbarWidth = 0);
+  }
+
+  let el = document.createElement("div");
+  el.setAttribute(
+    "style",
+    "display:block;position:absolute;width:100px;height:100px;top:-9999px;overflow:scroll;"
+  );
+
+  document.body.appendChild(el);
+  scrollbarWidth = el.offsetWidth - el.clientWidth || 0;
+  document.body.removeChild(el);
+
+  return scrollbarWidth;
 }

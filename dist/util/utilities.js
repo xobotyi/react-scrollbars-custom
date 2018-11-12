@@ -22,12 +22,12 @@ var scrollbarWidth = null;
  */
 
 function getScrollbarWidth() {
-  if (!isset(document)) {
-    return 0;
-  }
-
   if (scrollbarWidth !== null) {
     return scrollbarWidth;
+  }
+
+  if (typeof document === "undefined") {
+    return scrollbarWidth = 0;
   }
 
   var el = document.createElement("div");

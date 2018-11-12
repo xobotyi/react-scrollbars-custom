@@ -9,15 +9,23 @@ var _propTypes = _interopRequireDefault(require("prop-types"));
 
 var _react = _interopRequireDefault(require("react"));
 
+var _Thumb = _interopRequireDefault(require("./Thumb"));
+
+var _Track = _interopRequireWildcard(require("./Track"));
+
 var _getInnerSizes = require("./util/getInnerSizes");
 
 var _LoopController = _interopRequireDefault(require("./util/LoopController"));
 
 var _utilities = require("./util/utilities");
 
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { _defineProperty(target, key, source[key]); }); } return target; }
 
@@ -27,13 +35,13 @@ function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) r
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
@@ -43,11 +51,7 @@ function _assertThisInitialized(self) { if (self === void 0) { throw new Referen
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-function divRenderer(props) {
-  return _react.default.createElement("div", props);
-}
-
-var defaultElementsStyles = {
+var defaultStyles = {
   holder: {
     position: "relative",
     display: "flex"
@@ -62,369 +66,342 @@ var defaultElementsStyles = {
     right: 0,
     left: 0
   },
-  trackVertical: {
-    position: "absolute",
-    width: 8,
-    height: "calc(100% - 16px)",
-    right: 0,
-    top: 0,
-    margin: "8px 0",
-    background: "rgba(0,0,0,.1)",
-    borderRadius: 4
+  track: {
+    common: {
+      position: "absolute",
+      overflow: "hidden",
+      borderRadius: 4,
+      background: "rgba(0,0,0,.1)",
+      userSelect: "none"
+    },
+    x: {
+      height: 8,
+      width: "calc(100% - 16px)",
+      bottom: 0,
+      left: 8
+    },
+    y: {
+      width: 8,
+      height: "calc(100% - 16px)",
+      top: 8
+    }
   },
-  trackHorizontal: {
-    position: "absolute",
-    height: 8,
-    width: "calc(100% - 16px)",
-    bottom: 0,
-    left: 0,
-    margin: "0 8px",
-    background: "rgba(0,0,0,.1)",
-    borderRadius: 4
-  },
-  thumbVertical: {
-    cursor: "pointer",
-    width: "100%",
-    borderRadius: 4,
-    background: "rgba(0,0,0,.4)"
-  },
-  thumbHorizontal: {
-    cursor: "pointer",
-    height: "100%",
-    borderRadius: 4,
-    background: "rgba(0,0,0,.4)"
+  thumb: {
+    common: {
+      cursor: "pointer",
+      borderRadius: 4,
+      background: "rgba(0,0,0,.4)"
+    },
+    x: {
+      height: "100%"
+    },
+    y: {
+      width: "100%"
+    }
   }
 };
+/**
+ * @typedef {object} ScrollValues
+ *
+ * @property {number|null} clientHeight - content's native clientHeight parameter
+ * @property {number|null} clientWidth - content's native clientWidth parameter
+ * @property {number|null} scrollHeight - content's native scrollHeight parameter
+ * @property {number|null} scrollWidth - content's native scrollWidth parameter
+ * @property {number|null} scrollTop - content's native scrollTop parameter
+ * @property {number|null} scrollLeft - content's native scrollLeft parameter
+ * @property {boolean|null} scrollYBlocked - Indicates whether vertical scroll blocked via properties
+ * @property {boolean|null} scrollXBlocked - Indicates whether horizontal scroll blocked via properties
+ * @property {boolean|null} scrollYPossible - Indicates whether the content overflows vertically and scrolling not blocked
+ * @property {boolean|null} scrollXPossible - Indicates whether the content overflows horizontally and scrolling not blocked
+ * @property {boolean|null} trackYVisible - Indicates whether vertical track is visible
+ * @property {boolean|null} trackXVisible - Indicates whether horizontal track is visible
+ */
 
 var Scrollbar =
 /*#__PURE__*/
 function (_React$Component) {
   _inherits(Scrollbar, _React$Component);
 
-  function Scrollbar() {
-    var _getPrototypeOf2;
+  _createClass(Scrollbar, [{
+    key: "computeThumbSize",
 
+    /**
+     * Compute the thumb size
+     *
+     * @param {number} trackSize
+     * @param {number} scrollableSize
+     * @param {number} viewportSize
+     * @return {number}
+     */
+    value: function computeThumbSize(trackSize, scrollableSize, viewportSize) {
+      var size = Math.ceil(viewportSize / scrollableSize * trackSize);
+      return trackSize === size ? 0 : Math.max(size, this.props.minimalThumbsSize);
+    }
+    /**
+     * Compute the thumb offset from scroll value
+     *
+     * @param {number} trackSize
+     * @param {number} thumbSize
+     * @param {number} scrollableSize
+     * @param {number} viewportSize
+     * @param {number} scrollValue
+     * @return {number}
+     */
+
+  }], [{
+    key: "computeThumbOffset",
+    value: function computeThumbOffset(trackSize, thumbSize, scrollableSize, viewportSize, scrollValue) {
+      return thumbSize ? scrollValue / (scrollableSize - viewportSize) * (trackSize - thumbSize) : 0;
+    }
+    /**
+     * Compute the scroll value depending on thumb offset
+     *
+     * @param {number} trackSize
+     * @param {number} thumbSize
+     * @param {number} offset
+     * @param {number} scrollableSize
+     * @param {number} viewportSize
+     * @return {number}
+     */
+
+  }, {
+    key: "computeScrollForOffset",
+    value: function computeScrollForOffset(trackSize, thumbSize, offset, scrollableSize, viewportSize) {
+      return (offset - thumbSize / 2) / (trackSize - thumbSize) * (scrollableSize - viewportSize);
+    }
+  }]);
+
+  function Scrollbar(props) {
     var _this;
 
     _classCallCheck(this, Scrollbar);
 
-    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
-      args[_key] = arguments[_key];
-    }
-
-    _this = _possibleConstructorReturn(this, (_getPrototypeOf2 = _getPrototypeOf(Scrollbar)).call.apply(_getPrototypeOf2, [this].concat(args)));
-
-    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "addListeners", function () {
-      if (!(0, _utilities.isset)(document) || !_this.content) {
-        return _assertThisInitialized(_assertThisInitialized(_this));
-      }
-
-      var _assertThisInitialize = _assertThisInitialized(_assertThisInitialized(_this)),
-          content = _assertThisInitialize.content,
-          trackVertical = _assertThisInitialize.trackVertical,
-          trackHorizontal = _assertThisInitialize.trackHorizontal,
-          thumbVertical = _assertThisInitialize.thumbVertical,
-          thumbHorizontal = _assertThisInitialize.thumbHorizontal;
-
-      var _this$props = _this.props,
-          noScroll = _this$props.noScroll,
-          noScrollY = _this$props.noScrollY,
-          noScrollX = _this$props.noScrollX;
-
-      if (noScroll) {
-        _this.removeListeners();
-
-        return _assertThisInitialized(_assertThisInitialized(_this));
-      } else {
-        content.addEventListener("scroll", _this.handleScrollEvent, {
-          passive: true
-        });
-      }
-
-      if (noScrollY) {
-        trackVertical.removeEventListener("mousedown", _this.handleTrackVerticalMousedownEvent);
-        thumbVertical.removeEventListener("mousedown", _this.handleThumbVerticalMousedownEvent);
-      } else {
-        trackVertical.addEventListener("mousedown", _this.handleTrackVerticalMousedownEvent);
-        thumbVertical.addEventListener("mousedown", _this.handleThumbVerticalMousedownEvent);
-      }
-
-      if (noScrollX) {
-        trackHorizontal.removeEventListener("mousedown", _this.handleTrackHorizontalMousedownEvent);
-        thumbHorizontal.removeEventListener("mousedown", _this.handleThumbHorizontalMousedownEvent);
-      } else {
-        trackHorizontal.addEventListener("mousedown", _this.handleTrackHorizontalMousedownEvent);
-        thumbHorizontal.addEventListener("mousedown", _this.handleThumbHorizontalMousedownEvent);
-      }
-
-      return _assertThisInitialized(_assertThisInitialized(_this));
-    });
-
-    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "removeListeners", function () {
-      if (!(0, _utilities.isset)(document) || !_this.content) {
-        return _assertThisInitialized(_assertThisInitialized(_this));
-      }
-
-      var _assertThisInitialize2 = _assertThisInitialized(_assertThisInitialized(_this)),
-          trackVertical = _assertThisInitialize2.trackVertical,
-          trackHorizontal = _assertThisInitialize2.trackHorizontal,
-          thumbVertical = _assertThisInitialize2.thumbVertical,
-          thumbHorizontal = _assertThisInitialize2.thumbHorizontal;
-
-      trackVertical.removeEventListener("mousedown", _this.handleTrackVerticalMousedownEvent);
-      trackHorizontal.removeEventListener("mousedown", _this.handleTrackHorizontalMousedownEvent);
-      thumbVertical.removeEventListener("mousedown", _this.handleThumbVerticalMousedownEvent);
-      thumbHorizontal.removeEventListener("mousedown", _this.handleThumbHorizontalMousedownEvent);
-      return _assertThisInitialized(_assertThisInitialized(_this));
-    });
-
-    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "scrollDetect", function () {
-      if (!_this.scrollDetect.timeout && _this.props.onScrollStart) {
-        _this.props.onScrollStart(_assertThisInitialized(_assertThisInitialized(_this)));
-      }
-
-      _this.scrollDetect.timeout && clearTimeout(_this.scrollDetect.timeout);
-      _this.scrollDetect.timeout = setTimeout(function () {
-        if (_this.drag) {
-          _this.scrollDetect();
-
-          return;
-        }
-
-        _this.scrollDetect.timeout = null;
-
-        if (_this.props.onScrollStop) {
-          _this.props.onScrollStop(_assertThisInitialized(_assertThisInitialized(_this)));
-        }
-      }, _this.props.scrollDetectionThreshold);
-    });
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(Scrollbar).call(this, props));
+    /**
+     * @property {ScrollValues} scrollValues
+     */
 
     _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "handleScrollEvent", function () {
       _this.scrollDetect();
     });
 
-    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "handleTrackVerticalMousedownEvent", function (e) {
-      if (e.which !== 1) {
-        return;
-      }
+    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "scrollDetect", function () {
+      !_this.scrollDetect.timeout && _this.props.onScrollStart && _this.props.onScrollStart.call(_assertThisInitialized(_assertThisInitialized(_this)), _this.scrollValues);
+      _this.scrollDetect.timeout && clearTimeout(_this.scrollDetect.timeout);
+      _this.scrollDetect.timeout = setTimeout(function () {
+        _this.scrollDetect.timeout = null;
 
-      e.preventDefault();
-      var offset = Math.abs(e.target.getBoundingClientRect().top - e.clientY) - _this.thumbVertical.clientHeight / 2;
-      _this.content.scrollTop = _this.computeScrollTopForThumbOffset(Math.max(offset, 0));
-    });
-
-    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "handleTrackHorizontalMousedownEvent", function (e) {
-      if (e.which !== 1) {
-        return;
-      }
-
-      e.preventDefault();
-      var offset = Math.abs(e.target.getBoundingClientRect().left - e.clientX) - _this.thumbHorizontal.clientWidth / 2;
-      _this.content.scrollLeft = _this.computeScrollLeftForThumbOffset(Math.max(offset, 0));
-    });
-
-    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "handleThumbVerticalMousedownEvent", function (e) {
-      if (e.which !== 1) {
-        return;
-      }
-
-      e.preventDefault();
-      e.stopImmediatePropagation();
-
-      _this.handleDragStart();
-
-      var target = e.target,
-          clientY = e.clientY;
-      _this.dragPrevPageY = target.clientHeight - (clientY - target.getBoundingClientRect().top);
-
-      _this.thumbVertical.classList.add("dragging");
-    });
-
-    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "handleThumbHorizontalMousedownEvent", function (e) {
-      if (e.which !== 1) {
-        return;
-      }
-
-      e.preventDefault();
-      e.stopImmediatePropagation();
-
-      _this.handleDragStart();
-
-      var target = e.target,
-          clientX = e.clientX;
-      _this.dragPrevPageX = target.clientWidth - (clientX - target.getBoundingClientRect().left);
-
-      _this.thumbHorizontal.classList.add("dragging");
-    });
-
-    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "handleDragStart", function () {
-      _this.drag = true;
-
-      _this.scrollDetect();
-
-      _this.bodySelectPrevValue = document.body.style.userSelect;
-      _this.documentOnselectstartPrevValue = document.onselectstart;
-      document.addEventListener("mousemove", _this.handleDragEvent);
-      document.addEventListener("mouseup", _this.handleDragEnd);
-      document.body.style.userSelect = "none";
-
-      document.onselectstart = function () {
-        return false;
-      };
-    });
-
-    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "handleDragEnd", function () {
-      _this.drag = false;
-      _this.dragPrevPageX = undefined;
-      _this.dragPrevPageY = undefined;
-      document.removeEventListener("mousemove", _this.handleDragEvent);
-      document.removeEventListener("mouseup", _this.handleDragEnd);
-      document.body.style.userSelect = _this.bodySelectPrevValue;
-      document.onselectstart = _this.documentOnselectstartPrevValue;
-
-      _this.thumbHorizontal.classList.remove("dragging");
-
-      _this.thumbVertical.classList.remove("dragging");
-    });
-
-    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "handleDragEvent", function (e) {
-      if (!_this.drag) {
-        return;
-      }
-
-      _this.scrollDetect();
-
-      if (_this.dragPrevPageY !== undefined) {
-        var offset = -_this.trackVertical.getBoundingClientRect().top + e.clientY - (_this.thumbVertical.clientHeight - _this.dragPrevPageY);
-        _this.content.scrollTop = _this.computeScrollTopForThumbOffset(offset);
-      }
-
-      if (_this.dragPrevPageX !== undefined) {
-        var _offset = -_this.trackHorizontal.getBoundingClientRect().left + e.clientX - (_this.thumbHorizontal.clientWidth - _this.dragPrevPageX);
-
-        _this.content.scrollLeft = _this.computeScrollLeftForThumbOffset(_offset);
-      }
-    });
-
-    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "computeThumbVerticalHeight", function (trackHeight) {
-      var height = Math.ceil(_this.content.clientHeight / _this.content.scrollHeight * trackHeight);
-      return trackHeight === height ? 0 : Math.max(height, _this.props.minimalThumbsSize);
-    });
-
-    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "computeThumbHorizontalWidth", function (trackWidth) {
-      var width = Math.ceil(_this.content.clientWidth / _this.content.scrollWidth * trackWidth);
-      return trackWidth === width ? 0 : Math.max(width, _this.props.minimalThumbsSize);
-    });
-
-    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "computeScrollTopForThumbOffset", function (offset) {
-      var trackVerticalInnerHeight = (0, _getInnerSizes.getInnerHeight)(_this.trackVertical);
-      return offset / (trackVerticalInnerHeight - _this.thumbVertical.clientHeight) * (_this.content.scrollHeight - _this.content.clientHeight);
-    });
-
-    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "computeScrollLeftForThumbOffset", function (offset) {
-      var trackHorizontalInnerWidth = (0, _getInnerSizes.getInnerWidth)(_this.trackHorizontal);
-      return offset / (trackHorizontalInnerWidth - _this.thumbHorizontal.clientWidth) * (_this.content.scrollWidth - _this.content.clientWidth);
+        _this.props.onScrollStop.call(_assertThisInitialized(_assertThisInitialized(_this)), _this.scrollValues);
+      }, _this.props.scrollDetectionThreshold);
     });
 
     _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "update", function () {
       var forced = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
 
-      // No need to update scrollbars if values had not changed
-      if (!forced && (_this.previousScrollValues || false)) {
-        if (_this.previousScrollValues.scrollTop === _this.content.scrollTop && _this.previousScrollValues.scrollLeft === _this.content.scrollLeft && _this.previousScrollValues.scrollHeight === _this.content.scrollHeight && _this.previousScrollValues.scrollWidth === _this.content.scrollWidth && _this.previousScrollValues.clientHeight === _this.content.clientHeight && _this.previousScrollValues.clientWidth === _this.content.clientWidth) {
-          return _assertThisInitialized(_assertThisInitialized(_this));
+      if (typeof _this.state.isRtl !== "boolean") {
+        _this.setState({
+          isRtl: getComputedStyle(_this.contentEl).direction === "rtl"
+        });
+
+        return;
+      }
+      /**
+       *
+       * @type {ScrollValues}
+       */
+
+
+      var currentScrollValues = {
+        clientHeight: _this.contentEl.clientHeight,
+        scrollHeight: _this.contentEl.scrollHeight,
+        scrollTop: _this.contentEl.scrollTop,
+        clientWidth: _this.contentEl.clientWidth,
+        scrollWidth: _this.contentEl.scrollWidth,
+        scrollLeft: _this.contentEl.scrollLeft,
+        scrollXBlocked: null,
+        scrollYBlocked: null,
+        scrollXPossible: null,
+        scrollYPossible: null,
+        trackXVisible: null,
+        trackYVisible: null
+      };
+      currentScrollValues.scrollXBlocked = _this.props.noScroll || _this.props.noScrollX;
+      currentScrollValues.scrollYBlocked = _this.props.noScroll || _this.props.noScrollY;
+      currentScrollValues.scrollXPossible = !currentScrollValues.scrollXBlocked && currentScrollValues.scrollWidth > currentScrollValues.clientWidth;
+      currentScrollValues.scrollYPossible = !currentScrollValues.scrollYBlocked && currentScrollValues.scrollHeight > currentScrollValues.clientHeight;
+      currentScrollValues.trackXVisible = currentScrollValues.scrollXPossible || _this.props.permanentTracks || _this.props.permanentTrackX;
+      currentScrollValues.trackYVisible = currentScrollValues.scrollYPossible || _this.props.permanentTracks || _this.props.permanentTrackY;
+      var mask = 0;
+      _this.scrollValues.clientHeight !== currentScrollValues.clientHeight && (mask |= 1 << 0);
+      _this.scrollValues.clientWidth !== currentScrollValues.clientWidth && (mask |= 1 << 1);
+      _this.scrollValues.scrollHeight !== currentScrollValues.scrollHeight && (mask |= 1 << 2);
+      _this.scrollValues.scrollWidth !== currentScrollValues.scrollWidth && (mask |= 1 << 3);
+      _this.scrollValues.scrollTop !== currentScrollValues.scrollTop && (mask |= 1 << 4);
+      _this.scrollValues.scrollLeft !== currentScrollValues.scrollLeft && (mask |= 1 << 5);
+      _this.scrollValues.scrollYBlocked !== currentScrollValues.scrollYBlocked && (mask |= 1 << 6);
+      _this.scrollValues.scrollXBlocked !== currentScrollValues.scrollXBlocked && (mask |= 1 << 7);
+      _this.scrollValues.scrollYPossible !== currentScrollValues.scrollYPossible && (mask |= 1 << 8);
+      _this.scrollValues.scrollXPossible !== currentScrollValues.scrollXPossible && (mask |= 1 << 9);
+      _this.scrollValues.trackYVisible !== currentScrollValues.trackYVisible && (mask |= 1 << 10);
+      _this.scrollValues.trackXVisible !== currentScrollValues.trackXVisible && (mask |= 1 << 11); // if not forced and nothing has changed - do not update
+
+      if (mask === 0 && !forced) {
+        return false;
+      } // if scrollbars visibility has changed
+
+
+      if (mask & 1 << 10 || mask & 1 << 11) {
+        _this.scrollValues.trackYVisible = currentScrollValues.trackYVisible;
+        _this.scrollValues.trackXVisible = currentScrollValues.trackXVisible;
+
+        _this.setState({
+          trackYVisible: currentScrollValues.trackYVisible,
+          trackXVisible: currentScrollValues.trackXVisible
+        });
+
+        return _this.update(true);
+      }
+
+      _this.scrollValues = currentScrollValues; // if Y track rendered and changed anything related to scrollY
+
+      if (_this.trackYEl) {
+        mask & 1 << 10 && (_this.trackYEl.style.display = currentScrollValues.trackYVisible ? null : "none");
+
+        if (mask & 1 << 0 || mask & 1 << 2 || mask & 1 << 4 || mask & 1 << 6 || mask & 1 << 8) {
+          if (currentScrollValues.scrollYPossible) {
+            var trackSize = (0, _getInnerSizes.getInnerHeight)(_this.trackYEl);
+
+            var thumbSize = _this.computeThumbSize(trackSize, currentScrollValues.scrollHeight, currentScrollValues.clientHeight);
+
+            var thumbOffset = Scrollbar.computeThumbOffset(trackSize, thumbSize, currentScrollValues.scrollHeight, currentScrollValues.clientHeight, currentScrollValues.scrollTop);
+            _this.thumbYEl.style.transform = "translateY(".concat(thumbOffset, "px)");
+            _this.thumbYEl.style.height = thumbSize + "px";
+            _this.thumbYEl.style.display = null;
+          } else {
+            _this.thumbYEl.style.transform = null;
+            _this.thumbYEl.style.height = "0px";
+            _this.thumbYEl.style.display = "none";
+          }
+        }
+      } // if X track rendered and changed anything related to scrollX
+
+
+      if (_this.trackXEl) {
+        mask & 1 << 11 && (_this.trackXEl.style.display = currentScrollValues.trackXVisible ? null : "none");
+
+        if (mask & 1 << 1 || mask & 1 << 3 || mask & 1 << 5 || mask & 1 << 7 || mask & 1 << 9) {
+          if (currentScrollValues.scrollXPossible) {
+            var _trackSize = (0, _getInnerSizes.getInnerWidth)(_this.trackXEl);
+
+            var _thumbSize = _this.computeThumbSize(_trackSize, currentScrollValues.scrollWidth, currentScrollValues.clientWidth);
+
+            var _thumbOffset = Scrollbar.computeThumbOffset(_trackSize, _thumbSize, currentScrollValues.scrollWidth, currentScrollValues.clientWidth, currentScrollValues.scrollLeft);
+
+            if (_this.state.isRtl) {
+              _thumbOffset = _thumbSize + _thumbOffset - _trackSize;
+            }
+
+            _this.thumbXEl.style.transform = "translateX(".concat(_thumbOffset, "px)");
+            _this.thumbXEl.style.width = _thumbSize + "px";
+            _this.thumbXEl.style.display = null;
+          } else {
+            _this.thumbXEl.style.transform = null;
+            _this.thumbXEl.style.width = "0px";
+            _this.thumbXEl.style.display = "none";
+          }
         }
       }
 
-      var verticalScrollPossible = _this.content.scrollHeight > _this.content.clientHeight && !_this.props.noScroll && !_this.props.noScrollY,
-          horizontalScrollPossible = _this.content.scrollWidth > _this.content.clientWidth && !_this.props.noScroll && !_this.props.noScrollX;
-      _this.trackVertical.style.display = verticalScrollPossible || _this.props.permanentScrollbars || _this.props.permanentScrollbarY ? null : "none";
-      _this.trackVertical.visibility = verticalScrollPossible || _this.props.permanentScrollbars || _this.props.permanentScrollbarY ? null : "hidden";
-      _this.trackHorizontal.style.display = horizontalScrollPossible || _this.props.permanentScrollbars || _this.props.permanentScrollbarX ? null : "none";
-      _this.trackHorizontal.visibility = horizontalScrollPossible || _this.props.permanentScrollbars || _this.props.permanentScrollbarX ? null : "hidden";
-
-      if (verticalScrollPossible) {
-        var trackVerticalInnerHeight = (0, _getInnerSizes.getInnerHeight)(_this.trackVertical);
-
-        var thumbVerticalHeight = _this.computeThumbVerticalHeight(trackVerticalInnerHeight);
-
-        var thumbVerticalOffset = thumbVerticalHeight ? _this.content.scrollTop / (_this.content.scrollHeight - _this.content.clientHeight) * (trackVerticalInnerHeight - thumbVerticalHeight) : 0;
-        _this.thumbVertical.style.transform = "translateY(".concat(thumbVerticalOffset, "px)");
-        _this.thumbVertical.style.height = thumbVerticalHeight + "px";
-      } else {
-        _this.thumbVertical.style.transform = "translateY(0px)";
-        _this.thumbVertical.style.height = "0px";
-      }
-
-      if (horizontalScrollPossible) {
-        var trackHorizontalInnerWidth = (0, _getInnerSizes.getInnerWidth)(_this.trackHorizontal);
-
-        var thumbHorizontalWidth = _this.computeThumbHorizontalWidth(trackHorizontalInnerWidth);
-
-        var thumbHorizontalOffset = thumbHorizontalWidth ? _this.content.scrollLeft / (_this.content.scrollWidth - _this.content.clientWidth) * (trackHorizontalInnerWidth - thumbHorizontalWidth) : 0;
-        _this.thumbHorizontal.style.transform = "translateX(".concat(thumbHorizontalOffset, "px)");
-        _this.thumbHorizontal.style.width = thumbHorizontalWidth + "px";
-      } else {
-        _this.thumbHorizontal.style.transform = "translateX(0px)";
-        _this.thumbHorizontal.style.width = "0px";
-      }
-
-      var currentScrollValues = {
-        scrollTop: _this.content.scrollTop,
-        scrollLeft: _this.content.scrollLeft,
-        scrollHeight: _this.content.scrollHeight,
-        scrollWidth: _this.content.scrollWidth,
-        clientHeight: _this.content.clientHeight,
-        clientWidth: _this.content.clientWidth
-      };
-      (_this.previousScrollValues || false) && _this.props.onScroll && _this.props.onScroll(currentScrollValues, _assertThisInitialized(_assertThisInitialized(_this)));
-      _this.previousScrollValues = currentScrollValues;
-      return _assertThisInitialized(_assertThisInitialized(_this));
+      _this.props.onScroll && _this.props.onScroll(_this.scrollValues);
+      return _this.scrollValues;
     });
 
+    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "handleTrackClick", function (e, params) {
+      params.axis === _Track.TYPE_X && _this.props.trackXProps.onClick && _this.props.trackXProps.onClick(e, params);
+      params.axis === _Track.TYPE_Y && _this.props.trackYProps.onClick && _this.props.trackYProps.onClick(e, params);
+      var scrollTarget = params.axis === _Track.TYPE_X ? Scrollbar.computeScrollForOffset((0, _getInnerSizes.getInnerWidth)(_this.trackXEl), _this.thumbXEl.clientWidth, params.offset, _this.contentEl.scrollWidth, _this.contentEl.clientWidth) : Scrollbar.computeScrollForOffset((0, _getInnerSizes.getInnerHeight)(_this.trackYEl), _this.thumbYEl.clientHeight, params.offset, _this.contentEl.scrollHeight, _this.contentEl.clientHeight);
+
+      if (_this.props.trackClickBehavior === "jump") {
+        params.axis === _Track.TYPE_X && (_this.contentEl.scrollLeft = scrollTarget);
+        params.axis === _Track.TYPE_Y && (_this.contentEl.scrollTop = scrollTarget);
+      } else if (_this.props.trackClickBehavior === "step") {
+        params.axis === _Track.TYPE_X && (_this.contentEl.scrollLeft = _this.contentEl.scrollLeft < scrollTarget ? _this.contentEl.scrollLeft + _this.contentEl.clientWidth : _this.contentEl.scrollLeft - _this.contentEl.clientWidth);
+        params.axis === _Track.TYPE_Y && (_this.contentEl.scrollTop = _this.contentEl.scrollTop < scrollTarget ? _this.contentEl.scrollTop + _this.contentEl.clientHeight : _this.contentEl.scrollTop - _this.contentEl.clientHeight);
+      }
+    });
+
+    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "handleThumbDragStart", function (params) {
+      params.axis === _Track.TYPE_X && _this.props.thumbXProps.onDragStart && _this.props.thumbXProps.onDragStart(params);
+      params.axis === _Track.TYPE_Y && _this.props.thumbYProps.onDragStart && _this.props.thumbYProps.onDragStart(params);
+    });
+
+    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "handleThumbDragEnd", function (params) {
+      params.axis === _Track.TYPE_X && _this.props.thumbXProps.onDragEnd && _this.props.thumbXProps.onDragEnd(params);
+      params.axis === _Track.TYPE_Y && _this.props.thumbYProps.onDragEnd && _this.props.thumbYProps.onDragEnd(params);
+    });
+
+    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "handleThumbDrag", function (params) {
+      _this.scrollDetect();
+
+      params.axis === _Track.TYPE_X && _this.props.thumbXProps.onDrag && _this.props.thumbXProps.onDrag(params);
+      params.axis === _Track.TYPE_Y && _this.props.thumbYProps.onDrag && _this.props.thumbYProps.onDrag(params);
+      params.axis === _Track.TYPE_X ? _this.contentEl.scrollLeft = Scrollbar.computeScrollForOffset((0, _getInnerSizes.getInnerWidth)(_this.trackXEl), _this.thumbXEl.clientWidth, params.offset, _this.contentEl.scrollWidth, _this.contentEl.clientWidth) : _this.contentEl.scrollTop = Scrollbar.computeScrollForOffset((0, _getInnerSizes.getInnerHeight)(_this.trackYEl), _this.thumbYEl.clientHeight, params.offset, _this.contentEl.scrollHeight, _this.contentEl.clientHeight);
+    });
+
+    _this.scrollValues = {
+      clientHeight: null,
+      clientWidth: null,
+      scrollHeight: null,
+      scrollWidth: null,
+      scrollTop: null,
+      scrollLeft: null,
+      scrollYBlocked: null,
+      scrollXBlocked: null,
+      scrollYPossible: null,
+      scrollXPossible: null,
+      trackYVisible: null,
+      trackXVisible: null
+    };
+    _this.state = {
+      trackYVisible: true,
+      trackXVisible: true,
+      isRtl: _this.props.rtl
+    };
     return _this;
   }
 
   _createClass(Scrollbar, [{
+    key: "componentDidUpdate",
+    value: function componentDidUpdate(prevProps, prevState) {
+      if (this.props.rtl !== prevProps.rtl && this.props.rtl !== this.state.isRtl) {
+        this.setState({
+          isRtl: this.props.rtl
+        });
+      }
+
+      if (this.state.isRtl !== prevState.isRtl) {
+        this.update();
+      }
+    }
+  }, {
     key: "componentDidMount",
     value: function componentDidMount() {
       _LoopController.default.registerScrollbar(this);
 
-      this.addListeners();
+      this.contentEl.addEventListener("scroll", this.handleScrollEvent, {
+        passive: true
+      });
       this.update();
-    }
-  }, {
-    key: "componentDidUpdate",
-    value: function componentDidUpdate(prevProps, prevState, snapshot) {
-      if (prevProps.noScroll !== this.props.noScroll || prevProps.noScrollY !== this.props.noScrollY || prevProps.noScrollX !== this.props.noScrollX || prevProps.permanentScrollbars !== this.props.permanentScrollbars || prevProps.permanentScrollbarX !== this.props.permanentScrollbarX || prevProps.permanentScrollbarY !== this.props.permanentScrollbarY) {
-        this.update(true);
-      }
-
-      this.addListeners();
     }
   }, {
     key: "componentWillUnmount",
     value: function componentWillUnmount() {
       _LoopController.default.unregisterScrollbar(this);
 
-      this.handleDragEnd();
-      this.removeListeners();
-
-      if (this.scrollDetect.timeout) {
-        clearTimeout(this.scrollDetect.timeout);
-        this.scrollDetect.timeout = null;
-
-        if (this.props.onScrollStop) {
-          this.props.onScrollStop(this);
-        }
-      }
+      this.contentEl.removeEventListener("scroll", this.handleScrollEvent, {
+        passive: false
+      });
     }
-    /**
-     * Return the vertical scroll position
-     *
-     * @return {number}
-     */
-
   }, {
     key: "scrollToTop",
 
@@ -434,11 +411,10 @@ function (_React$Component) {
      * @return {Scrollbar}
      */
     value: function scrollToTop() {
-      if (!this.content) {
-        return this;
+      if (this.content) {
+        this.content.scrollTop = 0;
       }
 
-      this.content.scrollTop = 0;
       return this;
     }
     /**
@@ -450,11 +426,10 @@ function (_React$Component) {
   }, {
     key: "scrollToBottom",
     value: function scrollToBottom() {
-      if (!this.content) {
-        return this;
+      if (this.content) {
+        this.content.scrollTop = this.content.scrollHeight;
       }
 
-      this.content.scrollTop = this.content.scrollHeight;
       return this;
     }
     /**
@@ -466,11 +441,10 @@ function (_React$Component) {
   }, {
     key: "scrollToLeft",
     value: function scrollToLeft() {
-      if (!this.content) {
-        return this;
+      if (this.content) {
+        this.content.scrollLeft = 0;
       }
 
-      this.content.scrollLeft = 0;
       return this;
     }
     /**
@@ -482,15 +456,16 @@ function (_React$Component) {
   }, {
     key: "scrollToRight",
     value: function scrollToRight() {
-      if (!this.content) {
-        return this;
+      if (this.content) {
+        this.content.scrollLeft = this.content.scrollWidth;
       }
 
-      this.content.scrollLeft = this.content.scrollWidth;
       return this;
     }
     /**
-     * @return {Scrollbar}
+     *
+     * @param forced
+     * @return {ScrollValues}
      */
 
   }, {
@@ -498,168 +473,160 @@ function (_React$Component) {
     value: function render() {
       var _this2 = this;
 
-      var _this$props2 = this.props,
-          minimalThumbsSize = _this$props2.minimalThumbsSize,
-          fallbackScrollbarWidth = _this$props2.fallbackScrollbarWidth,
-          scrollDetectionThreshold = _this$props2.scrollDetectionThreshold,
-          defaultStyles = _this$props2.defaultStyles,
-          noScroll = _this$props2.noScroll,
-          noScrollX = _this$props2.noScrollX,
-          noScrollY = _this$props2.noScrollY,
-          permanentScrollbars = _this$props2.permanentScrollbars,
-          permanentScrollbarX = _this$props2.permanentScrollbarX,
-          permanentScrollbarY = _this$props2.permanentScrollbarY,
-          tagName = _this$props2.tagName,
-          children = _this$props2.children,
-          style = _this$props2.style,
-          className = _this$props2.className,
-          wrapperStyle = _this$props2.wrapperStyle,
-          contentStyle = _this$props2.contentStyle,
-          trackVerticalStyle = _this$props2.trackVerticalStyle,
-          trackHorizontalStyle = _this$props2.trackHorizontalStyle,
-          thumbVerticalStyle = _this$props2.thumbVerticalStyle,
-          thumbHorizontalStyle = _this$props2.thumbHorizontalStyle,
-          wrapperClassName = _this$props2.wrapperClassName,
-          contentClassName = _this$props2.contentClassName,
-          trackVerticalClassName = _this$props2.trackVerticalClassName,
-          trackHorizontalClassName = _this$props2.trackHorizontalClassName,
-          thumbVerticalClassName = _this$props2.thumbVerticalClassName,
-          thumbHorizontalClassName = _this$props2.thumbHorizontalClassName,
-          onScroll = _this$props2.onScroll,
-          onScrollStart = _this$props2.onScrollStart,
-          onScrollStop = _this$props2.onScrollStop,
-          renderWrapper = _this$props2.renderWrapper,
-          renderContent = _this$props2.renderContent,
-          renderTrackVertical = _this$props2.renderTrackVertical,
-          renderTrackHorizontal = _this$props2.renderTrackHorizontal,
-          renderThumbVertical = _this$props2.renderThumbVertical,
-          renderThumbHorizontal = _this$props2.renderThumbHorizontal,
-          props = _objectWithoutProperties(_this$props2, ["minimalThumbsSize", "fallbackScrollbarWidth", "scrollDetectionThreshold", "defaultStyles", "noScroll", "noScrollX", "noScrollY", "permanentScrollbars", "permanentScrollbarX", "permanentScrollbarY", "tagName", "children", "style", "className", "wrapperStyle", "contentStyle", "trackVerticalStyle", "trackHorizontalStyle", "thumbVerticalStyle", "thumbHorizontalStyle", "wrapperClassName", "contentClassName", "trackVerticalClassName", "trackHorizontalClassName", "thumbVerticalClassName", "thumbHorizontalClassName", "onScroll", "onScrollStart", "onScrollStop", "renderWrapper", "renderContent", "renderTrackVertical", "renderTrackHorizontal", "renderThumbVertical", "renderThumbHorizontal"]);
+      var _this$props = this.props,
+          minimalThumbsSize = _this$props.minimalThumbsSize,
+          fallbackScrollbarWidth = _this$props.fallbackScrollbarWidth,
+          scrollDetectionThreshold = _this$props.scrollDetectionThreshold,
+          tagName = _this$props.tagName,
+          className = _this$props.className,
+          style = _this$props.style,
+          trackClickBehavior = _this$props.trackClickBehavior,
+          rtl = _this$props.rtl,
+          momentum = _this$props.momentum,
+          noDefaultStyles = _this$props.noDefaultStyles,
+          noScrollX = _this$props.noScrollX,
+          noScrollY = _this$props.noScrollY,
+          noScroll = _this$props.noScroll,
+          permanentTrackX = _this$props.permanentTrackX,
+          permanentTrackY = _this$props.permanentTrackY,
+          permanentTracks = _this$props.permanentTracks,
+          removeTracksWhenNotUsed = _this$props.removeTracksWhenNotUsed,
+          removeTrackYWhenNotUsed = _this$props.removeTrackYWhenNotUsed,
+          removeTrackXWhenNotUsed = _this$props.removeTrackXWhenNotUsed,
+          propsWrapperProps = _this$props.wrapperProps,
+          propsContentProps = _this$props.contentProps,
+          propsTrackXProps = _this$props.trackXProps,
+          propsTrackYProps = _this$props.trackYProps,
+          propsThumbXProps = _this$props.thumbXProps,
+          propsThumbYProps = _this$props.thumbYProps,
+          wrapperRenderer = _this$props.wrapperRenderer,
+          contentRenderer = _this$props.contentRenderer,
+          trackXRenderer = _this$props.trackXRenderer,
+          trackYRenderer = _this$props.trackYRenderer,
+          thumbXRenderer = _this$props.thumbXRenderer,
+          thumbYRenderer = _this$props.thumbYRenderer,
+          onScroll = _this$props.onScroll,
+          onScrollStart = _this$props.onScrollStart,
+          onScrollStop = _this$props.onScrollStop,
+          children = _this$props.children,
+          props = _objectWithoutProperties(_this$props, ["minimalThumbsSize", "fallbackScrollbarWidth", "scrollDetectionThreshold", "tagName", "className", "style", "trackClickBehavior", "rtl", "momentum", "noDefaultStyles", "noScrollX", "noScrollY", "noScroll", "permanentTrackX", "permanentTrackY", "permanentTracks", "removeTracksWhenNotUsed", "removeTrackYWhenNotUsed", "removeTrackXWhenNotUsed", "wrapperProps", "contentProps", "trackXProps", "trackYProps", "thumbXProps", "thumbYProps", "wrapperRenderer", "contentRenderer", "trackXRenderer", "trackYRenderer", "thumbXRenderer", "thumbYRenderer", "onScroll", "onScrollStart", "onScrollStop", "children"]);
 
-      var browserScrollbarWidth = (0, _utilities.getScrollbarWidth)();
-      var holderClassNames = ["ScrollbarsCustom-holder"].concat(className || false ? typeof className === "string" ? [className] : className : []).join(" "),
-          wrapperClassNames = ["ScrollbarsCustom-wrapper"].concat(wrapperClassName || false ? typeof wrapperClassName === "string" ? [wrapperClassName] : wrapperClassName : []).join(" "),
-          contentClassNames = ["ScrollbarsCustom-content"].concat(contentClassName || false ? typeof contentClassName === "string" ? [contentClassName] : contentClassName : []).join(" "),
-          trackVerticalClassNames = ["ScrollbarsCustom-track", "ScrollbarsCustom-trackVertical"].concat(trackVerticalClassName || false ? typeof trackVerticalClassName === "string" ? [trackVerticalClassName] : trackVerticalClassName : []).join(" "),
-          trackHorizontalClassNames = ["ScrollbarsCustom-track", "ScrollbarsCustom-trackHorizontal"].concat(thumbVerticalClassName || false ? typeof thumbVerticalClassName === "string" ? [thumbVerticalClassName] : thumbVerticalClassName : []).join(" "),
-          thumbVerticalClassNames = ["ScrollbarsCustom-thumb", "ScrollbarsCustom-thumbVertical"].concat(trackHorizontalClassName || false ? typeof trackHorizontalClassName === "string" ? [trackHorizontalClassName] : trackHorizontalClassName : []).join(" "),
-          thumbHorizontalClassNames = ["ScrollbarsCustom-thumb", "ScrollbarsCustom-thumbHorizontal"].concat(thumbHorizontalClassName || false ? typeof thumbHorizontalClassName === "string" ? [thumbHorizontalClassName] : thumbHorizontalClassName : []).join(" ");
+      var _this$state = this.state,
+          trackXVisible = _this$state.trackXVisible,
+          trackYVisible = _this$state.trackYVisible;
+      var browserSBW = (0, _utilities.getScrollbarWidth)();
+      var scrollbarWidth = browserSBW || fallbackScrollbarWidth;
 
-      var holderStyles = _objectSpread({}, style, defaultStyles && defaultElementsStyles.holder),
-          wrapperStyles = _objectSpread({}, wrapperStyle, defaultStyles && defaultElementsStyles.wrapper, {
+      var wrapperProps = _objectSpread({}, propsWrapperProps),
+          contentProps = _objectSpread({}, propsContentProps),
+          trackXProps = _objectSpread({}, propsTrackXProps),
+          trackYProps = _objectSpread({}, propsTrackYProps),
+          thumbXProps = _objectSpread({}, propsThumbXProps),
+          thumbYProps = _objectSpread({}, propsThumbYProps);
+
+      if (!noDefaultStyles) {
+        var _objectSpread2;
+
+        props.style = _objectSpread({}, defaultStyles.holder);
+        wrapperProps.style = _objectSpread({}, defaultStyles.wrapper, (_objectSpread2 = {}, _defineProperty(_objectSpread2, this.state.isRtl ? "marginLeft" : "marginRight", trackYVisible ? 8 : null), _defineProperty(_objectSpread2, "marginBottom", trackXVisible ? 8 : null), _objectSpread2));
+        trackXProps.style = _objectSpread({}, defaultStyles.track.common, defaultStyles.track.x);
+        trackYProps.style = _objectSpread({}, defaultStyles.track.common, defaultStyles.track.y, _defineProperty({}, this.state.isRtl ? "left" : "right", 0));
+        thumbXProps.style = _objectSpread({}, defaultStyles.thumb.common, defaultStyles.thumb.x);
+        thumbYProps.style = _objectSpread({}, defaultStyles.thumb.common, defaultStyles.thumb.y);
+      }
+
+      props.style = _objectSpread({}, props.style, style, typeof rtl !== "undefined" && {
+        direction: rtl ? "rtl" : "ltr"
+      });
+      wrapperProps.style = _objectSpread({}, wrapperProps.style, propsWrapperProps.style, {
         position: "relative",
         overflow: "hidden"
-      }),
-          contentStyles = _objectSpread({}, contentStyle, defaultElementsStyles.content, {
-        overflowX: "scroll",
-        overflowY: "scroll",
-        marginRight: -(browserScrollbarWidth || fallbackScrollbarWidth),
-        marginBottom: -(browserScrollbarWidth || fallbackScrollbarWidth),
-        paddingRight: browserScrollbarWidth ? null : fallbackScrollbarWidth,
-        paddingBottom: browserScrollbarWidth ? null : fallbackScrollbarWidth
-      }),
-          trackVerticalStyles = _objectSpread({}, trackVerticalStyle, defaultStyles && defaultElementsStyles.trackVertical),
-          trackHorizontalStyles = _objectSpread({}, trackHorizontalStyle, defaultStyles && defaultElementsStyles.trackHorizontal),
-          thumbVerticalStyles = _objectSpread({}, thumbVerticalStyle, defaultStyles && defaultElementsStyles.thumbVertical),
-          thumbHorizontalStyles = _objectSpread({}, thumbHorizontalStyle, defaultStyles && defaultElementsStyles.thumbHorizontal);
+      });
+      contentProps.style = _objectSpread({}, defaultStyles.content, propsContentProps.style, momentum && {
+        WebkitOverflowScrolling: "touch"
+      }, {
+        overflowY: this.scrollValues.scrollYPossible ? "scroll" : "hidden"
+      }, this.state.isRtl ? {
+        paddingLeft: !browserSBW && this.scrollValues.scrollYPossible ? scrollbarWidth : null,
+        marginLeft: this.scrollValues.scrollYPossible ? -scrollbarWidth : null
+      } : {
+        paddingRight: !browserSBW && this.scrollValues.scrollYPossible ? scrollbarWidth : null,
+        marginRight: this.scrollValues.scrollYPossible ? -scrollbarWidth : null
+      }, {
+        overflowX: this.scrollValues.scrollXPossible ? "scroll" : "hidden",
+        paddingBottom: !browserSBW && this.scrollValues.scrollXPossible ? scrollbarWidth : null,
+        marginBottom: this.scrollValues.scrollXPossible ? -scrollbarWidth : null
+      });
+      trackXProps.style = _objectSpread({}, trackXProps.style, propsTrackXProps.style);
+      trackYProps.style = _objectSpread({}, trackYProps.style, propsTrackYProps.style);
+      thumbXProps.style = _objectSpread({}, thumbXProps.style, propsThumbXProps.style);
+      thumbYProps.style = _objectSpread({}, thumbYProps.style, propsThumbYProps.style);
+      props.className = "ScrollbarsCustom" + (trackYVisible ? " trackYVisible" : "") + (trackYVisible ? " trackXVisible" : "") + (this.state.isRtl ? " rtl" : "") + (className ? " " + className : "");
+      contentProps.className = "content" + (contentProps.className ? " " + contentProps.className : "");
+      wrapperProps.className = "wrapper" + (wrapperProps.className ? " " + wrapperProps.className : "");
 
-      if (noScroll || noScrollX && noScrollY) {
-        contentStyles.marginRight = contentStyles.marginBottom = null;
-        !browserScrollbarWidth && (contentStyles.paddingRight = contentStyles.paddingBottom = null);
-        contentStyles.overflowX = contentStyles.overflowY = "hidden";
-        trackVerticalStyles.display = trackHorizontalStyles.display = "none";
-      } else if (noScrollY) {
-        contentStyles.marginRight = null;
-        !browserScrollbarWidth && (contentStyles.paddingRight = null);
-        contentStyles.overflowX = "scroll";
-        contentStyles.overflowY = "hidden";
-        trackVerticalStyles.display = "none";
-      } else if (noScrollX) {
-        contentStyles.marginBottom = null;
-        !browserScrollbarWidth && (contentStyles.paddingBottom = null);
-        contentStyles.overflowY = "scroll";
-        contentStyles.overflowX = "hidden";
-        trackHorizontalStyles.display = "none";
-      }
+      props.ref = function (ref) {
+        _this2.holderEl = ref;
+      };
 
-      if (permanentScrollbars || permanentScrollbarY) {
-        trackVerticalStyles.display = null;
+      wrapperProps.ref = function (ref) {
+        _this2.wrapperEl = ref;
+      };
 
-        if (noScroll || !scrollY) {
-          thumbVerticalStyles.display = "none";
-        }
-      }
+      contentProps.ref = function (ref) {
+        _this2.contentEl = ref;
+      };
 
-      if (permanentScrollbars || permanentScrollbarX) {
-        trackHorizontalStyles.display = null;
+      trackXProps.elementRef = function (ref) {
+        _this2.trackXEl = ref;
+      };
 
-        if (noScroll || !scrollX) {
-          thumbHorizontalStyles.display = "none";
-        }
-      }
+      trackYProps.elementRef = function (ref) {
+        _this2.trackYEl = ref;
+      };
 
-      return _react.default.createElement(tagName, _objectSpread({}, props, {
-        className: holderClassNames,
-        style: holderStyles,
-        ref: function ref(_ref) {
-          _this2.holder = _ref;
-        }
-      }), [(renderWrapper || divRenderer)({
-        key: "wrapper",
-        ref: function ref(_ref2) {
-          _this2.wrapper = _ref2;
-        },
-        className: wrapperClassNames,
-        style: wrapperStyles,
-        children: (renderContent || divRenderer)({
-          key: "content",
-          ref: function ref(_ref3) {
-            _this2.content = _ref3;
-          },
-          className: contentClassNames,
-          style: contentStyles,
-          children: children
-        })
-      }), (renderTrackVertical || divRenderer)({
-        key: "trackVertical",
-        ref: function ref(_ref4) {
-          _this2.trackVertical = _ref4;
-        },
-        className: trackVerticalClassNames,
-        style: trackVerticalStyles,
-        children: (renderThumbVertical || divRenderer)({
-          key: "thumbVertical",
-          ref: function ref(_ref5) {
-            _this2.thumbVertical = _ref5;
-          },
-          className: thumbVerticalClassNames,
-          style: thumbVerticalStyles
-        })
-      }), (renderTrackHorizontal || divRenderer)({
-        key: "trackHorizontal",
-        ref: function ref(_ref6) {
-          _this2.trackHorizontal = _ref6;
-        },
-        className: trackHorizontalClassNames,
-        style: trackHorizontalStyles,
-        children: (renderThumbHorizontal || divRenderer)({
-          key: "thumbHorizontal",
-          ref: function ref(_ref7) {
-            _this2.thumbHorizontal = _ref7;
-          },
-          className: thumbHorizontalClassNames,
-          style: thumbHorizontalStyles
-        })
-      })]);
+      thumbXProps.elementRef = function (ref) {
+        _this2.thumbXEl = ref;
+      };
+
+      thumbYProps.elementRef = function (ref) {
+        _this2.thumbYEl = ref;
+      };
+
+      trackXProps.renderer = trackXRenderer;
+      trackYProps.renderer = trackYRenderer;
+      thumbXProps.renderer = thumbXRenderer;
+      thumbYProps.renderer = thumbYRenderer;
+      trackYProps.onClick = trackXProps.onClick = this.handleTrackClick;
+      thumbYProps.onDragStart = thumbXProps.onDragStart = this.handleThumbDragStart;
+      thumbYProps.onDragEnd = thumbXProps.onDragEnd = this.handleThumbDragEnd;
+      thumbYProps.onDrag = thumbXProps.onDrag = this.handleThumbDrag;
+      contentProps.children = children;
+      wrapperProps.children = contentRenderer ? contentRenderer(contentProps) : _react.default.createElement("div", contentProps);
+      return _react.default.createElement(this.props.tagName, props, wrapperRenderer ? wrapperRenderer(wrapperProps) : _react.default.createElement("div", wrapperProps), (trackYVisible || !(removeTracksWhenNotUsed && removeTrackYWhenNotUsed)) && _react.default.createElement(_Track.default, _extends({
+        type: _Track.TYPE_Y
+      }, trackYProps), _react.default.createElement(_Thumb.default, _extends({
+        type: _Track.TYPE_Y
+      }, thumbYProps))), (trackXVisible || !(removeTracksWhenNotUsed && removeTrackXWhenNotUsed)) && _react.default.createElement(_Track.default, _extends({
+        type: _Track.TYPE_X
+      }, trackXProps), _react.default.createElement(_Thumb.default, _extends({
+        type: _Track.TYPE_X
+      }, thumbXProps))));
     }
   }, {
     key: "scrollTop",
+
+    /**
+     * Return the vertical scroll position
+     *
+     * @return {number}
+     */
     get: function get() {
-      if (!this.content) {
-        return 0;
+      if (this.content) {
+        return this.content.scrollTop;
       }
 
-      return this.content.scrollTop;
+      return 0;
     }
     /**
      *
@@ -669,12 +636,10 @@ function (_React$Component) {
      */
     ,
     set: function set(top) {
-      if (!this.content) {
-        return;
+      if (this.content) {
+        this.content.scrollTop = top;
+        this.update();
       }
-
-      this.content.scrollTop = top;
-      this.update();
     }
     /**
      * Return the horizontal scroll position
@@ -685,11 +650,11 @@ function (_React$Component) {
   }, {
     key: "scrollLeft",
     get: function get() {
-      if (!this.content) {
-        return 0;
+      if (this.content) {
+        return this.content.scrollLeft;
       }
 
-      return this.content.scrollLeft;
+      return 0;
     }
     /**
      * Set the horizontal scroll to given amount of pixels
@@ -698,12 +663,9 @@ function (_React$Component) {
      */
     ,
     set: function set(left) {
-      if (!this.content) {
-        return;
+      if (this.content) {
+        this.content.scrollLeft = left;
       }
-
-      this.content.scrollLeft = left;
-      this.update();
     }
     /**
      * @return {number}
@@ -712,11 +674,11 @@ function (_React$Component) {
   }, {
     key: "scrollHeight",
     get: function get() {
-      if (!this.content) {
-        return 0;
+      if (this.content) {
+        return this.content.scrollHeight;
       }
 
-      return this.content.scrollHeight;
+      return 0;
     }
     /**
      * @return {number}
@@ -725,11 +687,11 @@ function (_React$Component) {
   }, {
     key: "scrollWidth",
     get: function get() {
-      if (!this.content) {
-        return 0;
+      if (this.content) {
+        return this.content.scrollWidth;
       }
 
-      return this.content.scrollWidth;
+      return 0;
     }
     /**
      * @return {number}
@@ -738,11 +700,11 @@ function (_React$Component) {
   }, {
     key: "clientHeight",
     get: function get() {
-      if (!this.content) {
-        return 0;
+      if (this.content) {
+        return this.content.clientHeight;
       }
 
-      return this.content.clientHeight;
+      return 0;
     }
     /**
      * @return {number}
@@ -751,11 +713,11 @@ function (_React$Component) {
   }, {
     key: "clientWidth",
     get: function get() {
-      if (!this.content) {
-        return 0;
+      if (this.content) {
+        return this.content.clientWidth;
       }
 
-      return this.content.clientWidth;
+      return 0;
     }
   }]);
 
@@ -767,50 +729,61 @@ exports.default = Scrollbar;
 _defineProperty(Scrollbar, "propTypes", {
   minimalThumbsSize: _propTypes.default.number,
   fallbackScrollbarWidth: _propTypes.default.number,
-  defaultStyles: _propTypes.default.bool,
-  permanentScrollbars: _propTypes.default.bool,
-  permanentScrollbarX: _propTypes.default.bool,
-  permanentScrollbarY: _propTypes.default.bool,
-  noScroll: _propTypes.default.bool,
+  tagName: _propTypes.default.string,
+  className: _propTypes.default.string,
+  style: _propTypes.default.object,
+  trackClickBehavior: _propTypes.default.oneOf(["jump", "step"]),
+  rtl: _propTypes.default.bool,
+  momentum: _propTypes.default.bool,
+  noDefaultStyles: _propTypes.default.bool,
+  scrollDetectionThreshold: _propTypes.default.number,
   noScrollX: _propTypes.default.bool,
   noScrollY: _propTypes.default.bool,
-  tagName: _propTypes.default.string,
-  className: _propTypes.default.oneOfType([_propTypes.default.string, _propTypes.default.array]),
-  wrapperClassName: _propTypes.default.oneOfType([_propTypes.default.string, _propTypes.default.array]),
-  contentClassName: _propTypes.default.oneOfType([_propTypes.default.string, _propTypes.default.array]),
-  trackVerticalClassName: _propTypes.default.oneOfType([_propTypes.default.string, _propTypes.default.array]),
-  trackHorizontalClassName: _propTypes.default.oneOfType([_propTypes.default.string, _propTypes.default.array]),
-  thumbVerticalClassName: _propTypes.default.oneOfType([_propTypes.default.string, _propTypes.default.array]),
-  thumbHorizontalClassName: _propTypes.default.oneOfType([_propTypes.default.string, _propTypes.default.array]),
-  style: _propTypes.default.object,
-  wrapperStyle: _propTypes.default.object,
-  contentStyle: _propTypes.default.object,
-  trackVerticalStyle: _propTypes.default.object,
-  trackHorizontalStyle: _propTypes.default.object,
-  thumbVerticalStyle: _propTypes.default.object,
-  thumbHorizontalStyle: _propTypes.default.object,
+  noScroll: _propTypes.default.bool,
+  removeTracksWhenNotUsed: _propTypes.default.bool,
+  removeTrackYWhenNotUsed: _propTypes.default.bool,
+  removeTrackXWhenNotUsed: _propTypes.default.bool,
+  permanentTrackX: _propTypes.default.bool,
+  permanentTrackY: _propTypes.default.bool,
+  permanentTracks: _propTypes.default.bool,
+  wrapperProps: _propTypes.default.object,
+  contentProps: _propTypes.default.object,
+  trackXProps: _propTypes.default.object,
+  trackYProps: _propTypes.default.object,
+  thumbXProps: _propTypes.default.object,
+  thumbYProps: _propTypes.default.object,
+  wrapperRenderer: _propTypes.default.func,
+  contentRenderer: _propTypes.default.func,
+  trackXRenderer: _propTypes.default.func,
+  trackYRenderer: _propTypes.default.func,
+  thumbXRenderer: _propTypes.default.func,
+  thumbYRenderer: _propTypes.default.func,
   onScroll: _propTypes.default.func,
   onScrollStart: _propTypes.default.func,
-  onScrollStop: _propTypes.default.func,
-  scrollDetectionThreshold: _propTypes.default.number,
-  renderWrapper: _propTypes.default.func,
-  renderContent: _propTypes.default.func,
-  renderTrackVertical: _propTypes.default.func,
-  renderTrackHorizontal: _propTypes.default.func,
-  renderThumbVertical: _propTypes.default.func,
-  renderThumbHorizontal: _propTypes.default.func
+  onScrollEnd: _propTypes.default.func
 });
 
 _defineProperty(Scrollbar, "defaultProps", {
+  tagName: "div",
   minimalThumbsSize: 30,
   fallbackScrollbarWidth: 20,
-  defaultStyles: true,
-  permanentScrollbarX: false,
-  permanentScrollbars: false,
-  permanentScrollbarY: false,
-  noScroll: false,
+  trackClickBehavior: "jump",
+  momentum: false,
+  noDefaultStyles: false,
+  scrollDetectionThreshold: 100,
   noScrollX: false,
   noScrollY: false,
-  tagName: "div",
-  scrollDetectionThreshold: 100
+  noScroll: false,
+  permanentTrackX: false,
+  permanentTrackY: false,
+  permanentTracks: false,
+  removeTracksWhenNotUsed: true,
+  removeTrackYWhenNotUsed: true,
+  removeTrackXWhenNotUsed: true,
+  wrapperProps: {},
+  contentProps: {},
+  trackXProps: {},
+  trackYProps: {},
+  thumbXProps: {},
+  thumbYProps: {}
 });

@@ -83,13 +83,15 @@ export default class Scrollbar extends React.Component
         className: PropTypes.string,
         style:     PropTypes.object,
 
+        trackClickBehavior: PropTypes.oneOf(["jump", "step"]),
+
         rtl: PropTypes.bool,
 
         momentum: PropTypes.bool,
 
         noDefaultStyles: PropTypes.bool,
 
-        trackClickBehavior: PropTypes.oneOf(["jump", "step"]),
+        scrollDetectionThreshold: PropTypes.number,
 
         noScrollX: PropTypes.bool,
         noScrollY: PropTypes.bool,
@@ -132,6 +134,8 @@ export default class Scrollbar extends React.Component
         momentum: false,
 
         noDefaultStyles: false,
+
+        scrollDetectionThreshold: 100,
 
         noScrollX: false,
         noScrollY: false,
@@ -235,12 +239,33 @@ export default class Scrollbar extends React.Component
 
     componentDidMount() {
         LoopController.registerScrollbar(this);
+
+        this.contentEl.addEventListener("scroll", this.handleScrollEvent, {passive: true});
+
         this.update();
     }
 
     componentWillUnmount() {
         LoopController.unregisterScrollbar(this);
+
+        this.contentEl.removeEventListener("scroll", this.handleScrollEvent, {passive: false});
     }
+
+    handleScrollEvent = () => {
+        this.scrollDetect();
+    };
+
+    scrollDetect = () => {
+        !this.scrollDetect.timeout && this.props.onScrollStart && this.props.onScrollStart.call(this, this.scrollValues);
+
+        this.scrollDetect.timeout && clearTimeout(this.scrollDetect.timeout);
+
+        this.scrollDetect.timeout = setTimeout(() => {
+                                                   this.scrollDetect.timeout = null;
+                                                   this.props.onScrollStop.call(this, this.scrollValues);
+                                               },
+                                               this.props.scrollDetectionThreshold);
+    };
 
     /**
      * Return the vertical scroll position
@@ -568,6 +593,8 @@ export default class Scrollbar extends React.Component
     };
 
     handleThumbDrag = (params) => {
+        this.scrollDetect();
+
         params.axis === TYPE_X && this.props.thumbXProps.onDrag && this.props.thumbXProps.onDrag(params);
         params.axis === TYPE_Y && this.props.thumbYProps.onDrag && this.props.thumbYProps.onDrag(params);
 
@@ -588,6 +615,8 @@ export default class Scrollbar extends React.Component
         const {
                   minimalThumbsSize,
                   fallbackScrollbarWidth,
+
+                  scrollDetectionThreshold,
 
                   tagName,
                   className,
@@ -627,12 +656,17 @@ export default class Scrollbar extends React.Component
                   thumbXRenderer,
                   thumbYRenderer,
 
+                  onScroll,
+                  onScrollStart,
+                  onScrollStop,
+
                   children,
                   ...props
               } = this.props;
         const {trackXVisible, trackYVisible} = this.state;
 
-        const scrollbarWidth = getScrollbarWidth() || fallbackScrollbarWidth;
+        const browserSBW = getScrollbarWidth();
+        const scrollbarWidth = browserSBW || fallbackScrollbarWidth;
 
         const wrapperProps = {...propsWrapperProps},
               contentProps = {...propsContentProps},
@@ -689,18 +723,18 @@ export default class Scrollbar extends React.Component
             ...(
                     this.state.isRtl
                     ? {
-                                paddingLeft: this.scrollValues.scrollYPossible ? scrollbarWidth : null,
+                                paddingLeft: !browserSBW && this.scrollValues.scrollYPossible ? scrollbarWidth : null,
                                 marginLeft:  this.scrollValues.scrollYPossible ? -scrollbarWidth : null,
                             }
                     : {
-                                paddingRight: this.scrollValues.scrollYPossible ? scrollbarWidth : null,
+                                paddingRight: !browserSBW && this.scrollValues.scrollYPossible ? scrollbarWidth : null,
                                 marginRight:  this.scrollValues.scrollYPossible ? -scrollbarWidth : null,
                             }
 
             ),
 
             overflowX:     this.scrollValues.scrollXPossible ? "scroll" : "hidden",
-            paddingBottom: this.scrollValues.scrollXPossible ? scrollbarWidth : null,
+            paddingBottom: !browserSBW && this.scrollValues.scrollXPossible ? scrollbarWidth : null,
             marginBottom:  this.scrollValues.scrollXPossible ? -scrollbarWidth : null,
         };
         trackXProps.style = {

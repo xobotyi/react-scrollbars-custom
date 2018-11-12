@@ -304,12 +304,15 @@ body {
                 }
 
                 p {
-                    padding:    1rem 1.5rem 0;
+                    padding:    1rem 1.5rem;
                     box-sizing: border-box;
                     width:      150%;
 
                     &:first-child {
-                        margin-top: 0;
+                        padding-top: 0;
+                    }
+                    &:last-child {
+                        padding-bottom: 0;
                     }
                 }
             }

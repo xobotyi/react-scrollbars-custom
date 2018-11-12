@@ -56,6 +56,23 @@ const defaultStyles = {
     },
 };
 
+/**
+ * @typedef {object} ScrollValues
+ *
+ * @property {number|null} clientHeight - content's native clientHeight parameter
+ * @property {number|null} clientWidth - content's native clientWidth parameter
+ * @property {number|null} scrollHeight - content's native scrollHeight parameter
+ * @property {number|null} scrollWidth - content's native scrollWidth parameter
+ * @property {number|null} scrollTop - content's native scrollTop parameter
+ * @property {number|null} scrollLeft - content's native scrollLeft parameter
+ * @property {boolean|null} scrollYBlocked - Indicates whether vertical scroll blocked via properties
+ * @property {boolean|null} scrollXBlocked - Indicates whether horizontal scroll blocked via properties
+ * @property {boolean|null} scrollYPossible - Indicates whether the content overflows vertically and scrolling not blocked
+ * @property {boolean|null} scrollXPossible - Indicates whether the content overflows horizontally and scrolling not blocked
+ * @property {boolean|null} trackYVisible - Indicates whether vertical track is visible
+ * @property {boolean|null} trackXVisible - Indicates whether horizontal track is visible
+ */
+
 export default class Scrollbar extends React.Component
 {
     static propTypes = {
@@ -99,6 +116,10 @@ export default class Scrollbar extends React.Component
         trackYRenderer:  PropTypes.func,
         thumbXRenderer:  PropTypes.func,
         thumbYRenderer:  PropTypes.func,
+
+        onScroll:      PropTypes.func,
+        onScrollStart: PropTypes.func,
+        onScrollEnd:   PropTypes.func,
     };
 
     static defaultProps = {
@@ -132,9 +153,54 @@ export default class Scrollbar extends React.Component
         thumbYProps:  {},
     };
 
+    /**
+     * Compute the thumb size
+     *
+     * @param {number} trackSize
+     * @param {number} scrollableSize
+     * @param {number} viewportSize
+     * @return {number}
+     */
+    computeThumbSize(trackSize, scrollableSize, viewportSize) {
+        const size = Math.ceil((viewportSize / scrollableSize) * trackSize);
+
+        return trackSize === size ? 0 : Math.max(size, this.props.minimalThumbsSize);
+    }
+
+    /**
+     * Compute the thumb offset from scroll value
+     *
+     * @param {number} trackSize
+     * @param {number} thumbSize
+     * @param {number} scrollableSize
+     * @param {number} viewportSize
+     * @param {number} scrollValue
+     * @return {number}
+     */
+    static computeThumbOffset(trackSize, thumbSize, scrollableSize, viewportSize, scrollValue) {
+        return thumbSize ? ((scrollValue / (scrollableSize - viewportSize)) * (trackSize - thumbSize)) : 0;
+    }
+
+    /**
+     * Compute the scroll value depending on thumb offset
+     *
+     * @param {number} trackSize
+     * @param {number} thumbSize
+     * @param {number} offset
+     * @param {number} scrollableSize
+     * @param {number} viewportSize
+     * @return {number}
+     */
+    static computeScrollForOffset(trackSize, thumbSize, offset, scrollableSize, viewportSize) {
+        return ((offset - thumbSize / 2) / (trackSize - thumbSize)) * (scrollableSize - viewportSize);
+    };
+
     constructor(props) {
         super(props);
 
+        /**
+         * @property {ScrollValues} scrollValues
+         */
         this.scrollValues = {
             clientHeight:    null,
             clientWidth:     null,
@@ -168,12 +234,6 @@ export default class Scrollbar extends React.Component
     }
 
     componentDidMount() {
-        //let a = performance.now();
-        //for (let i = 0; i < 1000000; i++) {
-        //    this.update();
-        //}
-        //let b = performance.now();
-        //console.log((b - a).toFixed(4), (1000000 * 1000 / (b - a)).toFixed(4));
         LoopController.registerScrollbar(this);
         this.update();
     }
@@ -182,6 +242,157 @@ export default class Scrollbar extends React.Component
         LoopController.unregisterScrollbar(this);
     }
 
+    /**
+     * Return the vertical scroll position
+     *
+     * @return {number}
+     */
+    get scrollTop() {
+        if (this.content) {
+            return this.content.scrollTop;
+        }
+
+        return 0;
+    }
+
+    /**
+     *
+     * Set the vertical scroll to given amount of pixels
+     *
+     * @param top {number} Pixels amount
+     */
+    set scrollTop(top) {
+        if (this.content) {
+            this.content.scrollTop = top;
+            this.update();
+        }
+    }
+
+    /**
+     * Return the horizontal scroll position
+     *
+     * @return {number}
+     */
+    get scrollLeft() {
+        if (this.content) {
+            return this.content.scrollLeft;
+        }
+
+        return 0;
+    }
+
+    /**
+     * Set the horizontal scroll to given amount of pixels
+     *
+     * @param left {number} Pixels amount
+     */
+    set scrollLeft(left) {
+        if (this.content) {
+            this.content.scrollLeft = left;
+        }
+    }
+
+    /**
+     * @return {number}
+     */
+    get scrollHeight() {
+        if (this.content) {
+            return this.content.scrollHeight;
+        }
+
+        return 0;
+    }
+
+    /**
+     * @return {number}
+     */
+    get scrollWidth() {
+        if (this.content) {
+            return this.content.scrollWidth;
+        }
+
+        return 0;
+    }
+
+    /**
+     * @return {number}
+     */
+    get clientHeight() {
+        if (this.content) {
+            return this.content.clientHeight;
+        }
+
+        return 0;
+    }
+
+    /**
+     * @return {number}
+     */
+    get clientWidth() {
+        if (this.content) {
+            return this.content.clientWidth;
+        }
+
+        return 0;
+    }
+
+    /**
+     * Scrol to the top border
+     *
+     * @return {Scrollbar}
+     */
+    scrollToTop() {
+        if (this.content) {
+            this.content.scrollTop = 0;
+        }
+
+        return this;
+    }
+
+    /**
+     * Scroll to the bottom border
+     *
+     * @return {Scrollbar}
+     */
+    scrollToBottom() {
+        if (this.content) {
+            this.content.scrollTop = this.content.scrollHeight;
+        }
+
+        return this;
+    }
+
+    /**
+     * Scrolls to the left border
+     *
+     * @return {Scrollbar}
+     */
+    scrollToLeft() {
+        if (this.content) {
+            this.content.scrollLeft = 0;
+        }
+
+        return this;
+    }
+
+    /**
+     * Scroll to the right border
+     *
+     * @return {Scrollbar}
+     */
+    scrollToRight() {
+        if (this.content) {
+            this.content.scrollLeft = this.content.scrollWidth;
+        }
+
+        return this;
+    }
+
+    /**
+     *
+     * @param forced
+     * @return {ScrollValues}
+     */
     update = (forced = false) => {
         if (typeof this.state.isRtl !== 'boolean') {
             this.setState({isRtl: getComputedStyle(this.contentEl).direction === 'rtl'});
@@ -189,13 +400,23 @@ export default class Scrollbar extends React.Component
             return;
         }
 
+        /**
+         *
+         * @type {ScrollValues}
+         */
         const currentScrollValues = {
-            clientHeight: this.contentEl.clientHeight * 1,
-            scrollHeight: this.contentEl.scrollHeight * 1,
-            scrollTop:    this.contentEl.scrollTop * 1,
-            clientWidth:  this.contentEl.clientWidth * 1,
-            scrollWidth:  this.contentEl.scrollWidth * 1,
-            scrollLeft:   this.contentEl.scrollLeft * 1,
+            clientHeight:    this.contentEl.clientHeight,
+            scrollHeight:    this.contentEl.scrollHeight,
+            scrollTop:       this.contentEl.scrollTop,
+            clientWidth:     this.contentEl.clientWidth,
+            scrollWidth:     this.contentEl.scrollWidth,
+            scrollLeft:      this.contentEl.scrollLeft,
+            scrollXBlocked:  null,
+            scrollYBlocked:  null,
+            scrollXPossible: null,
+            scrollYPossible: null,
+            trackXVisible:   null,
+            trackYVisible:   null,
         };
         currentScrollValues.scrollXBlocked = this.props.noScroll || this.props.noScrollX;
         currentScrollValues.scrollYBlocked = this.props.noScroll || this.props.noScrollY;
@@ -235,6 +456,8 @@ export default class Scrollbar extends React.Component
             return this.update(true);
         }
 
+        this.scrollValues = currentScrollValues;
+
         // if Y track rendered and changed anything related to scrollY
         if (this.trackYEl) {
             (mask & (1 << 10)) && (this.trackYEl.style.display = currentScrollValues.trackYVisible ? null : "none");
@@ -245,11 +468,11 @@ export default class Scrollbar extends React.Component
                     const thumbSize = this.computeThumbSize(trackSize,
                                                             currentScrollValues.scrollHeight,
                                                             currentScrollValues.clientHeight);
-                    const thumbOffset = this.computeThumbOffset(trackSize,
-                                                                thumbSize,
-                                                                currentScrollValues.scrollHeight,
-                                                                currentScrollValues.clientHeight,
-                                                                currentScrollValues.scrollTop);
+                    const thumbOffset = Scrollbar.computeThumbOffset(trackSize,
+                                                                     thumbSize,
+                                                                     currentScrollValues.scrollHeight,
+                                                                     currentScrollValues.clientHeight,
+                                                                     currentScrollValues.scrollTop);
 
                     this.thumbYEl.style.transform = `translateY(${thumbOffset}px)`;
                     this.thumbYEl.style.height = thumbSize + 'px';
@@ -273,13 +496,11 @@ export default class Scrollbar extends React.Component
                     const thumbSize = this.computeThumbSize(trackSize,
                                                             currentScrollValues.scrollWidth,
                                                             currentScrollValues.clientWidth);
-                    let thumbOffset = this.computeThumbOffset(trackSize,
-                                                              thumbSize,
-                                                              currentScrollValues.scrollWidth,
-                                                              currentScrollValues.clientWidth,
-                                                              currentScrollValues.scrollLeft);
-
-                    console.log(trackSize, thumbSize, thumbOffset);
+                    let thumbOffset = Scrollbar.computeThumbOffset(trackSize,
+                                                                   thumbSize,
+                                                                   currentScrollValues.scrollWidth,
+                                                                   currentScrollValues.clientWidth,
+                                                                   currentScrollValues.scrollLeft);
 
                     if (this.state.isRtl) {
                         thumbOffset = thumbSize + thumbOffset - trackSize;
@@ -297,21 +518,9 @@ export default class Scrollbar extends React.Component
             }
         }
 
-        return this.scrollValues = currentScrollValues;
-    };
+        this.props.onScroll && this.props.onScroll(this.scrollValues);
 
-    computeThumbSize(trackSize, scrollableSize, viewportSize) {
-        const size = Math.ceil((viewportSize / scrollableSize) * trackSize);
-
-        return trackSize === size ? 0 : Math.max(size, this.props.minimalThumbsSize);
-    }
-
-    computeThumbOffset(trackSize, thumbSize, scrollableSize, viewportSize, scrollValue) {
-        return thumbSize && ((scrollValue / (scrollableSize - viewportSize)) * (trackSize - thumbSize));
-    }
-
-    computeScrollForOffset(trackSize, thumbSize, offset, scrollableSize, viewportSize) {
-        return ((offset - thumbSize / 2) / (trackSize - thumbSize)) * (scrollableSize - viewportSize);
+        return this.scrollValues;
     };
 
     handleTrackClick = (e, params) => {
@@ -319,16 +528,16 @@ export default class Scrollbar extends React.Component
         params.axis === TYPE_Y && this.props.trackYProps.onClick && this.props.trackYProps.onClick(e, params);
 
         const scrollTarget = params.axis === TYPE_X
-                             ? this.computeScrollForOffset(getInnerWidth(this.trackXEl),
-                                                           this.thumbXEl.clientWidth,
-                                                           params.offset,
-                                                           this.contentEl.scrollWidth,
-                                                           this.contentEl.clientWidth)
-                             : this.computeScrollForOffset(getInnerHeight(this.trackYEl),
-                                                           this.thumbYEl.clientHeight,
-                                                           params.offset,
-                                                           this.contentEl.scrollHeight,
-                                                           this.contentEl.clientHeight);
+                             ? Scrollbar.computeScrollForOffset(getInnerWidth(this.trackXEl),
+                                                                this.thumbXEl.clientWidth,
+                                                                params.offset,
+                                                                this.contentEl.scrollWidth,
+                                                                this.contentEl.clientWidth)
+                             : Scrollbar.computeScrollForOffset(getInnerHeight(this.trackYEl),
+                                                                this.thumbYEl.clientHeight,
+                                                                params.offset,
+                                                                this.contentEl.scrollHeight,
+                                                                this.contentEl.clientHeight);
 
         if (this.props.trackClickBehavior === "jump") {
             params.axis === TYPE_X
@@ -363,16 +572,16 @@ export default class Scrollbar extends React.Component
         params.axis === TYPE_Y && this.props.thumbYProps.onDrag && this.props.thumbYProps.onDrag(params);
 
         params.axis === TYPE_X
-        ? this.contentEl.scrollLeft = this.computeScrollForOffset(getInnerWidth(this.trackXEl),
-                                                                  this.thumbXEl.clientWidth,
-                                                                  params.offset,
-                                                                  this.contentEl.scrollWidth,
-                                                                  this.contentEl.clientWidth)
-        : this.contentEl.scrollTop = this.computeScrollForOffset(getInnerHeight(this.trackYEl),
-                                                                 this.thumbYEl.clientHeight,
-                                                                 params.offset,
-                                                                 this.contentEl.scrollHeight,
-                                                                 this.contentEl.clientHeight);
+        ? this.contentEl.scrollLeft = Scrollbar.computeScrollForOffset(getInnerWidth(this.trackXEl),
+                                                                       this.thumbXEl.clientWidth,
+                                                                       params.offset,
+                                                                       this.contentEl.scrollWidth,
+                                                                       this.contentEl.clientWidth)
+        : this.contentEl.scrollTop = Scrollbar.computeScrollForOffset(getInnerHeight(this.trackYEl),
+                                                                      this.thumbYEl.clientHeight,
+                                                                      params.offset,
+                                                                      this.contentEl.scrollHeight,
+                                                                      this.contentEl.clientHeight);
     };
 
     render() {

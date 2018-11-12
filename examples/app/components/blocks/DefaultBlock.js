@@ -16,7 +16,7 @@ export default class DefaultBlock extends React.Component
                     <div className="title">Default appearance</div>
                     <div className="description">Note that by default flexbox is used.</div>
                     <div className="content">
-                        <Scrollbar noScrollY>{ this.getParagraphs(15) }</Scrollbar>
+                        <Scrollbar>{ this.getParagraphs(15) }</Scrollbar>
                     </div>
                 </div>
         );

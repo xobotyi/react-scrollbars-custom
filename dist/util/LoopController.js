@@ -53,13 +53,12 @@ function LoopControllerClass() {
 
 
   this.start = function () {
-    if (isActive) {
-      return _this;
+    if (!isActive) {
+      isActive = true;
+      animationFrameId && cancelAnimationFrame(animationFrameId);
+      requestAnimationFrame(animationFrameCallback);
     }
 
-    isActive = true;
-    animationFrameId && cancelAnimationFrame(animationFrameId);
-    requestAnimationFrame(animationFrameCallback);
     return _this;
   };
   /**
@@ -69,13 +68,12 @@ function LoopControllerClass() {
 
 
   this.stop = function () {
-    if (!isActive) {
-      return _this;
+    if (isActive) {
+      isActive = false;
+      animationFrameId && cancelAnimationFrame(animationFrameId);
+      animationFrameId = null;
     }
 
-    isActive = false;
-    animationFrameId && cancelAnimationFrame(animationFrameId);
-    animationFrameId = null;
     return _this;
   };
   /**

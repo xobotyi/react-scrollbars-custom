@@ -15,9 +15,9 @@ var _Track = _interopRequireWildcard(require("./Track"));
 
 var _getInnerSizes = require("./util/getInnerSizes");
 
-var _LoopController = _interopRequireDefault(require("./util/LoopController"));
+var _getScrollbarWidth = _interopRequireDefault(require("./util/getScrollbarWidth"));
 
-var _utilities = require("./util/utilities");
+var _LoopController = _interopRequireDefault(require("./util/LoopController"));
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
 
@@ -186,12 +186,15 @@ function (_React$Component) {
     });
 
     _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "scrollDetect", function () {
+      if (!_this.props.onScrollStart && !_this.props.onScrollStop) {
+        return;
+      }
+
       !_this.scrollDetect.timeout && _this.props.onScrollStart && _this.props.onScrollStart.call(_assertThisInitialized(_assertThisInitialized(_this)), _this.scrollValues);
       _this.scrollDetect.timeout && clearTimeout(_this.scrollDetect.timeout);
       _this.scrollDetect.timeout = setTimeout(function () {
         _this.scrollDetect.timeout = null;
-
-        _this.props.onScrollStop.call(_assertThisInitialized(_assertThisInitialized(_this)), _this.scrollValues);
+        _this.props.onScrollStop && _this.props.onScrollStop.call(_assertThisInitialized(_assertThisInitialized(_this)), _this.scrollValues);
       }, _this.props.scrollDetectionThreshold);
     });
 
@@ -386,7 +389,8 @@ function (_React$Component) {
   }, {
     key: "componentDidMount",
     value: function componentDidMount() {
-      _LoopController.default.registerScrollbar(this);
+      _LoopController.default.registerScrollbar(this); //this.contentEl.addEventListener("mousewheel", this.scrollCaptor);
+
 
       this.contentEl.addEventListener("scroll", this.handleScrollEvent, {
         passive: true
@@ -396,10 +400,11 @@ function (_React$Component) {
   }, {
     key: "componentWillUnmount",
     value: function componentWillUnmount() {
-      _LoopController.default.unregisterScrollbar(this);
+      _LoopController.default.unregisterScrollbar(this); //this.contentEl.removeEventListener("mousewheel", this.scrollCaptor);
+
 
       this.contentEl.removeEventListener("scroll", this.handleScrollEvent, {
-        passive: false
+        passive: true
       });
     }
   }, {
@@ -484,6 +489,7 @@ function (_React$Component) {
           rtl = _this$props.rtl,
           momentum = _this$props.momentum,
           noDefaultStyles = _this$props.noDefaultStyles,
+          captureScroll = _this$props.captureScroll,
           noScrollX = _this$props.noScrollX,
           noScrollY = _this$props.noScrollY,
           noScroll = _this$props.noScroll,
@@ -509,12 +515,12 @@ function (_React$Component) {
           onScrollStart = _this$props.onScrollStart,
           onScrollStop = _this$props.onScrollStop,
           children = _this$props.children,
-          props = _objectWithoutProperties(_this$props, ["minimalThumbsSize", "fallbackScrollbarWidth", "scrollDetectionThreshold", "tagName", "className", "style", "trackClickBehavior", "rtl", "momentum", "noDefaultStyles", "noScrollX", "noScrollY", "noScroll", "permanentTrackX", "permanentTrackY", "permanentTracks", "removeTracksWhenNotUsed", "removeTrackYWhenNotUsed", "removeTrackXWhenNotUsed", "wrapperProps", "contentProps", "trackXProps", "trackYProps", "thumbXProps", "thumbYProps", "wrapperRenderer", "contentRenderer", "trackXRenderer", "trackYRenderer", "thumbXRenderer", "thumbYRenderer", "onScroll", "onScrollStart", "onScrollStop", "children"]);
+          props = _objectWithoutProperties(_this$props, ["minimalThumbsSize", "fallbackScrollbarWidth", "scrollDetectionThreshold", "tagName", "className", "style", "trackClickBehavior", "rtl", "momentum", "noDefaultStyles", "captureScroll", "noScrollX", "noScrollY", "noScroll", "permanentTrackX", "permanentTrackY", "permanentTracks", "removeTracksWhenNotUsed", "removeTrackYWhenNotUsed", "removeTrackXWhenNotUsed", "wrapperProps", "contentProps", "trackXProps", "trackYProps", "thumbXProps", "thumbYProps", "wrapperRenderer", "contentRenderer", "trackXRenderer", "trackYRenderer", "thumbXRenderer", "thumbYRenderer", "onScroll", "onScrollStart", "onScrollStop", "children"]);
 
       var _this$state = this.state,
           trackXVisible = _this$state.trackXVisible,
           trackYVisible = _this$state.trackYVisible;
-      var browserSBW = (0, _utilities.getScrollbarWidth)();
+      var browserSBW = (0, _getScrollbarWidth.default)();
       var scrollbarWidth = browserSBW || fallbackScrollbarWidth;
 
       var wrapperProps = _objectSpread({}, propsWrapperProps),
@@ -737,6 +743,7 @@ _defineProperty(Scrollbar, "propTypes", {
   momentum: _propTypes.default.bool,
   noDefaultStyles: _propTypes.default.bool,
   scrollDetectionThreshold: _propTypes.default.number,
+  //captureScroll: PropTypes.bool,
   noScrollX: _propTypes.default.bool,
   noScrollY: _propTypes.default.bool,
   noScroll: _propTypes.default.bool,
@@ -760,7 +767,7 @@ _defineProperty(Scrollbar, "propTypes", {
   thumbYRenderer: _propTypes.default.func,
   onScroll: _propTypes.default.func,
   onScrollStart: _propTypes.default.func,
-  onScrollEnd: _propTypes.default.func
+  onScrollStop: _propTypes.default.func
 });
 
 _defineProperty(Scrollbar, "defaultProps", {
@@ -771,6 +778,7 @@ _defineProperty(Scrollbar, "defaultProps", {
   momentum: false,
   noDefaultStyles: false,
   scrollDetectionThreshold: 100,
+  //captureScroll: false,
   noScrollX: false,
   noScrollY: false,
   noScroll: false,

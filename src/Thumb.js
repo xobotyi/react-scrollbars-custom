@@ -25,12 +25,12 @@ export default class Thumb extends React.Component {
     super(props);
   }
 
-  handleDragStart = e => {
-    if (e.nativeEvent.which !== 1) {
+  handleDragStart = ev => {
+    if (ev.nativeEvent.which !== 1) {
       return;
     }
-    e.nativeEvent.preventDefault();
-    e.nativeEvent.stopImmediatePropagation();
+    ev.nativeEvent.preventDefault();
+    ev.nativeEvent.stopImmediatePropagation();
 
     this.isDragging = true;
 
@@ -40,8 +40,8 @@ export default class Thumb extends React.Component {
       parentRect = this.elem.offsetParent.getBoundingClientRect();
 
     // drag start offset
-    this.dragStartOffsetX = e.clientX - rect.left - rect.width / 2;
-    this.dragStartOffsetY = e.clientY - rect.top - rect.height / 2;
+    this.dragStartOffsetX = ev.clientX - rect.left - rect.width / 2;
+    this.dragStartOffsetY = ev.clientY - rect.top - rect.height / 2;
 
     document.addEventListener("mousemove", this.handleDragEvent);
     document.addEventListener("mouseup", this.handleDragEnd);
@@ -55,16 +55,16 @@ export default class Thumb extends React.Component {
       (this.props.type === TYPE_X
         ? this.props.onDragStart({
             axis: this.props.type,
-            offset: e.clientX - parentRect.left - this.dragStartOffsetX
+            offset: ev.clientX - parentRect.left - this.dragStartOffsetX
           })
         : this.props.onDragStart({
             axis: this.props.type,
-            offset: e.clientY - parentRect.top - this.dragStartOffsetY
+            offset: ev.clientY - parentRect.top - this.dragStartOffsetY
           }));
   };
 
-  handleDragEvent = e => {
-    if (e.which !== 1 || !this.props.onDrag) {
+  handleDragEvent = ev => {
+    if (ev.which !== 1 || !this.props.onDrag) {
       return;
     } else if (!this.isDragging) {
       this.handleDragEnd();
@@ -75,11 +75,11 @@ export default class Thumb extends React.Component {
     this.props.type === TYPE_X
       ? this.props.onDrag({
           axis: this.props.type,
-          offset: e.clientX - parentRect.left - this.dragStartOffsetX
+          offset: ev.clientX - parentRect.left - this.dragStartOffsetX
         })
       : this.props.onDrag({
           axis: this.props.type,
-          offset: e.clientY - parentRect.top - this.dragStartOffsetY
+          offset: ev.clientY - parentRect.top - this.dragStartOffsetY
         });
   };
 

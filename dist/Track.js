@@ -54,19 +54,19 @@ function (_React$Component) {
 
     _this = _possibleConstructorReturn(this, _getPrototypeOf(Track).call(this, props));
 
-    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "onClickHandler", function (e) {
-      if (e.target !== _this.elem || !_this.props.onClick) {
+    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "onClickHandler", function (ev) {
+      if (ev.target !== _this.elem || !_this.props.onClick) {
         return true;
       }
 
       var rect = _this.elem.getBoundingClientRect();
 
-      _this.props.type === TYPE_X ? _this.props.onClick(e, {
+      _this.props.type === TYPE_X ? _this.props.onClick(ev, {
         axis: _this.props.type,
-        offset: e.clientX - rect.left
-      }) : _this.props.onClick(e, {
+        offset: ev.clientX - rect.left
+      }) : _this.props.onClick(ev, {
         axis: _this.props.type,
-        offset: e.clientY - rect.top
+        offset: ev.clientY - rect.top
       });
     });
 

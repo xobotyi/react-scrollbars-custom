@@ -21,21 +21,21 @@ export default class Track extends React.Component {
     super(props);
   }
 
-  onClickHandler = e => {
-    if (e.target !== this.elem || !this.props.onClick) {
+  onClickHandler = ev => {
+    if (ev.target !== this.elem || !this.props.onClick) {
       return true;
     }
 
     const rect = this.elem.getBoundingClientRect();
 
     this.props.type === TYPE_X
-      ? this.props.onClick(e, {
+      ? this.props.onClick(ev, {
           axis: this.props.type,
-          offset: e.clientX - rect.left
+          offset: ev.clientX - rect.left
         })
-      : this.props.onClick(e, {
+      : this.props.onClick(ev, {
           axis: this.props.type,
-          offset: e.clientY - rect.top
+          offset: ev.clientY - rect.top
         });
   };
 

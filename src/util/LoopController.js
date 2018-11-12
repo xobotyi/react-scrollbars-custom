@@ -14,6 +14,7 @@ function LoopControllerClass() {
    * @type {boolean}
    */
   let isActive = false;
+
   /**
    * ID of requested animation frame
    * @type {null|number}
@@ -40,14 +41,12 @@ function LoopControllerClass() {
    * @return {LoopControllerClass}
    */
   this.start = () => {
-    if (isActive) {
-      return this;
+    if (!isActive) {
+      isActive = true;
+
+      animationFrameId && cancelAnimationFrame(animationFrameId);
+      requestAnimationFrame(animationFrameCallback);
     }
-
-    isActive = true;
-
-    animationFrameId && cancelAnimationFrame(animationFrameId);
-    requestAnimationFrame(animationFrameCallback);
 
     return this;
   };
@@ -56,14 +55,12 @@ function LoopControllerClass() {
    * @return {LoopControllerClass}
    */
   this.stop = () => {
-    if (!isActive) {
-      return this;
+    if (isActive) {
+      isActive = false;
+
+      animationFrameId && cancelAnimationFrame(animationFrameId);
+      animationFrameId = null;
     }
-
-    isActive = false;
-
-    animationFrameId && cancelAnimationFrame(animationFrameId);
-    animationFrameId = null;
 
     return this;
   };

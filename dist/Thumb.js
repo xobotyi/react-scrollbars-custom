@@ -54,13 +54,13 @@ function (_React$Component) {
 
     _this = _possibleConstructorReturn(this, _getPrototypeOf(Thumb).call(this, props));
 
-    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "handleDragStart", function (e) {
-      if (e.nativeEvent.which !== 1) {
+    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "handleDragStart", function (ev) {
+      if (ev.nativeEvent.which !== 1) {
         return;
       }
 
-      e.nativeEvent.preventDefault();
-      e.nativeEvent.stopImmediatePropagation();
+      ev.nativeEvent.preventDefault();
+      ev.nativeEvent.stopImmediatePropagation();
       _this.isDragging = true;
 
       _this.elem.classList.add("dragging");
@@ -69,8 +69,8 @@ function (_React$Component) {
           parentRect = _this.elem.offsetParent.getBoundingClientRect(); // drag start offset
 
 
-      _this.dragStartOffsetX = e.clientX - rect.left - rect.width / 2;
-      _this.dragStartOffsetY = e.clientY - rect.top - rect.height / 2;
+      _this.dragStartOffsetX = ev.clientX - rect.left - rect.width / 2;
+      _this.dragStartOffsetY = ev.clientY - rect.top - rect.height / 2;
       document.addEventListener("mousemove", _this.handleDragEvent);
       document.addEventListener("mouseup", _this.handleDragEnd);
       _this.previoususerSelect = document.body.style.userSelect;
@@ -83,15 +83,15 @@ function (_React$Component) {
 
       _this.props.onDragStart && (_this.props.type === TYPE_X ? _this.props.onDragStart({
         axis: _this.props.type,
-        offset: e.clientX - parentRect.left - _this.dragStartOffsetX
+        offset: ev.clientX - parentRect.left - _this.dragStartOffsetX
       }) : _this.props.onDragStart({
         axis: _this.props.type,
-        offset: e.clientY - parentRect.top - _this.dragStartOffsetY
+        offset: ev.clientY - parentRect.top - _this.dragStartOffsetY
       }));
     });
 
-    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "handleDragEvent", function (e) {
-      if (e.which !== 1 || !_this.props.onDrag) {
+    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "handleDragEvent", function (ev) {
+      if (ev.which !== 1 || !_this.props.onDrag) {
         return;
       } else if (!_this.isDragging) {
         _this.handleDragEnd();
@@ -101,10 +101,10 @@ function (_React$Component) {
 
       _this.props.type === TYPE_X ? _this.props.onDrag({
         axis: _this.props.type,
-        offset: e.clientX - parentRect.left - _this.dragStartOffsetX
+        offset: ev.clientX - parentRect.left - _this.dragStartOffsetX
       }) : _this.props.onDrag({
         axis: _this.props.type,
-        offset: e.clientY - parentRect.top - _this.dragStartOffsetY
+        offset: ev.clientY - parentRect.top - _this.dragStartOffsetY
       });
     });
 

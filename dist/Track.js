@@ -55,11 +55,11 @@ function (_React$Component) {
     _this = _possibleConstructorReturn(this, _getPrototypeOf(Track).call(this, props));
 
     _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "onClickHandler", function (ev) {
-      if (ev.target !== _this.elem || !_this.props.onClick) {
+      if (ev.target !== _this.element || !_this.props.onClick) {
         return true;
       }
 
-      var rect = _this.elem.getBoundingClientRect();
+      var rect = _this.element.getBoundingClientRect();
 
       _this.props.type === TYPE_X ? _this.props.onClick(ev, {
         axis: _this.props.type,
@@ -91,7 +91,7 @@ function (_React$Component) {
       return renderer ? renderer(props) : _react.default.createElement("div", _extends({}, props, {
         ref: function ref(_ref) {
           typeof elementRef === "function" && elementRef(_ref);
-          _this2.elem = _ref;
+          _this2.element = _ref;
         }
       }));
     }

@@ -22,11 +22,11 @@ export default class Track extends React.Component {
   }
 
   onClickHandler = ev => {
-    if (ev.target !== this.elem || !this.props.onClick) {
+    if (ev.target !== this.element || !this.props.onClick) {
       return true;
     }
 
-    const rect = this.elem.getBoundingClientRect();
+    const rect = this.element.getBoundingClientRect();
 
     this.props.type === TYPE_X
       ? this.props.onClick(ev, {
@@ -62,7 +62,7 @@ export default class Track extends React.Component {
         {...props}
         ref={ref => {
           typeof elementRef === "function" && elementRef(ref);
-          this.elem = ref;
+          this.element = ref;
         }}
       />
     );

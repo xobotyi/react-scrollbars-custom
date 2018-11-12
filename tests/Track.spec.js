@@ -5,7 +5,7 @@ import simulant from "simulant";
 import sinon from "sinon";
 import Track, { TYPE_X, TYPE_Y } from "../src/Track";
 
-describe("Thumb", () => {
+describe("Track", () => {
   let node;
   beforeEach(() => {
     node = document.createElement("div");
@@ -44,7 +44,20 @@ describe("Thumb", () => {
     });
   });
 
-  it("should call onClick handler", done => {
+  it("`elementRef` property should receive DOMElement reference", done => {
+    let elem;
+    render(
+      <Track type={TYPE_X} elementRef={ref => (elem = ref)} />,
+      node,
+      function() {
+        expect(elem).toBeInstanceOf(HTMLElement);
+
+        done();
+      }
+    );
+  });
+
+  it("should call `onClick` handler", done => {
     let spy = sinon.spy();
 
     render(
@@ -74,6 +87,8 @@ describe("Thumb", () => {
         });
 
         expect(spy.callCount).toEqual(1);
+        expect(spy.args[0][0]).not.toBeUndefined();
+        expect(spy.args[0][1]).toBeInstanceOf(Object);
         expect(spy.args[0][1].axis).toEqual(TYPE_X);
         expect(spy.args[0][1].offset).toEqual(width / 2);
 
@@ -82,7 +97,7 @@ describe("Thumb", () => {
     );
   });
 
-  it("should not call onClick of track was not clicked directly", done => {
+  it("should not call `onClick` of track was not clicked directly", done => {
     let spy = sinon.spy();
     let div;
 

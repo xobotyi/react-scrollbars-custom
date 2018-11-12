@@ -63,10 +63,10 @@ function (_React$Component) {
       ev.nativeEvent.stopImmediatePropagation();
       _this.isDragging = true;
 
-      _this.elem.classList.add("dragging");
+      _this.element.classList.add("dragging");
 
-      var rect = _this.elem.getBoundingClientRect(),
-          parentRect = _this.elem.offsetParent.getBoundingClientRect(); // drag start offset
+      var rect = _this.element.getBoundingClientRect(),
+          parentRect = _this.element.offsetParent.getBoundingClientRect(); // drag start offset
 
 
       _this.dragStartOffsetX = ev.clientX - rect.left - rect.width / 2;
@@ -95,9 +95,11 @@ function (_React$Component) {
         return;
       } else if (!_this.isDragging) {
         _this.handleDragEnd();
+
+        return;
       }
 
-      var parentRect = _this.elem.offsetParent.getBoundingClientRect();
+      var parentRect = _this.element.offsetParent.getBoundingClientRect();
 
       _this.props.type === TYPE_X ? _this.props.onDrag({
         axis: _this.props.type,
@@ -113,7 +115,7 @@ function (_React$Component) {
       _this.dragStartOffsetX = false;
       _this.dragStartOffsetY = false;
 
-      _this.elem.classList.remove("dragging");
+      _this.element.classList.remove("dragging");
 
       document.removeEventListener("mousemove", _this.handleDragEvent);
       document.removeEventListener("mouseup", _this.handleDragEnd);
@@ -130,6 +132,11 @@ function (_React$Component) {
   }
 
   _createClass(Thumb, [{
+    key: "componentWillUnmount",
+    value: function componentWillUnmount() {
+      this.handleDragEnd();
+    }
+  }, {
     key: "render",
     value: function render() {
       var _this2 = this;
@@ -144,12 +151,12 @@ function (_React$Component) {
           onDragEnd = _this$props.onDragEnd,
           props = _objectWithoutProperties(_this$props, ["className", "renderer", "type", "elementRef", "onDrag", "onDragStart", "onDragEnd"]);
 
-      props.className = "thumb " + (type === "x" ? "thumbX" : "thumbY") + (className ? " " + className : "");
+      props.className = "thumb " + (type === TYPE_X ? "thumbX" : "thumbY") + (className ? " " + className : "");
       return renderer ? renderer(props) : _react.default.createElement("div", _extends({}, props, {
         onMouseDown: this.handleDragStart,
         ref: function ref(_ref) {
           typeof elementRef === "function" && elementRef(_ref);
-          _this2.elem = _ref;
+          _this2.element = _ref;
         }
       }));
     }
@@ -160,7 +167,7 @@ function (_React$Component) {
 
 exports.default = Thumb;
 
-_defineProperty(Thumb, "displayName", "Scrollbar Track");
+_defineProperty(Thumb, "displayName", "Scrollbar Thumb");
 
 _defineProperty(Thumb, "propTypes", {
   className: _propTypes.default.string,

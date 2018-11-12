@@ -5,7 +5,7 @@ export const TYPE_X = 1;
 export const TYPE_Y = 2;
 
 export default class Thumb extends React.Component {
-  static displayName = "Scrollbar Track";
+  static displayName = "Scrollbar Thumb";
 
   static propTypes = {
     className: PropTypes.string,
@@ -25,6 +25,10 @@ export default class Thumb extends React.Component {
     super(props);
   }
 
+  componentWillUnmount() {
+    this.handleDragEnd();
+  }
+
   handleDragStart = ev => {
     if (ev.nativeEvent.which !== 1) {
       return;
@@ -34,10 +38,10 @@ export default class Thumb extends React.Component {
 
     this.isDragging = true;
 
-    this.elem.classList.add("dragging");
+    this.element.classList.add("dragging");
 
-    const rect = this.elem.getBoundingClientRect(),
-      parentRect = this.elem.offsetParent.getBoundingClientRect();
+    const rect = this.element.getBoundingClientRect(),
+      parentRect = this.element.offsetParent.getBoundingClientRect();
 
     // drag start offset
     this.dragStartOffsetX = ev.clientX - rect.left - rect.width / 2;
@@ -68,9 +72,10 @@ export default class Thumb extends React.Component {
       return;
     } else if (!this.isDragging) {
       this.handleDragEnd();
+      return;
     }
 
-    const parentRect = this.elem.offsetParent.getBoundingClientRect();
+    const parentRect = this.element.offsetParent.getBoundingClientRect();
 
     this.props.type === TYPE_X
       ? this.props.onDrag({
@@ -87,7 +92,7 @@ export default class Thumb extends React.Component {
     this.isDragging = false;
     this.dragStartOffsetX = false;
     this.dragStartOffsetY = false;
-    this.elem.classList.remove("dragging");
+    this.element.classList.remove("dragging");
 
     document.removeEventListener("mousemove", this.handleDragEvent);
     document.removeEventListener("mouseup", this.handleDragEnd);
@@ -114,7 +119,7 @@ export default class Thumb extends React.Component {
 
     props.className =
       "thumb " +
-      (type === "x" ? "thumbX" : "thumbY") +
+      (type === TYPE_X ? "thumbX" : "thumbY") +
       (className ? " " + className : "");
 
     return renderer ? (
@@ -125,7 +130,7 @@ export default class Thumb extends React.Component {
         onMouseDown={this.handleDragStart}
         ref={ref => {
           typeof elementRef === "function" && elementRef(ref);
-          this.elem = ref;
+          this.element = ref;
         }}
       />
     );

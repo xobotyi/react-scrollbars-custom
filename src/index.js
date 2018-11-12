@@ -38,7 +38,6 @@ const defaultStyles = {
         y:      {
             width:  8,
             height: "calc(100% - 16px)",
-            right:  0,
             top:    8,
         },
     },
@@ -66,6 +65,8 @@ export default class Scrollbar extends React.Component
         tagName:   PropTypes.string,
         className: PropTypes.string,
         style:     PropTypes.object,
+
+        rtl: PropTypes.bool,
 
         momentum: PropTypes.bool,
 
@@ -152,7 +153,18 @@ export default class Scrollbar extends React.Component
         this.state = {
             trackYVisible: true,
             trackXVisible: true,
+            isRtl:         this.props.rtl,
         };
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        if (this.props.rtl !== prevProps.rtl && this.props.rtl !== this.state.isRtl) {
+            this.setState({isRtl: this.props.rtl});
+        }
+
+        if (this.state.isRtl !== prevState.isRtl) {
+            this.update();
+        }
     }
 
     componentDidMount() {
@@ -171,6 +183,12 @@ export default class Scrollbar extends React.Component
     }
 
     update = (forced = false) => {
+        if (typeof this.state.isRtl !== 'boolean') {
+            this.setState({isRtl: getComputedStyle(this.contentEl).direction === 'rtl'});
+
+            return;
+        }
+
         const currentScrollValues = {
             clientHeight: this.contentEl.clientHeight * 1,
             scrollHeight: this.contentEl.scrollHeight * 1,
@@ -254,11 +272,15 @@ export default class Scrollbar extends React.Component
                     const thumbSize = this.computeThumbSize(trackSize,
                                                             currentScrollValues.scrollWidth,
                                                             currentScrollValues.clientWidth);
-                    const thumbOffset = this.computeThumbOffset(trackSize,
-                                                                thumbSize,
-                                                                currentScrollValues.scrollWidth,
-                                                                currentScrollValues.clientWidth,
-                                                                currentScrollValues.scrollLeft);
+                    let thumbOffset = this.computeThumbOffset(trackSize,
+                                                              thumbSize,
+                                                              currentScrollValues.scrollWidth,
+                                                              currentScrollValues.clientWidth,
+                                                              currentScrollValues.scrollLeft);
+
+                    if (this.state.isRtl) {
+                        thumbOffset = thumbSize + thumbOffset - trackSize;
+                    }
 
                     this.thumbXEl.style.transform = `translateX(${thumbOffset}px)`;
                     this.thumbXEl.style.width = thumbSize + 'px';
@@ -361,6 +383,8 @@ export default class Scrollbar extends React.Component
 
                   trackClickBehavior,
 
+                  rtl,
+
                   momentum,
 
                   noDefaultStyles,
@@ -411,8 +435,8 @@ export default class Scrollbar extends React.Component
             };
             wrapperProps.style = {
                 ...defaultStyles.wrapper,
-                marginRight:  trackYVisible ? 8 : null,
-                marginBottom: trackXVisible ? 8 : null,
+                [this.state.isRtl ? "marginLeft" : "marginRight"]: trackYVisible ? 8 : null,
+                marginBottom:                                      trackXVisible ? 8 : null,
             };
             trackXProps.style = {
                 ...defaultStyles.track.common,
@@ -421,6 +445,7 @@ export default class Scrollbar extends React.Component
             trackYProps.style = {
                 ...defaultStyles.track.common,
                 ...defaultStyles.track.y,
+                [this.state.isRtl ? "left" : "right"]: 0,
             };
             thumbXProps.style = {
                 ...defaultStyles.thumb.common,
@@ -435,6 +460,7 @@ export default class Scrollbar extends React.Component
         props.style = {
             ...props.style,
             ...style,
+            ...(typeof rtl !== 'undefined' && {direction: rtl ? "rtl" : "ltr"}),
         };
         wrapperProps.style = {
             ...wrapperProps.style,
@@ -447,9 +473,19 @@ export default class Scrollbar extends React.Component
             ...propsContentProps.style,
             ...(momentum && {WebkitOverflowScrolling: "touch"}),
 
-            overflowY:    this.scrollValues.scrollYPossible ? "scroll" : "hidden",
-            paddingRight: this.scrollValues.scrollYPossible ? scrollbarWidth : null,
-            marginRight:  this.scrollValues.scrollYPossible ? -scrollbarWidth : null,
+            overflowY: this.scrollValues.scrollYPossible ? "scroll" : "hidden",
+            ...(
+                    this.state.isRtl
+                    ? {
+                                paddingLeft: this.scrollValues.scrollYPossible ? scrollbarWidth : null,
+                                marginLeft:  this.scrollValues.scrollYPossible ? -scrollbarWidth : null,
+                            }
+                    : {
+                                paddingRight: this.scrollValues.scrollYPossible ? scrollbarWidth : null,
+                                marginRight:  this.scrollValues.scrollYPossible ? -scrollbarWidth : null,
+                            }
+
+            ),
 
             overflowX:     this.scrollValues.scrollXPossible ? "scroll" : "hidden",
             paddingBottom: this.scrollValues.scrollXPossible ? scrollbarWidth : null,
@@ -472,7 +508,11 @@ export default class Scrollbar extends React.Component
             ...propsThumbYProps.style,
         };
 
-        props.className = "ScrollbarsCustom" + (trackYVisible ? " trackYVisible" : "") + (trackYVisible ? " trackXVisible" : "") + (className ? " " + className : "");
+        props.className = "ScrollbarsCustom"
+                          + (trackYVisible ? " trackYVisible" : "")
+                          + (trackYVisible ? " trackXVisible" : "")
+                          + (this.state.isRtl ? " rtl" : "")
+                          + (className ? " " + className : "");
         contentProps.className = "content" + (contentProps.className ? " " + contentProps.className : "");
         wrapperProps.className = "wrapper" + (wrapperProps.className ? " " + wrapperProps.className : "");
 

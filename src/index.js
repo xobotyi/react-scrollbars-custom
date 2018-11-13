@@ -163,12 +163,13 @@ export default class Scrollbar extends React.Component {
      * @param {number} trackSize
      * @param {number} scrollableSize
      * @param {number} viewportSize
+     * @param {number} minimalSize
      * @return {number}
      */
-    computeThumbSize(trackSize, scrollableSize, viewportSize) {
-        const size = Math.ceil((viewportSize / scrollableSize) * trackSize);
+    static computeThumbSize(trackSize, scrollableSize, viewportSize, minimalSize) {
+        const size = Math.ceil((viewportSize / scrollableSize) * trackSize) || 0;
 
-        return trackSize === size ? 0 : Math.max(size, this.props.minimalThumbsSize);
+        return trackSize === size ? 0 : Math.max(size, minimalSize);
     }
 
     /**
@@ -182,7 +183,7 @@ export default class Scrollbar extends React.Component {
      * @return {number}
      */
     static computeThumbOffset(trackSize, thumbSize, scrollableSize, viewportSize, scrollValue) {
-        return thumbSize ? (scrollValue / (scrollableSize - viewportSize)) * (trackSize - thumbSize) : 0;
+        return (thumbSize && (scrollValue / (scrollableSize - viewportSize)) * (trackSize - thumbSize)) || 0;
     }
 
     /**
@@ -196,7 +197,7 @@ export default class Scrollbar extends React.Component {
      * @return {number}
      */
     static computeScrollForOffset(trackSize, thumbSize, offset, scrollableSize, viewportSize) {
-        return ((offset - thumbSize / 2) / (trackSize - thumbSize)) * (scrollableSize - viewportSize);
+        return ((offset - thumbSize / 2) / (trackSize - thumbSize)) * (scrollableSize - viewportSize) || 0;
     }
 
     constructor(props) {
@@ -511,10 +512,11 @@ export default class Scrollbar extends React.Component {
             if (mask & (1 << 0) || mask & (1 << 2) || mask & (1 << 4) || mask & (1 << 6) || mask & (1 << 8)) {
                 if (currentScrollValues.scrollYPossible) {
                     const trackSize = getInnerHeight(this.trackYEl);
-                    const thumbSize = this.computeThumbSize(
+                    const thumbSize = Scrollbar.computeThumbSize(
                         trackSize,
                         currentScrollValues.scrollHeight,
-                        currentScrollValues.clientHeight
+                        currentScrollValues.clientHeight,
+                        this.props.minimalThumbsSize
                     );
                     const thumbOffset = Scrollbar.computeThumbOffset(
                         trackSize,
@@ -542,10 +544,11 @@ export default class Scrollbar extends React.Component {
             if (mask & (1 << 1) || mask & (1 << 3) || mask & (1 << 5) || mask & (1 << 7) || mask & (1 << 9)) {
                 if (currentScrollValues.scrollXPossible) {
                     const trackSize = getInnerWidth(this.trackXEl);
-                    const thumbSize = this.computeThumbSize(
+                    const thumbSize = Scrollbar.computeThumbSize(
                         trackSize,
                         currentScrollValues.scrollWidth,
-                        currentScrollValues.clientWidth
+                        currentScrollValues.clientWidth,
+                        this.props.minimalThumbsSize
                     );
                     let thumbOffset = Scrollbar.computeThumbOffset(
                         trackSize,

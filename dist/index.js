@@ -123,7 +123,7 @@ var Scrollbar =
 function (_React$Component) {
   _inherits(Scrollbar, _React$Component);
 
-  _createClass(Scrollbar, [{
+  _createClass(Scrollbar, null, [{
     key: "computeThumbSize",
 
     /**
@@ -132,11 +132,12 @@ function (_React$Component) {
      * @param {number} trackSize
      * @param {number} scrollableSize
      * @param {number} viewportSize
+     * @param {number} minimalSize
      * @return {number}
      */
-    value: function computeThumbSize(trackSize, scrollableSize, viewportSize) {
-      var size = Math.ceil(viewportSize / scrollableSize * trackSize);
-      return trackSize === size ? 0 : Math.max(size, this.props.minimalThumbsSize);
+    value: function computeThumbSize(trackSize, scrollableSize, viewportSize, minimalSize) {
+      var size = Math.ceil(viewportSize / scrollableSize * trackSize) || 0;
+      return trackSize === size ? 0 : Math.max(size, minimalSize);
     }
     /**
      * Compute the thumb offset from scroll value
@@ -149,10 +150,10 @@ function (_React$Component) {
      * @return {number}
      */
 
-  }], [{
+  }, {
     key: "computeThumbOffset",
     value: function computeThumbOffset(trackSize, thumbSize, scrollableSize, viewportSize, scrollValue) {
-      return thumbSize ? scrollValue / (scrollableSize - viewportSize) * (trackSize - thumbSize) : 0;
+      return thumbSize && scrollValue / (scrollableSize - viewportSize) * (trackSize - thumbSize) || 0;
     }
     /**
      * Compute the scroll value depending on thumb offset
@@ -168,7 +169,7 @@ function (_React$Component) {
   }, {
     key: "computeScrollForOffset",
     value: function computeScrollForOffset(trackSize, thumbSize, offset, scrollableSize, viewportSize) {
-      return (offset - thumbSize / 2) / (trackSize - thumbSize) * (scrollableSize - viewportSize);
+      return (offset - thumbSize / 2) / (trackSize - thumbSize) * (scrollableSize - viewportSize) || 0;
     }
   }]);
 
@@ -277,9 +278,7 @@ function (_React$Component) {
         if (mask & 1 << 0 || mask & 1 << 2 || mask & 1 << 4 || mask & 1 << 6 || mask & 1 << 8) {
           if (currentScrollValues.scrollYPossible) {
             var trackSize = (0, _getInnerSizes.getInnerHeight)(_this.trackYEl);
-
-            var thumbSize = _this.computeThumbSize(trackSize, currentScrollValues.scrollHeight, currentScrollValues.clientHeight);
-
+            var thumbSize = Scrollbar.computeThumbSize(trackSize, currentScrollValues.scrollHeight, currentScrollValues.clientHeight, _this.props.minimalThumbsSize);
             var thumbOffset = Scrollbar.computeThumbOffset(trackSize, thumbSize, currentScrollValues.scrollHeight, currentScrollValues.clientHeight, currentScrollValues.scrollTop);
             _this.thumbYEl.style.transform = "translateY(".concat(thumbOffset, "px)");
             _this.thumbYEl.style.height = thumbSize + "px";
@@ -300,7 +299,7 @@ function (_React$Component) {
           if (currentScrollValues.scrollXPossible) {
             var _trackSize = (0, _getInnerSizes.getInnerWidth)(_this.trackXEl);
 
-            var _thumbSize = _this.computeThumbSize(_trackSize, currentScrollValues.scrollWidth, currentScrollValues.clientWidth);
+            var _thumbSize = Scrollbar.computeThumbSize(_trackSize, currentScrollValues.scrollWidth, currentScrollValues.clientWidth, _this.props.minimalThumbsSize);
 
             var _thumbOffset = Scrollbar.computeThumbOffset(_trackSize, _thumbSize, currentScrollValues.scrollWidth, currentScrollValues.clientWidth, currentScrollValues.scrollLeft);
 

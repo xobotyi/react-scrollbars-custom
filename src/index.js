@@ -71,6 +71,7 @@ const defaultStyles = {
  * @property {boolean|null} scrollXPossible - Indicates whether the content overflows horizontally and scrolling not blocked
  * @property {boolean|null} trackYVisible - Indicates whether vertical track is visible
  * @property {boolean|null} trackXVisible - Indicates whether horizontal track is visible
+ * @property {boolean|null} isRtl - Indicates whether display direction is right-to-left
  */
 
 export default class Scrollbar extends React.Component {
@@ -217,6 +218,7 @@ export default class Scrollbar extends React.Component {
             scrollXPossible: null,
             trackYVisible: null,
             trackXVisible: null,
+            isRtl: null,
         };
 
         this.state = {
@@ -452,6 +454,7 @@ export default class Scrollbar extends React.Component {
             scrollYPossible: null,
             trackXVisible: null,
             trackYVisible: null,
+            isRtl: this.state.isRtl,
         };
         currentScrollValues.scrollXBlocked = this.props.noScroll || this.props.noScrollX;
         currentScrollValues.scrollYBlocked = this.props.noScroll || this.props.noScrollY;
@@ -478,6 +481,7 @@ export default class Scrollbar extends React.Component {
         this.scrollValues.scrollXPossible !== currentScrollValues.scrollXPossible && (mask |= 1 << 9);
         this.scrollValues.trackYVisible !== currentScrollValues.trackYVisible && (mask |= 1 << 10);
         this.scrollValues.trackXVisible !== currentScrollValues.trackXVisible && (mask |= 1 << 11);
+        this.scrollValues.isRtl !== currentScrollValues.isRtl && (mask |= 1 << 12);
 
         // if not forced and nothing has changed - do not update
         if (mask === 0 && !forced) {

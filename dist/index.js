@@ -115,6 +115,7 @@ var defaultStyles = {
  * @property {boolean|null} scrollXPossible - Indicates whether the content overflows horizontally and scrolling not blocked
  * @property {boolean|null} trackYVisible - Indicates whether vertical track is visible
  * @property {boolean|null} trackXVisible - Indicates whether horizontal track is visible
+ * @property {boolean|null} isRtl - Indicates whether display direction is right-to-left
  */
 
 var Scrollbar =
@@ -226,7 +227,8 @@ function (_React$Component) {
         scrollXPossible: null,
         scrollYPossible: null,
         trackXVisible: null,
-        trackYVisible: null
+        trackYVisible: null,
+        isRtl: _this.state.isRtl
       };
       currentScrollValues.scrollXBlocked = _this.props.noScroll || _this.props.noScrollX;
       currentScrollValues.scrollYBlocked = _this.props.noScroll || _this.props.noScrollY;
@@ -246,7 +248,8 @@ function (_React$Component) {
       _this.scrollValues.scrollYPossible !== currentScrollValues.scrollYPossible && (mask |= 1 << 8);
       _this.scrollValues.scrollXPossible !== currentScrollValues.scrollXPossible && (mask |= 1 << 9);
       _this.scrollValues.trackYVisible !== currentScrollValues.trackYVisible && (mask |= 1 << 10);
-      _this.scrollValues.trackXVisible !== currentScrollValues.trackXVisible && (mask |= 1 << 11); // if not forced and nothing has changed - do not update
+      _this.scrollValues.trackXVisible !== currentScrollValues.trackXVisible && (mask |= 1 << 11);
+      _this.scrollValues.isRtl !== currentScrollValues.isRtl && (mask |= 1 << 12); // if not forced and nothing has changed - do not update
 
       if (mask === 0 && !forced) {
         return _this.scrollValues;
@@ -373,7 +376,8 @@ function (_React$Component) {
       scrollYPossible: null,
       scrollXPossible: null,
       trackYVisible: null,
-      trackXVisible: null
+      trackXVisible: null,
+      isRtl: null
     };
     _this.state = {
       trackYVisible: true,

@@ -77,9 +77,9 @@ function (_React$Component) {
       _this.dragStartOffsetY = ev.clientY - rect.top - rect.height / 2;
       document.addEventListener("mousemove", _this.handleDragEvent);
       document.addEventListener("mouseup", _this.handleDragEnd);
-      _this.previoususerSelect = document.body.style.userSelect;
+      _this.prevUserSelect = document.body.style.userSelect;
       document.body.style.userSelect = "none";
-      _this.previousOnSelectStart = document.onselectstart;
+      _this.prevOnSelectStart = document.onselectstart;
 
       document.onselectstart = function () {
         return false;
@@ -117,10 +117,10 @@ function (_React$Component) {
 
       document.removeEventListener("mousemove", _this.handleDragEvent);
       document.removeEventListener("mouseup", _this.handleDragEnd);
-      document.body.style.userSelect = _this.previoususerSelect;
-      _this.previoususerSelect = null;
-      document.onselectstart = _this.previousOnSelectStart;
-      _this.previousOnSelectStart = null;
+      document.body.style.userSelect = _this.prevUserSelect;
+      _this.prevUserSelect = null;
+      document.onselectstart = _this.prevOnSelectStart;
+      _this.prevOnSelectStart = null;
       _this.props.onDragEnd && _this.props.onDragEnd({
         axis: _this.props.type
       });

@@ -8,22 +8,6 @@ export default class SandboxBlock extends React.Component {
     constructor(props) {
         super(props);
 
-        this.toggleNoScroll = this.toggleNoScroll.bind(this);
-        this.toggleNoScrollY = this.toggleNoScrollY.bind(this);
-        this.toggleNoScrollX = this.toggleNoScrollX.bind(this);
-        this.togglePermanentTracks = this.togglePermanentTracks.bind(this);
-        this.togglePermanentTrackY = this.togglePermanentTrackY.bind(this);
-        this.togglePermanentTrackX = this.togglePermanentTrackX.bind(this);
-        this.handleAddParagraphClick = this.handleAddParagraphClick.bind(this);
-        this.handleRemoveParagraphClick = this.handleRemoveParagraphClick.bind(this);
-        this.handleRandomPositionClick = this.handleRandomPositionClick.bind(this);
-        this.handleScrollTopClick = this.handleScrollTopClick.bind(this);
-        this.handleScrollBottomClick = this.handleScrollBottomClick.bind(this);
-        this.handleScrollLeftClick = this.handleScrollLeftClick.bind(this);
-        this.handleScrollRightClick = this.handleScrollRightClick.bind(this);
-        this.toggleRtl = this.toggleRtl.bind(this);
-        this.toggleNativeScrollbarClick = this.toggleNativeScrollbarClick.bind(this);
-
         this.state = {
             noScroll: false,
             noScrollY: false,
@@ -44,100 +28,100 @@ export default class SandboxBlock extends React.Component {
         return [...Array(count)].map((v, i) => <p key={i}>{paragraphText}</p>);
     }
 
-    toggleNoScroll() {
+    toggleNoScroll = () => {
         this.setState({
             noScroll: !this.state.noScroll,
             noScrollY: !this.state.noScroll,
             noScrollX: !this.state.noScroll,
         });
-    }
+    };
 
-    toggleNoScrollY() {
+    toggleNoScrollY = () => {
         this.setState({
             noScroll: (this.state.noScroll ? true : this.state.noScrollX) && !this.state.noScrollY,
             noScrollY: !this.state.noScrollY,
             noScrollX: this.state.noScroll ? true : this.state.noScrollX,
         });
-    }
+    };
 
-    toggleNoScrollX() {
+    toggleNoScrollX = () => {
         this.setState({
             noScroll: !this.state.noScrollX && (this.state.noScroll ? true : this.state.noScrollY),
             noScrollX: !this.state.noScrollX,
             noScrollY: this.state.noScroll ? true : this.state.noScrollY,
         });
-    }
+    };
 
-    togglePermanentTracks() {
+    togglePermanentTracks = () => {
         this.setState({
             permanentTracks: !this.state.permanentTracks,
             permanentTrackY: !this.state.permanentTracks,
             permanentTrackX: !this.state.permanentTracks,
         });
-    }
+    };
 
-    togglePermanentTrackY() {
+    togglePermanentTrackY = () => {
         this.setState({
             permanentTracks:
                 (this.state.permanentTracks ? true : this.state.permanentTrackX) && !this.state.permanentTrackY,
             permanentTrackY: !this.state.permanentTrackY,
             permanentTrackX: this.state.permanentTracks ? true : this.state.permanentTrackX,
         });
-    }
+    };
 
-    togglePermanentTrackX() {
+    togglePermanentTrackX = () => {
         this.setState({
             permanentTracks:
                 !this.state.permanentTrackX && (this.state.permanentTracks ? true : this.state.permanentTrackY),
             permanentTrackX: !this.state.permanentTrackX,
             permanentTrackY: this.state.permanentTracks ? true : this.state.permanentTrackY,
         });
-    }
+    };
 
-    toggleRtl() {
+    toggleRtl = () => {
         this.setState({
             rtl: !this.state.rtl,
         });
-    }
+    };
 
-    toggleNativeScrollbarClick() {
+    toggleNativeScrollbarClick = () => {
         this.setState({
             nativeScrollbar: !this.state.nativeScrollbar,
         });
-    }
+    };
 
-    handleAddParagraphClick() {
+    handleAddParagraphClick = () => {
         this.setState({
             paragraphsCount: this.state.paragraphsCount + 1,
         });
-    }
+    };
 
-    handleRemoveParagraphClick() {
+    handleRemoveParagraphClick = () => {
         this.setState({
             paragraphsCount: Math.max(0, this.state.paragraphsCount - 1),
         });
-    }
+    };
 
-    handleRandomPositionClick() {
+    handleRandomPositionClick = () => {
         this.scrollbar.scrollTop = Math.floor(Math.random() * (this.scrollbar.scrollHeight + 1));
         this.scrollbar.scrollLeft = Math.floor(Math.random() * (this.scrollbar.scrollWidth + 1));
-    }
+    };
 
-    handleScrollTopClick() {
+    handleScrollTopClick = () => {
         this.scrollbar.scrollToTop();
-    }
+    };
 
-    handleScrollBottomClick() {
+    handleScrollBottomClick = () => {
         this.scrollbar.scrollToBottom();
-    }
+    };
 
-    handleScrollLeftClick() {
+    handleScrollLeftClick = () => {
         this.scrollbar.scrollToLeft();
-    }
+    };
 
-    handleScrollRightClick() {
+    handleScrollRightClick = () => {
         this.scrollbar.scrollToRight();
-    }
+    };
 
     render() {
         const {
@@ -209,8 +193,8 @@ export default class SandboxBlock extends React.Component {
                 </div>
                 <div className="content" style={{height: 280}}>
                     <Scrollbar
-                        nativeScrollbars={nativeScrollbar}
-                        defaultStyles={false}
+                        //nativeScrollbars={ nativeScrollbar }
+                        noDefaultStyles
                         ref={ref => {
                             this.scrollbar = ref;
                         }}
@@ -218,9 +202,9 @@ export default class SandboxBlock extends React.Component {
                         noScrollY={noScrollY}
                         noScrollX={noScrollX}
                         rtl={rtl}
-                        permanentScrollbars={permanentTracks}
-                        permanentScrollbarY={permanentTrackY}
-                        permanentScrollbarX={permanentTrackX}>
+                        permanentTracks={permanentTracks}
+                        permanentTrackY={permanentTrackY}
+                        permanentTrackX={permanentTrackX}>
                         {this.getParagraphs(this.state.paragraphsCount)}
                     </Scrollbar>
                 </div>

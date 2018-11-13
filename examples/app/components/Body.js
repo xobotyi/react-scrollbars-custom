@@ -43,7 +43,7 @@ export default class Head extends React.Component {
                 <DefaultBlock />
                 <CustomStyleBlock />
                 <AutohideTracksBlock />
-                {/*<SandboxBlock />*/}
+                <SandboxBlock />
             </div>
         );
     }

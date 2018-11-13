@@ -45,9 +45,9 @@ export default class Thumb extends React.Component {
         document.addEventListener("mousemove", this.handleDragEvent);
         document.addEventListener("mouseup", this.handleDragEnd);
 
-        this.previoususerSelect = document.body.style.userSelect;
+        this.prevUserSelect = document.body.style.userSelect;
         document.body.style.userSelect = "none";
-        this.previousOnSelectStart = document.onselectstart;
+        this.prevOnSelectStart = document.onselectstart;
         document.onselectstart = () => false;
 
         this.props.onDragStart &&
@@ -88,10 +88,10 @@ export default class Thumb extends React.Component {
         document.removeEventListener("mousemove", this.handleDragEvent);
         document.removeEventListener("mouseup", this.handleDragEnd);
 
-        document.body.style.userSelect = this.previoususerSelect;
-        this.previoususerSelect = null;
-        document.onselectstart = this.previousOnSelectStart;
-        this.previousOnSelectStart = null;
+        document.body.style.userSelect = this.prevUserSelect;
+        this.prevUserSelect = null;
+        document.onselectstart = this.prevOnSelectStart;
+        this.prevOnSelectStart = null;
 
         this.props.onDragEnd && this.props.onDragEnd({axis: this.props.type});
     };

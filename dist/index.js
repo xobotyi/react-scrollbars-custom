@@ -206,7 +206,7 @@ function (_React$Component) {
           isRtl: getComputedStyle(_this.contentEl).direction === "rtl"
         });
 
-        return;
+        return _this.scrollValues;
       }
       /**
        *
@@ -249,7 +249,7 @@ function (_React$Component) {
       _this.scrollValues.trackXVisible !== currentScrollValues.trackXVisible && (mask |= 1 << 11); // if not forced and nothing has changed - do not update
 
       if (mask === 0 && !forced) {
-        return;
+        return _this.scrollValues;
       } // if scrollbars visibility has changed
 
 
@@ -265,6 +265,7 @@ function (_React$Component) {
         return _this.update(true);
       }
 
+      var prevScrollValues = _this.scrollValues;
       _this.scrollValues = currentScrollValues; // if Y track rendered and changed anything related to scrollY
 
       if (_this.trackYEl) {
@@ -315,7 +316,10 @@ function (_React$Component) {
         }
       }
 
-      _this.props.onScroll && _this.props.onScroll(_this.scrollValues);
+      if (prevScrollValues.scrollTop !== null) {
+        _this.props.onScroll && _this.props.onScroll(_this.scrollValues, prevScrollValues);
+      }
+
       return _this.scrollValues;
     });
 
@@ -346,9 +350,15 @@ function (_React$Component) {
     _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "handleThumbDrag", function (params) {
       _this.scrollDetect();
 
-      params.axis === _Track.TYPE_X && _this.props.thumbXProps.onDrag && _this.props.thumbXProps.onDrag(params);
-      params.axis === _Track.TYPE_Y && _this.props.thumbYProps.onDrag && _this.props.thumbYProps.onDrag(params);
-      params.axis === _Track.TYPE_X ? _this.contentEl.scrollLeft = Scrollbar.computeScrollForOffset((0, _getInnerSizes.getInnerWidth)(_this.trackXEl), _this.thumbXEl.clientWidth, params.offset, _this.contentEl.scrollWidth, _this.contentEl.clientWidth) : _this.contentEl.scrollTop = Scrollbar.computeScrollForOffset((0, _getInnerSizes.getInnerHeight)(_this.trackYEl), _this.thumbYEl.clientHeight, params.offset, _this.contentEl.scrollHeight, _this.contentEl.clientHeight);
+      if (params.axis === _Track.TYPE_X) {
+        _this.props.thumbXProps.onDrag && _this.props.thumbXProps.onDrag(params);
+        _this.contentEl.scrollLeft = Scrollbar.computeScrollForOffset((0, _getInnerSizes.getInnerWidth)(_this.trackXEl), _this.thumbXEl.clientWidth, params.offset, _this.contentEl.scrollWidth, _this.contentEl.clientWidth);
+      }
+
+      if (params.axis === _Track.TYPE_Y) {
+        _this.props.thumbYProps.onDrag && _this.props.thumbYProps.onDrag(params);
+        _this.contentEl.scrollTop = Scrollbar.computeScrollForOffset((0, _getInnerSizes.getInnerHeight)(_this.trackYEl), _this.thumbYEl.clientHeight, params.offset, _this.contentEl.scrollHeight, _this.contentEl.clientHeight);
+      }
     });
 
     _this.scrollValues = {
@@ -468,7 +478,7 @@ function (_React$Component) {
     /**
      *
      * @param forced
-     * @return {ScrollValues|null}
+     * @return {ScrollValues}
      */
 
   }, {

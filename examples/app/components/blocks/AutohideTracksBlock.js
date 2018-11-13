@@ -9,29 +9,55 @@ export default class AutohideTracksBlock extends React.Component {
         return [...Array(count)].map((v, i) => <p key={i}>{paragraphText}</p>);
     }
 
-    handleScrollStart = () => {};
+    showTracks = () => {
+        this.scrollbar.trackXEl.style.opacity = 1;
+        this.scrollbar.trackYEl.style.opacity = 1;
 
-    handleScrollStop = () => {};
+        this.dragEndTO && clearTimeout(this.dragEndTO);
+        this.dragEndTO = null;
+    };
+
+    hideTracks = () => {
+        if (
+            this.scrollbar.thumbXEl.classList.contains("dragging") ||
+            this.scrollbar.thumbYEl.classList.contains("dragging")
+        ) {
+            return;
+        }
+
+        this.scrollbar.trackXEl.style.opacity = 0;
+        this.scrollbar.trackYEl.style.opacity = 0;
+
+        this.dragEndTO && clearTimeout(this.dragEndTO);
+        this.dragEndTO = null;
+    };
+
+    handleDragEnd = () => {
+        this.dragEndTO = setTimeout(this.hideTracks, 500);
+    };
 
     render() {
         return (
             <div className="block" id="AutohideTracksBlock">
                 <div className="title">Tracks autohide</div>
                 <div className="description">
-                    Here we can see mobile-like behaviour, when scrollbars are hidden when scroll is not performed.
+                    Here we can see mobile-like behaviour, scrollbars are hidden when scroll is not performed.
                     <br />
-                    It is implemented with help of <code>onScrollStart</code> and <code>onScrollStop</code> callbacks.
+                    It is implemented with help of <code>onScrollStart</code>, <code>onScrollStop</code> and{" "}
+                    <code>onDragEnd</code> callbacks.
                 </div>
                 <div className="content" style={{height: 280}}>
                     <Scrollbar
                         removeTracksWhenNotUsed={false}
-                        trackYProps={{style: {opacity: 0}}}
-                        trackXProps={{style: {opacity: 0}}}
+                        trackYProps={{style: {opacity: 0}, onMouseOver: this.showTracks, onMouseOut: this.hideTracks}}
+                        trackXProps={{style: {opacity: 0}, onMouseOver: this.showTracks, onMouseOut: this.hideTracks}}
+                        thumbXProps={{onDragEnd: this.handleDragEnd}}
+                        thumbYProps={{onDragEnd: this.handleDragEnd}}
                         ref={ref => {
                             this.scrollbar = ref;
                         }}
-                        onScrollStart={this.handleScrollStart}
-                        onScrollStop={this.handleScrollStop}
+                        onScrollStart={this.showTracks}
+                        onScrollStop={this.hideTracks}
                         scrollDetectionThreshold={500}>
                         {this.getParagraphs(15)}
                     </Scrollbar>

@@ -424,7 +424,7 @@ export default class Scrollbar extends React.Component {
     /**
      *
      * @param forced
-     * @return {ScrollValues|null}
+     * @return {ScrollValues}
      */
     update = (forced = false) => {
         if (typeof this.state.isRtl !== "boolean") {
@@ -432,7 +432,7 @@ export default class Scrollbar extends React.Component {
                 isRtl: getComputedStyle(this.contentEl).direction === "rtl",
             });
 
-            return;
+            return this.scrollValues;
         }
 
         /**
@@ -481,7 +481,7 @@ export default class Scrollbar extends React.Component {
 
         // if not forced and nothing has changed - do not update
         if (mask === 0 && !forced) {
-            return;
+            return this.scrollValues;
         }
 
         // if scrollbars visibility has changed
@@ -497,6 +497,7 @@ export default class Scrollbar extends React.Component {
             return this.update(true);
         }
 
+        const prevScrollValues = this.scrollValues;
         this.scrollValues = currentScrollValues;
 
         // if Y track rendered and changed anything related to scrollY
@@ -565,7 +566,9 @@ export default class Scrollbar extends React.Component {
             }
         }
 
-        this.props.onScroll && this.props.onScroll(this.scrollValues);
+        if (prevScrollValues.scrollTop !== null) {
+            this.props.onScroll && this.props.onScroll(this.scrollValues, prevScrollValues);
+        }
 
         return this.scrollValues;
     };
@@ -621,24 +624,28 @@ export default class Scrollbar extends React.Component {
     handleThumbDrag = params => {
         this.scrollDetect();
 
-        params.axis === TYPE_X && this.props.thumbXProps.onDrag && this.props.thumbXProps.onDrag(params);
-        params.axis === TYPE_Y && this.props.thumbYProps.onDrag && this.props.thumbYProps.onDrag(params);
+        if (params.axis === TYPE_X) {
+            this.props.thumbXProps.onDrag && this.props.thumbXProps.onDrag(params);
 
-        params.axis === TYPE_X
-            ? (this.contentEl.scrollLeft = Scrollbar.computeScrollForOffset(
-                  getInnerWidth(this.trackXEl),
-                  this.thumbXEl.clientWidth,
-                  params.offset,
-                  this.contentEl.scrollWidth,
-                  this.contentEl.clientWidth
-              ))
-            : (this.contentEl.scrollTop = Scrollbar.computeScrollForOffset(
-                  getInnerHeight(this.trackYEl),
-                  this.thumbYEl.clientHeight,
-                  params.offset,
-                  this.contentEl.scrollHeight,
-                  this.contentEl.clientHeight
-              ));
+            this.contentEl.scrollLeft = Scrollbar.computeScrollForOffset(
+                getInnerWidth(this.trackXEl),
+                this.thumbXEl.clientWidth,
+                params.offset,
+                this.contentEl.scrollWidth,
+                this.contentEl.clientWidth
+            );
+        }
+        if (params.axis === TYPE_Y) {
+            this.props.thumbYProps.onDrag && this.props.thumbYProps.onDrag(params);
+
+            this.contentEl.scrollTop = Scrollbar.computeScrollForOffset(
+                getInnerHeight(this.trackYEl),
+                this.thumbYEl.clientHeight,
+                params.offset,
+                this.contentEl.scrollHeight,
+                this.contentEl.clientHeight
+            );
+        }
     };
 
     render() {

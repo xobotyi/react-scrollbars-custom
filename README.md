@@ -20,6 +20,8 @@
 * No matter what changes the content - scrollbars always stay actual
 * Total tests coverage
 * Scrollbars nesting
+* RTL support ([read more](https://github.com/xobotyi/react-scrollbars-custom/blob/master/docs/USAGE.md#rtl-support))
+* momentum scrolling for iOS
 
 >**IMPORTANT:** default component styles uses [Flexible Box Layout](https://developer.mozilla.org/ru/docs/Web/CSS/CSS_Flexible_Box_Layout) for proper scrollbars display.  
 >But you can customize it with help pf inline or linked styles as you wish ([see docs](https://github.com/xobotyi/react-scrollbars-custom/blob/master/docs/CUSTOMISATION.md)). 

@@ -5,66 +5,56 @@ export const TYPE_X = 1;
 export const TYPE_Y = 2;
 
 export default class Track extends React.Component {
-  static displayName = "Scrollbar Track";
+    static displayName = "Scrollbar Track";
 
-  static propTypes = {
-    className: PropTypes.string,
-    style: PropTypes.object,
+    static propTypes = {
+        className: PropTypes.string,
+        style: PropTypes.object,
 
-    type: PropTypes.oneOf([TYPE_X, TYPE_Y]).isRequired,
+        type: PropTypes.oneOf([TYPE_X, TYPE_Y]).isRequired,
 
-    elementRef: PropTypes.func,
-    renderer: PropTypes.func
-  };
+        elementRef: PropTypes.func,
+        renderer: PropTypes.func,
+    };
 
-  constructor(props) {
-    super(props);
-  }
-
-  onClickHandler = ev => {
-    if (ev.target !== this.element || !this.props.onClick) {
-      return true;
+    constructor(props) {
+        super(props);
     }
 
-    const rect = this.element.getBoundingClientRect();
+    onClickHandler = ev => {
+        if (ev.target !== this.element || !this.props.onClick) {
+            return true;
+        }
 
-    this.props.type === TYPE_X
-      ? this.props.onClick(ev, {
-          axis: this.props.type,
-          offset: ev.clientX - rect.left
-        })
-      : this.props.onClick(ev, {
-          axis: this.props.type,
-          offset: ev.clientY - rect.top
-        });
-  };
+        const rect = this.element.getBoundingClientRect();
 
-  render() {
-    const {
-      className,
-      renderer,
-      type,
-      elementRef,
-      onClick,
-      ...props
-    } = this.props;
+        this.props.type === TYPE_X
+            ? this.props.onClick(ev, {
+                  axis: this.props.type,
+                  offset: ev.clientX - rect.left,
+              })
+            : this.props.onClick(ev, {
+                  axis: this.props.type,
+                  offset: ev.clientY - rect.top,
+              });
+    };
 
-    props.className =
-      "track " +
-      (type === TYPE_X ? "trackX" : "trackY") +
-      (className ? " " + className : "");
-    props.onClick = this.onClickHandler;
+    render() {
+        const {className, renderer, type, elementRef, onClick, ...props} = this.props;
 
-    return renderer ? (
-      renderer(props)
-    ) : (
-      <div
-        {...props}
-        ref={ref => {
-          typeof elementRef === "function" && elementRef(ref);
-          this.element = ref;
-        }}
-      />
-    );
-  }
+        props.className = "track " + (type === TYPE_X ? "trackX" : "trackY") + (className ? " " + className : "");
+        props.onClick = this.onClickHandler;
+
+        return renderer ? (
+            renderer(props)
+        ) : (
+            <div
+                {...props}
+                ref={ref => {
+                    typeof elementRef === "function" && elementRef(ref);
+                    this.element = ref;
+                }}
+            />
+        );
+    }
 }

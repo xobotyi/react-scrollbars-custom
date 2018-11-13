@@ -4,13 +4,9 @@
  * @return {number}
  */
 export function getInnerHeight(el) {
-  let styles = getComputedStyle(el);
+    let styles = getComputedStyle(el);
 
-  return (
-    el.clientHeight -
-    styles.paddingTop.slice(0, -2) -
-    styles.paddingBottom.slice(0, -2)
-  );
+    return el.clientHeight - styles.paddingTop.slice(0, -2) - styles.paddingBottom.slice(0, -2);
 }
 
 /**
@@ -19,13 +15,9 @@ export function getInnerHeight(el) {
  * @return {number}
  */
 export function getInnerWidth(el) {
-  let styles = getComputedStyle(el);
+    let styles = getComputedStyle(el);
 
-  return (
-    el.clientWidth -
-    styles.paddingLeft.slice(0, -2) -
-    styles.paddingRight.slice(0, -2)
-  );
+    return el.clientWidth - styles.paddingLeft.slice(0, -2) - styles.paddingRight.slice(0, -2);
 }
 
 /**
@@ -34,16 +26,10 @@ export function getInnerWidth(el) {
  * @return {{width: number, height: number}}
  */
 export function getInnerSizes(el) {
-  let styles = getComputedStyle(el);
+    let styles = getComputedStyle(el);
 
-  return {
-    width:
-      el.clientHeight -
-      styles.paddingLeft.slice(0, -2) -
-      styles.paddingRight.slice(0, -2),
-    height:
-      el.clientHeight -
-      styles.paddingTop.slice(0, -2) -
-      styles.paddingBottom.slice(0, -2)
-  };
+    return {
+        width: el.clientHeight - styles.paddingLeft.slice(0, -2) - styles.paddingRight.slice(0, -2),
+        height: el.clientHeight - styles.paddingTop.slice(0, -2) - styles.paddingBottom.slice(0, -2),
+    };
 }

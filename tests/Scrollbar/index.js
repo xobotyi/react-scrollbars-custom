@@ -5,9 +5,9 @@ import rendering from "./rendering";
 import tracksClick from "./tracksClick";
 
 export default function performTests() {
-  rendering();
-  dragging();
-  getset();
-  tracksClick();
-  callbacks();
+    rendering();
+    dragging();
+    getset();
+    tracksClick();
+    callbacks();
 }

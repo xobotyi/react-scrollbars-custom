@@ -249,7 +249,7 @@ function (_React$Component) {
       _this.scrollValues.trackXVisible !== currentScrollValues.trackXVisible && (mask |= 1 << 11); // if not forced and nothing has changed - do not update
 
       if (mask === 0 && !forced) {
-        return false;
+        return;
       } // if scrollbars visibility has changed
 
 
@@ -468,7 +468,7 @@ function (_React$Component) {
     /**
      *
      * @param forced
-     * @return {ScrollValues}
+     * @return {ScrollValues|null}
      */
 
   }, {

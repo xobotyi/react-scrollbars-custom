@@ -9,7 +9,11 @@ var _propTypes = _interopRequireDefault(require("prop-types"));
 
 var _react = _interopRequireDefault(require("react"));
 
+var _Track = _interopRequireDefault(require("./Track"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { _defineProperty(target, key, source[key]); }); } return target; }
 
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
@@ -169,13 +173,8 @@ exports.default = Thumb;
 
 _defineProperty(Thumb, "displayName", "Scrollbar Thumb");
 
-_defineProperty(Thumb, "propTypes", {
-  className: _propTypes.default.string,
-  style: _propTypes.default.object,
-  type: _propTypes.default.oneOf([TYPE_X, TYPE_Y]).isRequired,
-  elementRef: _propTypes.default.func,
-  renderer: _propTypes.default.func,
+_defineProperty(Thumb, "propTypes", _objectSpread({}, _Track.default.propTypes, {
   onDrag: _propTypes.default.func,
   onDragStart: _propTypes.default.func,
   onDragEnd: _propTypes.default.func
-});
+}));

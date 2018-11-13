@@ -1,5 +1,6 @@
 import PropTypes from "prop-types";
 import React from "react";
+import Track from "./Track";
 
 export const TYPE_X = 1;
 export const TYPE_Y = 2;
@@ -8,13 +9,7 @@ export default class Thumb extends React.Component {
     static displayName = "Scrollbar Thumb";
 
     static propTypes = {
-        className: PropTypes.string,
-        style: PropTypes.object,
-
-        type: PropTypes.oneOf([TYPE_X, TYPE_Y]).isRequired,
-
-        elementRef: PropTypes.func,
-        renderer: PropTypes.func,
+        ...Track.propTypes,
 
         onDrag: PropTypes.func,
         onDragStart: PropTypes.func,

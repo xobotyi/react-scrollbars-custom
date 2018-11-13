@@ -51,15 +51,13 @@ export default class Thumb extends React.Component {
         document.onselectstart = () => false;
 
         this.props.onDragStart &&
-            (this.props.type === TYPE_X
-                ? this.props.onDragStart({
-                      axis: this.props.type,
-                      offset: ev.clientX - parentRect.left - this.dragStartOffsetX,
-                  })
-                : this.props.onDragStart({
-                      axis: this.props.type,
-                      offset: ev.clientY - parentRect.top - this.dragStartOffsetY,
-                  }));
+            this.props.onDragStart({
+                axis: this.props.type,
+                offset:
+                    this.props.type === TYPE_X
+                        ? ev.clientX - parentRect.left - this.dragStartOffsetX
+                        : ev.clientY - parentRect.top - this.dragStartOffsetY,
+            });
     };
 
     handleDragEvent = ev => {
@@ -72,15 +70,13 @@ export default class Thumb extends React.Component {
 
         const parentRect = this.element.offsetParent.getBoundingClientRect();
 
-        this.props.type === TYPE_X
-            ? this.props.onDrag({
-                  axis: this.props.type,
-                  offset: ev.clientX - parentRect.left - this.dragStartOffsetX,
-              })
-            : this.props.onDrag({
-                  axis: this.props.type,
-                  offset: ev.clientY - parentRect.top - this.dragStartOffsetY,
-              });
+        this.props.onDrag({
+            axis: this.props.type,
+            offset:
+                this.props.type === TYPE_X
+                    ? ev.clientX - parentRect.left - this.dragStartOffsetX
+                    : ev.clientY - parentRect.top - this.dragStartOffsetY,
+        });
     };
 
     handleDragEnd = () => {

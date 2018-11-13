@@ -383,6 +383,7 @@ body {
                 background: rgba(0, 0, 0, 0.1);
                 grid-area:  1 / 2 / auto / auto;
                 overflow:   hidden;
+                position:   relative;
 
                 & > .thumb {
                     cursor:     pointer;
@@ -395,6 +396,8 @@ body {
                 height:     8px;
                 background: rgba(0, 0, 0, 0.1);
                 grid-area:  2 / 1 / auto / auto;
+                overflow:   hidden;
+                position:   relative;
 
                 & > .thumb {
                     cursor:     pointer;

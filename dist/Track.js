@@ -61,12 +61,9 @@ function (_React$Component) {
 
       var rect = _this.element.getBoundingClientRect();
 
-      _this.props.type === TYPE_X ? _this.props.onClick(ev, {
+      _this.props.onClick(ev, {
         axis: _this.props.type,
-        offset: ev.clientX - rect.left
-      }) : _this.props.onClick(ev, {
-        axis: _this.props.type,
-        offset: ev.clientY - rect.top
+        offset: _this.props.type === TYPE_X ? ev.clientX - rect.left : ev.clientY - rect.top
       });
     });
 

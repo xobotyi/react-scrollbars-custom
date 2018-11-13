@@ -28,15 +28,10 @@ export default class Track extends React.Component {
 
         const rect = this.element.getBoundingClientRect();
 
-        this.props.type === TYPE_X
-            ? this.props.onClick(ev, {
-                  axis: this.props.type,
-                  offset: ev.clientX - rect.left,
-              })
-            : this.props.onClick(ev, {
-                  axis: this.props.type,
-                  offset: ev.clientY - rect.top,
-              });
+        this.props.onClick(ev, {
+            axis: this.props.type,
+            offset: this.props.type === TYPE_X ? ev.clientX - rect.left : ev.clientY - rect.top,
+        });
     };
 
     render() {

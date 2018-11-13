@@ -85,13 +85,10 @@ function (_React$Component) {
         return false;
       };
 
-      _this.props.onDragStart && (_this.props.type === TYPE_X ? _this.props.onDragStart({
+      _this.props.onDragStart && _this.props.onDragStart({
         axis: _this.props.type,
-        offset: ev.clientX - parentRect.left - _this.dragStartOffsetX
-      }) : _this.props.onDragStart({
-        axis: _this.props.type,
-        offset: ev.clientY - parentRect.top - _this.dragStartOffsetY
-      }));
+        offset: _this.props.type === TYPE_X ? ev.clientX - parentRect.left - _this.dragStartOffsetX : ev.clientY - parentRect.top - _this.dragStartOffsetY
+      });
     });
 
     _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "handleDragEvent", function (ev) {
@@ -105,12 +102,9 @@ function (_React$Component) {
 
       var parentRect = _this.element.offsetParent.getBoundingClientRect();
 
-      _this.props.type === TYPE_X ? _this.props.onDrag({
+      _this.props.onDrag({
         axis: _this.props.type,
-        offset: ev.clientX - parentRect.left - _this.dragStartOffsetX
-      }) : _this.props.onDrag({
-        axis: _this.props.type,
-        offset: ev.clientY - parentRect.top - _this.dragStartOffsetY
+        offset: _this.props.type === TYPE_X ? ev.clientX - parentRect.left - _this.dragStartOffsetX : ev.clientY - parentRect.top - _this.dragStartOffsetY
       });
     });
 

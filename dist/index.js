@@ -318,6 +318,11 @@ function (_React$Component) {
         }
       }
 
+      if (_this.props.translateContentSizesToHolder && _this.wrapperEl && (mask & 1 << 2 || mask & 1 << 3)) {
+        _this.holderEl.style.width = currentScrollValues.scrollWidth + "px";
+        _this.holderEl.style.height = currentScrollValues.scrollHeight + "px";
+      }
+
       if (prevScrollValues.scrollTop !== null) {
         _this.props.onScroll && _this.props.onScroll(_this.scrollValues, prevScrollValues);
       }
@@ -427,8 +432,8 @@ function (_React$Component) {
      * @return {Scrollbar}
      */
     value: function scrollToTop() {
-      if (this.content) {
-        this.content.scrollTop = 0;
+      if (this.contentEl) {
+        this.contentEl.scrollTop = 0;
       }
 
       return this;
@@ -442,8 +447,8 @@ function (_React$Component) {
   }, {
     key: "scrollToBottom",
     value: function scrollToBottom() {
-      if (this.content) {
-        this.content.scrollTop = this.content.scrollHeight;
+      if (this.contentEl) {
+        this.contentEl.scrollTop = this.contentEl.scrollHeight;
       }
 
       return this;
@@ -457,8 +462,8 @@ function (_React$Component) {
   }, {
     key: "scrollToLeft",
     value: function scrollToLeft() {
-      if (this.content) {
-        this.content.scrollLeft = 0;
+      if (this.contentEl) {
+        this.contentEl.scrollLeft = 0;
       }
 
       return this;
@@ -472,8 +477,8 @@ function (_React$Component) {
   }, {
     key: "scrollToRight",
     value: function scrollToRight() {
-      if (this.content) {
-        this.content.scrollLeft = this.content.scrollWidth;
+      if (this.contentEl) {
+        this.contentEl.scrollLeft = this.contentEl.scrollWidth;
       }
 
       return this;
@@ -500,7 +505,7 @@ function (_React$Component) {
           rtl = _this$props.rtl,
           momentum = _this$props.momentum,
           noDefaultStyles = _this$props.noDefaultStyles,
-          captureScroll = _this$props.captureScroll,
+          translateContentSizesToHolder = _this$props.translateContentSizesToHolder,
           noScrollX = _this$props.noScrollX,
           noScrollY = _this$props.noScrollY,
           noScroll = _this$props.noScroll,
@@ -526,7 +531,7 @@ function (_React$Component) {
           onScrollStart = _this$props.onScrollStart,
           onScrollStop = _this$props.onScrollStop,
           children = _this$props.children,
-          props = _objectWithoutProperties(_this$props, ["minimalThumbsSize", "fallbackScrollbarWidth", "scrollDetectionThreshold", "tagName", "className", "style", "trackClickBehavior", "rtl", "momentum", "noDefaultStyles", "captureScroll", "noScrollX", "noScrollY", "noScroll", "permanentTrackX", "permanentTrackY", "permanentTracks", "removeTracksWhenNotUsed", "removeTrackYWhenNotUsed", "removeTrackXWhenNotUsed", "wrapperProps", "contentProps", "trackXProps", "trackYProps", "thumbXProps", "thumbYProps", "wrapperRenderer", "contentRenderer", "trackXRenderer", "trackYRenderer", "thumbXRenderer", "thumbYRenderer", "onScroll", "onScrollStart", "onScrollStop", "children"]);
+          props = _objectWithoutProperties(_this$props, ["minimalThumbsSize", "fallbackScrollbarWidth", "scrollDetectionThreshold", "tagName", "className", "style", "trackClickBehavior", "rtl", "momentum", "noDefaultStyles", "translateContentSizesToHolder", "noScrollX", "noScrollY", "noScroll", "permanentTrackX", "permanentTrackY", "permanentTracks", "removeTracksWhenNotUsed", "removeTrackYWhenNotUsed", "removeTrackXWhenNotUsed", "wrapperProps", "contentProps", "trackXProps", "trackYProps", "thumbXProps", "thumbYProps", "wrapperRenderer", "contentRenderer", "trackXRenderer", "trackYRenderer", "thumbXRenderer", "thumbYRenderer", "onScroll", "onScrollStart", "onScrollStop", "children"]);
 
       var _this$state = this.state,
           trackXVisible = _this$state.trackXVisible,
@@ -639,8 +644,8 @@ function (_React$Component) {
      * @return {number}
      */
     get: function get() {
-      if (this.content) {
-        return this.content.scrollTop;
+      if (this.contentEl) {
+        return this.contentEl.scrollTop;
       }
 
       return 0;
@@ -653,8 +658,8 @@ function (_React$Component) {
      */
     ,
     set: function set(top) {
-      if (this.content) {
-        this.content.scrollTop = top;
+      if (this.contentEl) {
+        this.contentEl.scrollTop = top;
         this.update();
       }
     }
@@ -667,8 +672,8 @@ function (_React$Component) {
   }, {
     key: "scrollLeft",
     get: function get() {
-      if (this.content) {
-        return this.content.scrollLeft;
+      if (this.contentEl) {
+        return this.contentEl.scrollLeft;
       }
 
       return 0;
@@ -680,8 +685,8 @@ function (_React$Component) {
      */
     ,
     set: function set(left) {
-      if (this.content) {
-        this.content.scrollLeft = left;
+      if (this.contentEl) {
+        this.contentEl.scrollLeft = left;
       }
     }
     /**
@@ -691,8 +696,8 @@ function (_React$Component) {
   }, {
     key: "scrollHeight",
     get: function get() {
-      if (this.content) {
-        return this.content.scrollHeight;
+      if (this.contentEl) {
+        return this.contentEl.scrollHeight;
       }
 
       return 0;
@@ -704,8 +709,8 @@ function (_React$Component) {
   }, {
     key: "scrollWidth",
     get: function get() {
-      if (this.content) {
-        return this.content.scrollWidth;
+      if (this.contentEl) {
+        return this.contentEl.scrollWidth;
       }
 
       return 0;
@@ -717,8 +722,8 @@ function (_React$Component) {
   }, {
     key: "clientHeight",
     get: function get() {
-      if (this.content) {
-        return this.content.clientHeight;
+      if (this.contentEl) {
+        return this.contentEl.clientHeight;
       }
 
       return 0;
@@ -730,8 +735,8 @@ function (_React$Component) {
   }, {
     key: "clientWidth",
     get: function get() {
-      if (this.content) {
-        return this.content.clientWidth;
+      if (this.contentEl) {
+        return this.contentEl.clientWidth;
       }
 
       return 0;
@@ -754,6 +759,7 @@ _defineProperty(Scrollbar, "propTypes", {
   momentum: _propTypes.default.bool,
   noDefaultStyles: _propTypes.default.bool,
   scrollDetectionThreshold: _propTypes.default.number,
+  translateContentSizesToHolder: _propTypes.default.bool,
   noScrollX: _propTypes.default.bool,
   noScrollY: _propTypes.default.bool,
   noScroll: _propTypes.default.bool,
@@ -788,6 +794,7 @@ _defineProperty(Scrollbar, "defaultProps", {
   momentum: false,
   noDefaultStyles: false,
   scrollDetectionThreshold: 100,
+  translateContentSizesToHolder: false,
   noScrollX: false,
   noScrollY: false,
   noScroll: false,

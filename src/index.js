@@ -77,6 +77,7 @@ const defaultStyles = {
 export default class Scrollbar extends React.Component {
     static propTypes = {
         minimalThumbsSize: PropTypes.number,
+
         fallbackScrollbarWidth: PropTypes.number,
 
         tagName: PropTypes.string,
@@ -92,6 +93,8 @@ export default class Scrollbar extends React.Component {
         noDefaultStyles: PropTypes.bool,
 
         scrollDetectionThreshold: PropTypes.number,
+
+        translateContentSizesToHolder: PropTypes.bool,
 
         noScrollX: PropTypes.bool,
         noScrollY: PropTypes.bool,
@@ -126,7 +129,9 @@ export default class Scrollbar extends React.Component {
 
     static defaultProps = {
         tagName: "div",
+
         minimalThumbsSize: 30,
+
         fallbackScrollbarWidth: 20,
 
         trackClickBehavior: "jump",
@@ -136,6 +141,8 @@ export default class Scrollbar extends React.Component {
         noDefaultStyles: false,
 
         scrollDetectionThreshold: 100,
+
+        translateContentSizesToHolder: false,
 
         noScrollX: false,
         noScrollY: false,
@@ -284,8 +291,8 @@ export default class Scrollbar extends React.Component {
      * @return {number}
      */
     get scrollTop() {
-        if (this.content) {
-            return this.content.scrollTop;
+        if (this.contentEl) {
+            return this.contentEl.scrollTop;
         }
 
         return 0;
@@ -298,8 +305,8 @@ export default class Scrollbar extends React.Component {
      * @param top {number} Pixels amount
      */
     set scrollTop(top) {
-        if (this.content) {
-            this.content.scrollTop = top;
+        if (this.contentEl) {
+            this.contentEl.scrollTop = top;
             this.update();
         }
     }
@@ -310,8 +317,8 @@ export default class Scrollbar extends React.Component {
      * @return {number}
      */
     get scrollLeft() {
-        if (this.content) {
-            return this.content.scrollLeft;
+        if (this.contentEl) {
+            return this.contentEl.scrollLeft;
         }
 
         return 0;
@@ -323,8 +330,8 @@ export default class Scrollbar extends React.Component {
      * @param left {number} Pixels amount
      */
     set scrollLeft(left) {
-        if (this.content) {
-            this.content.scrollLeft = left;
+        if (this.contentEl) {
+            this.contentEl.scrollLeft = left;
         }
     }
 
@@ -332,8 +339,8 @@ export default class Scrollbar extends React.Component {
      * @return {number}
      */
     get scrollHeight() {
-        if (this.content) {
-            return this.content.scrollHeight;
+        if (this.contentEl) {
+            return this.contentEl.scrollHeight;
         }
 
         return 0;
@@ -343,8 +350,8 @@ export default class Scrollbar extends React.Component {
      * @return {number}
      */
     get scrollWidth() {
-        if (this.content) {
-            return this.content.scrollWidth;
+        if (this.contentEl) {
+            return this.contentEl.scrollWidth;
         }
 
         return 0;
@@ -354,8 +361,8 @@ export default class Scrollbar extends React.Component {
      * @return {number}
      */
     get clientHeight() {
-        if (this.content) {
-            return this.content.clientHeight;
+        if (this.contentEl) {
+            return this.contentEl.clientHeight;
         }
 
         return 0;
@@ -365,8 +372,8 @@ export default class Scrollbar extends React.Component {
      * @return {number}
      */
     get clientWidth() {
-        if (this.content) {
-            return this.content.clientWidth;
+        if (this.contentEl) {
+            return this.contentEl.clientWidth;
         }
 
         return 0;
@@ -378,8 +385,8 @@ export default class Scrollbar extends React.Component {
      * @return {Scrollbar}
      */
     scrollToTop() {
-        if (this.content) {
-            this.content.scrollTop = 0;
+        if (this.contentEl) {
+            this.contentEl.scrollTop = 0;
         }
 
         return this;
@@ -391,8 +398,8 @@ export default class Scrollbar extends React.Component {
      * @return {Scrollbar}
      */
     scrollToBottom() {
-        if (this.content) {
-            this.content.scrollTop = this.content.scrollHeight;
+        if (this.contentEl) {
+            this.contentEl.scrollTop = this.contentEl.scrollHeight;
         }
 
         return this;
@@ -404,8 +411,8 @@ export default class Scrollbar extends React.Component {
      * @return {Scrollbar}
      */
     scrollToLeft() {
-        if (this.content) {
-            this.content.scrollLeft = 0;
+        if (this.contentEl) {
+            this.contentEl.scrollLeft = 0;
         }
 
         return this;
@@ -417,8 +424,8 @@ export default class Scrollbar extends React.Component {
      * @return {Scrollbar}
      */
     scrollToRight() {
-        if (this.content) {
-            this.content.scrollLeft = this.content.scrollWidth;
+        if (this.contentEl) {
+            this.contentEl.scrollLeft = this.contentEl.scrollWidth;
         }
 
         return this;
@@ -573,6 +580,11 @@ export default class Scrollbar extends React.Component {
             }
         }
 
+        if (this.props.translateContentSizesToHolder && this.wrapperEl && (mask & (1 << 2) || mask & (1 << 3))) {
+            this.holderEl.style.width = currentScrollValues.scrollWidth + "px";
+            this.holderEl.style.height = currentScrollValues.scrollHeight + "px";
+        }
+
         if (prevScrollValues.scrollTop !== null) {
             this.props.onScroll && this.props.onScroll(this.scrollValues, prevScrollValues);
         }
@@ -674,7 +686,7 @@ export default class Scrollbar extends React.Component {
 
             noDefaultStyles,
 
-            captureScroll,
+            translateContentSizesToHolder,
 
             noScrollX,
             noScrollY,

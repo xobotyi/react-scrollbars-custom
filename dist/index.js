@@ -389,8 +389,7 @@ function (_React$Component) {
   }, {
     key: "componentDidMount",
     value: function componentDidMount() {
-      _LoopController.default.registerScrollbar(this); //this.contentEl.addEventListener("mousewheel", this.scrollCaptor);
-
+      _LoopController.default.registerScrollbar(this);
 
       this.contentEl.addEventListener("scroll", this.handleScrollEvent, {
         passive: true
@@ -400,8 +399,7 @@ function (_React$Component) {
   }, {
     key: "componentWillUnmount",
     value: function componentWillUnmount() {
-      _LoopController.default.unregisterScrollbar(this); //this.contentEl.removeEventListener("mousewheel", this.scrollCaptor);
-
+      _LoopController.default.unregisterScrollbar(this);
 
       this.contentEl.removeEventListener("scroll", this.handleScrollEvent, {
         passive: true
@@ -743,7 +741,6 @@ _defineProperty(Scrollbar, "propTypes", {
   momentum: _propTypes.default.bool,
   noDefaultStyles: _propTypes.default.bool,
   scrollDetectionThreshold: _propTypes.default.number,
-  //captureScroll: PropTypes.bool,
   noScrollX: _propTypes.default.bool,
   noScrollY: _propTypes.default.bool,
   noScroll: _propTypes.default.bool,
@@ -778,7 +775,6 @@ _defineProperty(Scrollbar, "defaultProps", {
   momentum: false,
   noDefaultStyles: false,
   scrollDetectionThreshold: 100,
-  //captureScroll: false,
   noScrollX: false,
   noScrollY: false,
   noScroll: false,

@@ -92,8 +92,6 @@ export default class Scrollbar extends React.Component {
 
     scrollDetectionThreshold: PropTypes.number,
 
-    //captureScroll: PropTypes.bool,
-
     noScrollX: PropTypes.bool,
     noScrollY: PropTypes.bool,
     noScroll: PropTypes.bool,
@@ -137,8 +135,6 @@ export default class Scrollbar extends React.Component {
     noDefaultStyles: false,
 
     scrollDetectionThreshold: 100,
-
-    //captureScroll: false,
 
     noScrollX: false,
     noScrollY: false,
@@ -266,7 +262,6 @@ export default class Scrollbar extends React.Component {
   componentDidMount() {
     LoopController.registerScrollbar(this);
 
-    //this.contentEl.addEventListener("mousewheel", this.scrollCaptor);
     this.contentEl.addEventListener("scroll", this.handleScrollEvent, {
       passive: true
     });
@@ -277,7 +272,6 @@ export default class Scrollbar extends React.Component {
   componentWillUnmount() {
     LoopController.unregisterScrollbar(this);
 
-    //this.contentEl.removeEventListener("mousewheel", this.scrollCaptor);
     this.contentEl.removeEventListener("scroll", this.handleScrollEvent, {
       passive: true
     });
@@ -286,38 +280,6 @@ export default class Scrollbar extends React.Component {
   handleScrollEvent = () => {
     this.scrollDetect();
   };
-
-  //scrollCaptor = (ev) => {
-  //    if (!this.contentEl) {return;}
-  //
-  //    const cancelEvent = () => {
-  //        ev.stopPropagation();
-  //        ev.preventDefault();
-  //        ev.returnValue = false;
-  //    };
-  //
-  //    let scrollDirection = null;
-  //
-  //    if (ev.type === "mousewheel") {
-  //        if (ev.wheelDelta > 0) { // scroll up
-  //            scrollDirection = (ev.wheelDeltaY && !ev.shiftKey) ? "up" : "left";
-  //        }
-  //        else { // scroll down
-  //            scrollDirection = (ev.wheelDeltaY && !ev.shiftKey) ? "down" : "right";
-  //        }
-  //    }
-  //
-  //    if (scrollDirection) {
-  //        if (
-  //                (scrollDirection === 'up' && !this.scrollValues.scrollTop) ||
-  //                (scrollDirection === 'left' && !this.scrollValues.scrollLeft <= 0) ||
-  //                (scrollDirection === 'down' && this.scrollValues.scrollTop + this.scrollValues.clientHeight === this.scrollValues.scrollHeight) ||
-  //                (scrollDirection === 'right' && this.scrollValues.scrollLeft + this.scrollValues.clientWidth === this.scrollValues.scrollWidth)
-  //        ) {
-  //            return cancelEvent();
-  //        }
-  //    }
-  //};
 
   scrollDetect = () => {
     if (!this.props.onScrollStart && !this.props.onScrollStop) {

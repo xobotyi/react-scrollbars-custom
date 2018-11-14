@@ -1,5 +1,6 @@
 import PropTypes from "prop-types";
 import React from "react";
+import NativeScrollbar from "./NativeScrollbar";
 import Thumb from "./Thumb";
 import Track, {TYPE_X, TYPE_Y} from "./Track";
 import {getInnerHeight, getInnerWidth} from "./util/getInnerSizes";
@@ -76,6 +77,8 @@ const defaultStyles = {
 
 export default class Scrollbar extends React.Component {
     static propTypes = {
+        native: PropTypes.bool,
+
         minimalThumbsSize: PropTypes.number,
 
         fallbackScrollbarWidth: PropTypes.number,
@@ -128,6 +131,8 @@ export default class Scrollbar extends React.Component {
     };
 
     static defaultProps = {
+        native: false,
+
         tagName: "div",
 
         minimalThumbsSize: 30,
@@ -210,30 +215,13 @@ export default class Scrollbar extends React.Component {
     constructor(props) {
         super(props);
 
-        /**
-         * @property {ScrollValues} scrollValues
-         */
-        this.scrollValues = {
-            clientHeight: null,
-            clientWidth: null,
-            scrollHeight: null,
-            scrollWidth: null,
-            scrollTop: null,
-            scrollLeft: null,
-            scrollYBlocked: null,
-            scrollXBlocked: null,
-            scrollYPossible: null,
-            scrollXPossible: null,
-            trackYVisible: null,
-            trackXVisible: null,
-            isRtl: null,
-        };
-
         this.state = {
             trackYVisible: true,
             trackXVisible: true,
             isRtl: this.props.rtl,
         };
+
+        this.scrollValues = this.getScrollValues(true);
     }
 
     componentDidUpdate(prevProps, prevState) {
@@ -275,13 +263,13 @@ export default class Scrollbar extends React.Component {
 
         !this.scrollDetect.timeout &&
             this.props.onScrollStart &&
-            this.props.onScrollStart.call(this, this.scrollValues);
+            this.props.onScrollStart.call(this, this.getScrollValues());
 
         this.scrollDetect.timeout && clearTimeout(this.scrollDetect.timeout);
 
         this.scrollDetect.timeout = setTimeout(() => {
             this.scrollDetect.timeout = null;
-            this.props.onScrollStop && this.props.onScrollStop.call(this, this.scrollValues);
+            this.props.onScrollStop && this.props.onScrollStop.call(this, this.getScrollValues());
         }, this.props.scrollDetectionThreshold);
     };
 
@@ -432,105 +420,158 @@ export default class Scrollbar extends React.Component {
     }
 
     /**
+     * @param {boolean} force
+     *
+     * @return {ScrollValues}
+     */
+    getScrollValues(force = false) {
+        if (!force) {
+            return this.scrollValues;
+        }
+
+        const scrollValues = {
+            clientHeight: null,
+            clientWidth: null,
+            scrollHeight: null,
+            scrollWidth: null,
+            scrollTop: null,
+            scrollLeft: null,
+            scrollYBlocked: null,
+            scrollXBlocked: null,
+            scrollYPossible: null,
+            scrollXPossible: null,
+            trackYVisible: null,
+            trackXVisible: null,
+            isRtl: null,
+        };
+
+        if (this.contentEl) {
+            scrollValues.clientHeight = this.contentEl.clientHeight;
+            scrollValues.clientWidth = this.contentEl.clientWidth;
+            scrollValues.scrollHeight = this.contentEl.scrollHeight;
+            scrollValues.scrollWidth = this.contentEl.scrollWidth;
+            scrollValues.scrollTop = this.contentEl.scrollTop;
+            scrollValues.scrollLeft = this.contentEl.scrollLeft;
+            scrollValues.scrollYBlocked = this.props.noScroll || this.props.noScrollY;
+            scrollValues.scrollXBlocked = this.props.noScroll || this.props.noScrollX;
+            scrollValues.scrollYPossible =
+                !scrollValues.scrollYBlocked && scrollValues.scrollHeight > scrollValues.clientHeight;
+            scrollValues.scrollXPossible =
+                !scrollValues.scrollXBlocked && scrollValues.scrollWidth > scrollValues.clientWidth;
+            scrollValues.trackYVisible =
+                scrollValues.scrollYPossible || this.props.permanentTracks || this.props.permanentTrackY;
+            scrollValues.trackXVisible =
+                scrollValues.scrollXPossible || this.props.permanentTracks || this.props.permanentTrackX;
+            scrollValues.isRtl = this.state.isRtl;
+        }
+
+        return scrollValues;
+    }
+
+    /**
      *
      * @param forced
      * @return {ScrollValues}
      */
     update = (forced = false) => {
+        // autodetect direction if not defined
         if (typeof this.state.isRtl !== "boolean") {
-            this.setState({
-                isRtl: getComputedStyle(this.contentEl).direction === "rtl",
-            });
+            this.setState({isRtl: getComputedStyle(this.contentEl).direction === "rtl"});
 
-            return this.scrollValues;
+            return this.getScrollValues();
         }
 
-        /**
-         *
-         * @type {ScrollValues}
-         */
-        const currentScrollValues = {
-            clientHeight: this.contentEl.clientHeight,
-            scrollHeight: this.contentEl.scrollHeight,
-            scrollTop: this.contentEl.scrollTop,
-            clientWidth: this.contentEl.clientWidth,
-            scrollWidth: this.contentEl.scrollWidth,
-            scrollLeft: this.contentEl.scrollLeft,
-            scrollXBlocked: null,
-            scrollYBlocked: null,
-            scrollXPossible: null,
-            scrollYPossible: null,
-            trackXVisible: null,
-            trackYVisible: null,
-            isRtl: this.state.isRtl,
-        };
-        currentScrollValues.scrollXBlocked = this.props.noScroll || this.props.noScrollX;
-        currentScrollValues.scrollYBlocked = this.props.noScroll || this.props.noScrollY;
-        currentScrollValues.scrollXPossible =
-            !currentScrollValues.scrollXBlocked && currentScrollValues.scrollWidth > currentScrollValues.clientWidth;
-        currentScrollValues.scrollYPossible =
-            !currentScrollValues.scrollYBlocked && currentScrollValues.scrollHeight > currentScrollValues.clientHeight;
-        currentScrollValues.trackXVisible =
-            currentScrollValues.scrollXPossible || this.props.permanentTracks || this.props.permanentTrackX;
-        currentScrollValues.trackYVisible =
-            currentScrollValues.scrollYPossible || this.props.permanentTracks || this.props.permanentTrackY;
+        const scrollValues = this.getScrollValues(true),
+            prevScrollValues = this.getScrollValues();
 
-        let mask = 0;
+        let bitmask = 0;
 
-        this.scrollValues.clientHeight !== currentScrollValues.clientHeight && (mask |= 1 << 0);
-        this.scrollValues.clientWidth !== currentScrollValues.clientWidth && (mask |= 1 << 1);
-        this.scrollValues.scrollHeight !== currentScrollValues.scrollHeight && (mask |= 1 << 2);
-        this.scrollValues.scrollWidth !== currentScrollValues.scrollWidth && (mask |= 1 << 3);
-        this.scrollValues.scrollTop !== currentScrollValues.scrollTop && (mask |= 1 << 4);
-        this.scrollValues.scrollLeft !== currentScrollValues.scrollLeft && (mask |= 1 << 5);
-        this.scrollValues.scrollYBlocked !== currentScrollValues.scrollYBlocked && (mask |= 1 << 6);
-        this.scrollValues.scrollXBlocked !== currentScrollValues.scrollXBlocked && (mask |= 1 << 7);
-        this.scrollValues.scrollYPossible !== currentScrollValues.scrollYPossible && (mask |= 1 << 8);
-        this.scrollValues.scrollXPossible !== currentScrollValues.scrollXPossible && (mask |= 1 << 9);
-        this.scrollValues.trackYVisible !== currentScrollValues.trackYVisible && (mask |= 1 << 10);
-        this.scrollValues.trackXVisible !== currentScrollValues.trackXVisible && (mask |= 1 << 11);
-        this.scrollValues.isRtl !== currentScrollValues.isRtl && (mask |= 1 << 12);
+        // calculating bitmask
+        prevScrollValues.clientHeight !== scrollValues.clientHeight && (bitmask |= 1 << 0);
+        prevScrollValues.clientWidth !== scrollValues.clientWidth && (bitmask |= 1 << 1);
+        prevScrollValues.scrollHeight !== scrollValues.scrollHeight && (bitmask |= 1 << 2);
+        prevScrollValues.scrollWidth !== scrollValues.scrollWidth && (bitmask |= 1 << 3);
+        prevScrollValues.scrollTop !== scrollValues.scrollTop && (bitmask |= 1 << 4);
+        prevScrollValues.scrollLeft !== scrollValues.scrollLeft && (bitmask |= 1 << 5);
+        prevScrollValues.scrollYBlocked !== scrollValues.scrollYBlocked && (bitmask |= 1 << 6);
+        prevScrollValues.scrollXBlocked !== scrollValues.scrollXBlocked && (bitmask |= 1 << 7);
+        prevScrollValues.scrollYPossible !== scrollValues.scrollYPossible && (bitmask |= 1 << 8);
+        prevScrollValues.scrollXPossible !== scrollValues.scrollXPossible && (bitmask |= 1 << 9);
+        prevScrollValues.trackYVisible !== scrollValues.trackYVisible && (bitmask |= 1 << 10);
+        prevScrollValues.trackXVisible !== scrollValues.trackXVisible && (bitmask |= 1 << 11);
+        prevScrollValues.isRtl !== scrollValues.isRtl && (bitmask |= 1 << 12);
 
-        // if not forced and nothing has changed - do not update
-        if (mask === 0 && !forced) {
-            return this.scrollValues;
+        // if not forced and nothing has changed - skip this step
+        if (bitmask === 0 && !forced) {
+            return prevScrollValues;
         }
 
+        // if updater return true - call callbacks and cache the scroll values
+        if (
+            (this.props.native ? this.updaterNative : this.updaterCustom).call(
+                this,
+                scrollValues,
+                prevScrollValues,
+                bitmask
+            )
+        ) {
+            this.scrollValues = scrollValues;
+            prevScrollValues.scrollTop !== null &&
+                this.props.onScroll &&
+                this.props.onScroll(scrollValues, prevScrollValues);
+        }
+
+        return prevScrollValues;
+    };
+
+    /**
+     * @param {ScrollValues} scrollValues current scroll values
+     * @param {ScrollValues} prevScrollValues scroll values that been before the update process
+     * @param {number} bitmask bit mask that represents difference between prev scroll values and current ones
+     *
+     * @return {boolean} whether to save current scroll values or not
+     */
+    updaterCustom(scrollValues, prevScrollValues, bitmask) {
         // if scrollbars visibility has changed
-        if (mask & (1 << 10) || mask & (1 << 11)) {
-            this.scrollValues.trackYVisible = currentScrollValues.trackYVisible;
-            this.scrollValues.trackXVisible = currentScrollValues.trackXVisible;
+        if (bitmask & (1 << 10) || bitmask & (1 << 11)) {
+            this.scrollValues.scrollYBlocked = scrollValues.scrollYBlocked;
+            this.scrollValues.scrollXBlocked = scrollValues.scrollXBlocked;
+            this.scrollValues.scrollYPossible = scrollValues.scrollYPossible;
+            this.scrollValues.scrollXPossible = scrollValues.scrollXPossible;
 
             this.setState({
-                trackYVisible: currentScrollValues.trackYVisible,
-                trackXVisible: currentScrollValues.trackXVisible,
+                trackYVisible: (this.scrollValues.trackYVisible = scrollValues.trackYVisible),
+                trackXVisible: (this.scrollValues.trackXVisible = scrollValues.trackXVisible),
             });
 
-            return this.update(true);
+            return false;
         }
-
-        const prevScrollValues = this.scrollValues;
-        this.scrollValues = currentScrollValues;
 
         // if Y track rendered and changed anything related to scrollY
         if (this.trackYEl) {
-            mask & (1 << 10) && (this.trackYEl.style.display = currentScrollValues.trackYVisible ? null : "none");
+            bitmask & (1 << 10) && (this.trackYEl.style.display = scrollValues.trackYVisible ? null : "none");
 
-            if (mask & (1 << 0) || mask & (1 << 2) || mask & (1 << 4) || mask & (1 << 6) || mask & (1 << 8)) {
-                if (currentScrollValues.scrollYPossible) {
+            if (
+                bitmask & (1 << 0) ||
+                bitmask & (1 << 2) ||
+                bitmask & (1 << 4) ||
+                bitmask & (1 << 6) ||
+                bitmask & (1 << 8)
+            ) {
+                if (scrollValues.scrollYPossible) {
                     const trackSize = getInnerHeight(this.trackYEl);
                     const thumbSize = Scrollbar.computeThumbSize(
                         trackSize,
-                        currentScrollValues.scrollHeight,
-                        currentScrollValues.clientHeight,
+                        scrollValues.scrollHeight,
+                        scrollValues.clientHeight,
                         this.props.minimalThumbsSize
                     );
                     const thumbOffset = Scrollbar.computeThumbOffset(
                         trackSize,
                         thumbSize,
-                        currentScrollValues.scrollHeight,
-                        currentScrollValues.clientHeight,
-                        currentScrollValues.scrollTop
+                        scrollValues.scrollHeight,
+                        scrollValues.clientHeight,
+                        scrollValues.scrollTop
                     );
 
                     this.thumbYEl.style.transform = `translateY(${thumbOffset}px)`;
@@ -546,23 +587,29 @@ export default class Scrollbar extends React.Component {
 
         // if X track rendered and changed anything related to scrollX
         if (this.trackXEl) {
-            mask & (1 << 11) && (this.trackXEl.style.display = currentScrollValues.trackXVisible ? null : "none");
+            bitmask & (1 << 11) && (this.trackXEl.style.display = scrollValues.trackXVisible ? null : "none");
 
-            if (mask & (1 << 1) || mask & (1 << 3) || mask & (1 << 5) || mask & (1 << 7) || mask & (1 << 9)) {
-                if (currentScrollValues.scrollXPossible) {
+            if (
+                bitmask & (1 << 1) ||
+                bitmask & (1 << 3) ||
+                bitmask & (1 << 5) ||
+                bitmask & (1 << 7) ||
+                bitmask & (1 << 9)
+            ) {
+                if (scrollValues.scrollXPossible) {
                     const trackSize = getInnerWidth(this.trackXEl);
                     const thumbSize = Scrollbar.computeThumbSize(
                         trackSize,
-                        currentScrollValues.scrollWidth,
-                        currentScrollValues.clientWidth,
+                        scrollValues.scrollWidth,
+                        scrollValues.clientWidth,
                         this.props.minimalThumbsSize
                     );
                     let thumbOffset = Scrollbar.computeThumbOffset(
                         trackSize,
                         thumbSize,
-                        currentScrollValues.scrollWidth,
-                        currentScrollValues.clientWidth,
-                        currentScrollValues.scrollLeft
+                        scrollValues.scrollWidth,
+                        scrollValues.clientWidth,
+                        scrollValues.scrollLeft
                     );
 
                     if (this.state.isRtl) {
@@ -580,17 +627,23 @@ export default class Scrollbar extends React.Component {
             }
         }
 
-        if (this.props.translateContentSizesToHolder && this.wrapperEl && (mask & (1 << 2) || mask & (1 << 3))) {
-            this.holderEl.style.width = currentScrollValues.scrollWidth + "px";
-            this.holderEl.style.height = currentScrollValues.scrollHeight + "px";
+        if (this.props.translateContentSizesToHolder && this.holderEl && (bitmask & (1 << 2) || bitmask & (1 << 3))) {
+            this.holderEl.style.width = scrollValues.scrollWidth + "px";
+            this.holderEl.style.height = scrollValues.scrollHeight + "px";
         }
 
-        if (prevScrollValues.scrollTop !== null) {
-            this.props.onScroll && this.props.onScroll(this.scrollValues, prevScrollValues);
-        }
+        return true;
+    }
 
-        return this.scrollValues;
-    };
+    /**
+     * @param {ScrollValues} scrollValues current scroll values
+     * @param {ScrollValues} prevScrollValues scroll values that been before the update process
+     *
+     * @param {number} bitmask bit mask that represents difference between prev scroll values and current ones
+     */
+    updaterNative(scrollValues, prevScrollValues, bitmask) {
+        return true;
+    }
 
     handleTrackClick = (e, params) => {
         params.axis === TYPE_X && this.props.trackXProps.onClick && this.props.trackXProps.onClick(e, params);
@@ -669,6 +722,8 @@ export default class Scrollbar extends React.Component {
 
     render() {
         const {
+            native,
+
             minimalThumbsSize,
             fallbackScrollbarWidth,
 
@@ -722,6 +777,29 @@ export default class Scrollbar extends React.Component {
             ...props
         } = this.props;
         const {trackXVisible, trackYVisible} = this.state;
+        const scrollValues = this.getScrollValues();
+
+        if (native) {
+            return (
+                <NativeScrollbar
+                    rtl={rtl}
+                    momentum={momentum}
+                    permanentTrackX={permanentTrackX}
+                    permanentTrackY={permanentTrackY}
+                    permanentTracks={permanentTracks}
+                    noScrollX={noScrollX}
+                    noScrollY={noScrollY}
+                    noScroll={noScroll}
+                    tagName={tagName}
+                    className={className}
+                    style={style}
+                    elementRef={ref => (this.contentEl = ref)}
+                    onScroll={this.handleScrollEvent}
+                    children={children}
+                    {...props}
+                />
+            );
+        }
 
         const browserSBW = getScrollbarWidth();
         const scrollbarWidth = browserSBW || fallbackScrollbarWidth;
@@ -777,20 +855,21 @@ export default class Scrollbar extends React.Component {
             ...propsContentProps.style,
             ...(momentum && {WebkitOverflowScrolling: "touch"}),
 
-            overflowY: this.scrollValues.scrollYPossible ? "scroll" : "hidden",
+            overflowY: scrollValues.scrollYPossible ? "scroll" : "hidden",
+            overflowX: scrollValues.scrollXPossible ? "scroll" : "hidden",
+
             ...(this.state.isRtl
                 ? {
-                      paddingLeft: !browserSBW && this.scrollValues.scrollYPossible ? scrollbarWidth : null,
-                      marginLeft: this.scrollValues.scrollYPossible ? -scrollbarWidth : null,
+                      paddingLeft: !browserSBW && scrollValues.scrollYPossible ? scrollbarWidth : null,
+                      marginLeft: scrollValues.scrollYPossible ? -scrollbarWidth : null,
                   }
                 : {
-                      paddingRight: !browserSBW && this.scrollValues.scrollYPossible ? scrollbarWidth : null,
-                      marginRight: this.scrollValues.scrollYPossible ? -scrollbarWidth : null,
+                      paddingRight: !browserSBW && scrollValues.scrollYPossible ? scrollbarWidth : null,
+                      marginRight: scrollValues.scrollYPossible ? -scrollbarWidth : null,
                   }),
 
-            overflowX: this.scrollValues.scrollXPossible ? "scroll" : "hidden",
-            paddingBottom: !browserSBW && this.scrollValues.scrollXPossible ? scrollbarWidth : null,
-            marginBottom: this.scrollValues.scrollXPossible ? -scrollbarWidth : null,
+            paddingBottom: !browserSBW && scrollValues.scrollXPossible ? scrollbarWidth : null,
+            marginBottom: scrollValues.scrollXPossible ? -scrollbarWidth : null,
         };
         trackXProps.style = {
             ...trackXProps.style,

@@ -434,14 +434,15 @@ body {
 
     & > .content {
         margin: 2rem 0 0;
-        & > .ScrollbarsCustom.ScrollbarsCustom-native {
+        & > .ScrollbarsCustom.native {
             p {
-                display:  inline-block;
-                position: relative;
-                width:    150%;
+                display:   inline-block;
+                position:  relative;
+                width:     150%;
+                font-size: 1.75rem;
             }
         }
-        & > .ScrollbarsCustom:not(.ScrollbarsCustom-native) {
+        & > .ScrollbarsCustom:not(.native) {
             display:               grid;
             width:                 100%;
             height:                100%;

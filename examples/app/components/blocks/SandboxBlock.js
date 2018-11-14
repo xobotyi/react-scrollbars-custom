@@ -13,7 +13,7 @@ export default class SandboxBlock extends React.Component {
             noScrollY: false,
             noScrollX: false,
 
-            nativeScrollbar: false,
+            nativeScrollbar: true,
 
             rtl: false,
 
@@ -191,20 +191,28 @@ export default class SandboxBlock extends React.Component {
                         </div>
                     )}
                 </div>
+
                 <div className="content" style={{height: 280}}>
                     <Scrollbar
-                        //nativeScrollbars={ nativeScrollbar }
+                        native={nativeScrollbar}
                         noDefaultStyles
-                        ref={ref => {
-                            this.scrollbar = ref;
-                        }}
+                        ref={ref => (this.scrollbar = ref)}
                         noScroll={noScroll}
                         noScrollY={noScrollY}
                         noScrollX={noScrollX}
                         rtl={rtl}
                         permanentTracks={permanentTracks}
                         permanentTrackY={permanentTrackY}
-                        permanentTrackX={permanentTrackX}>
+                        permanentTrackX={permanentTrackX}
+                        onScrollStart={() => {
+                            console.log("start!!");
+                        }}
+                        onScrollStop={() => {
+                            console.log("stop!!");
+                        }}
+                        onScroll={() => {
+                            console.log("scroll!");
+                        }}>
                         {this.getParagraphs(this.state.paragraphsCount)}
                     </Scrollbar>
                 </div>

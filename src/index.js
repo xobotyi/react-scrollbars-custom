@@ -141,7 +141,7 @@ export default class Scrollbar extends React.Component {
 
         trackClickBehavior: "jump",
 
-        momentum: false,
+        momentum: true,
 
         noDefaultStyles: false,
 
@@ -936,11 +936,7 @@ export default class Scrollbar extends React.Component {
 
         return (
             <this.props.tagName {...props}>
-                {wrapperRenderer ? (
-                    wrapperRenderer(wrapperProps)
-                ) : (
-                    <div {...wrapperProps} ref={wrapperProps.elementRef} />
-                )}
+                {wrapperRenderer ? wrapperRenderer(wrapperProps) : <div {...wrapperProps} />}
 
                 {(trackYVisible || !(removeTracksWhenNotUsed && removeTrackYWhenNotUsed)) && (
                     <Track type={TYPE_Y} {...trackYProps}>

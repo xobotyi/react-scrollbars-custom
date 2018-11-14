@@ -687,9 +687,7 @@ function (_React$Component) {
       thumbYProps.onDrag = thumbXProps.onDrag = this.handleThumbDrag;
       contentProps.children = children;
       wrapperProps.children = contentRenderer ? contentRenderer(contentProps) : _react.default.createElement("div", contentProps);
-      return _react.default.createElement(this.props.tagName, props, wrapperRenderer ? wrapperRenderer(wrapperProps) : _react.default.createElement("div", _extends({}, wrapperProps, {
-        ref: wrapperProps.elementRef
-      })), (trackYVisible || !(removeTracksWhenNotUsed && removeTrackYWhenNotUsed)) && _react.default.createElement(_Track.default, _extends({
+      return _react.default.createElement(this.props.tagName, props, wrapperRenderer ? wrapperRenderer(wrapperProps) : _react.default.createElement("div", wrapperProps), (trackYVisible || !(removeTracksWhenNotUsed && removeTrackYWhenNotUsed)) && _react.default.createElement(_Track.default, _extends({
         type: _Track.TYPE_Y
       }, trackYProps), _react.default.createElement(_Thumb.default, _extends({
         type: _Track.TYPE_Y
@@ -857,7 +855,7 @@ _defineProperty(Scrollbar, "defaultProps", {
   minimalThumbsSize: 30,
   fallbackScrollbarWidth: 20,
   trackClickBehavior: "jump",
-  momentum: false,
+  momentum: true,
   noDefaultStyles: false,
   scrollDetectionThreshold: 100,
   translateContentSizesToHolder: false,

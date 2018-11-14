@@ -27,6 +27,8 @@ export default function performTests() {
         afterEach(() => {
             div.style.width = "200px";
             div.style.height = "200px";
+            scrollbar.contentEl.scrollTop = 0;
+            scrollbar.contentEl.scrollLeft = 0;
         });
 
         it("scrollTop must return actual value", () => {
@@ -40,6 +42,11 @@ export default function performTests() {
 
             scrollbar.contentEl.scrollTop = -100;
             expect(scrollbar.scrollTop).toBe(scrollbar.contentEl.scrollTop);
+
+            let contentEl = scrollbar.contentEl;
+            scrollbar.contentEl = null;
+            expect(scrollbar.scrollTop).toBe(0);
+            scrollbar.contentEl = contentEl;
         });
 
         it("scrollTop must set value", () => {
@@ -70,6 +77,11 @@ export default function performTests() {
 
             scrollbar.contentEl.scrollLeft = -100;
             expect(scrollbar.scrollLeft).toBe(scrollbar.contentEl.scrollLeft);
+
+            let contentEl = scrollbar.contentEl;
+            scrollbar.contentEl = null;
+            expect(scrollbar.scrollLeft).toBe(0);
+            scrollbar.contentEl = contentEl;
         });
 
         it("scrollLeft must set value", () => {
@@ -87,6 +99,94 @@ export default function performTests() {
 
             scrollbar.scrollLeft = -100;
             expect(scrollbar.contentEl.scrollLeft).toBe(0);
+        });
+
+        it("scrollHeight must return actual value", () => {
+            expect(scrollbar.scrollHeight).toBe(scrollbar.contentEl.scrollHeight);
+
+            div.style.height = "50px";
+            expect(scrollbar.scrollHeight).toBe(scrollbar.contentEl.scrollHeight);
+
+            div.style.height = "500px";
+            expect(scrollbar.scrollHeight).toBe(scrollbar.contentEl.scrollHeight);
+
+            let contentEl = scrollbar.contentEl;
+            scrollbar.contentEl = null;
+            expect(scrollbar.scrollHeight).toBe(0);
+            scrollbar.contentEl = contentEl;
+        });
+
+        it("scrollWidth must return actual value", () => {
+            expect(scrollbar.scrollWidth).toBe(scrollbar.contentEl.scrollWidth);
+
+            div.style.width = "50px";
+            expect(scrollbar.scrollWidth).toBe(scrollbar.contentEl.scrollWidth);
+
+            div.style.width = "500px";
+            expect(scrollbar.scrollWidth).toBe(scrollbar.contentEl.scrollWidth);
+
+            let contentEl = scrollbar.contentEl;
+            scrollbar.contentEl = null;
+            expect(scrollbar.scrollWidth).toBe(0);
+            scrollbar.contentEl = contentEl;
+        });
+
+        it("clientHeight must return actual value", () => {
+            expect(scrollbar.clientHeight).toBe(scrollbar.contentEl.clientHeight);
+
+            scrollbar.wrapperEl.height = "50px";
+            expect(scrollbar.clientHeight).toBe(scrollbar.contentEl.clientHeight);
+
+            scrollbar.wrapperEl.height = "500px";
+            expect(scrollbar.clientHeight).toBe(scrollbar.contentEl.clientHeight);
+
+            let contentEl = scrollbar.contentEl;
+            scrollbar.contentEl = null;
+            expect(scrollbar.clientHeight).toBe(0);
+            scrollbar.contentEl = contentEl;
+        });
+
+        it("clientWidth must return actual value", () => {
+            expect(scrollbar.clientWidth).toBe(scrollbar.contentEl.clientWidth);
+
+            scrollbar.wrapperEl.width = "50px";
+            expect(scrollbar.clientWidth).toBe(scrollbar.contentEl.clientWidth);
+
+            scrollbar.wrapperEl.width = "500px";
+            expect(scrollbar.clientWidth).toBe(scrollbar.contentEl.clientWidth);
+
+            let contentEl = scrollbar.contentEl;
+            scrollbar.contentEl = null;
+            expect(scrollbar.clientWidth).toBe(0);
+            scrollbar.contentEl = contentEl;
+        });
+
+        it("scrollToTop should scroll to the very top", () => {
+            expect(scrollbar.scrollToTop()).toBe(scrollbar);
+
+            expect(scrollbar.contentEl.scrollTop).toBe(0);
+        });
+
+        it("scrollToBottom should scroll to the very bottom", () => {
+            expect(scrollbar.scrollToBottom()).toBe(scrollbar);
+
+            expect(scrollbar.contentEl.scrollTop).toBe(
+                scrollbar.contentEl.scrollHeight - scrollbar.contentEl.clientHeight
+            );
+        });
+
+        it("scrollToLeft should scroll to the very left", () => {
+            expect(scrollbar.scrollToLeft()).toBe(scrollbar);
+
+            expect(scrollbar.contentEl.scrollLeft).toBe(0);
+        });
+
+        it("scrollToRight should scroll to the very right", () => {
+            expect(scrollbar.scrollToRight()).toBe(scrollbar);
+
+            expect(scrollbar.contentEl.scrollLeft).toBe(
+                scrollbar.contentEl.scrollWidth - scrollbar.contentEl.clientWidth
+            );
         });
     });
 }

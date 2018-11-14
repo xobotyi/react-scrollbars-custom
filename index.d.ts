@@ -16,6 +16,29 @@ export interface ScrollValues {
     isRtl?: boolean;
 }
 
+export interface ScrollbarRendererProps {
+    className: string;
+    style: CSSProperties;
+
+    elementRef: void;
+}
+
+export interface ScrollbarTrackRendererProps {
+    className: string;
+    style: CSSProperties;
+
+    elementRef: void;
+    onClick: void;
+}
+
+export interface ScrollbarThumbRendererProps {
+    className: string;
+    style: CSSProperties;
+
+    elementRef: void;
+    onMouseDown: void;
+}
+
 export enum TrackClickBehaviorPossibilities {
     Jump = "jump",
     Step = "step",
@@ -63,12 +86,12 @@ export interface ScrollbarProps {
     thumbXProps?: object;
     thumbYProps?: object;
 
-    wrapperRenderer?: SFC;
-    contentRenderer?: SFC;
-    trackXRenderer?: SFC;
-    trackYRenderer?: SFC;
-    thumbXRenderer?: SFC;
-    thumbYRenderer?: SFC;
+    wrapperRenderer?: SFC<ScrollbarRendererProps>;
+    contentRenderer?: SFC<ScrollbarRendererProps>;
+    trackXRenderer?: SFC<ScrollbarTrackRendererProps>;
+    trackYRenderer?: SFC<ScrollbarTrackRendererProps>;
+    thumbXRenderer?: SFC<ScrollbarThumbRendererProps>;
+    thumbYRenderer?: SFC<ScrollbarThumbRendererProps>;
 
     onScroll?(current: ScrollValues, instance: Scrollbar): void;
 

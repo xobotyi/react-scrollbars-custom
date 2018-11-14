@@ -150,8 +150,8 @@ function (_React$Component) {
           props = _objectWithoutProperties(_this$props, ["className", "renderer", "type", "elementRef", "onDrag", "onDragStart", "onDragEnd"]);
 
       props.className = "thumb " + (type === TYPE_X ? "thumbX" : "thumbY") + (className ? " " + className : "");
+      props.onMouseDown = this.handleDragStart;
       return renderer ? renderer(props) : _react.default.createElement("div", _extends({}, props, {
-        onMouseDown: this.handleDragStart,
         ref: function ref(_ref) {
           typeof elementRef === "function" && elementRef(_ref);
           _this2.element = _ref;

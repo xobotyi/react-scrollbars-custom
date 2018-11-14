@@ -900,10 +900,10 @@ export default class Scrollbar extends React.Component {
         props.ref = ref => {
             this.holderEl = ref;
         };
-        wrapperProps.ref = ref => {
+        wrapperProps[wrapperRenderer ? "elementRef" : "ref"] = ref => {
             this.wrapperEl = ref;
         };
-        contentProps.ref = ref => {
+        contentProps[contentRenderer ? "elementRef" : "ref"] = ref => {
             this.contentEl = ref;
         };
         trackXProps.elementRef = ref => {
@@ -936,7 +936,11 @@ export default class Scrollbar extends React.Component {
 
         return (
             <this.props.tagName {...props}>
-                {wrapperRenderer ? wrapperRenderer(wrapperProps) : <div {...wrapperProps} />}
+                {wrapperRenderer ? (
+                    wrapperRenderer(wrapperProps)
+                ) : (
+                    <div {...wrapperProps} ref={wrapperProps.elementRef} />
+                )}
 
                 {(trackYVisible || !(removeTracksWhenNotUsed && removeTrackYWhenNotUsed)) && (
                     <Track type={TYPE_Y} {...trackYProps}>

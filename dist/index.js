@@ -653,11 +653,11 @@ function (_React$Component) {
         _this2.holderEl = ref;
       };
 
-      wrapperProps.ref = function (ref) {
+      wrapperProps[wrapperRenderer ? "elementRef" : "ref"] = function (ref) {
         _this2.wrapperEl = ref;
       };
 
-      contentProps.ref = function (ref) {
+      contentProps[contentRenderer ? "elementRef" : "ref"] = function (ref) {
         _this2.contentEl = ref;
       };
 
@@ -687,7 +687,9 @@ function (_React$Component) {
       thumbYProps.onDrag = thumbXProps.onDrag = this.handleThumbDrag;
       contentProps.children = children;
       wrapperProps.children = contentRenderer ? contentRenderer(contentProps) : _react.default.createElement("div", contentProps);
-      return _react.default.createElement(this.props.tagName, props, wrapperRenderer ? wrapperRenderer(wrapperProps) : _react.default.createElement("div", wrapperProps), (trackYVisible || !(removeTracksWhenNotUsed && removeTrackYWhenNotUsed)) && _react.default.createElement(_Track.default, _extends({
+      return _react.default.createElement(this.props.tagName, props, wrapperRenderer ? wrapperRenderer(wrapperProps) : _react.default.createElement("div", _extends({}, wrapperProps, {
+        ref: wrapperProps.elementRef
+      })), (trackYVisible || !(removeTracksWhenNotUsed && removeTrackYWhenNotUsed)) && _react.default.createElement(_Track.default, _extends({
         type: _Track.TYPE_Y
       }, trackYProps), _react.default.createElement(_Thumb.default, _extends({
         type: _Track.TYPE_Y

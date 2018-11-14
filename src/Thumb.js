@@ -100,13 +100,13 @@ export default class Thumb extends React.Component {
         const {className, renderer, type, elementRef, onDrag, onDragStart, onDragEnd, ...props} = this.props;
 
         props.className = "thumb " + (type === TYPE_X ? "thumbX" : "thumbY") + (className ? " " + className : "");
+        props.onMouseDown = this.handleDragStart;
 
         return renderer ? (
             renderer(props)
         ) : (
             <div
                 {...props}
-                onMouseDown={this.handleDragStart}
                 ref={ref => {
                     typeof elementRef === "function" && elementRef(ref);
                     this.element = ref;

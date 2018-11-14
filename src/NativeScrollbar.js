@@ -3,13 +3,29 @@ import React from "react";
 
 export default class NativeScrollbar extends React.Component {
     static propTypes = {
+        rtl: PropTypes.bool,
+
+        momentum: PropTypes.bool,
+
+        permanentTrackX: PropTypes.bool,
+        permanentTrackY: PropTypes.bool,
+        permanentTracks: PropTypes.bool,
+
+        noScrollX: PropTypes.bool,
+        noScrollY: PropTypes.bool,
+        noScroll: PropTypes.bool,
+
         tagName: PropTypes.string,
+
         className: PropTypes.string,
+
         style: PropTypes.object,
 
-        onScroll: PropTypes.func,
-
         elementRef: PropTypes.func,
+    };
+
+    static defaultProps = {
+        tagName: "div",
     };
 
     render() {

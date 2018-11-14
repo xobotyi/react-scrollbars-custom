@@ -101,9 +101,20 @@ function (_React$Component) {
 exports.default = NativeScrollbar;
 
 _defineProperty(NativeScrollbar, "propTypes", {
+  rtl: _propTypes.default.bool,
+  momentum: _propTypes.default.bool,
+  permanentTrackX: _propTypes.default.bool,
+  permanentTrackY: _propTypes.default.bool,
+  permanentTracks: _propTypes.default.bool,
+  noScrollX: _propTypes.default.bool,
+  noScrollY: _propTypes.default.bool,
+  noScroll: _propTypes.default.bool,
   tagName: _propTypes.default.string,
   className: _propTypes.default.string,
   style: _propTypes.default.object,
-  onScroll: _propTypes.default.func,
   elementRef: _propTypes.default.func
+});
+
+_defineProperty(NativeScrollbar, "defaultProps", {
+  tagName: "div"
 });

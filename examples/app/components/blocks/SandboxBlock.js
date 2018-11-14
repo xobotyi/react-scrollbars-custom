@@ -203,16 +203,7 @@ export default class SandboxBlock extends React.Component {
                         rtl={rtl}
                         permanentTracks={permanentTracks}
                         permanentTrackY={permanentTrackY}
-                        permanentTrackX={permanentTrackX}
-                        onScrollStart={() => {
-                            console.log("start!!");
-                        }}
-                        onScrollStop={() => {
-                            console.log("stop!!");
-                        }}
-                        onScroll={() => {
-                            console.log("scroll!");
-                        }}>
+                        permanentTrackX={permanentTrackX}>
                         {this.getParagraphs(this.state.paragraphsCount)}
                     </Scrollbar>
                 </div>

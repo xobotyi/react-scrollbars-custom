@@ -1,73 +1,122 @@
 # API
 
-*`className`* _`string`_
 
-*`contentProps`* _`object`_
+### Props
 
-*`contentRenderer`* _`SFC`_
+**`className`** _`string`_  
+Additional classNames for the holder _(or content in case of native mode)_ element.
 
-*`fallbackScrollbarWidth`* _`number`_ = 20
+**`contentProps`** _`object`_  
+Properties to pass to the content element.
 
-*`minimalThumbsSize`* _`number`_ = 30
+**`contentRenderer`** _`SFC`_  
+Custom content renderer.
 
-*`momentum`* _`boolean`_ = true
+**`fallbackScrollbarWidth`** _`number`_ = 20  
+Scrollbar width for cases when automatic scrollbar width detection was not worked (mostly - for mobile devices).
 
-*`native`* _`boolean`_ = false
+**`minimalThumbsSize`** _`number`_ = 30  
+Minimal size of scrollbar thumb.
 
-*`noDefaultStyles`* _`boolean`_ = false
+**`momentum`** _`boolean`_ = true  
+Use momentum scrolling on iOS.
 
-*`noScrollX`* _`boolean`_ = false
+**`native`** _`boolean`_ = false  
+Do not use custom scrollbars.
 
-*`noScrollY`* _`boolean`_ = false
+**`noDefaultStyles`** _`boolean`_ = false  
+Do not use default inline styles.  
+>**Note:** Styles needed to proper component work will be passed _regardless of this option_.
 
-*`noScroll`* _`boolean`_ = false
+**`noScrollX`** _`boolean`_ = false  
+Disable horizontal scrolling.
 
-*`onScrollStart`* _`function`_
+**`noScrollY`** _`boolean`_ = false  
+Disable vertical scrolling.
 
-*`onScrollStop`* _`function`_
+**`noScroll`** _`boolean`_ = false  
+Disable any scrolling.
 
-*`onScroll`* _`function`_
+**`onScrollStart`** _`function`_  
+Callback that called immediately when user started scrolling (no matter how, thumb dragging, keyboard, mousewheel and etc.).
 
-*`permanentTrackX`* _`boolean`_ = false
+**`onScrollStop`** _`function`_  
+Callback that called after `scrollDetectionThreshold` milliseconds after last scroll event.
 
-*`permanentTrackY`* _`boolean`_ = false
+**`onScroll`** _`function`_  
+Callback that called each time any of scroll-related parameters has changed.
+>**Note:** This callback is called inside `requestAnimationFrame` loop.  
+>That mean that regardless of system load it will be called no more than 60 times per second. But if system overloaded - only when browser will decide to call it.
 
-*`permanentTracks`* _`boolean`_ = false
+**`permanentTrackX`** _`boolean`_  
+Show horizontal track regardless of scrolling possibility (by default track is shown only when scrolling is possible).
 
-*`removeTrackXWhenNotUsed`* _`boolean`_
+**`permanentTrackY`** _`boolean`_  
+Show vertical track regardless of scrolling possibility (by default track is shown only when scrolling is possible).
 
-*`removeTrackYWhenNotUsed`* _`boolean`_
+**`permanentTracks`** _`boolean`_ = false  
+Show both tracks regardless of scrolling possibility (by default tracks are shown only when scrolling is possible).
 
-*`removeTracksWhenNotUsed`* _`boolean`_ = true
+**`removeTrackXWhenNotUsed`** _`boolean`_  
+Remove horizontal track when scrolling is not possible, otherwise it will be hidden with `display:none;` inline style.
 
-*`rtl`* _`boolean`_
+**`removeTrackYWhenNotUsed`** _`boolean`_  
+Remove vertical track when scrolling is not possible, otherwise it will be hidden with `display:none;` inline style.
 
-*`scrollDetectionThreshold`* _`number`_ = 100
+**`removeTracksWhenNotUsed`** _`boolean`_ = true  
+Remove tracks when scrolling is not possible, otherwise it will be hidden with `display:none;` inline style.
 
-*`style`* `object`
+**`rtl`** _`boolean`_  
+If true - `direction: rtl` inline styles will be applied to the **holder** _(or content in case of native mode)_ element.  
+Otherwise it will be detected automatically for the **content** element regardless of the mode.
 
-*`tagName`* _`string`_ = div
+**`scrollDetectionThreshold`** _`number`_ = 100  
+Amount of seconds after which scrolling will be treated as completed and `onScrollStop` callback called.
 
-*`thumbXProps`* _`object`_
+**`style`** `object`  
+Additional styles for the holder _(or content in case of native mode)_ element.
 
-*`thumbXRenderer`* _`SFC`_
+**`tagName`** _`string`_ = "div" 
+tagName of holder _(or content in case of native mode)_ element.
 
-*`thumbYProps`* _`object`_
+**`thumbXProps`** _`object`_  
+Properties to pass to the horizontal thumb element.
 
-*`thumbYRenderer`* _`SFC`_
+**`thumbXRenderer`** _`SFC`_  
+Custom horizontal thumb renderer.
 
-*`trackClickBehavior`* _`string`_ `"jump" | "step"` = "jump"
+**`thumbYProps`** _`object`_  
+Properties to pass to the vertical thumb element.
 
-*`trackXProps`* _`object`_
+**`thumbYRenderer`** _`SFC`_  
+Custom vertical thumb renderer.
 
-*`trackXRenderer`* _`SFC`_
+**`trackClickBehavior`** _`string`_ `"jump" | "step"` = "jump"  
+If "jump" - click on the track's free area will move thumb's center straight to the clicked position.
+If "step" - it will only move the thumb one length towards the click position.
 
-*`trackYProps`* _`object`_
+**`trackXProps`** _`object`_  
+Properties to pass to the horizontal track element.
 
-*`trackYRenderer`* _`SFC`_
+**`trackXRenderer`** _`SFC`_  
+Custom horizontal track renderer.
 
-*`translateContentSizesToHolder`* _`boolean`_ = false
+**`trackYProps`** _`object`_  
+Properties to pass to the vertical track element.
 
-*`wrapperProps`* _`object`_
+**`trackYRenderer`** _`SFC`_  
+Custom vertical track renderer.
 
-*`wrapperRenderer`* _`SFC`_
+**`translateContentSizesToHolder`** _`boolean`_ = false  
+Content element sizes will be translated to the holder element with inline props.  
+Due to the content element is always absolutely positioned - it can't stretch wrapper and holder elements. This prop solves that problem.
+
+**`wrapperProps`** _`object`_  
+Properties to pass to the wrapper element.
+
+**`wrapperRenderer`** _`SFC`_  
+Custom wrapper renderer.
+
+
+### Methods
+

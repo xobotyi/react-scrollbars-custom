@@ -791,7 +791,11 @@ export default class Scrollbar extends React.Component {
                     noScrollY={noScrollY}
                     noScroll={noScroll}
                     tagName={tagName}
-                    className={className}
+                    className={
+                        (trackYVisible ? " trackYVisible" : "") +
+                        (trackYVisible ? " trackXVisible" : "") +
+                        (className ? " " + className : "")
+                    }
                     style={style}
                     elementRef={ref => (this.contentEl = ref)}
                     onScroll={this.handleScrollEvent}

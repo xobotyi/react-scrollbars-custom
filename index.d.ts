@@ -93,11 +93,11 @@ export interface ScrollbarProps {
     thumbXRenderer?: SFC<ScrollbarThumbRendererProps>;
     thumbYRenderer?: SFC<ScrollbarThumbRendererProps>;
 
-    onScroll?(current: ScrollValues, instance: Scrollbar): void;
+    onScroll?(scrollValues: ScrollValues, prevScrollValues: ScrollValues, instance: Scrollbar): void;
 
-    onScrollStart?(current: ScrollValues, instance: Scrollbar): void;
+    onScrollStart?(scrollValues: ScrollValues, instance: Scrollbar): void;
 
-    onScrollStop?(current: ScrollValues, instance: Scrollbar): void;
+    onScrollStop?(scrollValues: ScrollValues, instance: Scrollbar): void;
 }
 
 declare class Scrollbar extends Component<ScrollbarProps> {

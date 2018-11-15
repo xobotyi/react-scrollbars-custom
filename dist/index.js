@@ -588,7 +588,7 @@ function (_React$Component) {
           noScrollY: noScrollY,
           noScroll: noScroll,
           tagName: tagName,
-          className: className,
+          className: (trackYVisible ? " trackYVisible" : "") + (trackYVisible ? " trackXVisible" : "") + (className ? " " + className : ""),
           style: style,
           elementRef: function elementRef(ref) {
             return _this2.contentEl = ref;

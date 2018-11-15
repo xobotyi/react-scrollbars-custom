@@ -75,13 +75,13 @@ Disable vertical scrolling.
 **`noScroll`** _`boolean`_ = false  
 Disable any scrolling.
 
-**`onScrollStart`** _`function`_  
+**`onScrollStart(scrollValues: ScrollValues)`** _`function`_  
 Callback that called immediately when user started scrolling (no matter how, thumb dragging, keyboard, mousewheel and etc.).
 
-**`onScrollStop`** _`function`_  
+**`onScrollStop(scrollValues: ScrollValues)`** _`function`_  
 Callback that called after `scrollDetectionThreshold` milliseconds after last scroll event.
 
-**`onScroll`** _`function`_  
+**`onScroll(scrollValues: ScrollValues, prevScrollValues: ScrollValues)`** _`function`_  
 Callback that called each time any of scroll-related parameters has changed.
 >**Note:** This callback is called inside `requestAnimationFrame` loop.  
 >That mean that regardless of system load it will be called no more than 60 times per second. But if system overloaded - only when browser will decide to call it.

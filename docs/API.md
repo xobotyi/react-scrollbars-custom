@@ -1,5 +1,43 @@
 # API
 
+### Instance properties
+
+**`holderEl`** _`HTMLElement`_  
+Reference to holder DOM element
+
+**`wrapperEl`** _`HTMLElement`_  
+Reference to wrapper DOM element
+
+**`contentEl`** _`HTMLElement`_  
+Reference to content DOM element
+
+**`trackXEl`** _`HTMLElement`_  
+Reference to horizontal DOM track
+
+**`trackYEl`** _`HTMLElement`_  
+Reference to vertical DOM track
+
+**`thumbXEl`** _`HTMLElement`_  
+Reference to horizontal DOM thumb
+
+**`thumbYEl`** _`HTMLElement`_  
+Reference to vertical DOM thumb
+
+**`scrollValues`** _`object`_  
+Current scroll related values  
+>**`clientHeight`** _`number`_ content's native clientHeight parameter  
+>**`clientWidth`** _`number`_ content's native clientWidth parameter  
+>**`scrollHeight`** _`number`_ content's native scrollHeight parameter  
+>**`scrollWidth`** _`number`_ content's native scrollWidth parameter  
+>**`scrollTop`** _`number`_ content's native scrollTop parameter  
+>**`scrollLeft`** _`number`_ content's native scrollLeft parameter  
+>**`scrollYBlocked`** _`boolean`_ Indicates whether vertical scroll blocked via properties  
+>**`scrollXBlocked`** _`boolean`_ Indicates whether horizontal scroll blocked via properties  
+>**`scrollYPossible`** _`boolean`_ Indicates whether the content overflows vertically and scrolling not blocked  
+>**`scrollXPossible`** _`boolean`_ Indicates whether the content overflows horizontally and scrolling not blocked  
+>**`trackYVisible`** _`boolean`_ Indicates whether vertical track is visible  
+>**`trackXVisible`** _`boolean`_ Indicates whether horizontal track is visible  
+>**`isRtl`** _`boolean`_ Indicates whether display direction is right-to-left  
 
 ### Props
 
@@ -120,3 +158,26 @@ Custom wrapper renderer.
 
 ### Methods
 
+**scrollToTop ()**  
+_return_ `Scrollbar`  
+Scroll to the top border
+
+**scrollToBottom ()**  
+_return_ `Scrollbar`  
+Scroll to the bottom border
+
+**scrollToLeft ()**  
+_return_ `Scrollbar`  
+Scroll to the left border
+
+**scrollToRight ()**  
+_return_ `Scrollbar`  
+Scroll to the right border
+
+**getScrollValues ( force `boolean` = false )**  
+_return_ `scrollValues`  
+Return scroll values actual for the last update process. If `force` parameter is truthy - it will return current scroll values, but it will cause layout reflow.
+
+**update ( force `boolean` = false )**  
+_return_ `scrollValues`  
+Actualizes scroll values and scrollbars.

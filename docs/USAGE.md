@@ -1,5 +1,8 @@
 # USAGE
 
+### Basic principles
+Underneath `react-scrollbars-custom` uses `requestAnimationFrame` loop, which check and update each known scrollbar, and as result - scrollbars updates synchronised with browser's render flow.
+
 ### Default
 The `<Scrollbar />` component works out of the box, with only need of `width` and `height` to be set, inline or via CSS;
 ```javascript
@@ -49,12 +52,12 @@ It will generate next structure:
 ```html
 <div class="ScrollbarsCustom">
     <div class="wrapper" style="position: relative; overflow: hidden;">
-      <div class="content" style="position: absolute; top: 0px; bottom: 0px; right: 0px; left: 0px; overflowY: {overflowYPossible}; overflowX: {overflowXPossible}; margin-right: -{browsersScrollbarsWidth}px; margin-bottom: -{browsersScrollbarsWidth}px;"></div>
+      <div class="content" style="position: absolute; top: 0px; bottom: 0px; right: 0px; left: 0px; overflowY: {overflowYPossible}; overflowX: {overflowXPossible}; margin-right: -{browsersScrollbarsWidth}px; margin-bottom: -{browsersScrollbarsWidth}px; padding-right: {paddingRight}; padding-bottom: {paddingBottom};"></div>
     </div>
-    <div class="track trackY" style="display: none;">
+    <div class="track trackY">
       <div class="thumb thumbY" style="transform: translateY({offset}px); height: {height}px;"></div>
     </div>
-    <div class="track trackX" style="display: none;">
+    <div class="track trackX">
       <div class="thumb thumbX" style="transform: translateX({offset}px); width: {width}px;"></div>
     </div>
 </div>

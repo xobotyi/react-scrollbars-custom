@@ -608,6 +608,13 @@ function (_React$Component) {
           thumbXProps = _objectSpread({}, propsThumbXProps),
           thumbYProps = _objectSpread({}, propsThumbYProps);
 
+      wrapperProps.key = "wrapper";
+      contentProps.key = "content";
+      trackXProps.key = "trackX";
+      trackYProps.key = "trackY";
+      thumbXProps.key = "thumbX";
+      thumbYProps.key = "thumbY";
+
       if (!noDefaultStyles) {
         var _objectSpread2;
 

@@ -815,6 +815,13 @@ export default class Scrollbar extends React.Component {
             thumbXProps = {...propsThumbXProps},
             thumbYProps = {...propsThumbYProps};
 
+        wrapperProps.key = "wrapper";
+        contentProps.key = "content";
+        trackXProps.key = "trackX";
+        trackYProps.key = "trackY";
+        thumbXProps.key = "thumbX";
+        thumbYProps.key = "thumbY";
+
         if (!noDefaultStyles) {
             props.style = {
                 ...defaultStyles.holder,

@@ -13,7 +13,7 @@ export default class SandboxBlock extends React.Component {
             noScrollY: false,
             noScrollX: false,
 
-            nativeScrollbar: true,
+            nativeScrollbar: false,
 
             rtl: false,
 

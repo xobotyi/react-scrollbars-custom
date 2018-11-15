@@ -885,10 +885,12 @@ export default class Scrollbar extends React.Component {
         trackXProps.style = {
             ...trackXProps.style,
             ...propsTrackXProps.style,
+            ...(!trackXVisible && {display: "none"}),
         };
         trackYProps.style = {
             ...trackYProps.style,
             ...propsTrackYProps.style,
+            ...(!trackYVisible && {display: "none"}),
         };
         thumbXProps.style = {
             ...thumbXProps.style,

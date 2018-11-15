@@ -34,9 +34,6 @@ npm i --save react-scrollbars-custom
 ## Usage
 Minimal configuration
 ```javascript
-import React, { Component }  from 'react';
-import Scrollbar from 'react-scrollbars-custom';
-
 class App extends Component
 {
     render() {

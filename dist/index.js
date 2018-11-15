@@ -648,8 +648,12 @@ function (_React$Component) {
         paddingBottom: !browserSBW && scrollValues.scrollXPossible ? scrollbarWidth : null,
         marginBottom: scrollValues.scrollXPossible ? -scrollbarWidth : null
       });
-      trackXProps.style = _objectSpread({}, trackXProps.style, propsTrackXProps.style);
-      trackYProps.style = _objectSpread({}, trackYProps.style, propsTrackYProps.style);
+      trackXProps.style = _objectSpread({}, trackXProps.style, propsTrackXProps.style, !trackXVisible && {
+        display: "none"
+      });
+      trackYProps.style = _objectSpread({}, trackYProps.style, propsTrackYProps.style, !trackYVisible && {
+        display: "none"
+      });
       thumbXProps.style = _objectSpread({}, thumbXProps.style, propsThumbXProps.style);
       thumbYProps.style = _objectSpread({}, thumbYProps.style, propsThumbYProps.style);
       props.className = "ScrollbarsCustom" + (trackYVisible ? " trackYVisible" : "") + (trackYVisible ? " trackXVisible" : "") + (this.state.isRtl ? " rtl" : "") + (className ? " " + className : "");

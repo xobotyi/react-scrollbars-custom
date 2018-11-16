@@ -1,5 +1,5 @@
 let scrollbarWidth = null;
-let doc = document;
+let doc = global.document;
 
 /**
  * @description Returns scrollbar width specific for current environment

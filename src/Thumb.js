@@ -42,13 +42,15 @@ export default class Thumb extends React.Component {
         this.dragStartOffsetX = ev.clientX - rect.left - rect.width / 2;
         this.dragStartOffsetY = ev.clientY - rect.top - rect.height / 2;
 
-        document.addEventListener("mousemove", this.handleDragEvent);
-        document.addEventListener("mouseup", this.handleDragEnd);
+        if (global.document) {
+            global.document.addEventListener("mousemove", this.handleDragEvent);
+            global.document.addEventListener("mouseup", this.handleDragEnd);
 
-        this.prevUserSelect = document.body.style.userSelect;
-        document.body.style.userSelect = "none";
-        this.prevOnSelectStart = document.onselectstart;
-        document.onselectstart = () => false;
+            this.prevUserSelect = global.document.body.style.userSelect;
+            global.document.body.style.userSelect = "none";
+            this.prevOnSelectStart = global.document.onselectstart;
+            global.document.onselectstart = () => false;
+        }
 
         this.props.onDragStart &&
             this.props.onDragStart({
@@ -84,18 +86,20 @@ export default class Thumb extends React.Component {
         this.dragStartOffsetY = false;
         this.element.classList.remove("dragging");
 
-        document.removeEventListener("mousemove", this.handleDragEvent);
-        document.removeEventListener("mouseup", this.handleDragEnd);
+        if (global.document) {
+            global.document.removeEventListener("mousemove", this.handleDragEvent);
+            global.document.removeEventListener("mouseup", this.handleDragEnd);
+
+            global.document.body.style.userSelect = this.prevUserSelect;
+            this.prevUserSelect = null;
+            global.document.onselectstart = this.prevOnSelectStart;
+            this.prevOnSelectStart = null;
+        }
 
         if (!this.isDragging) {
             return;
         }
         this.isDragging = false;
-
-        document.body.style.userSelect = this.prevUserSelect;
-        this.prevUserSelect = null;
-        document.onselectstart = this.prevOnSelectStart;
-        this.prevOnSelectStart = null;
 
         this.props.onDragEnd && this.props.onDragEnd({axis: this.props.type});
     };

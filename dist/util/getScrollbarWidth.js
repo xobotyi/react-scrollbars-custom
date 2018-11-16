@@ -8,7 +8,7 @@ exports.dbgSetScrollbarWidth = dbgSetScrollbarWidth;
 exports.dbgSetDocument = dbgSetDocument;
 exports.dbgGetDocument = dbgGetDocument;
 var scrollbarWidth = null;
-var doc = document;
+var doc = typeof document !== "undefined" ? document : null;
 /**
  * @description Returns scrollbar width specific for current environment
  * @return {number}

@@ -2,6 +2,7 @@ import expect from "expect";
 import React from "react";
 import {render, unmountComponentAtNode} from "react-dom";
 import Scrollbar from "react-scrollbars-custom";
+import getScrollbarWidth from "../../src/util/getScrollbarWidth";
 
 export default function performTests() {
     describe("rendering", () => {
@@ -269,6 +270,23 @@ export default function performTests() {
 
                             done();
                         }, 20);
+                    }
+                );
+            });
+
+            it("vertical track should be to the left when direction is RTL", done => {
+                render(
+                    <Scrollbar style={{width: 100, height: 100, direction: "rtl"}} removeTracksWhenNotUsed={false}>
+                        <div style={{width: 200, height: 200}} />
+                    </Scrollbar>,
+                    node,
+                    function() {
+                        setTimeout(() => {
+                            expect(this.trackYEl.style.left).toBe("0px");
+                            expect(this.contentEl.style.marginLeft).toBe(`-${getScrollbarWidth()}px`);
+
+                            done();
+                        }, 40);
                     }
                 );
             });

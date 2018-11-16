@@ -109,7 +109,6 @@ function (_React$Component) {
     });
 
     _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "handleDragEnd", function () {
-      _this.isDragging = false;
       _this.dragStartOffsetX = false;
       _this.dragStartOffsetY = false;
 
@@ -117,6 +116,12 @@ function (_React$Component) {
 
       document.removeEventListener("mousemove", _this.handleDragEvent);
       document.removeEventListener("mouseup", _this.handleDragEnd);
+
+      if (!_this.isDragging) {
+        return;
+      }
+
+      _this.isDragging = false;
       document.body.style.userSelect = _this.prevUserSelect;
       _this.prevUserSelect = null;
       document.onselectstart = _this.prevOnSelectStart;

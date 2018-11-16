@@ -80,13 +80,17 @@ export default class Thumb extends React.Component {
     };
 
     handleDragEnd = () => {
-        this.isDragging = false;
         this.dragStartOffsetX = false;
         this.dragStartOffsetY = false;
         this.element.classList.remove("dragging");
 
         document.removeEventListener("mousemove", this.handleDragEvent);
         document.removeEventListener("mouseup", this.handleDragEnd);
+
+        if (!this.isDragging) {
+            return;
+        }
+        this.isDragging = false;
 
         document.body.style.userSelect = this.prevUserSelect;
         this.prevUserSelect = null;

@@ -11,18 +11,61 @@ By default component generates next structure:
 
 Each of them (excepting holder) can be replaced by passing renderer function.  
 4ex: if you want to change the default className or tagName of elements or add extra markup.
+>**IMPORTANT:**
+Renderer will receive **elementRef** function that expect the element ref as first parameter.  
+Furthermore you have to pass the styles, cause they needed to proper component work.
+
 ```javascript
 <Scrollbar
-    wrapperRenderer={props=> <span {...props} className="MyAwesomeWrapper"/>}
-    contentRenderer={props=> <span {...props} className="MyAwesomeContent"/>}
-    trackXRenderer={props=> <span {...props} className="MyAwesomeTrackVertical"/>}
-    trackYRenderer={props=> <span {...props} className="MyAwesomeTrackHorizontal"/>}
-    thumbXRenderer={props=> <span {...props} className="MyAwesomeThumbVertical"/>}
-    thumbYRenderer={props=> <span {...props} className="MyAwesomeThumbHorizontal"/>}/>
+    wrapperRenderer={
+        props =>{
+        const {elementRef, ...restProps} = props;
+        return <span {...restProps}
+                    className="MyAwesomeWrapper"
+                    ref={elementRef}/>
+    }
+    }
+    contentRenderer={
+        props =>{
+        const {elementRef, ...restProps} = props;
+        return <span {...restProps} 
+                    className="MyAwesomeContent" 
+                    ref={elementRef}/>
+        }
+    }
+    trackXRenderer={
+        props => {
+        const {elementRef, ...restProps} = props;
+        return <span {...restProps} 
+                    className="MyAwesomeTrackVertical"
+                    ref={elementRef}/>
+        }
+    }
+    trackYRenderer={
+        props => {
+        const {elementRef, ...restProps} = props;
+        return <span {...restProps}
+                    className="MyAwesomeTrackHorizontal"
+                    ref={elementRef}/>
+        }
+    }
+    thumbXRenderer={
+        props => {
+        const {elementRef, ...restProps} = props;
+        return <span {...restProps} 
+                    className="MyAwesomeThumbVertical" 
+                    ref={elementRef}/>
+        }
+    }
+    thumbYRenderer={
+        props => {
+        const {elementRef, ...restProps} = props;
+        return <span {...restProps} 
+                    className="MyAwesomeThumbHorizontal" 
+                    ref={elementRef}/>
+        }
+    }/>
 ``` 
->**IMPORTANT:**
-Renderer will receive elementRef function that expect the element ref as first parameter.  
-Furthermore you have to pass the styles, cause they needed to proper component work.
 
 ### Component controls
 Component provides scrolling control methods, a list of which you can find in the [API Documentation](./../API.md)  

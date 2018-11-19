@@ -31,40 +31,40 @@ body {
   flex-grow: 1;
   width: 100%;
   height: 100%; }
-  #AppRoot > .ScrollbarsCustom-holder {
+  #AppRoot > .ScrollbarsCustom {
     position: relative;
     display: flex;
     width: 100%;
     height: 100%; }
-    #AppRoot > .ScrollbarsCustom-holder > .ScrollbarsCustom-wrapper {
+    #AppRoot > .ScrollbarsCustom > .wrapper {
       width: 100%;
       height: 100%; }
-      #AppRoot > .ScrollbarsCustom-holder > .ScrollbarsCustom-wrapper > .AppContent {
+      #AppRoot > .ScrollbarsCustom > .wrapper > .AppContent {
         display: flex;
         flex-direction: column; }
-    #AppRoot > .ScrollbarsCustom-holder > .ScrollbarsCustom-track {
+    #AppRoot > .ScrollbarsCustom > .track {
       display: block;
       background: #D0D3D7;
       border-radius: 1rem;
       overflow: hidden; }
-      #AppRoot > .ScrollbarsCustom-holder > .ScrollbarsCustom-track.ScrollbarsCustom-trackVertical {
+      #AppRoot > .ScrollbarsCustom > .track.trackY {
         height: calc(100% - 2rem);
         width: 1rem;
         margin: 1rem .5rem; }
-      #AppRoot > .ScrollbarsCustom-holder > .ScrollbarsCustom-track.ScrollbarsCustom-trackHorizontal {
+      #AppRoot > .ScrollbarsCustom > .track.trackX {
         position: absolute;
         bottom: .5rem;
         left: 1.5rem;
         height: 1rem;
         width: calc(100% - 3rem); }
-      #AppRoot > .ScrollbarsCustom-holder > .ScrollbarsCustom-track > .ScrollbarsCustom-thumb {
+      #AppRoot > .ScrollbarsCustom > .track > .thumb {
         background: #B6BDC9;
         cursor: pointer;
         border-radius: 1rem;
         box-shadow: 0 0 0 .5rem #E8EAED; }
-        #AppRoot > .ScrollbarsCustom-holder > .ScrollbarsCustom-track > .ScrollbarsCustom-thumb.ScrollbarsCustom-thumbVertical {
+        #AppRoot > .ScrollbarsCustom > .track > .thumb.thumbY {
           width: 100%; }
-        #AppRoot > .ScrollbarsCustom-holder > .ScrollbarsCustom-track > .ScrollbarsCustom-thumb.ScrollbarsCustom-thumbHorizontal {
+        #AppRoot > .ScrollbarsCustom > .track > .thumb.thumbX {
           height: 100%;
           box-shadow: none; }
 
@@ -218,19 +218,22 @@ body {
         width: 100%;
         height: 1px;
         background: rgba(0, 0, 0, 0.05); }
-      #AppBody > .block > .content > .ScrollbarsCustom-holder {
+      #AppBody > .block > .content > .ScrollbarsCustom {
         height: 100%;
         width: 100%; }
-      #AppBody > .block > .content .ScrollbarsCustom-content {
+      #AppBody > .block > .content .content {
         font-size: 1.5rem; }
         @media (min-width: 961px) {
-          #AppBody > .block > .content .ScrollbarsCustom-content {
+          #AppBody > .block > .content .content {
             font-size: 1.75rem; } }
-        #AppBody > .block > .content .ScrollbarsCustom-content p {
-          margin: 1rem 1.5rem 0 0;
-          box-sizing: border-box; }
-          #AppBody > .block > .content .ScrollbarsCustom-content p:first-child {
-            margin-top: 0; }
+        #AppBody > .block > .content .content p {
+          padding: 1rem 1.5rem;
+          box-sizing: border-box;
+          width: 150%; }
+          #AppBody > .block > .content .content p:first-child {
+            padding-top: 0; }
+          #AppBody > .block > .content .content p:last-child {
+            padding-bottom: 0; }
 
 #AppFooter {
   display: flex;
@@ -258,32 +261,35 @@ body {
   #AppFooter .authorLink, #AppFooter .authorLink:active {
     color: #B6B6B7; }
 
-#CustomStyleExampleBlock > .content > .ScrollbarsCustom-holder {
+#CustomStyleExampleBlock > .content > .ScrollbarsCustom {
   display: grid;
   width: 100%;
   height: 100%;
   grid-template-columns: 1fr min-content;
   grid-template-rows: 1fr min-content; }
-  #CustomStyleExampleBlock > .content > .ScrollbarsCustom-holder > .ScrollbarsCustom-wrapper {
+  #CustomStyleExampleBlock > .content > .ScrollbarsCustom > .wrapper {
     grid-area: 1 / 1 / auto / auto; }
-    #CustomStyleExampleBlock > .content > .ScrollbarsCustom-holder > .ScrollbarsCustom-wrapper > .ScrollbarsCustom-content p {
+    #CustomStyleExampleBlock > .content > .ScrollbarsCustom > .wrapper > .content p {
       display: inline-block;
       position: relative;
       width: 150%; }
-  #CustomStyleExampleBlock > .content > .ScrollbarsCustom-holder > .ScrollbarsCustom-trackVertical {
+  #CustomStyleExampleBlock > .content > .ScrollbarsCustom > .trackY {
     width: 8px;
     background: rgba(0, 0, 0, 0.1);
     grid-area: 1 / 2 / auto / auto;
-    overflow: hidden; }
-    #CustomStyleExampleBlock > .content > .ScrollbarsCustom-holder > .ScrollbarsCustom-trackVertical > .ScrollbarsCustom-thumb {
+    overflow: hidden;
+    position: relative; }
+    #CustomStyleExampleBlock > .content > .ScrollbarsCustom > .trackY > .thumb {
       cursor: pointer;
       width: 100%;
       background: rgba(0, 0, 0, 0.35); }
-  #CustomStyleExampleBlock > .content > .ScrollbarsCustom-holder > .ScrollbarsCustom-trackHorizontal {
+  #CustomStyleExampleBlock > .content > .ScrollbarsCustom > .trackX {
     height: 8px;
     background: rgba(0, 0, 0, 0.1);
-    grid-area: 2 / 1 / auto / auto; }
-    #CustomStyleExampleBlock > .content > .ScrollbarsCustom-holder > .ScrollbarsCustom-trackHorizontal > .ScrollbarsCustom-thumb {
+    grid-area: 2 / 1 / auto / auto;
+    overflow: hidden;
+    position: relative; }
+    #CustomStyleExampleBlock > .content > .ScrollbarsCustom > .trackX > .thumb {
       cursor: pointer;
       height: 100%;
       background: rgba(0, 0, 0, 0.35); }
@@ -307,35 +313,40 @@ body {
 
 #SandboxBlock > .content {
   margin: 2rem 0 0; }
-  #SandboxBlock > .content > .ScrollbarsCustom-holder {
+  #SandboxBlock > .content > .ScrollbarsCustom.native p {
+    display: inline-block;
+    position: relative;
+    width: 150%;
+    font-size: 1.75rem; }
+  #SandboxBlock > .content > .ScrollbarsCustom:not(.native) {
     display: grid;
     width: 100%;
     height: 100%;
     position: relative;
     grid-template-columns: 1fr min-content;
     grid-template-rows: 1fr min-content; }
-    #SandboxBlock > .content > .ScrollbarsCustom-holder > .ScrollbarsCustom-wrapper {
+    #SandboxBlock > .content > .ScrollbarsCustom:not(.native) > .wrapper {
       grid-area: 1 / 1 / auto / auto; }
-      #SandboxBlock > .content > .ScrollbarsCustom-holder > .ScrollbarsCustom-wrapper > .ScrollbarsCustom-content p {
+      #SandboxBlock > .content > .ScrollbarsCustom:not(.native) > .wrapper > .content p {
         display: inline-block;
         position: relative;
         width: 150%; }
-    #SandboxBlock > .content > .ScrollbarsCustom-holder > .ScrollbarsCustom-trackVertical {
+    #SandboxBlock > .content > .ScrollbarsCustom:not(.native) > .trackY {
       position: relative;
       width: 8px;
       background: rgba(0, 0, 0, 0.1);
       grid-area: 1 / 2 / auto / auto;
       overflow: hidden; }
-      #SandboxBlock > .content > .ScrollbarsCustom-holder > .ScrollbarsCustom-trackVertical > .ScrollbarsCustom-thumb {
+      #SandboxBlock > .content > .ScrollbarsCustom:not(.native) > .trackY > .thumb {
         cursor: pointer;
         width: 100%;
         background: rgba(0, 0, 0, 0.35); }
-    #SandboxBlock > .content > .ScrollbarsCustom-holder > .ScrollbarsCustom-trackHorizontal {
+    #SandboxBlock > .content > .ScrollbarsCustom:not(.native) > .trackX {
       position: relative;
       height: 8px;
       background: rgba(0, 0, 0, 0.1);
       grid-area: 2 / 1 / auto / auto; }
-      #SandboxBlock > .content > .ScrollbarsCustom-holder > .ScrollbarsCustom-trackHorizontal > .ScrollbarsCustom-thumb {
+      #SandboxBlock > .content > .ScrollbarsCustom:not(.native) > .trackX > .thumb {
         cursor: pointer;
         height: 100%;
         background: rgba(0, 0, 0, 0.35); }
@@ -345,9 +356,9 @@ body {
   flex-wrap: wrap;
   width: 100%;
   flex-grow: 1; }
-  .mayhemScrollbarsHolder > .ScrollbarsCustom-holder {
+  .mayhemScrollbarsHolder > .ScrollbarsCustom {
     flex-grow: 0;
     flex-shrink: 0; }
-    .mayhemScrollbarsHolder > .ScrollbarsCustom-holder p {
+    .mayhemScrollbarsHolder > .ScrollbarsCustom p {
       box-shadow: inset 25px 0 0 blue, inset -25px 0 0 red, inset 0 25px 0 #34FF6F, inset 0 -25px 0 #F600FF; }
 

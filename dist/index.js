@@ -5,6 +5,8 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
+var _bowser = _interopRequireDefault(require("bowser"));
+
 var _propTypes = _interopRequireDefault(require("prop-types"));
 
 var _react = _interopRequireDefault(require("react"));
@@ -53,6 +55,9 @@ function _assertThisInitialized(self) { if (self === void 0) { throw new Referen
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
+var browser = global.window && global.window.navigator && _bowser.default.getParser(global.window.navigator.userAgent);
+
+var engine = browser && browser.getEngine().name;
 var defaultStyles = {
   holder: {
     position: "relative",
@@ -272,7 +277,18 @@ function (_React$Component) {
 
       if (params.axis === _Track.TYPE_X) {
         _this.props.thumbXProps.onDrag && _this.props.thumbXProps.onDrag(params);
-        _this.contentEl.scrollLeft = Scrollbar.computeScrollForOffset((0, _getInnerSizes.getInnerWidth)(_this.trackXEl), _this.thumbXEl.clientWidth, params.offset, _this.contentEl.scrollWidth, _this.contentEl.clientWidth);
+        var trackWidth = (0, _getInnerSizes.getInnerWidth)(_this.trackXEl);
+        var offset = params.offset;
+
+        if (_this.state.isRtl) {
+          if (engine === "Trident" || engine === "EdgeHTML") {
+            offset = trackWidth - offset;
+          } else if (engine !== "Blink") {
+            offset -= _this.thumbXEl.clientWidth / 2;
+          }
+        }
+
+        _this.contentEl.scrollLeft = Scrollbar.computeScrollForOffset(trackWidth, _this.thumbXEl.clientWidth, offset, _this.contentEl.scrollWidth, _this.contentEl.clientWidth);
       }
 
       if (params.axis === _Track.TYPE_Y) {
@@ -304,11 +320,15 @@ function (_React$Component) {
       }
 
       if (this.props.scrollTop !== prevProps.scrollTop) {
-        this.contentEl.scrollTop = this.props.scrollTop || 0;
+        if (typeof this.props.scrollTop !== "undefined") {
+          this.contentEl.scrollTop = this.props.scrollTop;
+        }
       }
 
       if (this.props.scrollLeft !== prevProps.scrollLeft) {
-        this.contentEl.scrollLeft = this.props.scrollLeft || 0;
+        if (typeof this.props.scrollLeft !== "undefined") {
+          this.contentEl.scrollLeft = this.props.scrollLeft;
+        }
       }
     }
   }, {
@@ -319,8 +339,15 @@ function (_React$Component) {
       this.contentEl.addEventListener("scroll", this.handleScrollEvent, {
         passive: true
       });
-      this.contentEl.scrollTop = this.props.scrollTop || 0;
-      this.contentEl.scrollLeft = this.props.scrollLeft || 0;
+
+      if (typeof this.props.scrollTop !== "undefined") {
+        this.contentEl.scrollTop = this.props.scrollTop;
+      }
+
+      if (typeof this.props.scrollLeft !== "undefined") {
+        this.contentEl.scrollLeft = this.props.scrollLeft;
+      }
+
       this.update();
     }
   }, {
@@ -542,7 +569,11 @@ function (_React$Component) {
             var _thumbOffset = Scrollbar.computeThumbOffset(_trackSize, _thumbSize, scrollValues.scrollWidth, scrollValues.clientWidth, scrollValues.scrollLeft);
 
             if (this.state.isRtl) {
-              _thumbOffset = _thumbSize + _thumbOffset - _trackSize;
+              if (engine === "Blink") {
+                _thumbOffset = _thumbSize + _thumbOffset - _trackSize;
+              } else if (engine === "Trident" || engine === "EdgeHTML") {
+                _thumbOffset *= -1;
+              }
             }
 
             this.thumbXEl.style.transform = "translateX(".concat(_thumbOffset, "px)");

@@ -15,7 +15,7 @@ export default class SandboxBlock extends React.Component {
 
             nativeScrollbar: false,
 
-            rtl: false,
+            rtl: true,
 
             permanentTracks: false,
             permanentTrackY: false,
@@ -163,7 +163,7 @@ export default class SandboxBlock extends React.Component {
                         {permanentTrackX || permanentTracks ? "Show track X if needed" : "Always show track X"}
                     </div>
                     <div className="button" key="direction" onClick={this.toggleRtl}>
-                        {rtl ? "set direction LRT" : "set direction RTL"}
+                        {rtl ? "set direction LTR" : "set direction RTL"}
                     </div>
                     <br />
                     <div className="button" key="randomPosition" onClick={this.handleRandomPositionClick}>

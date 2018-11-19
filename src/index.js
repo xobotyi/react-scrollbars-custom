@@ -1,3 +1,4 @@
+import bowser from "bowser";
 import PropTypes from "prop-types";
 import React from "react";
 import NativeScrollbar from "./NativeScrollbar";
@@ -6,6 +7,9 @@ import Track, {TYPE_X, TYPE_Y} from "./Track";
 import {getInnerHeight, getInnerWidth} from "./util/getInnerSizes";
 import getScrollbarWidth from "./util/getScrollbarWidth";
 import LoopController from "./util/LoopController";
+
+const browser = global.window && global.window.navigator && bowser.getParser(global.window.navigator.userAgent);
+const engine = browser && browser.getEngine().name;
 
 const defaultStyles = {
     holder: {
@@ -237,11 +241,15 @@ export default class Scrollbar extends React.Component {
         }
 
         if (this.props.scrollTop !== prevProps.scrollTop) {
-            this.contentEl.scrollTop = this.props.scrollTop || 0;
+            if (typeof this.props.scrollTop !== "undefined") {
+                this.contentEl.scrollTop = this.props.scrollTop;
+            }
         }
 
         if (this.props.scrollLeft !== prevProps.scrollLeft) {
-            this.contentEl.scrollLeft = this.props.scrollLeft || 0;
+            if (typeof this.props.scrollLeft !== "undefined") {
+                this.contentEl.scrollLeft = this.props.scrollLeft;
+            }
         }
     }
 
@@ -252,8 +260,13 @@ export default class Scrollbar extends React.Component {
             passive: true,
         });
 
-        this.contentEl.scrollTop = this.props.scrollTop || 0;
-        this.contentEl.scrollLeft = this.props.scrollLeft || 0;
+        if (typeof this.props.scrollTop !== "undefined") {
+            this.contentEl.scrollTop = this.props.scrollTop;
+        }
+
+        if (typeof this.props.scrollLeft !== "undefined") {
+            this.contentEl.scrollLeft = this.props.scrollLeft;
+        }
 
         this.update();
     }
@@ -657,7 +670,11 @@ export default class Scrollbar extends React.Component {
                     );
 
                     if (this.state.isRtl) {
-                        thumbOffset = thumbSize + thumbOffset - trackSize;
+                        if (engine === "Blink") {
+                            thumbOffset = thumbSize + thumbOffset - trackSize;
+                        } else if (engine === "Trident" || engine === "EdgeHTML") {
+                            thumbOffset *= -1;
+                        }
                     }
 
                     this.thumbXEl.style.transform = `translateX(${thumbOffset}px)`;
@@ -743,10 +760,21 @@ export default class Scrollbar extends React.Component {
         if (params.axis === TYPE_X) {
             this.props.thumbXProps.onDrag && this.props.thumbXProps.onDrag(params);
 
+            const trackWidth = getInnerWidth(this.trackXEl);
+            let offset = params.offset;
+
+            if (this.state.isRtl) {
+                if (engine === "Trident" || engine === "EdgeHTML") {
+                    offset = trackWidth - offset;
+                } else if (engine !== "Blink") {
+                    offset -= this.thumbXEl.clientWidth / 2;
+                }
+            }
+
             this.contentEl.scrollLeft = Scrollbar.computeScrollForOffset(
-                getInnerWidth(this.trackXEl),
+                trackWidth,
                 this.thumbXEl.clientWidth,
-                params.offset,
+                offset,
                 this.contentEl.scrollWidth,
                 this.contentEl.clientWidth
             );

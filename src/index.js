@@ -237,11 +237,11 @@ export default class Scrollbar extends React.Component {
         }
 
         if (this.props.scrollTop !== prevProps.scrollTop) {
-            this.contentEl.scrollTop = this.props.scrollTop;
+            this.contentEl.scrollTop = this.props.scrollTop || 0;
         }
 
         if (this.props.scrollLeft !== prevProps.scrollLeft) {
-            this.contentEl.scrollLeft = this.props.scrollLeft;
+            this.contentEl.scrollLeft = this.props.scrollLeft || 0;
         }
     }
 

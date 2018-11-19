@@ -1,7 +1,7 @@
 {
   "name": "react-scrollbars-custom",
   "description": "The best React custom scrollbars component",
-  "version": "3.1.1",
+  "version": "3.1.2",
   "main": "dist/index.js",
   "types": "index.d.ts",
   "repository": {

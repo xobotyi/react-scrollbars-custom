@@ -111,6 +111,12 @@ Otherwise it will be detected automatically for the **content** element regardle
 **`scrollDetectionThreshold`** _`number`_ = 100  
 Amount of seconds after which scrolling will be treated as completed and `onScrollStop` callback called.
 
+**`scrollLeft`** _`number`_  
+Content's scrollLeft value
+
+**`scrollTop`** _`number`_  
+Content's scrollTop value
+
 **`style`** `object`  
 Additional styles for the holder _(or content in case of native mode)_ element.
 

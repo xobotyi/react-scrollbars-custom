@@ -274,6 +274,36 @@ export default class Scrollbar extends React.Component {
     };
 
     /**
+     *  Set scroll at given coordinates
+     *
+     * @param {number} x
+     * @param {number} y
+     *
+     * @return {Scrollbar}
+     */
+    scrollTo(y, x) {
+        this.contentEl.scrollTop = y;
+        this.contentEl.scrollLeft = x;
+
+        return this;
+    }
+
+    /**
+     *  Set viewport's center at given coordinates
+     *
+     * @param {number} x
+     * @param {number} y
+     *
+     * @return {Scrollbar}
+     */
+    centerAt(y, x) {
+        this.contentEl.scrollTop = y - this.contentEl.clientHeight / 2;
+        this.contentEl.scrollLeft = x - this.contentEl.clientWidth / 2;
+
+        return this;
+    }
+
+    /**
      * Return the vertical scroll position
      *
      * @return {number}

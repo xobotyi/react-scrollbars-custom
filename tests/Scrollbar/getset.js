@@ -188,5 +188,19 @@ export default function performTests() {
                 scrollbar.contentEl.scrollWidth - scrollbar.contentEl.clientWidth
             );
         });
+
+        it("scrollTo should set scrolls at given position", () => {
+            scrollbar.scrollTo(50, 50);
+
+            expect(scrollbar.contentEl.scrollTop).toBe(50);
+            expect(scrollbar.contentEl.scrollLeft).toBe(50);
+        });
+
+        it("centerAt should set viewport center at given position at given position", () => {
+            scrollbar.centerAt(100, 100);
+
+            expect(scrollbar.contentEl.scrollTop).toBe(50);
+            expect(scrollbar.contentEl.scrollLeft).toBe(50);
+        });
     });
 }

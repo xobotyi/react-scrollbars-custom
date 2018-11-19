@@ -1,6 +1,6 @@
-import {Component, CSSProperties, SFC} from "react";
+import {Component, CSSProperties, Props, SFC} from "react";
 
-export interface ScrollValues {
+interface ScrollValues {
     clientHeight?: number;
     clientWidth?: number;
     scrollHeight?: number;
@@ -16,14 +16,14 @@ export interface ScrollValues {
     isRtl?: boolean;
 }
 
-export interface ScrollbarRendererProps {
+interface ScrollbarRendererProps {
     className: string;
     style: CSSProperties;
 
     elementRef: void;
 }
 
-export interface ScrollbarTrackRendererProps {
+interface ScrollbarTrackRendererProps {
     className: string;
     style: CSSProperties;
 
@@ -31,7 +31,7 @@ export interface ScrollbarTrackRendererProps {
     onClick: void;
 }
 
-export interface ScrollbarThumbRendererProps {
+interface ScrollbarThumbRendererProps {
     className: string;
     style: CSSProperties;
 
@@ -39,12 +39,12 @@ export interface ScrollbarThumbRendererProps {
     onMouseDown: void;
 }
 
-export enum TrackClickBehaviorPossibilities {
+declare enum TrackClickBehaviorPossibilities {
     Jump = "jump",
     Step = "step",
 }
 
-export interface ScrollbarProps {
+interface ScrollbarProps extends Props<Scrollbar> {
     native?: boolean;
 
     minimalThumbsSize?: number;
@@ -100,7 +100,7 @@ export interface ScrollbarProps {
     onScrollStop?(scrollValues: ScrollValues, instance: Scrollbar): void;
 }
 
-declare class Scrollbar extends Component<ScrollbarProps> {
+export default class Scrollbar extends Component<ScrollbarProps> {
     public scrollTop: number;
     public scrollLeft: number;
     public readonly scrollHeight: number;
@@ -115,6 +115,10 @@ declare class Scrollbar extends Component<ScrollbarProps> {
     public scrollToLeft(): Scrollbar;
 
     public scrollToRight(): Scrollbar;
+
+    public scrollTo(x: number, y: number): Scrollbar;
+
+    public centerAt(x: number, y: number): Scrollbar;
 
     /**
      * Return the scroll values actual for the last update.
@@ -146,4 +150,4 @@ declare class Scrollbar extends Component<ScrollbarProps> {
     public static computeScrollForOffset(trackSize: number, thumbSize: number, offset: number, scrollableSize: number, viewportSize: number): number
 }
 
-export default Scrollbar;
+export as namespace Scrollbar;

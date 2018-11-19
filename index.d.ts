@@ -67,6 +67,9 @@ interface ScrollbarProps extends Props<Scrollbar> {
 
     translateContentSizesToHolder?: boolean;
 
+    scrollTop?: number;
+    scrollLeft?: number;
+
     noScrollX?: boolean;
     noScrollY?: boolean;
     noScroll?: boolean;

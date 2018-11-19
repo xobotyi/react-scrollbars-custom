@@ -158,6 +158,14 @@ Custom wrapper renderer.
 
 ### Methods
 
+**scrollTo ( x `number`, y `number` )**  
+_return_ `Scrollbar`  
+Set scroll at given coordinates
+
+**centerAt ( x `number`, y `number`)**  
+_return_ `Scrollbar`  
+Center viewport at given coordinates
+
 **scrollToTop ()**  
 _return_ `Scrollbar`  
 Scroll to the top border

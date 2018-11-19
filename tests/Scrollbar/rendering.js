@@ -141,6 +141,25 @@ export default function performTests() {
                     }
                 );
             });
+
+            it("should apply scrollTop passed to props", done => {
+                render(
+                    <Scrollbar
+                        noDefaultStyles
+                        wrapperProps={{style: {width: 100, height: 100, position: "relative", padding: 0, margin: 0}}}
+                        scrollLeft={50}
+                        scrollTop={50}>
+                        <div style={{width: 200, height: 200, padding: 0, margin: 0}} />
+                    </Scrollbar>,
+                    node,
+                    function() {
+                        expect(this.contentEl.scrollTop).toBe(50);
+                        expect(this.contentEl.scrollLeft).toBe(50);
+
+                        done();
+                    }
+                );
+            });
         });
 
         describe("native mode", () => {
@@ -173,7 +192,7 @@ export default function performTests() {
                             expect(this.holderEl.clientHeight).toBe(this.contentEl.scrollHeight);
 
                             done();
-                        }, 20);
+                        }, 30);
                     }
                 );
             });

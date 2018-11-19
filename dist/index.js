@@ -302,6 +302,14 @@ function (_React$Component) {
       if (this.state.isRtl !== prevState.isRtl) {
         this.update();
       }
+
+      if (this.props.scrollTop !== prevProps.scrollTop) {
+        this.contentEl.scrollTop = this.props.scrollTop;
+      }
+
+      if (this.props.scrollLeft !== prevProps.scrollLeft) {
+        this.contentEl.scrollLeft = this.props.scrollLeft;
+      }
     }
   }, {
     key: "componentDidMount",
@@ -311,6 +319,8 @@ function (_React$Component) {
       this.contentEl.addEventListener("scroll", this.handleScrollEvent, {
         passive: true
       });
+      this.contentEl.scrollTop = this.props.scrollTop || 0;
+      this.contentEl.scrollLeft = this.props.scrollLeft || 0;
       this.update();
     }
   }, {
@@ -583,6 +593,8 @@ function (_React$Component) {
           momentum = _this$props.momentum,
           noDefaultStyles = _this$props.noDefaultStyles,
           translateContentSizesToHolder = _this$props.translateContentSizesToHolder,
+          scrollLeft = _this$props.scrollLeft,
+          scrollTop = _this$props.scrollTop,
           noScrollX = _this$props.noScrollX,
           noScrollY = _this$props.noScrollY,
           noScroll = _this$props.noScroll,
@@ -608,7 +620,7 @@ function (_React$Component) {
           onScrollStart = _this$props.onScrollStart,
           onScrollStop = _this$props.onScrollStop,
           children = _this$props.children,
-          props = _objectWithoutProperties(_this$props, ["native", "minimalThumbsSize", "fallbackScrollbarWidth", "scrollDetectionThreshold", "tagName", "className", "style", "trackClickBehavior", "rtl", "momentum", "noDefaultStyles", "translateContentSizesToHolder", "noScrollX", "noScrollY", "noScroll", "permanentTrackX", "permanentTrackY", "permanentTracks", "removeTracksWhenNotUsed", "removeTrackYWhenNotUsed", "removeTrackXWhenNotUsed", "wrapperProps", "contentProps", "trackXProps", "trackYProps", "thumbXProps", "thumbYProps", "wrapperRenderer", "contentRenderer", "trackXRenderer", "trackYRenderer", "thumbXRenderer", "thumbYRenderer", "onScroll", "onScrollStart", "onScrollStop", "children"]);
+          props = _objectWithoutProperties(_this$props, ["native", "minimalThumbsSize", "fallbackScrollbarWidth", "scrollDetectionThreshold", "tagName", "className", "style", "trackClickBehavior", "rtl", "momentum", "noDefaultStyles", "translateContentSizesToHolder", "scrollLeft", "scrollTop", "noScrollX", "noScrollY", "noScroll", "permanentTrackX", "permanentTrackY", "permanentTracks", "removeTracksWhenNotUsed", "removeTrackYWhenNotUsed", "removeTrackXWhenNotUsed", "wrapperProps", "contentProps", "trackXProps", "trackYProps", "thumbXProps", "thumbYProps", "wrapperRenderer", "contentRenderer", "trackXRenderer", "trackYRenderer", "thumbXRenderer", "thumbYRenderer", "onScroll", "onScrollStart", "onScrollStop", "children"]);
 
       var _this$state = this.state,
           trackXVisible = _this$state.trackXVisible,
@@ -866,6 +878,8 @@ _defineProperty(Scrollbar, "propTypes", {
   noDefaultStyles: _propTypes.default.bool,
   scrollDetectionThreshold: _propTypes.default.number,
   translateContentSizesToHolder: _propTypes.default.bool,
+  scrollTop: _propTypes.default.number,
+  scrollLeft: _propTypes.default.number,
   noScrollX: _propTypes.default.bool,
   noScrollY: _propTypes.default.bool,
   noScroll: _propTypes.default.bool,

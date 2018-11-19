@@ -99,6 +99,9 @@ export default class Scrollbar extends React.Component {
 
         translateContentSizesToHolder: PropTypes.bool,
 
+        scrollTop: PropTypes.number,
+        scrollLeft: PropTypes.number,
+
         noScrollX: PropTypes.bool,
         noScrollY: PropTypes.bool,
         noScroll: PropTypes.bool,
@@ -232,6 +235,14 @@ export default class Scrollbar extends React.Component {
         if (this.state.isRtl !== prevState.isRtl) {
             this.update();
         }
+
+        if (this.props.scrollTop !== prevProps.scrollTop) {
+            this.contentEl.scrollTop = this.props.scrollTop;
+        }
+
+        if (this.props.scrollLeft !== prevProps.scrollLeft) {
+            this.contentEl.scrollLeft = this.props.scrollLeft;
+        }
     }
 
     componentDidMount() {
@@ -240,6 +251,9 @@ export default class Scrollbar extends React.Component {
         this.contentEl.addEventListener("scroll", this.handleScrollEvent, {
             passive: true,
         });
+
+        this.contentEl.scrollTop = this.props.scrollTop || 0;
+        this.contentEl.scrollLeft = this.props.scrollLeft || 0;
 
         this.update();
     }
@@ -772,6 +786,9 @@ export default class Scrollbar extends React.Component {
             noDefaultStyles,
 
             translateContentSizesToHolder,
+
+            scrollLeft,
+            scrollTop,
 
             noScrollX,
             noScrollY,

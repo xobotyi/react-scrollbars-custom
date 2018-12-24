@@ -39,11 +39,19 @@ export default class Track extends React.Component {
 
         props.className = "track " + (type === TYPE_X ? "trackX" : "trackY") + (className ? " " + className : "");
         props.onClick = this.onClickHandler;
-        props.ref = ref => {
+
+        const ref = ref => {
             typeof elementRef === "function" && elementRef(ref);
             this.element = ref;
         };
 
-        return renderer ? renderer(props) : <div {...props} />;
+        return renderer ? (
+            renderer({
+                ...props,
+                elementRef: ref,
+            })
+        ) : (
+            <div {...props} ref={ref} />
+        );
     }
 }

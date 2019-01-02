@@ -1,18 +1,69 @@
 import {Component, CSSProperties, Props, SFC} from "react";
 
 interface ScrollValues {
+    /**
+     * Content's native clientHeight parameter
+     */
     clientHeight?: number;
+    
+    /**
+     * Content's native clientWidth parameter
+     */
     clientWidth?: number;
+    
+    /**
+     * Content's native scrollHeight parameter
+     */
     scrollHeight?: number;
+    
+    /**
+     * Content's native scrollWidth parameter
+     */
     scrollWidth?: number;
+    
+    /**
+     * Content's native scrollTop parameter
+     */
     scrollTop?: number;
+    
+    /**
+     * Content's native scrollLeft parameter
+     */
     scrollLeft?: number;
+    
+    /**
+     * Indicates whether vertical scroll blocked via properties
+     */
     scrollYBlocked?: boolean;
+    
+    /**
+     * Indicates whether horizontal scroll blocked via properties
+     */
     scrollXBlocked?: boolean;
+    
+    /**
+     * Indicates whether the content overflows vertically and scrolling not blocked
+     */
     scrollYPossible?: boolean;
+    
+    /**
+     * Indicates whether the content overflows horizontally and scrolling not blocked
+     */
     scrollXPossible?: boolean;
+    
+    /**
+     * Indicates whether vertical track is visible
+     */
     trackYVisible?: boolean;
+    
+    /**
+     * Indicates whether horizontal track is visible
+     */
     trackXVisible?: boolean;
+    
+    /**
+     * Indicates whether display direction is right-to-left
+     */
     isRtl?: boolean;
 }
 
@@ -104,6 +155,46 @@ interface ScrollbarProps extends Props<Scrollbar> {
 }
 
 export default class Scrollbar extends Component<ScrollbarProps> {
+    /**
+     * Reference to holder DOM element.
+     */
+    public holderEl: HTMLElement;
+    
+    /**
+     * Reference to wrapper DOM element.
+     */
+    public wrapperEl: HTMLElement;
+
+    /**
+     * Reference to content DOM element.
+     */
+    public contentEl: HTMLElement;
+
+    /**
+     * Reference to horizontal DOM track.
+     */
+    public trackXEl: HTMLElement;
+
+    /**
+     * Reference to vertical DOM track.
+     */
+    public trackYEl: HTMLElement;
+
+    /**
+     * Reference to horizontal DOM thumb.
+     */
+    public thumbXEl: HTMLElement;
+
+    /**
+     * Reference to vertical DOM thumb.
+     */
+    public thumbYEl: HTMLElement;
+
+    /**
+     * Current scroll related values
+     */
+    public scrollValues: ScrollValues;
+    
     public scrollTop: number;
     public scrollLeft: number;
     public readonly scrollHeight: number;

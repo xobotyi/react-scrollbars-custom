@@ -1,6 +1,6 @@
 import expect from "expect";
 import React from "react";
-import getScrollbarWidth, {dbgGetDocument, dbgSetDocument, dbgSetScrollbarWidth} from "./../src/util/getScrollbarWidth";
+import getScrollbarWidth, {dbgGetDocument, dbgSetDocument, dbgSetScrollbarWidth} from "../src/util/getScrollbarWidth";
 
 describe("getScrollbarWidth()", () => {
     it("for chrome must be equal 17 (Windows) or 15 (UNIX)", () => {

@@ -1,0 +1,29 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "target": "es2016",
+    "allowSyntheticDefaultImports": true,
+    "jsx": "react",
+
+    "sourceMap": false,
+    "removeComments": false,
+
+    "noImplicitReturns": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "strictNullChecks": true,
+
+    "declaration": true,
+
+    "outDir": "./dist/"
+  },
+
+  "include": [
+    "./src/**/*.ts"
+  ],
+
+  "exclude": [
+    "node_modules"
+  ]
+}

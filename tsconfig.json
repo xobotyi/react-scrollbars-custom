@@ -1,10 +1,16 @@
 {
   "compilerOptions": {
+    "target": "es2016",
     "module": "commonjs",
     "moduleResolution": "node",
-    "target": "es2016",
-    "allowSyntheticDefaultImports": true,
-    "jsx": "react",
+
+    "declaration": true,
+    "declarationDir": "./types",
+
+    "lib": [
+      "dom",
+      "es2016"
+    ],
 
     "sourceMap": false,
     "removeComments": false,
@@ -13,14 +19,18 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "strictNullChecks": true,
+    "allowSyntheticDefaultImports": true,
+    "jsx": "react",
+    "alwaysStrict": true,
 
-    "declaration": true,
+    "allowJs": false,
 
-    "outDir": "./dist/"
+    "outDir": "./dist/",
+    "noEmitOnError": true
   },
 
   "include": [
-    "./src/**/*.ts"
+    "./src/**/*"
   ],
 
   "exclude": [

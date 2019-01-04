@@ -19,11 +19,10 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "strictNullChecks": true,
-    "allowSyntheticDefaultImports": true,
     "jsx": "react",
     "alwaysStrict": true,
 
-    "allowJs": false,
+    //    "allowJs": false,
 
     "outDir": "./dist/",
     "noEmitOnError": true

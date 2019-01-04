@@ -46,17 +46,17 @@ exports.TYPE_X = TYPE_X;
 var TYPE_Y = 2;
 exports.TYPE_Y = TYPE_Y;
 
-var Thumb =
+var ThumbOld =
 /*#__PURE__*/
 function (_React$Component) {
-  _inherits(Thumb, _React$Component);
+  _inherits(ThumbOld, _React$Component);
 
-  function Thumb(props) {
+  function ThumbOld(props) {
     var _this;
 
-    _classCallCheck(this, Thumb);
+    _classCallCheck(this, ThumbOld);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(Thumb).call(this, props));
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(ThumbOld).call(this, props));
 
     _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "handleDragStart", function (ev) {
       if (ev.nativeEvent.which !== 1) {
@@ -139,7 +139,7 @@ function (_React$Component) {
     return _this;
   }
 
-  _createClass(Thumb, [{
+  _createClass(ThumbOld, [{
     key: "componentWillUnmount",
     value: function componentWillUnmount() {
       this.handleDragEnd();
@@ -175,14 +175,14 @@ function (_React$Component) {
     }
   }]);
 
-  return Thumb;
+  return ThumbOld;
 }(_react.default.Component);
 
-exports.default = Thumb;
+exports.default = ThumbOld;
 
-_defineProperty(Thumb, "displayName", "Scrollbar Thumb");
+_defineProperty(ThumbOld, "displayName", "Scrollbar ThumbOld");
 
-_defineProperty(Thumb, "propTypes", _objectSpread({}, _Track.default.propTypes, {
+_defineProperty(ThumbOld, "propTypes", _objectSpread({}, _Track.default.propTypes, {
   onDrag: _propTypes.default.func,
   onDragStart: _propTypes.default.func,
   onDragEnd: _propTypes.default.func

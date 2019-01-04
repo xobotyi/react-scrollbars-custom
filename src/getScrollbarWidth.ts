@@ -1,7 +1,9 @@
 let scrollbarWidth: (number | null) = null;
 
-// @ts-ignore
-let doc: (Document | null) = <Document>global.document || null;
+declare var global: {
+    document?: Document
+};
+let doc: (Document | null) = global.document || null;
 
 /**
  * @description Returns scrollbar width specific for current environment
@@ -29,7 +31,7 @@ export default function getScrollbarWidth(force = false) {
  * @description Set the cached width to given value.<br/>
  *              <i>null</i> will force to recalculate value on next get.
  */
-export const dbgSetScrollbarWidth = (v: number | null): void => {scrollbarWidth = v};
+export const dbgSetScrollbarWidth = (v: number | null): void => {scrollbarWidth = v;};
 
 /**
  * @description Set the document node to calculate the scrollbar width.<br/>

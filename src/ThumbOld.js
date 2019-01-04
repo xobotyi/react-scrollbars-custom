@@ -5,8 +5,8 @@ import Track from "./Track";
 export const TYPE_X = 1;
 export const TYPE_Y = 2;
 
-export default class Thumb extends React.Component {
-    static displayName = "Scrollbar Thumb";
+export default class ThumbOld extends React.Component {
+    static displayName = "Scrollbar ThumbOld";
 
     static propTypes = {
         ...Track.propTypes,

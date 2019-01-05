@@ -20,23 +20,8 @@ export class UpdateLoop {
      * @description Loop's state.
      */
     public get isActive() {
-        return Boolean(this._isActive)
-    };
-
-    /**
-     * @description Callback that called each animation frame.
-     */
-    protected frameRequestCallback = () => {
-        if (!this._isActive) {return;}
-
-        // as it turned out: https://jsperf.com/iterable-storages-performance
-        // classic 'for' over the array is fastest for most of the browsers
-        for (let i = 0; i < this.targets.length; i++) {
-            this.targets[i].update();
-        }
-
-        this.animationFrameID = requestAnimationFrame(this.frameRequestCallback);
-    };
+        return Boolean(this._isActive);
+    }
 
     /**
      * @description Start te loop if it wasn't yet.
@@ -93,4 +78,21 @@ export class UpdateLoop {
 
         return this;
     }
+
+    /**
+     * @description Callback that called each animation frame.
+     */
+    protected frameRequestCallback = () => {
+        if (!this._isActive) {
+            return;
+        }
+
+        // as it turned out: https://jsperf.com/iterable-storages-performance
+        // classic 'for' over the array is fastest for most of the browsers
+        for (let i = 0; i < this.targets.length; i++) {
+            this.targets[i].update();
+        }
+
+        this.animationFrameID = requestAnimationFrame(this.frameRequestCallback);
+    };
 }

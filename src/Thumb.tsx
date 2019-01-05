@@ -3,13 +3,13 @@ import * as PropTypes from "prop-types";
 import {DIRECTION_AXIS} from "./Scrollbar";
 
 declare var global: {
-    document?: Document
+    document?: Document;
 };
 
 type DragValues = {
     axis: DIRECTION_AXIS;
-    offset: number,
-}
+    offset: number;
+};
 
 type ThumbProps = {
     [name: string]: any;
@@ -28,9 +28,8 @@ type ThumbProps = {
     renderer?: (args: ThumbProps) => JSX.Element;
 };
 
-
 export default class Thumb extends React.Component<ThumbProps, {}> {
-    public static displayName = 'Scrollbars ThumbOld';
+    public static displayName = "Scrollbars ThumbOld";
 
     public static propTypes = {
         type: PropTypes.oneOf([DIRECTION_AXIS.X, DIRECTION_AXIS.Y]).isRequired,
@@ -62,8 +61,34 @@ export default class Thumb extends React.Component<ThumbProps, {}> {
             throw new Error("Somewhy element was not created.");
         }
 
-        this.element.addEventListener('mousedown', this.handleMousedown);
-        this.element.addEventListener('touchstart', this.handleTouchStart);
+        this.element.addEventListener("mousedown", this.handleMousedown);
+        this.element.addEventListener("touchstart", this.handleTouchStart);
+    }
+
+    public render(): JSX.Element {
+        const {
+            className,
+            renderer,
+            type,
+            elementRef,
+            onDrag,
+            onDragStart,
+            onDragEnd,
+            ...props
+        }: ThumbProps = this.props;
+
+        props.className =
+            "track " + (type === DIRECTION_AXIS.X ? "trackX" : "trackY") + (className ? " " + className : "");
+
+        return renderer ? (
+            renderer({
+                ...props,
+                type,
+                elementRef: this.ref,
+            })
+        ) : (
+            <div {...props} ref={this.ref} />
+        );
     }
 
     private handleMousedown = (ev: MouseEvent) => {
@@ -105,19 +130,19 @@ export default class Thumb extends React.Component<ThumbProps, {}> {
         }
 
         this.dragging = true;
-        this.element.classList.add('dragging');
+        this.element.classList.add("dragging");
 
         if (global.document) {
-            this.prevUserSelect                   = global.document.body.style.userSelect;
+            this.prevUserSelect = global.document.body.style.userSelect;
             global.document.body.style.userSelect = "none";
 
             // @ts-ignore
-            this.prevOnSelectStart        = global.document.onselectstart;
+            this.prevOnSelectStart = global.document.onselectstart;
             // @ts-ignore
             global.document.onselectstart = () => false;
         }
 
-        const thumbRect  = this.element.getBoundingClientRect();
+        const thumbRect = this.element.getBoundingClientRect();
         const parentRect = this.element.offsetParent
             ? this.element.offsetParent.getBoundingClientRect()
             : {left: 0, top: 0};
@@ -137,12 +162,13 @@ export default class Thumb extends React.Component<ThumbProps, {}> {
         this.dragInitialOffsetY = clientY - thumbRect.top - thumbRect.height / 2;
 
         this.props.onDragStart &&
-        this.props.onDragStart({
-                                   axis: this.props.type,
-                                   offset: this.props.type === DIRECTION_AXIS.X
-                                       ? clientX - parentRect.left - this.dragInitialOffsetX
-                                       : clientY - parentRect.top - this.dragInitialOffsetY,
-                               });
+            this.props.onDragStart({
+                axis: this.props.type,
+                offset:
+                    this.props.type === DIRECTION_AXIS.X
+                        ? clientX - parentRect.left - this.dragInitialOffsetX
+                        : clientY - parentRect.top - this.dragInitialOffsetY,
+            });
     };
 
     private handleDrag = (ev: MouseEvent | TouchEvent) => {
@@ -167,12 +193,13 @@ export default class Thumb extends React.Component<ThumbProps, {}> {
         }
 
         this.props.onDrag &&
-        this.props.onDrag({
-                              axis: this.props.type,
-                              offset: this.props.type === DIRECTION_AXIS.X
-                                  ? clientX - parentRect.left - this.dragInitialOffsetX
-                                  : clientY - parentRect.top - this.dragInitialOffsetY,
-                          });
+            this.props.onDrag({
+                axis: this.props.type,
+                offset:
+                    this.props.type === DIRECTION_AXIS.X
+                        ? clientX - parentRect.left - this.dragInitialOffsetX
+                        : clientY - parentRect.top - this.dragInitialOffsetY,
+            });
     };
 
     private handleDragEnd = (ev?: MouseEvent | TouchEvent) => {
@@ -192,7 +219,7 @@ export default class Thumb extends React.Component<ThumbProps, {}> {
         let offset = 0;
 
         if (this.element) {
-            this.element.classList.remove('dragging');
+            this.element.classList.remove("dragging");
 
             if (this.dragging && ev) {
                 const parentRect = this.element.offsetParent
@@ -210,9 +237,10 @@ export default class Thumb extends React.Component<ThumbProps, {}> {
                     clientY = ev.clientY;
                 }
 
-                offset = this.props.type === DIRECTION_AXIS.X
-                    ? clientX - parentRect.left - this.dragInitialOffsetX
-                    : clientY - parentRect.top - this.dragInitialOffsetY;
+                offset =
+                    this.props.type === DIRECTION_AXIS.X
+                        ? clientX - parentRect.left - this.dragInitialOffsetX
+                        : clientY - parentRect.top - this.dragInitialOffsetY;
             }
         }
 
@@ -222,30 +250,14 @@ export default class Thumb extends React.Component<ThumbProps, {}> {
         this.dragInitialOffsetY = 0;
 
         this.props.onDragEnd &&
-        this.props.onDragEnd({
-                                 axis: this.props.type,
-                                 offset,
-                             });
+            this.props.onDragEnd({
+                axis: this.props.type,
+                offset,
+            });
     };
 
     private ref = (ref: HTMLElement | null): void => {
         typeof this.props.elementRef === "function" && this.props.elementRef(ref);
         this.element = ref;
     };
-
-    public render(): JSX.Element {
-        const {className, renderer, type, elementRef, onDrag, onDragStart, onDragEnd, ...props}: ThumbProps = this.props;
-
-        props.className = 'track ' + (type === DIRECTION_AXIS.X ? 'trackX' : 'trackY') + (className ? ' ' + className : '');
-
-        return renderer ? (
-            renderer({
-                         ...props,
-                         type,
-                         elementRef: this.ref,
-                     })
-        ) : (
-            <div {...props} ref={this.ref} />
-        );
-    }
 }

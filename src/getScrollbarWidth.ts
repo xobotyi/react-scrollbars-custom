@@ -1,9 +1,9 @@
-let scrollbarWidth: (number | null) = null;
+let scrollbarWidth: number | null = null;
 
 declare var global: {
-    document?: Document
+    document?: Document;
 };
-let doc: (Document | null) = global.document || null;
+let doc: Document | null = global.document || null;
 
 /**
  * @description Returns scrollbar width specific for current environment
@@ -31,15 +31,19 @@ export default function getScrollbarWidth(force = false) {
  * @description Set the cached width to given value.<br/>
  *              <i>null</i> will force to recalculate value on next get.
  */
-export const dbgSetScrollbarWidth = (v: number | null): void => {scrollbarWidth = v;};
+export const dbgSetScrollbarWidth = (v: number | null): void => {
+    scrollbarWidth = v;
+};
 
 /**
  * @description Set the document node to calculate the scrollbar width.<br/>
  *              <i>null</i> will force getter to return 0 (it'll imitate SSR).
  */
-export const dbgSetDocument = (v: Document | null): void => {doc = v;};
+export const dbgSetDocument = (v: Document | null): void => {
+    doc = v;
+};
 
 /**
  * @description Return current document node
  */
-export const dbgGetDocument = (): (Document | null) => doc;
+export const dbgGetDocument = (): Document | null => doc;

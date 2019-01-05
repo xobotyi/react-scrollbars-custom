@@ -9,12 +9,10 @@ var DIRECTION_AXIS;
 class Scrollbar extends React.Component {
     constructor() {
         super(...arguments);
-        this.update = () => {
-        };
+        this.update = () => { };
     }
     render() {
-        return (React.createElement("div", null));
+        return React.createElement("div", null);
     }
 }
 exports.default = Scrollbar;
-;

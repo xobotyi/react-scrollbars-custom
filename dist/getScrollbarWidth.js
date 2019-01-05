@@ -24,12 +24,16 @@ exports.default = getScrollbarWidth;
  * @description Set the cached width to given value.<br/>
  *              <i>null</i> will force to recalculate value on next get.
  */
-exports.dbgSetScrollbarWidth = (v) => { scrollbarWidth = v; };
+exports.dbgSetScrollbarWidth = (v) => {
+    scrollbarWidth = v;
+};
 /**
  * @description Set the document node to calculate the scrollbar width.<br/>
  *              <i>null</i> will force getter to return 0 (it'll imitate SSR).
  */
-exports.dbgSetDocument = (v) => { doc = v; };
+exports.dbgSetDocument = (v) => {
+    doc = v;
+};
 /**
  * @description Return current document node
  */

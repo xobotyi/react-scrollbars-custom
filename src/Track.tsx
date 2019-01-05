@@ -4,8 +4,8 @@ import {DIRECTION_AXIS} from "./Scrollbar";
 
 type ClickValues = {
     axis: DIRECTION_AXIS;
-    offset: number,
-}
+    offset: number;
+};
 
 type TrackProps = {
     [name: string]: any;
@@ -22,9 +22,8 @@ type TrackProps = {
     renderer?: (args: TrackProps) => JSX.Element;
 };
 
-
 export default class Track extends React.Component<TrackProps, {}> {
-    public static displayName = 'Scrollbars Track';
+    public static displayName = "Scrollbars Track";
 
     public static propTypes = {
         type: PropTypes.oneOf([DIRECTION_AXIS.X, DIRECTION_AXIS.Y]).isRequired,
@@ -40,6 +39,24 @@ export default class Track extends React.Component<TrackProps, {}> {
     };
 
     public element: HTMLElement | null;
+
+    public render(): JSX.Element {
+        const {className, renderer, type, elementRef, onClick, ...props}: TrackProps = this.props;
+
+        props.className =
+            "track " + (type === DIRECTION_AXIS.X ? "trackX" : "trackY") + (className ? " " + className : "");
+        props.onClick = this.handleClick;
+
+        return renderer ? (
+            renderer({
+                ...props,
+                type,
+                elementRef: this.ref,
+            })
+        ) : (
+            <div {...props} ref={this.ref} />
+        );
+    }
 
     private handleClick = (ev: React.MouseEvent<HTMLElement, MouseEvent>) => {
         if (this.props.onClick && ev.target === this.element) {
@@ -58,21 +75,4 @@ export default class Track extends React.Component<TrackProps, {}> {
         typeof this.props.elementRef === "function" && this.props.elementRef(ref);
         this.element = ref;
     };
-
-    public render(): JSX.Element {
-        const {className, renderer, type, elementRef, onClick, ...props}: TrackProps = this.props;
-
-        props.className = 'track ' + (type === DIRECTION_AXIS.X ? 'trackX' : 'trackY') + (className ? ' ' + className : '');
-        props.onClick   = this.handleClick;
-
-        return renderer ? (
-            renderer({
-                         ...props,
-                         type,
-                         elementRef: this.ref,
-                     })
-        ) : (
-            <div {...props} ref={this.ref} />
-        );
-    }
 }

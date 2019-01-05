@@ -16,13 +16,10 @@
     "removeComments": false,
 
     "noImplicitReturns": true,
-    "noUnusedLocals": true,
     "noUnusedParameters": true,
     "strictNullChecks": true,
     "jsx": "react",
     "alwaysStrict": true,
-
-    //    "allowJs": false,
 
     "outDir": "./dist/",
     "noEmitOnError": true

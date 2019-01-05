@@ -6,13 +6,9 @@ export enum DIRECTION_AXIS {
 }
 
 export default class Scrollbar extends React.Component {
-    update = () => {
-
-    };
+    update = () => {};
 
     render() {
-        return (
-            <div />
-        );
+        return <div />;
     }
-};
+}

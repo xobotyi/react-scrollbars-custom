@@ -176,6 +176,112 @@ export default class Scrollbar extends React.Component {
         thumbYProps: {},
     };
 
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            trackYVisible: true,
+            trackXVisible: true,
+            isRtl: this.props.rtl,
+        };
+
+        this.scrollValues = this.getScrollValues(true);
+    }
+
+    /**
+     * Return the vertical scroll position
+     *
+     * @return {number}
+     */
+    get scrollTop() {
+        if (this.contentEl) {
+            return this.contentEl.scrollTop;
+        }
+
+        return 0;
+    }
+
+    /**
+     *
+     * Set the vertical scroll to given amount of pixels
+     *
+     * @param top {number} Pixels amount
+     */
+    set scrollTop(top) {
+        if (this.contentEl) {
+            this.contentEl.scrollTop = top;
+            this.update();
+        }
+    }
+
+    /**
+     * Return the horizontal scroll position
+     *
+     * @return {number}
+     */
+    get scrollLeft() {
+        if (this.contentEl) {
+            return this.contentEl.scrollLeft;
+        }
+
+        return 0;
+    }
+
+    /**
+     * Set the horizontal scroll to given amount of pixels
+     *
+     * @param left {number} Pixels amount
+     */
+    set scrollLeft(left) {
+        if (this.contentEl) {
+            this.contentEl.scrollLeft = left;
+        }
+    }
+
+    /**
+     * @return {number}
+     */
+    get scrollHeight() {
+        if (this.contentEl) {
+            return this.contentEl.scrollHeight;
+        }
+
+        return 0;
+    }
+
+    /**
+     * @return {number}
+     */
+    get scrollWidth() {
+        if (this.contentEl) {
+            return this.contentEl.scrollWidth;
+        }
+
+        return 0;
+    }
+
+    /**
+     * @return {number}
+     */
+    get clientHeight() {
+        if (this.contentEl) {
+            return this.contentEl.clientHeight;
+        }
+
+        return 0;
+    }
+
+    /**
+     * @return {number}
+     */
+    get clientWidth() {
+        if (this.contentEl) {
+            return this.contentEl.clientWidth;
+        }
+
+        return 0;
+    }
+
     /**
      * Compute the thumb size
      *
@@ -217,18 +323,6 @@ export default class Scrollbar extends React.Component {
      */
     static computeScrollForOffset(trackSize, thumbSize, offset, scrollableSize, viewportSize) {
         return ((offset - thumbSize / 2) / (trackSize - thumbSize)) * (scrollableSize - viewportSize) || 0;
-    }
-
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            trackYVisible: true,
-            trackXVisible: true,
-            isRtl: this.props.rtl,
-        };
-
-        this.scrollValues = this.getScrollValues(true);
     }
 
     componentDidUpdate(prevProps, prevState) {
@@ -328,100 +422,6 @@ export default class Scrollbar extends React.Component {
         this.contentEl.scrollLeft = x - this.contentEl.clientWidth / 2;
 
         return this;
-    }
-
-    /**
-     * Return the vertical scroll position
-     *
-     * @return {number}
-     */
-    get scrollTop() {
-        if (this.contentEl) {
-            return this.contentEl.scrollTop;
-        }
-
-        return 0;
-    }
-
-    /**
-     *
-     * Set the vertical scroll to given amount of pixels
-     *
-     * @param top {number} Pixels amount
-     */
-    set scrollTop(top) {
-        if (this.contentEl) {
-            this.contentEl.scrollTop = top;
-            this.update();
-        }
-    }
-
-    /**
-     * Return the horizontal scroll position
-     *
-     * @return {number}
-     */
-    get scrollLeft() {
-        if (this.contentEl) {
-            return this.contentEl.scrollLeft;
-        }
-
-        return 0;
-    }
-
-    /**
-     * Set the horizontal scroll to given amount of pixels
-     *
-     * @param left {number} Pixels amount
-     */
-    set scrollLeft(left) {
-        if (this.contentEl) {
-            this.contentEl.scrollLeft = left;
-        }
-    }
-
-    /**
-     * @return {number}
-     */
-    get scrollHeight() {
-        if (this.contentEl) {
-            return this.contentEl.scrollHeight;
-        }
-
-        return 0;
-    }
-
-    /**
-     * @return {number}
-     */
-    get scrollWidth() {
-        if (this.contentEl) {
-            return this.contentEl.scrollWidth;
-        }
-
-        return 0;
-    }
-
-    /**
-     * @return {number}
-     */
-    get clientHeight() {
-        if (this.contentEl) {
-            return this.contentEl.clientHeight;
-        }
-
-        return 0;
-    }
-
-    /**
-     * @return {number}
-     */
-    get clientWidth() {
-        if (this.contentEl) {
-            return this.contentEl.clientWidth;
-        }
-
-        return 0;
     }
 
     /**

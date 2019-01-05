@@ -32,12 +32,13 @@ class Track extends React.Component {
     }
     render() {
         const _a = this.props, { className, renderer, type, elementRef, onClick } = _a, props = __rest(_a, ["className", "renderer", "type", "elementRef", "onClick"]);
-        props.className = 'track ' + (type === Scrollbar_1.DIRECTION_AXIS.X ? 'trackX' : 'trackY') + (className ? ' ' + className : '');
+        props.className =
+            "track " + (type === Scrollbar_1.DIRECTION_AXIS.X ? "trackX" : "trackY") + (className ? " " + className : "");
         props.onClick = this.handleClick;
         return renderer ? (renderer(Object.assign({}, props, { type, elementRef: this.ref }))) : (React.createElement("div", Object.assign({}, props, { ref: this.ref })));
     }
 }
-Track.displayName = 'Scrollbars Track';
+Track.displayName = "Scrollbars Track";
 Track.propTypes = {
     type: PropTypes.oneOf([Scrollbar_1.DIRECTION_AXIS.X, Scrollbar_1.DIRECTION_AXIS.Y]).isRequired,
     className: PropTypes.string,

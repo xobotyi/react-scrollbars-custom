@@ -35,12 +35,12 @@ export default class Thumb extends React.Component<ThumbProps, {}> {
     private dragInitialOffsetX;
     private dragInitialOffsetY;
     componentDidMount(): void;
+    render(): JSX.Element;
     private handleMousedown;
     private handleTouchStart;
     private handleDragStart;
     private handleDrag;
     private handleDragEnd;
     private ref;
-    render(): JSX.Element;
 }
 export {};

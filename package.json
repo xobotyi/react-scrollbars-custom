@@ -90,8 +90,8 @@
     "test": "cross-env NODE_ENV=test karma start",
     "test:watch": "cross-env NODE_ENV=test karma start --auto-watch --no-single-run",
     "test:coverage": "cross-env NODE_ENV=test COVERAGE=true karma start --single-run",
-    "format": "prettier --write src/**/*.js tests/**/*.js examples/**/*.js",
-    "format:list": "prettier -l src/**/*.js tests/**/*.js examples/**/*.js",
+    "format": "prettier --write src/**/*.js src/**/*.ts src/**/*.jsx src/**/*.tsx tests/**/*.js tests/**/*.ts examples/**/*.js examples/**/*.ts",
+    "format:list": "prettier -l src/**/*.js src/**/*.ts src/**/*.jsx src/**/*.tsx tests/**/*.js tests/**/*.ts examples/**/*.js examples/**/*.ts",
     "preversion": "npm run test && npm run build && npm run format",
     "postversion": "git push && git push --tags",
     "prepublishOnly": "npm run test && npm run build"

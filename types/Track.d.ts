@@ -25,8 +25,8 @@ export default class Track extends React.Component<TrackProps, {}> {
         renderer: PropTypes.Requireable<(...args: any[]) => any>;
     };
     element: HTMLElement | null;
+    render(): JSX.Element;
     private handleClick;
     private ref;
-    render(): JSX.Element;
 }
 export {};

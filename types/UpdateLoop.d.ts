@@ -17,10 +17,6 @@ export declare class UpdateLoop {
      */
     readonly isActive: boolean;
     /**
-     * @description Callback that called each animation frame.
-     */
-    protected frameRequestCallback: () => void;
-    /**
      * @description Start te loop if it wasn't yet.
      */
     start: () => UpdateLoop;
@@ -36,4 +32,8 @@ export declare class UpdateLoop {
      * @description Remove scrollbar from iteration list if it was there.
      */
     removeScrollbar(scrollbar: Scrollbar): UpdateLoop;
+    /**
+     * @description Callback that called each animation frame.
+     */
+    protected frameRequestCallback: () => void;
 }

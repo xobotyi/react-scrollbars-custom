@@ -48,7 +48,7 @@ class Thumb extends React.Component {
                 return;
             }
             this.dragging = true;
-            this.element.classList.add('dragging');
+            this.element.classList.add("dragging");
             if (global.document) {
                 this.prevUserSelect = global.document.body.style.userSelect;
                 global.document.body.style.userSelect = "none";
@@ -121,7 +121,7 @@ class Thumb extends React.Component {
             }
             let offset = 0;
             if (this.element) {
-                this.element.classList.remove('dragging');
+                this.element.classList.remove("dragging");
                 if (this.dragging && ev) {
                     const parentRect = this.element.offsetParent
                         ? this.element.offsetParent.getBoundingClientRect()
@@ -136,9 +136,10 @@ class Thumb extends React.Component {
                         clientX = ev.clientX;
                         clientY = ev.clientY;
                     }
-                    offset = this.props.type === Scrollbar_1.DIRECTION_AXIS.X
-                        ? clientX - parentRect.left - this.dragInitialOffsetX
-                        : clientY - parentRect.top - this.dragInitialOffsetY;
+                    offset =
+                        this.props.type === Scrollbar_1.DIRECTION_AXIS.X
+                            ? clientX - parentRect.left - this.dragInitialOffsetX
+                            : clientY - parentRect.top - this.dragInitialOffsetY;
                 }
             }
             this.dragging = false;
@@ -159,16 +160,17 @@ class Thumb extends React.Component {
         if (!this.element) {
             throw new Error("Somewhy element was not created.");
         }
-        this.element.addEventListener('mousedown', this.handleMousedown);
-        this.element.addEventListener('touchstart', this.handleTouchStart);
+        this.element.addEventListener("mousedown", this.handleMousedown);
+        this.element.addEventListener("touchstart", this.handleTouchStart);
     }
     render() {
         const _a = this.props, { className, renderer, type, elementRef, onDrag, onDragStart, onDragEnd } = _a, props = __rest(_a, ["className", "renderer", "type", "elementRef", "onDrag", "onDragStart", "onDragEnd"]);
-        props.className = 'track ' + (type === Scrollbar_1.DIRECTION_AXIS.X ? 'trackX' : 'trackY') + (className ? ' ' + className : '');
+        props.className =
+            "track " + (type === Scrollbar_1.DIRECTION_AXIS.X ? "trackX" : "trackY") + (className ? " " + className : "");
         return renderer ? (renderer(Object.assign({}, props, { type, elementRef: this.ref }))) : (React.createElement("div", Object.assign({}, props, { ref: this.ref })));
     }
 }
-Thumb.displayName = 'Scrollbars ThumbOld';
+Thumb.displayName = "Scrollbars ThumbOld";
 Thumb.propTypes = {
     type: PropTypes.oneOf([Scrollbar_1.DIRECTION_AXIS.X, Scrollbar_1.DIRECTION_AXIS.Y]).isRequired,
     className: PropTypes.string,

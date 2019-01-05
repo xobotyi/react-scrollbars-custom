@@ -124,18 +124,41 @@ export default class Thumb extends React.Component<ThumbProps, {}> {
 
         this.props.onDragStart &&
         this.props.onDragStart({
-            axis: this.props.type,
-            offset: this.props.type === DIRECTION_AXIS.X
-                ? clientX - parentRect.left - this.dragInitialOffsetX
-                : clientY - parentRect.top - this.dragInitialOffsetY,
-        });
+                                   axis: this.props.type,
+                                   offset: this.props.type === DIRECTION_AXIS.X
+                                       ? clientX - parentRect.left - this.dragInitialOffsetX
+                                       : clientY - parentRect.top - this.dragInitialOffsetY,
+                               });
     };
 
-    private handleDrag = () => {
-        if (!this.dragging) {
+    private handleDrag = (ev: MouseEvent | TouchEvent) => {
+        if (!this.dragging || !this.element) {
             this.handleDragEnd();
             return;
         }
+
+        const parentRect = this.element.offsetParent
+            ? this.element.offsetParent.getBoundingClientRect()
+            : {left: 0, top: 0};
+
+        let clientX: number;
+        let clientY: number;
+
+        if (ev instanceof TouchEvent) {
+            clientX = ev.touches[0].pageX;
+            clientY = ev.touches[0].pageY;
+        } else {
+            clientX = ev.clientX;
+            clientY = ev.clientY;
+        }
+
+        this.props.onDrag &&
+        this.props.onDrag({
+                              axis: this.props.type,
+                              offset: this.props.type === DIRECTION_AXIS.X
+                                  ? clientX - parentRect.left - this.dragInitialOffsetX
+                                  : clientY - parentRect.top - this.dragInitialOffsetY,
+                          });
     };
 
     private handleDragEnd = (ev?: MouseEvent | TouchEvent) => {
@@ -145,6 +168,8 @@ export default class Thumb extends React.Component<ThumbProps, {}> {
             global.document.removeEventListener("mousemove", this.handleDrag);
             global.document.removeEventListener("mouseup", this.handleDragEnd);
         }
+
+        let offset = 0;
 
         if (this.element) {
             this.element.classList.remove('dragging');
@@ -165,13 +190,9 @@ export default class Thumb extends React.Component<ThumbProps, {}> {
                     clientY = ev.clientY;
                 }
 
-                this.props.onDragEnd &&
-                this.props.onDragEnd({
-                                         axis: this.props.type,
-                                         offset: this.props.type === DIRECTION_AXIS.X
-                                             ? clientX - parentRect.left - this.dragInitialOffsetX
-                                             : clientY - parentRect.top - this.dragInitialOffsetY,
-                                     });
+                offset = this.props.type === DIRECTION_AXIS.X
+                    ? clientX - parentRect.left - this.dragInitialOffsetX
+                    : clientY - parentRect.top - this.dragInitialOffsetY;
             }
         }
 
@@ -179,6 +200,12 @@ export default class Thumb extends React.Component<ThumbProps, {}> {
 
         this.dragInitialOffsetX = 0;
         this.dragInitialOffsetY = 0;
+
+        this.props.onDragEnd &&
+        this.props.onDragEnd({
+                                 axis: this.props.type,
+                                 offset,
+                             });
     };
 
     private ref = (ref: HTMLElement | null): void => {

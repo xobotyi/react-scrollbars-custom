@@ -83,7 +83,7 @@
     }
   },
   "scripts": {
-    "build": "rimraf ./dist && babel src -d dist --ignore \"node-modules/**\" --presets \"@babel/preset-react,@babel/preset-env\" --plugins \"@babel/plugin-proposal-class-properties\"",
+    "build": "rimraf ./dist && rimraf ./types && tsc",
     "push-codacy-coverage": "cat ./coverage/lcov.info | codacy-coverage -p .",
     "examples": "cd ./examples && webpack-dev-server --mode development --hot --colors --progress --config webpack.config.dev.js",
     "examples:build": "cd ./examples && rimraf ./static && cross-env NODE_ENV=production webpack --colors --progress --config webpack.config.prod.js",

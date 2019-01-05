@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import React from "react";
 
-export default class NativeScrollbar extends React.Component {
+export default class NativeScrollbarOld extends React.Component {
     static propTypes = {
         rtl: PropTypes.bool,
 

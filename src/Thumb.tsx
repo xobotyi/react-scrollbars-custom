@@ -49,7 +49,11 @@ export default class Thumb extends React.Component<ThumbProps, {}> {
 
     public element: HTMLElement | null;
 
-    private dragging: boolean          = false;
+    private dragging: boolean = false;
+
+    private prevUserSelect: string | null;
+    private prevOnSelectStart: (() => boolean) | null;
+
     private dragInitialOffsetX: number = 0;
     private dragInitialOffsetY: number = 0;
 
@@ -102,6 +106,16 @@ export default class Thumb extends React.Component<ThumbProps, {}> {
 
         this.dragging = true;
         this.element.classList.add('dragging');
+
+        if (global.document) {
+            this.prevUserSelect                   = global.document.body.style.userSelect;
+            global.document.body.style.userSelect = "none";
+
+            // @ts-ignore
+            this.prevOnSelectStart        = global.document.onselectstart;
+            // @ts-ignore
+            global.document.onselectstart = () => false;
+        }
 
         const thumbRect  = this.element.getBoundingClientRect();
         const parentRect = this.element.offsetParent
@@ -167,6 +181,12 @@ export default class Thumb extends React.Component<ThumbProps, {}> {
             global.document.removeEventListener("touchend", this.handleDragEnd);
             global.document.removeEventListener("mousemove", this.handleDrag);
             global.document.removeEventListener("mouseup", this.handleDragEnd);
+
+            global.document.body.style.userSelect = this.prevUserSelect;
+            this.prevUserSelect = null;
+            // @ts-ignore
+            global.document.onselectstart = this.prevOnSelectStart;
+            this.prevOnSelectStart = null;
         }
 
         let offset = 0;

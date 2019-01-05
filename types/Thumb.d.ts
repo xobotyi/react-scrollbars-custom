@@ -30,6 +30,8 @@ export default class Thumb extends React.Component<ThumbProps, {}> {
     };
     element: HTMLElement | null;
     private dragging;
+    private prevUserSelect;
+    private prevOnSelectStart;
     private dragInitialOffsetX;
     private dragInitialOffsetY;
     componentDidMount(): void;

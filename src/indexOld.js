@@ -1,7 +1,7 @@
 import bowser from "bowser";
 import PropTypes from "prop-types";
 import React from "react";
-import NativeScrollbar from "./NativeScrollbar";
+import NativeScrollbarOld from "./NativeScrollbarOld";
 import Thumb from "./Thumb";
 import Track, {TYPE_X, TYPE_Y} from "./Track";
 import {getInnerHeight, getInnerWidth} from "./util/getInnerSizes";
@@ -856,7 +856,7 @@ export default class Scrollbar extends React.Component {
 
         if (native) {
             return (
-                <NativeScrollbar
+                <NativeScrollbarOld
                     rtl={rtl}
                     momentum={momentum}
                     permanentTrackX={permanentTrackX}

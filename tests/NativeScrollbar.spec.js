@@ -1,9 +1,9 @@
 import expect from "expect";
 import React from "react";
 import {render, unmountComponentAtNode} from "react-dom";
-import NativeScrollbar from "../src/NativeScrollbar";
+import NativeScrollbarOld from "../src/NativeScrollbarOld";
 
-describe("NativeScrollbar", () => {
+describe("NativeScrollbarOld", () => {
     let node;
     beforeEach(() => {
         node = document.createElement("div");
@@ -15,7 +15,7 @@ describe("NativeScrollbar", () => {
     });
 
     it("should render", done => {
-        render(<NativeScrollbar />, node, function() {
+        render(<NativeScrollbarOld />, node, function() {
             expect(this.element.classList.contains("native")).toBeTruthy();
 
             done();
@@ -23,14 +23,14 @@ describe("NativeScrollbar", () => {
     });
 
     it("should accept custom tag name", done => {
-        render(<NativeScrollbar tagName="span" />, node, function() {
+        render(<NativeScrollbarOld tagName="span" />, node, function() {
             expect(this.element.tagName).toBe("SPAN");
             done();
         });
     });
 
     it("should apply rtl direction", done => {
-        render(<NativeScrollbar rtl />, node, function() {
+        render(<NativeScrollbarOld rtl />, node, function() {
             expect(this.element.style.direction).toBe("rtl");
             expect(this.element.classList.contains("rtl")).toBeTruthy();
             done();
@@ -38,14 +38,14 @@ describe("NativeScrollbar", () => {
     });
 
     it("should apply momentum", done => {
-        render(<NativeScrollbar momentum />, node, function() {
+        render(<NativeScrollbarOld momentum />, node, function() {
             expect(this.element.style.WebkitOverflowScrolling).toBe("touch");
             done();
         });
     });
 
     it("should have overflow auto in regular situation", done => {
-        render(<NativeScrollbar />, node, function() {
+        render(<NativeScrollbarOld />, node, function() {
             expect(this.element.style.overflow).toBe("auto");
             expect(this.element.style.overflowX).toBe("auto");
             expect(this.element.style.overflowY).toBe("auto");
@@ -54,7 +54,7 @@ describe("NativeScrollbar", () => {
     });
 
     it("should apply noScrollX", done => {
-        render(<NativeScrollbar noScrollX />, node, function() {
+        render(<NativeScrollbarOld noScrollX />, node, function() {
             expect(this.element.style.overflowX).toBe("hidden");
             expect(this.element.style.overflowY).toBe("auto");
             done();
@@ -62,7 +62,7 @@ describe("NativeScrollbar", () => {
     });
 
     it("should apply noScrollY", done => {
-        render(<NativeScrollbar noScrollY />, node, function() {
+        render(<NativeScrollbarOld noScrollY />, node, function() {
             expect(this.element.style.overflowY).toBe("hidden");
             expect(this.element.style.overflowX).toBe("auto");
             done();
@@ -70,14 +70,14 @@ describe("NativeScrollbar", () => {
     });
 
     it("should apply noScroll", done => {
-        render(<NativeScrollbar noScroll />, node, function() {
+        render(<NativeScrollbarOld noScroll />, node, function() {
             expect(this.element.style.overflow).toBe("hidden");
             done();
         });
     });
 
     it("should apply permanentTrackX", done => {
-        render(<NativeScrollbar permanentTrackX />, node, function() {
+        render(<NativeScrollbarOld permanentTrackX />, node, function() {
             expect(this.element.style.overflowX).toBe("scroll");
             expect(this.element.style.overflowY).toBe("auto");
             done();
@@ -85,7 +85,7 @@ describe("NativeScrollbar", () => {
     });
 
     it("should apply permanentTrackY", done => {
-        render(<NativeScrollbar permanentTrackY />, node, function() {
+        render(<NativeScrollbarOld permanentTrackY />, node, function() {
             expect(this.element.style.overflowY).toBe("scroll");
             expect(this.element.style.overflowX).toBe("auto");
             done();
@@ -93,7 +93,7 @@ describe("NativeScrollbar", () => {
     });
 
     it("should apply permanentTracks", done => {
-        render(<NativeScrollbar permanentTracks />, node, function() {
+        render(<NativeScrollbarOld permanentTracks />, node, function() {
             expect(this.element.style.overflow).toBe("scroll");
             done();
         });

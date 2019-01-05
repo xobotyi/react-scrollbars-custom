@@ -49,6 +49,14 @@ class Thumb extends React.Component {
             }
             this.dragging = true;
             this.element.classList.add('dragging');
+            if (global.document) {
+                this.prevUserSelect = global.document.body.style.userSelect;
+                global.document.body.style.userSelect = "none";
+                // @ts-ignore
+                this.prevOnSelectStart = global.document.onselectstart;
+                // @ts-ignore
+                global.document.onselectstart = () => false;
+            }
             const thumbRect = this.element.getBoundingClientRect();
             const parentRect = this.element.offsetParent
                 ? this.element.offsetParent.getBoundingClientRect()
@@ -105,6 +113,11 @@ class Thumb extends React.Component {
                 global.document.removeEventListener("touchend", this.handleDragEnd);
                 global.document.removeEventListener("mousemove", this.handleDrag);
                 global.document.removeEventListener("mouseup", this.handleDragEnd);
+                global.document.body.style.userSelect = this.prevUserSelect;
+                this.prevUserSelect = null;
+                // @ts-ignore
+                global.document.onselectstart = this.prevOnSelectStart;
+                this.prevOnSelectStart = null;
             }
             let offset = 0;
             if (this.element) {

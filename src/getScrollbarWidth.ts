@@ -21,7 +21,7 @@ export default function getScrollbarWidth(force = false) {
     el.setAttribute("style", "display:block;position:absolute;width:100px;height:100px;top:-9999px;overflow:scroll;");
 
     doc.body.appendChild(el);
-    scrollbarWidth = el.offsetWidth - el.clientWidth || 0;
+    scrollbarWidth = el.offsetWidth - el.clientWidth;
     doc.body.removeChild(el);
 
     return scrollbarWidth;
@@ -31,16 +31,24 @@ export default function getScrollbarWidth(force = false) {
  * @description Set the cached width to given value.<br/>
  *              <i>null</i> will force to recalculate value on next get.
  */
-export const dbgSetScrollbarWidth = (v: number | null): void => {
-    scrollbarWidth = v;
+export const dbgSetScrollbarWidth = (v: number | null): number | null => {
+    if (v === null || typeof v === "number") {
+        return (scrollbarWidth = v);
+    }
+
+    throw new TypeError("override value expected to be a number or null, got " + typeof v);
 };
 
 /**
  * @description Set the document node to calculate the scrollbar width.<br/>
  *              <i>null</i> will force getter to return 0 (it'll imitate SSR).
  */
-export const dbgSetDocument = (v: Document | null): void => {
-    doc = v;
+export const dbgSetDocument = (v: Document | null): Document | null => {
+    if (v === null || v instanceof HTMLDocument) {
+        return (doc = v);
+    }
+
+    throw new TypeError("override value expected to be an instance of HTMLDocument or null, got " + typeof v);
 };
 
 /**

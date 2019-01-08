@@ -28,7 +28,7 @@ exports.getInnerSizes = (el) => {
     const paddingLeft = styles.paddingLeft ? styles.paddingLeft.slice(0, -2) : 0;
     const paddingRight = styles.paddingRight ? styles.paddingRight.slice(0, -2) : 0;
     return {
-        width: el.clientHeight - paddingTop - paddingBottom,
-        height: el.clientWidth - paddingLeft - paddingRight,
+        width: el.clientWidth - paddingLeft - paddingRight,
+        height: el.clientHeight - paddingTop - paddingBottom,
     };
 };

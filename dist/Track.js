@@ -16,11 +16,14 @@ class Track extends React.Component {
     constructor() {
         super(...arguments);
         this.handleClick = (ev) => {
+            if (ev.button !== 0 || !this.element) {
+                return;
+            }
             if (this.props.onClick && ev.target === this.element) {
                 const rect = this.element.getBoundingClientRect();
                 this.props.onClick(ev, {
-                    axis: this.props.type,
-                    offset: this.props.type === Scrollbar_1.DIRECTION_AXIS.X ? ev.clientX - rect.left : ev.clientY - rect.top,
+                    axis: this.props.axis,
+                    offset: this.props.axis === Scrollbar_1.DIRECTION_AXIS.X ? ev.clientX - rect.left : ev.clientY - rect.top,
                 });
             }
             return true;
@@ -30,21 +33,33 @@ class Track extends React.Component {
             this.element = ref;
         };
     }
+    componentDidMount() {
+        if (!this.element) {
+            this.setState(() => { throw new Error("Somewhy element was not created. Possibly you haven't provided HTMLElement to elementRef renderer's property."); });
+            return;
+        }
+        this.element.addEventListener("click", this.handleClick);
+    }
     render() {
-        const _a = this.props, { className, renderer, type, elementRef, onClick } = _a, props = __rest(_a, ["className", "renderer", "type", "elementRef", "onClick"]);
+        const _a = this.props, { className, renderer, axis, elementRef, onClick, tagName } = _a, props = __rest(_a, ["className", "renderer", "axis", "elementRef", "onClick", "tagName"]);
         props.className =
-            "track " + (type === Scrollbar_1.DIRECTION_AXIS.X ? "trackX" : "trackY") + (className ? " " + className : "");
-        props.onClick = this.handleClick;
-        return renderer ? (renderer(Object.assign({}, props, { type, elementRef: this.ref }))) : (React.createElement("div", Object.assign({}, props, { ref: this.ref })));
+            "track " + (axis === Scrollbar_1.DIRECTION_AXIS.X ? "trackX" : "trackY") + (className ? " " + className : "");
+        const TagName = tagName;
+        return renderer ? (renderer(Object.assign({}, props, { axis,
+            tagName, elementRef: this.ref }))) : (React.createElement(TagName, Object.assign({}, props, { ref: this.ref })));
     }
 }
 Track.displayName = "Scrollbars Track";
 Track.propTypes = {
-    type: PropTypes.oneOf([Scrollbar_1.DIRECTION_AXIS.X, Scrollbar_1.DIRECTION_AXIS.Y]).isRequired,
+    axis: PropTypes.oneOf([Scrollbar_1.DIRECTION_AXIS.X, Scrollbar_1.DIRECTION_AXIS.Y]).isRequired,
+    tagName: PropTypes.string,
     className: PropTypes.string,
     style: PropTypes.object,
     onClick: PropTypes.func,
     elementRef: PropTypes.func,
     renderer: PropTypes.func,
+};
+Track.defaultProps = {
+    tagName: 'div',
 };
 exports.default = Track;

@@ -15,7 +15,7 @@ function getScrollbarWidth(force = false) {
     let el = doc.createElement("div");
     el.setAttribute("style", "display:block;position:absolute;width:100px;height:100px;top:-9999px;overflow:scroll;");
     doc.body.appendChild(el);
-    scrollbarWidth = el.offsetWidth - el.clientWidth || 0;
+    scrollbarWidth = el.offsetWidth - el.clientWidth;
     doc.body.removeChild(el);
     return scrollbarWidth;
 }
@@ -25,14 +25,20 @@ exports.default = getScrollbarWidth;
  *              <i>null</i> will force to recalculate value on next get.
  */
 exports.dbgSetScrollbarWidth = (v) => {
-    scrollbarWidth = v;
+    if (v === null || typeof v === 'number') {
+        return scrollbarWidth = v;
+    }
+    throw new TypeError("override value expected to be a number or null, got " + (typeof v));
 };
 /**
  * @description Set the document node to calculate the scrollbar width.<br/>
  *              <i>null</i> will force getter to return 0 (it'll imitate SSR).
  */
 exports.dbgSetDocument = (v) => {
-    doc = v;
+    if (v === null || v instanceof HTMLDocument) {
+        return doc = v;
+    }
+    throw new TypeError("override value expected to be an instance of HTMLDocument or null, got " + (typeof v));
 };
 /**
  * @description Return current document node

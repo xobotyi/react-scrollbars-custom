@@ -74,20 +74,24 @@ export default class Thumb extends React.Component<ThumbProps, {}> {
             onDrag,
             onDragStart,
             onDragEnd,
+            tagName,
             ...props
         }: ThumbProps = this.props;
 
         props.className =
             "track " + (type === DIRECTION_AXIS.X ? "trackX" : "trackY") + (className ? " " + className : "");
 
+        const TagName: any = tagName;
+
         return renderer ? (
             renderer({
                 ...props,
                 type,
+                tagName,
                 elementRef: this.ref,
             })
         ) : (
-            <div {...props} ref={this.ref} />
+            <TagName {...props} ref={this.ref} />
         );
     }
 

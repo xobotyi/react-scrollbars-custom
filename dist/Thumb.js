@@ -164,10 +164,12 @@ class Thumb extends React.Component {
         this.element.addEventListener("touchstart", this.handleTouchStart);
     }
     render() {
-        const _a = this.props, { className, renderer, type, elementRef, onDrag, onDragStart, onDragEnd } = _a, props = __rest(_a, ["className", "renderer", "type", "elementRef", "onDrag", "onDragStart", "onDragEnd"]);
+        const _a = this.props, { className, renderer, type, elementRef, onDrag, onDragStart, onDragEnd, tagName } = _a, props = __rest(_a, ["className", "renderer", "type", "elementRef", "onDrag", "onDragStart", "onDragEnd", "tagName"]);
         props.className =
             "track " + (type === Scrollbar_1.DIRECTION_AXIS.X ? "trackX" : "trackY") + (className ? " " + className : "");
-        return renderer ? (renderer(Object.assign({}, props, { type, elementRef: this.ref }))) : (React.createElement("div", Object.assign({}, props, { ref: this.ref })));
+        const TagName = tagName;
+        return renderer ? (renderer(Object.assign({}, props, { type,
+            tagName, elementRef: this.ref }))) : (React.createElement(TagName, Object.assign({}, props, { ref: this.ref })));
     }
 }
 Thumb.displayName = "Scrollbars ThumbOld";

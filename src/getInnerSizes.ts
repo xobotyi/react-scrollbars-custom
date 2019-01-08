@@ -36,7 +36,7 @@ export const getInnerSizes = (el: HTMLElement): elementInnerSizes => {
     const paddingRight = styles.paddingRight ? styles.paddingRight.slice(0, -2) : 0;
 
     return {
-        width: el.clientHeight - <number>paddingTop - <number>paddingBottom,
-        height: el.clientWidth - <number>paddingLeft - <number>paddingRight,
+        width: el.clientWidth - <number>paddingLeft - <number>paddingRight,
+        height: el.clientHeight - <number>paddingTop - <number>paddingBottom,
     };
 };

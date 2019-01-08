@@ -10,12 +10,13 @@ type ClickValues = {
 type TrackProps = {
     [name: string]: any;
 
-    type: DIRECTION_AXIS;
+    axis: DIRECTION_AXIS;
 
     className?: string;
+    tagName?: string;
     style?: React.CSSProperties;
 
-    onClick?: (ev: React.MouseEvent<HTMLElement>, values: ClickValues) => void;
+    onClick?: (ev: MouseEvent, values: ClickValues) => void;
 
     elementRef?: (element: HTMLElement | null) => void;
 
@@ -26,8 +27,9 @@ export default class Track extends React.Component<TrackProps, {}> {
     public static displayName = "Scrollbars Track";
 
     public static propTypes = {
-        type: PropTypes.oneOf([DIRECTION_AXIS.X, DIRECTION_AXIS.Y]).isRequired,
+        axis: PropTypes.oneOf([DIRECTION_AXIS.X, DIRECTION_AXIS.Y]).isRequired,
 
+        tagName: PropTypes.string,
         className: PropTypes.string,
         style: PropTypes.object,
 
@@ -38,33 +40,56 @@ export default class Track extends React.Component<TrackProps, {}> {
         renderer: PropTypes.func,
     };
 
+    public static defaultProps = {
+        tagName: "div",
+    };
+
     public element: HTMLElement | null;
 
+    public componentDidMount(): void {
+        if (!this.element) {
+            this.setState(() => {
+                throw new Error(
+                    "Somewhy element was not created. Possibly you haven't provided HTMLElement to elementRef renderer's property."
+                );
+            });
+            return;
+        }
+
+        this.element.addEventListener("click", this.handleClick);
+    }
+
     public render(): JSX.Element {
-        const {className, renderer, type, elementRef, onClick, ...props}: TrackProps = this.props;
+        const {className, renderer, axis, elementRef, onClick, tagName, ...props}: TrackProps = this.props;
 
         props.className =
-            "track " + (type === DIRECTION_AXIS.X ? "trackX" : "trackY") + (className ? " " + className : "");
-        props.onClick = this.handleClick;
+            "track " + (axis === DIRECTION_AXIS.X ? "trackX" : "trackY") + (className ? " " + className : "");
+
+        const TagName: any = tagName;
 
         return renderer ? (
             renderer({
                 ...props,
-                type,
+                axis,
+                tagName,
                 elementRef: this.ref,
             })
         ) : (
-            <div {...props} ref={this.ref} />
+            <TagName {...props} ref={this.ref} />
         );
     }
 
-    private handleClick = (ev: React.MouseEvent<HTMLElement, MouseEvent>) => {
+    private handleClick = (ev: MouseEvent) => {
+        if (ev.button !== 0 || !this.element) {
+            return;
+        }
+
         if (this.props.onClick && ev.target === this.element) {
             const rect: ClientRect = this.element.getBoundingClientRect();
 
             this.props.onClick(ev, {
-                axis: this.props.type,
-                offset: this.props.type === DIRECTION_AXIS.X ? ev.clientX - rect.left : ev.clientY - rect.top,
+                axis: this.props.axis,
+                offset: this.props.axis === DIRECTION_AXIS.X ? ev.clientX - rect.left : ev.clientY - rect.top,
             });
         }
 

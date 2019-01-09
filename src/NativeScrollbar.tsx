@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as PropTypes from "prop-types";
 
-type NativeScrollbarProps = {
+export type NativeScrollbarProps = React.HTMLProps<HTMLDivElement> & {
     rtl?: boolean;
     momentum?: boolean;
     permanentTrackX?: boolean;
@@ -45,7 +45,7 @@ export default class NativeScrollbar extends React.Component<NativeScrollbarProp
     };
     private element: HTMLElement;
 
-    public render(): JSX.Element {
+    public render(): React.ReactElement<any> {
         const {
             rtl,
             momentum,

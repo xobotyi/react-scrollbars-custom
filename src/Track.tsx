@@ -7,9 +7,7 @@ type ClickValues = {
     offset: number;
 };
 
-type TrackProps = {
-    [name: string]: any;
-
+export type TrackProps = React.HTMLProps<HTMLDivElement> & {
     axis: DIRECTION_AXIS;
 
     className?: string;
@@ -20,7 +18,7 @@ type TrackProps = {
 
     elementRef?: (element: HTMLElement | null) => void;
 
-    renderer?: (args: TrackProps) => JSX.Element;
+    renderer?: React.FunctionComponent<TrackProps>;
 };
 
 export default class Track extends React.Component<TrackProps, {}> {
@@ -59,11 +57,13 @@ export default class Track extends React.Component<TrackProps, {}> {
         this.element.addEventListener("click", this.handleClick);
     }
 
-    public render(): JSX.Element {
-        const {className, renderer, axis, elementRef, onClick, tagName, ...props}: TrackProps = this.props;
+    public render(): React.ReactElement<any> | null {
+        const {renderer, axis, elementRef, onClick, tagName, ...props}: TrackProps = this.props;
 
         props.className =
-            "track " + (axis === DIRECTION_AXIS.X ? "trackX" : "trackY") + (className ? " " + className : "");
+            "track " +
+            (axis === DIRECTION_AXIS.X ? "trackX" : "trackY") +
+            (props.className ? " " + props.className : "");
 
         const TagName: any = tagName;
 

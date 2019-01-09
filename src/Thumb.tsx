@@ -11,9 +11,7 @@ type DragValues = {
     offset: number;
 };
 
-type ThumbProps = {
-    [name: string]: any;
-
+export type ThumbProps = React.HTMLProps<HTMLDivElement> & {
     axis: DIRECTION_AXIS;
 
     className?: string;
@@ -26,7 +24,7 @@ type ThumbProps = {
 
     elementRef?: (element: HTMLElement | null) => void;
 
-    renderer?: (args: ThumbProps) => JSX.Element;
+    renderer?: React.FunctionComponent<ThumbProps>;
 };
 
 export default class Thumb extends React.Component<ThumbProps, {}> {
@@ -80,21 +78,13 @@ export default class Thumb extends React.Component<ThumbProps, {}> {
         this.handleDragEnd();
     }
 
-    public render(): JSX.Element {
-        const {
-            className,
-            renderer,
-            axis,
-            elementRef,
-            onDrag,
-            onDragStart,
-            onDragEnd,
-            tagName,
-            ...props
-        }: ThumbProps = this.props;
+    public render(): React.ReactElement<any> | null {
+        const {renderer, axis, elementRef, onDrag, onDragStart, onDragEnd, tagName, ...props}: ThumbProps = this.props;
 
         props.className =
-            "thumb " + (axis === DIRECTION_AXIS.X ? "thumbX" : "thumbY") + (className ? " " + className : "");
+            "thumb " +
+            (axis === DIRECTION_AXIS.X ? "thumbX" : "thumbY") +
+            (props.className ? " " + props.className : "");
 
         const TagName: any = tagName;
 

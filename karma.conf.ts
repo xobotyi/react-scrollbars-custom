@@ -27,7 +27,9 @@ module.exports = (cfg) => {
                             "dom",
                             "es2016",
                         ],
-                        "declaration": false,
+                    },
+                    coverageOptions:{
+                        exclude:/\.spec\.tsx?$/i
                     },
                     reports: {
                         'lcovonly': {

@@ -27,7 +27,7 @@ export class UpdateLoop {
      * @description Start te loop if it wasn't yet.
      */
     public start = (): UpdateLoop => {
-        if (!this._isActive) {
+        if (!this._isActive && this.targets.length) {
             this._isActive = true;
 
             this.animationFrameID && cancelAnimationFrame(this.animationFrameID);

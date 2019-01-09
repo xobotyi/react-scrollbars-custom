@@ -14,9 +14,10 @@ type DragValues = {
 type ThumbProps = {
     [name: string]: any;
 
-    type: DIRECTION_AXIS;
+    axis: DIRECTION_AXIS;
 
     className?: string;
+    tagName?: string;
     style?: React.CSSProperties;
 
     onDrag?: (values: DragValues) => void;
@@ -32,8 +33,9 @@ export default class Thumb extends React.Component<ThumbProps, {}> {
     public static displayName = "Scrollbars ThumbOld";
 
     public static propTypes = {
-        type: PropTypes.oneOf([DIRECTION_AXIS.X, DIRECTION_AXIS.Y]).isRequired,
+        axis: PropTypes.oneOf([DIRECTION_AXIS.X, DIRECTION_AXIS.Y]).isRequired,
 
+        tagName: PropTypes.string,
         className: PropTypes.string,
         style: PropTypes.object,
 
@@ -44,6 +46,10 @@ export default class Thumb extends React.Component<ThumbProps, {}> {
         elementRef: PropTypes.func,
 
         renderer: PropTypes.func,
+    };
+
+    public static defaultProps = {
+        tagName: "div",
     };
 
     public element: HTMLElement | null;
@@ -58,18 +64,27 @@ export default class Thumb extends React.Component<ThumbProps, {}> {
 
     public componentDidMount(): void {
         if (!this.element) {
-            throw new Error("Somewhy element was not created.");
+            this.setState(() => {
+                throw new Error(
+                    "Somewhy element was not created. Possibly you haven't provided HTMLElement to elementRef renderer's property."
+                );
+            });
+            return;
         }
 
         this.element.addEventListener("mousedown", this.handleMousedown);
         this.element.addEventListener("touchstart", this.handleTouchStart);
     }
 
+    public componentWillUnmount(): void {
+        this.handleDragEnd();
+    }
+
     public render(): JSX.Element {
         const {
             className,
             renderer,
-            type,
+            axis,
             elementRef,
             onDrag,
             onDragStart,
@@ -79,14 +94,14 @@ export default class Thumb extends React.Component<ThumbProps, {}> {
         }: ThumbProps = this.props;
 
         props.className =
-            "track " + (type === DIRECTION_AXIS.X ? "trackX" : "trackY") + (className ? " " + className : "");
+            "thumb " + (axis === DIRECTION_AXIS.X ? "thumbX" : "thumbY") + (className ? " " + className : "");
 
         const TagName: any = tagName;
 
         return renderer ? (
             renderer({
                 ...props,
-                type,
+                axis,
                 tagName,
                 elementRef: this.ref,
             })
@@ -155,21 +170,21 @@ export default class Thumb extends React.Component<ThumbProps, {}> {
         let clientY: number;
 
         if (ev instanceof TouchEvent) {
-            clientX = ev.touches[0].pageX;
-            clientY = ev.touches[0].pageY;
+            clientX = ev.targetTouches[0].pageX;
+            clientY = ev.targetTouches[0].pageY;
         } else {
             clientX = ev.clientX;
             clientY = ev.clientY;
         }
 
-        this.dragInitialOffsetX = clientX - thumbRect.left - thumbRect.width / 2;
-        this.dragInitialOffsetY = clientY - thumbRect.top - thumbRect.height / 2;
+        this.dragInitialOffsetX = clientX - thumbRect.left;
+        this.dragInitialOffsetY = clientY - thumbRect.top;
 
         this.props.onDragStart &&
             this.props.onDragStart({
-                axis: this.props.type,
+                axis: this.props.axis,
                 offset:
-                    this.props.type === DIRECTION_AXIS.X
+                    this.props.axis === DIRECTION_AXIS.X
                         ? clientX - parentRect.left - this.dragInitialOffsetX
                         : clientY - parentRect.top - this.dragInitialOffsetY,
             });
@@ -189,8 +204,13 @@ export default class Thumb extends React.Component<ThumbProps, {}> {
         let clientY: number;
 
         if (ev instanceof TouchEvent) {
-            clientX = ev.touches[0].pageX;
-            clientY = ev.touches[0].pageY;
+            if (ev.changedTouches.length) {
+                clientX = ev.changedTouches[0].pageX;
+                clientY = ev.changedTouches[0].pageY;
+            } else {
+                clientX = ev.targetTouches[0].pageX;
+                clientY = ev.targetTouches[0].pageY;
+            }
         } else {
             clientX = ev.clientX;
             clientY = ev.clientY;
@@ -198,9 +218,9 @@ export default class Thumb extends React.Component<ThumbProps, {}> {
 
         this.props.onDrag &&
             this.props.onDrag({
-                axis: this.props.type,
+                axis: this.props.axis,
                 offset:
-                    this.props.type === DIRECTION_AXIS.X
+                    this.props.axis === DIRECTION_AXIS.X
                         ? clientX - parentRect.left - this.dragInitialOffsetX
                         : clientY - parentRect.top - this.dragInitialOffsetY,
             });
@@ -234,15 +254,20 @@ export default class Thumb extends React.Component<ThumbProps, {}> {
                 let clientY: number;
 
                 if (ev instanceof TouchEvent) {
-                    clientX = ev.touches[0].pageX;
-                    clientY = ev.touches[0].pageY;
+                    if (ev.changedTouches.length) {
+                        clientX = ev.changedTouches[0].pageX;
+                        clientY = ev.changedTouches[0].pageY;
+                    } else {
+                        clientX = ev.targetTouches[0].pageX;
+                        clientY = ev.targetTouches[0].pageY;
+                    }
                 } else {
                     clientX = ev.clientX;
                     clientY = ev.clientY;
                 }
 
                 offset =
-                    this.props.type === DIRECTION_AXIS.X
+                    this.props.axis === DIRECTION_AXIS.X
                         ? clientX - parentRect.left - this.dragInitialOffsetX
                         : clientY - parentRect.top - this.dragInitialOffsetY;
             }
@@ -255,7 +280,7 @@ export default class Thumb extends React.Component<ThumbProps, {}> {
 
         this.props.onDragEnd &&
             this.props.onDragEnd({
-                axis: this.props.type,
+                axis: this.props.axis,
                 offset,
             });
     };

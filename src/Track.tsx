@@ -1,8 +1,8 @@
 import * as React from "react";
 import * as PropTypes from "prop-types";
-import {DIRECTION_AXIS} from "./Scrollbar";
+import {DIRECTION_AXIS, ElementRef} from "./Scrollbar";
 
-type ClickValues = {
+export type TrackClickValues = {
     axis: DIRECTION_AXIS;
     offset: number;
 };
@@ -14,9 +14,9 @@ export type TrackProps = React.HTMLProps<HTMLDivElement> & {
     tagName?: string;
     style?: React.CSSProperties;
 
-    onClick?: (ev: MouseEvent, values: ClickValues) => void;
+    onClick?: (ev: MouseEvent, values: TrackClickValues) => void;
 
-    elementRef?: (element: HTMLElement | null) => void;
+    elementRef?: ElementRef;
 
     renderer?: React.FunctionComponent<TrackProps>;
 };
@@ -58,7 +58,7 @@ export default class Track extends React.Component<TrackProps, {}> {
     }
 
     public render(): React.ReactElement<any> | null {
-        const {renderer, axis, elementRef, onClick, tagName, ...props}: TrackProps = this.props;
+        const {renderer, axis, elementRef, onClick, tagName, ...props} = this.props;
 
         props.className =
             "track " +

@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as PropTypes from "prop-types";
-import {DIRECTION_AXIS} from "./Scrollbar";
+import {DIRECTION_AXIS, ElementRef} from "./Scrollbar";
 
 declare var global: {
     document?: Document;
@@ -22,7 +22,7 @@ export type ThumbProps = React.HTMLProps<HTMLDivElement> & {
     onDragStart?: (values: DragValues) => void;
     onDragEnd?: (values: DragValues) => void;
 
-    elementRef?: (element: HTMLElement | null) => void;
+    elementRef?: ElementRef;
 
     renderer?: React.FunctionComponent<ThumbProps>;
 };
@@ -79,7 +79,7 @@ export default class Thumb extends React.Component<ThumbProps, {}> {
     }
 
     public render(): React.ReactElement<any> | null {
-        const {renderer, axis, elementRef, onDrag, onDragStart, onDragEnd, tagName, ...props}: ThumbProps = this.props;
+        const {renderer, axis, elementRef, onDrag, onDragStart, onDragEnd, tagName, ...props} = this.props;
 
         props.className =
             "thumb " +

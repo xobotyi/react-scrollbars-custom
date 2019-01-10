@@ -1,10 +1,10 @@
-import React from "react";
-import Scrollbar from "react-scrollbars-custom";
+import * as React from "react";
+import Scrollbar from "../../../../src";
 
 const paragraphText =
-    "Sed ut perspiciatis, unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam eaque ipsa, quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt, explicabo. Nemo enim ipsam voluptatem, quia voluptas sit, aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos, qui ratione voluptatem sequi nesciunt, neque porro quisquam est, qui dolorem ipsum, quia dolor sit, amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt, ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit, qui in ea voluptate velit esse, quam nihil molestiae consequatur, vel illum, qui dolorem eum fugiat, quo voluptas nulla pariatur? At vero eos et accusamus et iusto odio dignissimos ducimus, qui blanditiis praesentium voluptatum deleniti atque corrupti, quos dolores et quas molestias excepturi sint, obcaecati cupiditate non provident, similique sunt in culpa, qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio, cumque nihil impedit, quo minus id, quod maxime placeat, facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet, ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.";
+          "Sed ut perspiciatis, unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam eaque ipsa, quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt, explicabo. Nemo enim ipsam voluptatem, quia voluptas sit, aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos, qui ratione voluptatem sequi nesciunt, neque porro quisquam est, qui dolorem ipsum, quia dolor sit, amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt, ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit, qui in ea voluptate velit esse, quam nihil molestiae consequatur, vel illum, qui dolorem eum fugiat, quo voluptas nulla pariatur? At vero eos et accusamus et iusto odio dignissimos ducimus, qui blanditiis praesentium voluptatum deleniti atque corrupti, quos dolores et quas molestias excepturi sint, obcaecati cupiditate non provident, similique sunt in culpa, qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio, cumque nihil impedit, quo minus id, quod maxime placeat, facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet, ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.";
 
-export default class SandboxBlock extends React.Component {
+export default class SandboxBlock extends React.Component<{}, { [key: string]: any }> {
     constructor(props) {
         super(props);
 
@@ -15,7 +15,7 @@ export default class SandboxBlock extends React.Component {
 
             nativeScrollbar: false,
 
-            rtl: true,
+            rtl: false,
 
             permanentTracks: false,
             permanentTrackY: false,
@@ -24,86 +24,92 @@ export default class SandboxBlock extends React.Component {
         };
     }
 
-    getParagraphs(count) {
-        return [...Array(count)].map((v, i) => <p key={i}>{paragraphText}</p>);
+    private scrollbar: Scrollbar;
+
+    getParagraphs(count: number) {
+        let arr: React.ReactElement<any>[] = [];
+        for (let i = 0; i < count; i++) {
+            arr.push(<p key={i}>{paragraphText}</p>);
+        }
+        return arr;
     }
 
     toggleNoScroll = () => {
         this.setState({
-            noScroll: !this.state.noScroll,
-            noScrollY: !this.state.noScroll,
-            noScrollX: !this.state.noScroll,
-        });
+                          noScroll: !this.state.noScroll,
+                          noScrollY: !this.state.noScroll,
+                          noScrollX: !this.state.noScroll,
+                      });
     };
 
     toggleNoScrollY = () => {
         this.setState({
-            noScroll: (this.state.noScroll ? true : this.state.noScrollX) && !this.state.noScrollY,
-            noScrollY: !this.state.noScrollY,
-            noScrollX: this.state.noScroll ? true : this.state.noScrollX,
-        });
+                          noScroll: (this.state.noScroll ? true : this.state.noScrollX) && !this.state.noScrollY,
+                          noScrollY: !this.state.noScrollY,
+                          noScrollX: this.state.noScroll ? true : this.state.noScrollX,
+                      });
     };
 
     toggleNoScrollX = () => {
         this.setState({
-            noScroll: !this.state.noScrollX && (this.state.noScroll ? true : this.state.noScrollY),
-            noScrollX: !this.state.noScrollX,
-            noScrollY: this.state.noScroll ? true : this.state.noScrollY,
-        });
+                          noScroll: !this.state.noScrollX && (this.state.noScroll ? true : this.state.noScrollY),
+                          noScrollX: !this.state.noScrollX,
+                          noScrollY: this.state.noScroll ? true : this.state.noScrollY,
+                      });
     };
 
     togglePermanentTracks = () => {
         this.setState({
-            permanentTracks: !this.state.permanentTracks,
-            permanentTrackY: !this.state.permanentTracks,
-            permanentTrackX: !this.state.permanentTracks,
-        });
+                          permanentTracks: !this.state.permanentTracks,
+                          permanentTrackY: !this.state.permanentTracks,
+                          permanentTrackX: !this.state.permanentTracks,
+                      });
     };
 
     togglePermanentTrackY = () => {
         this.setState({
-            permanentTracks:
-                (this.state.permanentTracks ? true : this.state.permanentTrackX) && !this.state.permanentTrackY,
-            permanentTrackY: !this.state.permanentTrackY,
-            permanentTrackX: this.state.permanentTracks ? true : this.state.permanentTrackX,
-        });
+                          permanentTracks:
+                              (this.state.permanentTracks ? true : this.state.permanentTrackX) && !this.state.permanentTrackY,
+                          permanentTrackY: !this.state.permanentTrackY,
+                          permanentTrackX: this.state.permanentTracks ? true : this.state.permanentTrackX,
+                      });
     };
 
     togglePermanentTrackX = () => {
         this.setState({
-            permanentTracks:
-                !this.state.permanentTrackX && (this.state.permanentTracks ? true : this.state.permanentTrackY),
-            permanentTrackX: !this.state.permanentTrackX,
-            permanentTrackY: this.state.permanentTracks ? true : this.state.permanentTrackY,
-        });
+                          permanentTracks:
+                              !this.state.permanentTrackX && (this.state.permanentTracks ? true : this.state.permanentTrackY),
+                          permanentTrackX: !this.state.permanentTrackX,
+                          permanentTrackY: this.state.permanentTracks ? true : this.state.permanentTrackY,
+                      });
     };
 
     toggleRtl = () => {
         this.setState({
-            rtl: !this.state.rtl,
-        });
+                          rtl: !this.state.rtl,
+                      });
     };
 
     toggleNativeScrollbarClick = () => {
         this.setState({
-            nativeScrollbar: !this.state.nativeScrollbar,
-        });
+                          nativeScrollbar: !this.state.nativeScrollbar,
+                      });
     };
 
     handleAddParagraphClick = () => {
         this.setState({
-            paragraphsCount: this.state.paragraphsCount + 1,
-        });
+                          paragraphsCount: this.state.paragraphsCount + 1,
+                      });
     };
 
     handleRemoveParagraphClick = () => {
         this.setState({
-            paragraphsCount: Math.max(0, this.state.paragraphsCount - 1),
-        });
+                          paragraphsCount: Math.max(0, this.state.paragraphsCount - 1),
+                      });
     };
 
     handleRandomPositionClick = () => {
-        this.scrollbar.scrollTop = Math.floor(Math.random() * (this.scrollbar.scrollHeight + 1));
+        this.scrollbar.scrollTop  = Math.floor(Math.random() * (this.scrollbar.scrollHeight + 1));
         this.scrollbar.scrollLeft = Math.floor(Math.random() * (this.scrollbar.scrollWidth + 1));
     };
 
@@ -125,15 +131,15 @@ export default class SandboxBlock extends React.Component {
 
     render() {
         const {
-            noScroll,
-            noScrollY,
-            noScrollX,
-            permanentTracks,
-            permanentTrackY,
-            permanentTrackX,
-            rtl,
-            nativeScrollbar,
-        } = this.state;
+                  noScroll,
+                  noScrollY,
+                  noScrollX,
+                  permanentTracks,
+                  permanentTrackY,
+                  permanentTrackX,
+                  rtl,
+                  nativeScrollbar,
+              } = this.state;
 
         return (
             <div className="block" id="SandboxBlock">
@@ -196,7 +202,7 @@ export default class SandboxBlock extends React.Component {
                     <Scrollbar
                         native={nativeScrollbar}
                         noDefaultStyles
-                        ref={ref => (this.scrollbar = ref)}
+                        ref={(ref: Scrollbar) => (this.scrollbar = ref)}
                         noScroll={noScroll}
                         noScrollY={noScrollY}
                         noScrollX={noScrollX}

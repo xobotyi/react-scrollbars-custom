@@ -8,7 +8,7 @@ module.exports = {
     mode: "production",
     target: "web",
     entry: {
-        "bundle.js": path.join(__dirname, "/app/app.js"),
+        "bundle.js": path.join(__dirname, "/app/app.ts"),
         style: path.join(__dirname, "/app/style.scss"),
     },
     output: {
@@ -17,10 +17,7 @@ module.exports = {
         publicPath: "/",
     },
     resolve: {
-        alias: {
-            "react-scrollbars-custom": path.join(__dirname, "..", "src"),
-        },
-        extensions: [".js"],
+        extensions: [".tsx", ".ts", ".js"],
     },
     optimization: {
         minimize: true,
@@ -41,28 +38,9 @@ module.exports = {
                 use: [MiniCssExtractPlugin.loader, "css-loader", "sass-loader"],
             },
             {
-                test: /\.jsx?$/,
+                test: /\.tsx?$/,
+                use: "ts-loader",
                 exclude: /node_modules/,
-                use: {
-                    loader: "babel-loader",
-                    options: {
-                        sourceMaps: false,
-                        comments: true,
-                        cacheDirectory: false,
-                        presets: [
-                            "@babel/preset-react",
-                            [
-                                "@babel/preset-env",
-                                {
-                                    targets: {
-                                        chrome: 58,
-                                    },
-                                },
-                            ],
-                        ],
-                        plugins: ["@babel/plugin-proposal-class-properties"],
-                    },
-                },
             },
         ],
     },

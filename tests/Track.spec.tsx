@@ -1,8 +1,7 @@
 import {render, unmountComponentAtNode} from "react-dom";
 import * as  React from "react";
-import Track from "../src/Track";
+import Track, {DIRECTION_AXIS} from "../src/Track";
 import simulant from "simulant";
-import {DIRECTION_AXIS} from "../src/Scrollbar";
 
 describe("Track", () => {
     let node: HTMLDivElement;
@@ -66,13 +65,6 @@ describe("Track", () => {
         render(<Track axis={DIRECTION_AXIS.Y} style={{width: 100, height: 200}} />, node, function () {
             expect(this.element.style.width).toBe('100px');
             expect(this.element.style.height).toBe('200px');
-            done();
-        });
-    });
-
-    it('should apply tagName', (done) => {
-        render(<Track axis={DIRECTION_AXIS.Y} tagName="span" />, node, function () {
-            expect(this.element.tagName).toBe("SPAN");
             done();
         });
     });

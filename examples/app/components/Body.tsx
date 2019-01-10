@@ -1,18 +1,15 @@
-import React from "react";
-import AutohideTracksBlock from "./blocks/AutohideTracksBlock";
-import CustomStyleBlock from "./blocks/CustomStyleBlock";
-import DefaultBlock from "./blocks/DefaultBlock";
+import *as React from "react";
 import SandboxBlock from "./blocks/SandboxBlock";
 
-export default class Head extends React.Component {
+export default class Body extends React.Component<{ [name: string]: any }> {
     render() {
         return (
             <div id="AppBody">
                 <div className="packageDescription">
                     <p>
                         {this.props.packageName} is crossbrowser React component that allow you to easy customize
-                        scrollbars. No matter what platform you targeted, with {this.props.packageName} scrollbars will
-                        look the same.
+                                                 scrollbars. No matter what platform you targeted, with {this.props.packageName} scrollbars will
+                                                 look the same.
                     </p>
                     <h2>Features</h2>
                     <ul className="features">
@@ -40,9 +37,9 @@ export default class Head extends React.Component {
                 </div>
 
                 <h2>Examples</h2>
-                <DefaultBlock />
-                <CustomStyleBlock />
-                <AutohideTracksBlock />
+                {/*<DefaultBlock />*/}
+                {/*<CustomStyleBlock />*/}
+                {/*<AutohideTracksBlock />*/}
                 <SandboxBlock />
             </div>
         );

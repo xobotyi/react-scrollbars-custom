@@ -1,17 +1,21 @@
 import * as React from "react";
 import * as PropTypes from "prop-types";
-import {DIRECTION_AXIS, ElementRef} from "./Scrollbar";
+import {ElementRef} from "./Scrollbar";
+
+export enum DIRECTION_AXIS {
+    X = "x",
+    Y = "y",
+}
 
 export type TrackClickValues = {
     axis: DIRECTION_AXIS;
     offset: number;
 };
 
-export type TrackProps = React.HTMLProps<HTMLDivElement> & {
+type TrackOwnProps = {
     axis: DIRECTION_AXIS;
 
     className?: string;
-    tagName?: string;
     style?: React.CSSProperties;
 
     onClick?: (ev: MouseEvent, values: TrackClickValues) => void;
@@ -21,13 +25,15 @@ export type TrackProps = React.HTMLProps<HTMLDivElement> & {
     renderer?: React.FunctionComponent<TrackProps>;
 };
 
+export type TrackProps = TrackOwnProps &
+    Pick<TrackOwnProps, Exclude<keyof TrackOwnProps, keyof React.HTMLProps<HTMLDivElement>>>;
+
 export default class Track extends React.Component<TrackProps, {}> {
     public static displayName = "Scrollbars Track";
 
     public static propTypes = {
         axis: PropTypes.oneOf([DIRECTION_AXIS.X, DIRECTION_AXIS.Y]).isRequired,
 
-        tagName: PropTypes.string,
         className: PropTypes.string,
         style: PropTypes.object,
 
@@ -36,10 +42,6 @@ export default class Track extends React.Component<TrackProps, {}> {
         elementRef: PropTypes.func,
 
         renderer: PropTypes.func,
-    };
-
-    public static defaultProps = {
-        tagName: "div",
     };
 
     public element: HTMLElement | null;
@@ -58,24 +60,21 @@ export default class Track extends React.Component<TrackProps, {}> {
     }
 
     public render(): React.ReactElement<any> | null {
-        const {renderer, axis, elementRef, onClick, tagName, ...props} = this.props;
+        const {renderer, axis, elementRef, onClick, ...props} = this.props;
 
         props.className =
             "track " +
             (axis === DIRECTION_AXIS.X ? "trackX" : "trackY") +
             (props.className ? " " + props.className : "");
 
-        const TagName: any = tagName;
-
         return renderer ? (
             renderer({
                 ...props,
                 axis,
-                tagName,
                 elementRef: this.ref,
             })
         ) : (
-            <TagName {...props} ref={this.ref} />
+            <div {...props} ref={this.ref} />
         );
     }
 

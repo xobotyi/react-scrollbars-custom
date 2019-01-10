@@ -1,21 +1,21 @@
 import * as React from "react";
 import * as PropTypes from "prop-types";
-import {DIRECTION_AXIS, ElementRef} from "./Scrollbar";
+import {ElementRef} from "./Scrollbar";
+import {DIRECTION_AXIS} from "./Track";
 
 declare var global: {
     document?: Document;
 };
 
-type DragValues = {
+export type DragValues = {
     axis: DIRECTION_AXIS;
     offset: number;
 };
 
-export type ThumbProps = React.HTMLProps<HTMLDivElement> & {
+type ThumbOwnProps = {
     axis: DIRECTION_AXIS;
 
     className?: string;
-    tagName?: string;
     style?: React.CSSProperties;
 
     onDrag?: (values: DragValues) => void;
@@ -27,13 +27,15 @@ export type ThumbProps = React.HTMLProps<HTMLDivElement> & {
     renderer?: React.FunctionComponent<ThumbProps>;
 };
 
+export type ThumbProps = ThumbOwnProps &
+    Pick<ThumbOwnProps, Exclude<keyof ThumbOwnProps, keyof React.HTMLProps<HTMLDivElement>>>;
+
 export default class Thumb extends React.Component<ThumbProps, {}> {
     public static displayName = "Scrollbars ThumbOld";
 
     public static propTypes = {
         axis: PropTypes.oneOf([DIRECTION_AXIS.X, DIRECTION_AXIS.Y]).isRequired,
 
-        tagName: PropTypes.string,
         className: PropTypes.string,
         style: PropTypes.object,
 
@@ -44,10 +46,6 @@ export default class Thumb extends React.Component<ThumbProps, {}> {
         elementRef: PropTypes.func,
 
         renderer: PropTypes.func,
-    };
-
-    public static defaultProps = {
-        tagName: "div",
     };
 
     public element: HTMLElement | null;
@@ -79,24 +77,21 @@ export default class Thumb extends React.Component<ThumbProps, {}> {
     }
 
     public render(): React.ReactElement<any> | null {
-        const {renderer, axis, elementRef, onDrag, onDragStart, onDragEnd, tagName, ...props} = this.props;
+        const {renderer, axis, elementRef, onDrag, onDragStart, onDragEnd, ...props} = this.props;
 
         props.className =
             "thumb " +
             (axis === DIRECTION_AXIS.X ? "thumbX" : "thumbY") +
             (props.className ? " " + props.className : "");
 
-        const TagName: any = tagName;
-
         return renderer ? (
             renderer({
                 ...props,
                 axis,
-                tagName,
                 elementRef: this.ref,
             })
         ) : (
-            <TagName {...props} ref={this.ref} />
+            <div {...props} ref={this.ref} />
         );
     }
 

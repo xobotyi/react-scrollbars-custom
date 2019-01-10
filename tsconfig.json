@@ -30,8 +30,6 @@
   ],
 
   "exclude": [
-    "node_modules",
-    "tests",
-    "karma.conf.ts"
+    "node_modules"
   ]
 }

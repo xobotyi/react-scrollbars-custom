@@ -23,13 +23,16 @@ module.exports = (cfg) => {
 
                 karmaTypescriptConfig: {
                     compilerOptions: {
+                        "target": "es2016",
+                        "module": "commonjs",
+                        "moduleResolution": "node",
                         "lib": [
                             "dom",
                             "es2016",
                         ],
                     },
-                    coverageOptions:{
-                        exclude:/\.spec\.tsx?$/i
+                    coverageOptions: {
+                        exclude: /\.spec\.tsx?$/i,
                     },
                     reports: {
                         'lcovonly': {

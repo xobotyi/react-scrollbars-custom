@@ -4,7 +4,13 @@ import Track, {DIRECTION_AXIS, TrackClickValues, TrackProps} from "./Track";
 import Thumb, {ThumbProps} from "./Thumb";
 import {getInnerHeight, getInnerWidth} from "./getInnerSizes";
 import getScrollbarWidth from "./getScrollbarWidth";
-import {OverflowXProperty, OverflowYProperty, PositionProperty, WebkitOverflowScrollingProperty} from "csstype";
+import {
+    DirectionProperty,
+    OverflowXProperty,
+    OverflowYProperty,
+    PositionProperty,
+    WebkitOverflowScrollingProperty,
+} from "csstype";
 import {UpdateLoop} from "./UpdateLoop";
 
 const updateLoop = new UpdateLoop();
@@ -149,7 +155,7 @@ export type ElementProps = React.HTMLProps<HTMLDivElement> & {
     renderer?: React.FunctionComponent<ElementProps>;
 };
 
-export type ScrollbarProps = {
+type ScrollbarOwnProps = {
     native?: boolean;
 
     minimalThumbSize?: number;
@@ -202,6 +208,9 @@ export type ScrollbarProps = {
     onScrollStart?: () => void;
     onScrollStop?: () => void;
 };
+
+export type ScrollbarProps = ScrollbarOwnProps &
+    Pick<ScrollbarOwnProps, Exclude<keyof ScrollbarOwnProps, keyof React.HTMLProps<HTMLDivElement>>>;
 
 export type ScrollbarState = {
     trackXVisible: boolean;
@@ -843,7 +852,7 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
         this.scrollDetect();
     };
 
-    private timeoutID: number | null;
+    private timeoutID;
 
     scrollDetect = () => {
         if (!this.props.onScrollStart && !this.props.onScrollStop) {
@@ -1092,7 +1101,9 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
             holder: {
                 ...(props.noDefaultStyles && defaultStyles.holder),
                 ...holderStyles,
-                ...(typeof props.rtl !== "undefined" && {direction: props.rtl ? "rtl" : "ltr"}),
+                ...(typeof props.rtl !== "undefined" && {
+                    direction: props.rtl ? ("rtl" as DirectionProperty) : ("ltr" as DirectionProperty),
+                }),
             },
             wrapper: {
                 ...(props.noDefaultStyles && defaultStyles.wrapper),

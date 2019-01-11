@@ -10,7 +10,7 @@ import {
     OverflowYProperty,
     PositionProperty,
     WebkitOverflowScrollingProperty,
-} from "csstype";
+} from "./../node_modules/csstype";
 import {UpdateLoop} from "./UpdateLoop";
 import NativeScrollbar from "./NativeScrollbar";
 import * as bowser from "bowser";

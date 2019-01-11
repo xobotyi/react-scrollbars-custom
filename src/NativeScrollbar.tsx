@@ -6,7 +6,7 @@ import {
     OverflowYProperty,
     PositionProperty,
     WebkitOverflowScrollingProperty,
-} from "csstype";
+} from "./../node_modules/csstype";
 
 type NativeScrollbarOwnProps = {
     rtl?: boolean;

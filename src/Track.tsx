@@ -29,7 +29,7 @@ export type TrackProps = TrackOwnProps &
     Pick<TrackOwnProps, Exclude<keyof TrackOwnProps, keyof React.HTMLProps<HTMLDivElement>>>;
 
 export default class Track extends React.Component<TrackProps, {}> {
-    public static displayName = "Scrollbars Track";
+    public static displayName = "Scrollbar Track";
 
     public static propTypes = {
         axis: PropTypes.oneOf([DIRECTION_AXIS.X, DIRECTION_AXIS.Y]).isRequired,

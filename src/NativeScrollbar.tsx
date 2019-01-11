@@ -1,7 +1,14 @@
 import * as React from "react";
 import * as PropTypes from "prop-types";
+import {
+    DirectionProperty,
+    OverflowXProperty,
+    OverflowYProperty,
+    PositionProperty,
+    WebkitOverflowScrollingProperty,
+} from "csstype";
 
-export type NativeScrollbarProps = React.HTMLProps<HTMLDivElement> & {
+type NativeScrollbarOwnProps = {
     rtl?: boolean;
     momentum?: boolean;
     permanentTrackX?: boolean;
@@ -10,14 +17,16 @@ export type NativeScrollbarProps = React.HTMLProps<HTMLDivElement> & {
     noScrollX?: boolean;
     noScrollY?: boolean;
     noScroll?: boolean;
-    tagName?: string;
     className?: string;
     style?: React.CSSProperties;
     elementRef?: (element: HTMLElement | null) => void;
 };
 
+export type NativeScrollbarProps = NativeScrollbarOwnProps &
+    Pick<NativeScrollbarOwnProps, Exclude<keyof NativeScrollbarOwnProps, keyof React.HTMLProps<HTMLDivElement>>>;
+
 export default class NativeScrollbar extends React.Component<NativeScrollbarProps> {
-    public static displayName = "Scrollbars NativeScrollbar";
+    public static displayName = "Scrollbar NativeScrollbar";
 
     public static propTypes = {
         rtl: PropTypes.bool,
@@ -32,18 +41,14 @@ export default class NativeScrollbar extends React.Component<NativeScrollbarProp
         noScrollY: PropTypes.bool,
         noScroll: PropTypes.bool,
 
-        tagName: PropTypes.string,
-
         className: PropTypes.string,
 
         style: PropTypes.object,
 
         elementRef: PropTypes.func,
     };
-    public static defaultProps = {
-        tagName: "div",
-    };
-    private element: HTMLElement;
+
+    private element: HTMLDivElement;
 
     public render(): React.ReactElement<any> {
         const {
@@ -55,7 +60,6 @@ export default class NativeScrollbar extends React.Component<NativeScrollbarProp
             noScrollX,
             noScrollY,
             noScroll,
-            tagName,
             className,
             style,
             elementRef,
@@ -63,30 +67,32 @@ export default class NativeScrollbar extends React.Component<NativeScrollbarProp
             ...props
         }: NativeScrollbarProps = this.props;
 
-        const TagName: any = tagName;
+        const divProps = {
+            ...props,
+            className: "ScrollbarsCustom native" + (rtl ? " rtl" : "") + (className ? " " + className : ""),
+            style: {
+                position: "relative" as PositionProperty,
+                ...style,
+                ...(rtl && {direction: "rtl" as DirectionProperty}),
+                ...(momentum && {WebkitOverflowScrolling: "touch" as WebkitOverflowScrollingProperty}),
+                overflowX: (noScroll || noScrollX
+                    ? "hidden"
+                    : permanentTracks || permanentTrackX
+                    ? "scroll"
+                    : "auto") as OverflowXProperty,
+                overflowY: (noScroll || noScrollY
+                    ? "hidden"
+                    : permanentTracks || permanentTrackY
+                    ? "scroll"
+                    : "auto") as OverflowYProperty,
+            },
+            ref: ref => {
+                this.element = ref;
 
-        const classNames = "ScrollbarsCustom native" + (rtl ? " rtl" : "") + (className ? " " + className : "");
-
-        const styles = {
-            position: "relative",
-            ...style,
-            ...(rtl && {direction: "rtl"}),
-            ...(momentum && {WebkitOverflowScrolling: "touch"}),
-            overflowX: noScroll || noScrollX ? "hidden" : permanentTracks || permanentTrackX ? "scroll" : "auto",
-            overflowY: noScroll || noScrollY ? "hidden" : permanentTracks || permanentTrackY ? "scroll" : "auto",
+                typeof elementRef === "function" && elementRef(ref);
+            },
         };
 
-        return (
-            <TagName
-                style={styles}
-                className={classNames}
-                ref={ref => {
-                    this.element = ref;
-
-                    typeof elementRef === "function" && elementRef(ref);
-                }}
-                {...props}
-            />
-        );
+        return <div {...divProps} />;
     }
 }

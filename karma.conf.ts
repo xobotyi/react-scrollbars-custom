@@ -45,6 +45,11 @@ module.exports = (cfg) => {
                             "subdirectory": () => "",
                         },
                     },
+                    include: [
+                        "./src/**/*",
+                        "./tests/**/*",
+                        "./node_modules/csstype/**/*",
+                    ]
                 },
             });
 };

@@ -52,13 +52,6 @@ describe("NativeScrollbar", () => {
         });
     });
 
-    it('should apply tagName', (done) => {
-        render(<NativeScrollbar tagName="span" />, node, function () {
-            expect(this.element.tagName).toBe("SPAN");
-            done();
-        });
-    });
-
     it('should apply rtl direction', (done) => {
         render(<NativeScrollbar rtl />, node, function () {
             expect(this.element.style.direction).toBe("rtl");

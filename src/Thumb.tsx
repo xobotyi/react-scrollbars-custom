@@ -7,7 +7,7 @@ declare var global: {
     document?: Document;
 };
 
-export type DragValues = {
+export type ThumbDragValues = {
     axis: DIRECTION_AXIS;
     offset: number;
 };
@@ -18,9 +18,9 @@ type ThumbOwnProps = {
     className?: string;
     style?: React.CSSProperties;
 
-    onDrag?: (values: DragValues) => void;
-    onDragStart?: (values: DragValues) => void;
-    onDragEnd?: (values: DragValues) => void;
+    onDrag?: (values: ThumbDragValues) => void;
+    onDragStart?: (values: ThumbDragValues) => void;
+    onDragEnd?: (values: ThumbDragValues) => void;
 
     elementRef?: ElementRef;
 
@@ -31,7 +31,7 @@ export type ThumbProps = ThumbOwnProps &
     Pick<ThumbOwnProps, Exclude<keyof ThumbOwnProps, keyof React.HTMLProps<HTMLDivElement>>>;
 
 export default class Thumb extends React.Component<ThumbProps, {}> {
-    public static displayName = "Scrollbars ThumbOld";
+    public static displayName = "Scrollbar Thumb";
 
     public static propTypes = {
         axis: PropTypes.oneOf([DIRECTION_AXIS.X, DIRECTION_AXIS.Y]).isRequired,

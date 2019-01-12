@@ -27,8 +27,7 @@
     "custom"
   ],
   "dependencies": {
-    "bowser": "^2.0.0-beta.3",
-    "rollup": "^1.1.0"
+    "bowser": "^2.0.0-beta.3"
   },
   "peerDependencies": {
     "react": "^0.14.0 || ^15.0.0 || ^16.0.0",
@@ -62,7 +61,6 @@
     "react": "^16.7.0",
     "react-dom": "^16.7.0",
     "rimraf": "^2.6.3",
-    "rollup-plugin-typescript": "^1.0.0",
     "sass-loader": "^7.1.0",
     "simulant": "^0.2.2",
     "sinon": "^7.2.2",
@@ -81,7 +79,7 @@
   "scripts": {
     "build": "rimraf ./dist && rimraf ./types && npm run build:cjs && npm run build:esm",
     "build:cjs": "tsc --build tsconfig.cjs.json",
-    "build:esm": "tsc --build tsconfig.esm.json",
+    "build:esm": "tsc --build tsconfig.json",
     "push-codacy-coverage": "cat ./coverage/lcov.info | codacy-coverage -p .",
     "examples": "cd ./examples && webpack-dev-server --mode development --hot --colors --progress --config webpack.config.dev.js",
     "examples:build": "cd ./examples && rimraf ./static && cross-env NODE_ENV=production webpack --colors --progress --config webpack.config.prod.js",

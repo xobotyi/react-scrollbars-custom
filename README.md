@@ -62,13 +62,6 @@ npm install
 npm run test
 ```
 
-## Coverage
-```bash
-# install dependencies if you haven't yet
-npm install
-npm run test:coverage
-```
-
 ## Credits
 Big thanks to [@malte-wessel](https://github.com/malte-wessel) with his [react-custom-scrollbars](https://github.com/malte-wessel/react-custom-scrollbars) which I used before writing this component.  
 So don't be wondered that repos and code look similar in some places, his package used as ethalon. And for the users convenience i've tried to make API's seamless as much as it possible.

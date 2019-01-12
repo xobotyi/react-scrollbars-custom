@@ -1,12 +1,5 @@
 {
   "compilerOptions": {
-    "target": "es2016",
-    "module": "commonjs",
-    "moduleResolution": "node",
-
-    "declaration": true,
-    "declarationDir": "./types",
-
     "lib": [
       "dom",
       "es2016"
@@ -18,11 +11,8 @@
     "noImplicitReturns": true,
     "noUnusedParameters": true,
     "strictNullChecks": true,
-    "jsx": "react",
     "alwaysStrict": true,
-
-    "outDir": "./dist/",
-    "noEmitOnError": true
+    "jsx": "react"
   },
 
   "include": [

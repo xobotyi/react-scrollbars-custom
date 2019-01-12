@@ -2,8 +2,9 @@
   "name": "react-scrollbars-custom",
   "description": "The best React custom scrollbars component",
   "version": "3.1.5",
-  "main": "dist/index.js",
-  "types": "index.d.ts",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "types": "types/index.d.ts",
   "repository": {
     "type": "git",
     "url": "https://github.com/xobotyi/react-scrollbars-custom.git"
@@ -26,7 +27,8 @@
     "custom"
   ],
   "dependencies": {
-    "bowser": "^2.0.0-beta.3"
+    "bowser": "^2.0.0-beta.3",
+    "rollup": "^1.1.0"
   },
   "peerDependencies": {
     "react": "^0.14.0 || ^15.0.0 || ^16.0.0",
@@ -60,6 +62,7 @@
     "react": "^16.7.0",
     "react-dom": "^16.7.0",
     "rimraf": "^2.6.3",
+    "rollup-plugin-typescript": "^1.0.0",
     "sass-loader": "^7.1.0",
     "simulant": "^0.2.2",
     "sinon": "^7.2.2",
@@ -76,17 +79,18 @@
     }
   },
   "scripts": {
-    "build": "rimraf ./dist && rimraf ./types && tsc",
+    "build": "rimraf ./dist && rimraf ./types && npm run build:cjs && npm run build:esm",
+    "build:cjs": "tsc --build tsconfig.cjs.json",
+    "build:esm": "tsc --build tsconfig.esm.json",
     "push-codacy-coverage": "cat ./coverage/lcov.info | codacy-coverage -p .",
     "examples": "cd ./examples && webpack-dev-server --mode development --hot --colors --progress --config webpack.config.dev.js",
     "examples:build": "cd ./examples && rimraf ./static && cross-env NODE_ENV=production webpack --colors --progress --config webpack.config.prod.js",
     "test": "cross-env NODE_ENV=test karma start",
     "test:watch": "cross-env NODE_ENV=test karma start --auto-watch --no-single-run",
-    "test:coverage": "cross-env NODE_ENV=test COVERAGE=true karma start --single-run",
     "format": "prettier --write src/**/*.js src/**/*.ts src/**/*.jsx src/**/*.tsx tests/**/*.js tests/**/*.ts examples/**/*.js examples/**/*.ts",
     "format:list": "prettier -l src/**/*.js src/**/*.ts src/**/*.jsx src/**/*.tsx tests/**/*.js tests/**/*.ts examples/**/*.js examples/**/*.ts",
-    "preversion": "npm run test && npm run build && npm run format",
+    "preversion": "npm run format && npm run build",
     "postversion": "git push && git push --tags",
-    "prepublishOnly": "npm run test && npm run build"
+    "prepublishOnly": "npm run format && npm run test && npm run build"
   }
 }

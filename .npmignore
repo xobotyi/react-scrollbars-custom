@@ -1,11 +1,13 @@
 coverage/
 tests/
 examples/
-.idea/
 src/
+.idea/
+.gitignore
 .prettierignore
 .prettierrc
 .travis.yml
 CODE_OF_CONDUCT.md
-karma.conf.js
-test.js
+ISSUE_TEMPLATE.md
+karma.*
+tsconfig.*.json

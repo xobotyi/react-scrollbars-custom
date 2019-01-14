@@ -152,7 +152,7 @@ type ScrollValues = {
     isRTL?: boolean;
 };
 
-export enum TRACK_CLICK_BEHAVIOUR {
+export enum TRACK_CLICK_BEHAVIOR {
     JUMP = "jump",
     STEP = "step",
 }
@@ -173,10 +173,9 @@ type ScrollbarOwnProps = {
     fallbackScrollbarWidth?: number;
 
     className?: string;
-    tagName?: string;
     style?: React.CSSProperties;
 
-    trackClickBehaviour?: TRACK_CLICK_BEHAVIOUR;
+    trackClickBehavior?: TRACK_CLICK_BEHAVIOR;
 
     rtl?: boolean;
 
@@ -241,7 +240,7 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
         className: PropTypes.string,
         style: PropTypes.object,
 
-        trackClickBehaviour: PropTypes.oneOf([TRACK_CLICK_BEHAVIOUR.JUMP, TRACK_CLICK_BEHAVIOUR.STEP]),
+        trackClickBehavior: PropTypes.oneOf([TRACK_CLICK_BEHAVIOR.JUMP, TRACK_CLICK_BEHAVIOR.STEP]),
 
         rtl: PropTypes.bool,
 
@@ -291,7 +290,7 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
 
         fallbackScrollbarWidth: 20,
 
-        trackClickBehaviour: TRACK_CLICK_BEHAVIOUR.JUMP,
+        trackClickBehavior: TRACK_CLICK_BEHAVIOR.JUMP,
 
         momentum: true,
 
@@ -639,7 +638,7 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
                 values.offset - thumbSize / 2
             );
 
-            if (this.props.trackClickBehaviour === TRACK_CLICK_BEHAVIOUR.JUMP) {
+            if (this.props.trackClickBehavior === TRACK_CLICK_BEHAVIOR.JUMP) {
                 this.contentEl.scrollLeft = scrollTarget;
             } else {
                 this.contentEl.scrollLeft =
@@ -664,7 +663,7 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
                 values.offset - thumbSize / 2
             );
 
-            if (this.props.trackClickBehaviour === TRACK_CLICK_BEHAVIOUR.JUMP) {
+            if (this.props.trackClickBehavior === TRACK_CLICK_BEHAVIOR.JUMP) {
                 this.contentEl.scrollTop = scrollTarget;
             } else {
                 this.contentEl.scrollTop =
@@ -1041,7 +1040,7 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
 
             translateContentSizesToHolder,
 
-            trackClickBehaviour,
+            trackClickBehavior,
 
             scrollLeft,
             scrollTop,

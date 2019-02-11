@@ -8,7 +8,7 @@ describe("Scrollbar", () => {
     beforeAll(() => {
         node = document.createElement('div');
         document.body.appendChild(node);
-        dbgSetScrollbarWidth(17);
+        dbgSetScrollbarWidth(null);
     });
     afterEach(() => {
         unmountComponentAtNode(node);
@@ -16,7 +16,6 @@ describe("Scrollbar", () => {
     afterAll(() => {
         unmountComponentAtNode(node);
         document.body.removeChild(node);
-        dbgSetScrollbarWidth(null);
     });
 
     describe("render", () => {

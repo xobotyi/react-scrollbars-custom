@@ -1,12 +1,14 @@
 import {render, unmountComponentAtNode} from "react-dom";
 import * as  React from "react";
 import Scrollbar from "./../src/Scrollbar";
+import {dbgSetScrollbarWidth} from "../src/getScrollbarWidth";
 
 describe("Scrollbar", () => {
     let node: HTMLDivElement;
     beforeAll(() => {
         node = document.createElement('div');
         document.body.appendChild(node);
+        dbgSetScrollbarWidth(17);
     });
     afterEach(() => {
         unmountComponentAtNode(node);
@@ -14,6 +16,7 @@ describe("Scrollbar", () => {
     afterAll(() => {
         unmountComponentAtNode(node);
         document.body.removeChild(node);
+        dbgSetScrollbarWidth(null);
     });
 
     describe("render", () => {

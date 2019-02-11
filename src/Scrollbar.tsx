@@ -204,10 +204,10 @@ type ScrollbarOwnProps = {
 
     wrapperProps?: ElementProps;
     contentProps?: ElementProps;
-    trackXProps?: TrackProps;
-    trackYProps?: TrackProps;
-    thumbXProps?: ThumbProps;
-    thumbYProps?: ThumbProps;
+    trackXProps?: Pick<TrackProps, Exclude<keyof TrackProps, "axis">>;
+    trackYProps?: Pick<TrackProps, Exclude<keyof TrackProps, "axis">>;
+    thumbXProps?: Pick<ThumbProps, Exclude<keyof ThumbProps, "axis">>;
+    thumbYProps?: Pick<ThumbProps, Exclude<keyof ThumbProps, "axis">>;
 
     elementRef?: ElementRef;
 
@@ -514,7 +514,7 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
      */
     public scrollToBottom = (): Scrollbar => {
         if (this.contentEl) {
-            this.contentEl.scrollTop = this.contentEl.scrollHeight;
+            this.contentEl.scrollTop = this.contentEl.scrollHeight - this.contentEl.clientHeight;
         }
 
         return this;
@@ -524,7 +524,7 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
      */
     public scrollToRight = (): Scrollbar => {
         if (this.contentEl) {
-            this.contentEl.scrollLeft = this.contentEl.scrollWidth;
+            this.contentEl.scrollLeft = this.contentEl.scrollWidth - this.contentEl.clientWidth;
         }
 
         return this;
@@ -1047,6 +1047,8 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
 
             renderer,
 
+            elementRef,
+
             children,
 
             ...props
@@ -1132,22 +1134,27 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
             onClick: this.handleTrackClick,
         };
 
-        const contentProps = {
+        const contentProps: ElementProps = {
             ...propsContentProps,
             style: styles.content,
             key: "content",
             className: "content" + (propsContentProps!.className ? " " + propsContentProps!.className : ""),
-            [propsContentProps!.renderer ? "elementRef" : "ref"]: this.contentElementRef,
             renderer: undefined,
             children,
         };
+        if (propsContentProps!.renderer) {
+            contentProps.elementRef = this.contentElementRef;
+            delete contentProps.ref;
+        } else {
+            contentProps.ref = this.contentElementRef;
+            delete contentProps.elementRef;
+        }
 
-        const wrapperProps = {
+        const wrapperProps: ElementProps = {
             ...propsWrapperProps,
             style: styles.wrapper,
             key: "wrapper",
             className: "wrapper" + (propsWrapperProps!.className ? " " + propsWrapperProps!.className : ""),
-            [propsWrapperProps!.renderer ? "elementRef" : "ref"]: this.wrapperElementRef,
             renderer: undefined,
             children: propsContentProps!.renderer ? (
                 propsContentProps!.renderer!(contentProps)
@@ -1155,6 +1162,13 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
                 <div {...contentProps} />
             ),
         };
+        if (propsWrapperProps!.renderer) {
+            wrapperProps.elementRef = this.wrapperElementRef;
+            delete wrapperProps.ref;
+        } else {
+            wrapperProps.ref = this.wrapperElementRef;
+            delete wrapperProps.elementRef;
+        }
 
         const holderProps = {
             ...props,
@@ -1195,18 +1209,22 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
         thumbXStyles?: React.CSSProperties,
         thumbYStyles?: React.CSSProperties
     ) {
+        const useDefaultStyles = !props.noDefaultStyles;
+
         return {
             holder: {
-                ...(props.noDefaultStyles && defaultStyles.holder),
+                ...(useDefaultStyles && defaultStyles.holder),
                 ...holderStyles,
                 ...(typeof props.rtl !== "undefined" && {
                     direction: (props.rtl ? "rtl" : "ltr") as DirectionProperty,
                 }),
             },
             wrapper: {
-                ...(props.noDefaultStyles && defaultStyles.wrapper),
-                [state.isRTL ? "marginLeft" : "marginRight"]: state.trackYVisible ? 8 : undefined,
-                marginBottom: state.trackXVisible ? 8 : undefined,
+                ...(useDefaultStyles && {
+                    ...defaultStyles.wrapper,
+                    [state.isRTL ? "marginLeft" : "marginRight"]: state.trackYVisible ? 8 : undefined,
+                    marginBottom: state.trackXVisible ? 8 : undefined,
+                }),
                 ...wrapperStyles,
                 position: "relative" as PositionProperty,
                 overflow: "hidden",
@@ -1235,7 +1253,7 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
                       }),
             },
             trackX: {
-                ...(props.noDefaultStyles && {
+                ...(useDefaultStyles && {
                     ...defaultStyles.track!.common,
                     ...defaultStyles.track!.x,
                 }),
@@ -1243,7 +1261,7 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
                 ...(!state.trackXVisible && {display: "none"}),
             },
             trackY: {
-                ...(props.noDefaultStyles && {
+                ...(useDefaultStyles && {
                     ...defaultStyles.track!.common,
                     ...defaultStyles.track!.y,
                 }),
@@ -1252,14 +1270,14 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
                 ...(!state.trackYVisible && {display: "none"}),
             },
             thumbX: {
-                ...(props.noDefaultStyles && {
+                ...(useDefaultStyles && {
                     ...defaultStyles.thumb!.common,
                     ...defaultStyles.thumb!.x,
                 }),
                 ...thumbXStyles,
             },
             thumbY: {
-                ...(props.noDefaultStyles && {
+                ...(useDefaultStyles && {
                     ...defaultStyles.thumb!.common,
                     ...defaultStyles.thumb!.y,
                 }),

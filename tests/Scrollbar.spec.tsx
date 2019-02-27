@@ -1,6 +1,6 @@
 import {render, unmountComponentAtNode} from "react-dom";
 import * as  React from "react";
-import Scrollbar from "./../src/Scrollbar";
+import Scrollbar, {ScrollbarProps, ScrollbarState, ScrollValues} from "./../src/Scrollbar";
 import {dbgSetScrollbarWidth} from "../src/getScrollbarWidth";
 
 describe("Scrollbar", () => {
@@ -12,10 +12,12 @@ describe("Scrollbar", () => {
     });
     afterEach(() => {
         unmountComponentAtNode(node);
+        dbgSetScrollbarWidth(null);
     });
     afterAll(() => {
         unmountComponentAtNode(node);
         document.body.removeChild(node);
+        dbgSetScrollbarWidth(null);
     });
 
     describe("render", () => {
@@ -37,6 +39,142 @@ describe("Scrollbar", () => {
 
                            done();
                        }, 20);
+                   });
+        });
+
+        it("should apply classnames", (done) => {
+            render((
+                       <Scrollbar style={{width: 100, height: 70}}
+                                  rtl
+                                  className="customHolderClassname"
+                                  wrapperProps={{className: "customWrapperClassName"}}
+                                  contentProps={{className: "customContentClassName"}}
+                                  trackXProps={{className: "customTrackXClassName"}}
+                                  trackYProps={{className: "customTrackYClassName"}}
+                                  thumbXProps={{className: "customThumbXClassName"}}
+                                  thumbYProps={{className: "customThumbYClassName"}}>
+                           <div style={{width: 200, height: 210}} />
+                       </Scrollbar>
+                   ),
+                   node,
+                   function () {
+                       setTimeout(() => {
+                           expect(this.holderEl.classList.contains("ScrollbarsCustom")).toBeTruthy();
+                           expect(this.holderEl.classList.contains("trackYVisible")).toBeTruthy();
+                           expect(this.holderEl.classList.contains("trackXVisible")).toBeTruthy();
+                           expect(this.holderEl.classList.contains("rtl")).toBeTruthy();
+                           expect(this.holderEl.classList.contains("customHolderClassname")).toBeTruthy();
+
+                           expect(this.wrapperEl.classList.contains("wrapper")).toBeTruthy();
+                           expect(this.wrapperEl.classList.contains("customWrapperClassName")).toBeTruthy();
+
+                           expect(this.contentEl.classList.contains("content")).toBeTruthy();
+                           expect(this.contentEl.classList.contains("customContentClassName")).toBeTruthy();
+
+                           expect(this.trackXEl.classList.contains("track")).toBeTruthy();
+                           expect(this.trackXEl.classList.contains("trackX")).toBeTruthy();
+                           expect(this.trackXEl.classList.contains("customTrackXClassName")).toBeTruthy();
+
+                           expect(this.trackYEl.classList.contains("track")).toBeTruthy();
+                           expect(this.trackYEl.classList.contains("trackY")).toBeTruthy();
+                           expect(this.trackYEl.classList.contains("customTrackYClassName")).toBeTruthy();
+
+                           expect(this.thumbXEl.classList.contains("thumb")).toBeTruthy();
+                           expect(this.thumbXEl.classList.contains("thumbX")).toBeTruthy();
+                           expect(this.thumbXEl.classList.contains("customThumbXClassName")).toBeTruthy();
+
+                           expect(this.thumbYEl.classList.contains("thumb")).toBeTruthy();
+                           expect(this.thumbYEl.classList.contains("thumbY")).toBeTruthy();
+                           expect(this.thumbYEl.classList.contains("customThumbYClassName")).toBeTruthy();
+
+                           done();
+                       }, 20);
+                   });
+        });
+    });
+
+    describe("props", () => {
+        it("should apply props scroll values", (done) => {
+            render((
+                       <Scrollbar style={{width: 100, height: 70}}
+                                  scrollLeft={20}
+                                  scrollTop={40}>
+                           <div style={{width: 200, height: 210}} />
+                       </Scrollbar>
+                   ),
+                   node,
+                   function () {
+                       setTimeout(() => {
+                           expect(this.contentEl.scrollTop).toBe(40);
+                           expect(this.contentEl.scrollLeft).toBe(20);
+                           done();
+                       }, 30);
+                   });
+        });
+
+        it("should apply fallback scrollbar width iv browser's is 0", (done) => {
+            dbgSetScrollbarWidth(0);
+            render((
+                       <Scrollbar style={{width: 100, height: 70}}
+                                  fallbackScrollbarWidth={11}>
+                           <div style={{width: 200, height: 210}} />
+                       </Scrollbar>
+                   ),
+                   node,
+                   function () {
+                       setTimeout(() => {
+                           expect(this.contentEl.style.marginRight).toBe("-11px");
+                           done();
+                       }, 30);
+                   });
+        });
+    });
+
+    describe("native", () => {
+        it("should render a single content element with given classnames", (done) => {
+            render((
+                       <Scrollbar style={{width: 100, height: 70}}
+                                  native
+                                  rtl
+                                  className="customHolderClassname">
+                           <div style={{width: 200, height: 210}} />
+                       </Scrollbar>
+                   ),
+                   node,
+                   function () {
+                       setTimeout(() => {
+                           expect(this.wrapperEl).toBe(undefined);
+                           expect(this.trackXEl).toBe(undefined);
+                           expect(this.thumbXEl).toBe(undefined);
+                           expect(this.trackYEl).toBe(undefined);
+                           expect(this.thumbYEl).toBe(undefined);
+
+                           expect(this.contentEl.__proto__.toString()).toBe("[object HTMLDivElement]");
+                           expect(this.contentEl.classList.contains("native")).toBeTruthy();
+                           expect(this.contentEl.classList.contains("trackYVisible")).toBeTruthy();
+                           expect(this.contentEl.classList.contains("trackXVisible")).toBeTruthy();
+                           expect(this.contentEl.classList.contains("ScrollbarsCustom")).toBeTruthy();
+                           done();
+                       }, 30);
+                   });
+        });
+
+        it("should apply props scroll values", (done) => {
+            render((
+                       <Scrollbar style={{width: 100, height: 70}}
+                                  native
+                                  scrollLeft={20}
+                                  scrollTop={40}>
+                           <div style={{width: 200, height: 210}} />
+                       </Scrollbar>
+                   ),
+                   node,
+                   function () {
+                       setTimeout(() => {
+                           expect(this.contentEl.scrollTop).toBe(40);
+                           expect(this.contentEl.scrollLeft).toBe(20);
+                           done();
+                       }, 30);
                    });
         });
     });
@@ -224,15 +362,14 @@ describe("Scrollbar", () => {
         describe(".scrollValues", () => {
             it("should return proper values", (done) => {
                 render((
-                           <Scrollbar style={{width: 100, height: 100}}>
+                           <Scrollbar style={{width: 100, height: 100}}
+                                      scrollTop={450}
+                                      scrollLeft={400}>
                                <div style={{width: 900, height: 1000}} />
                            </Scrollbar>
                        ),
                        node,
                        function () {
-                           this.contentEl.scrollTop  = 450;
-                           this.contentEl.scrollLeft = 400;
-
                            setTimeout(() => {
                                const scrollValues = this.scrollValues;
 
@@ -508,8 +645,126 @@ describe("Scrollbar", () => {
             expect(Scrollbar.calculateScrollForThumbOffset(100, 0, 100, 50, 150)).toBe(0);
         });
 
-        it(".calculateStyles()", () => {
+        describe(".calculateStyles()", () => {
+            const props: ScrollbarProps      = {};
+            const state: ScrollbarState      = {
+                trackYVisible: true,
+                trackXVisible: true,
+            };
+            const scrollValues: ScrollValues = {
+                clientHeight: null,
+                clientWidth: null,
+                scrollHeight: null,
+                scrollWidth: null,
+                scrollTop: null,
+                scrollLeft: null,
+                scrollYBlocked: false,
+                scrollXBlocked: false,
+                scrollYPossible: true,
+                scrollXPossible: true,
+                trackYVisible: true,
+                trackXVisible: true,
+                isRTL: undefined,
+            };
 
+            it("should return proper rtl styles", () => {
+                let result = Scrollbar.calculateStyles({
+                                                           ...props,
+                                                           rtl: true,
+                                                       },
+                                                       {
+                                                           ...state,
+                                                           isRTL: true,
+                                                       },
+                                                       scrollValues,
+                                                       17,
+                                                       17);
+
+                expect(result.holder.direction).toBe("rtl");
+                expect(result.wrapper.marginLeft).toBe(8);
+
+                result = Scrollbar.calculateStyles({
+                                                       ...props,
+                                                       rtl: false,
+                                                   },
+                                                   {
+                                                       ...state,
+                                                       isRTL: false,
+                                                   },
+                                                   scrollValues,
+                                                   17,
+                                                   17);
+                expect(result.holder.direction).toBe("ltr");
+                expect(result.wrapper.marginRight).toBe(8);
+
+                result = Scrollbar.calculateStyles({
+                                                       ...props,
+                                                       rtl: undefined,
+                                                   },
+                                                   {
+                                                       ...state,
+                                                       isRTL: false,
+                                                   },
+                                                   scrollValues,
+                                                   17,
+                                                   17);
+                expect(result.holder.direction).toBe(undefined);
+                expect(result.wrapper.marginRight).toBe(8);
+            });
+
+            it("should return proper content paddings for mobile browsers", () => {
+                let result = Scrollbar.calculateStyles({
+                                                           ...props,
+                                                           rtl: true,
+                                                       },
+                                                       {
+                                                           ...state,
+                                                           isRTL: true,
+                                                       },
+                                                       scrollValues,
+                                                       0,
+                                                       17);
+
+                expect(result.content.paddingBottom).toBe(17);
+                expect(result.content.paddingLeft).toBe(17);
+                expect(result.content.paddingRight).toBe(undefined);
+                expect(result.content.marginLeft).toBe(-17);
+                expect(result.content.marginRight).toBe(undefined);
+
+                result = Scrollbar.calculateStyles({
+                                                       ...props,
+                                                   },
+                                                   {
+                                                       ...state,
+                                                       isRTL: false,
+                                                   },
+                                                   scrollValues,
+                                                   0,
+                                                   17);
+
+                expect(result.content.paddingBottom).toBe(17);
+                expect(result.content.paddingRight).toBe(17);
+                expect(result.content.paddingLeft).toBe(undefined);
+                expect(result.content.marginRight).toBe(-17);
+                expect(result.content.marginLeft).toBe(undefined);
+
+                result = Scrollbar.calculateStyles({
+                                                       ...props,
+                                                   },
+                                                   {
+                                                       ...state,
+                                                       isRTL: true,
+                                                   },
+                                                   {
+                                                       ...scrollValues,
+                                                       scrollYPossible: false,
+                                                   },
+                                                   0,
+                                                   17);
+
+                expect(result.content.paddingLeft).toBe(undefined);
+                expect(result.content.marginLeft).toBe(undefined);
+            });
         });
     });
 });

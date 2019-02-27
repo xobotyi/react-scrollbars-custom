@@ -9,6 +9,8 @@ import {
 } from "./../node_modules/csstype";
 
 type NativeScrollbarOwnProps = {
+    scrollTop?: number;
+    scrollLeft?: number;
     rtl?: boolean;
     momentum?: boolean;
     permanentTrackX?: boolean;
@@ -23,7 +25,7 @@ type NativeScrollbarOwnProps = {
 };
 
 export type NativeScrollbarProps = NativeScrollbarOwnProps &
-    Pick<NativeScrollbarOwnProps, Exclude<keyof NativeScrollbarOwnProps, keyof React.HTMLProps<HTMLDivElement>>>;
+                                   Pick<NativeScrollbarOwnProps, Exclude<keyof NativeScrollbarOwnProps, keyof React.HTMLProps<HTMLDivElement>>>;
 
 export default class NativeScrollbar extends React.Component<NativeScrollbarProps> {
     public static displayName = "Scrollbar NativeScrollbar";
@@ -46,26 +48,51 @@ export default class NativeScrollbar extends React.Component<NativeScrollbarProp
         style: PropTypes.object,
 
         elementRef: PropTypes.func,
+
+        scrollLeft: PropTypes.number,
+        scrollTop: PropTypes.number,
     };
 
-    private element: HTMLDivElement;
+    public element: HTMLElement | null;
+
+    private ref = (ref: HTMLElement | null): void => {
+        typeof this.props.elementRef === "function" && this.props.elementRef(ref);
+        this.element = ref;
+    };
+
+    public componentDidMount(): void {
+        if (this.element) {
+            typeof this.props.scrollTop !== "undefined" && (this.element.scrollTop = this.props.scrollTop);
+            typeof this.props.scrollLeft !== "undefined" && (this.element.scrollLeft = this.props.scrollLeft);
+        }
+    }
+
+    public componentDidUpdate(): void {
+        if (this.element) {
+            this.props.scrollTop !== this.element.scrollTop && typeof this.props.scrollTop !== "undefined" && (this.element.scrollTop = this.props.scrollTop);
+            this.props.scrollLeft !== this.element.scrollLeft && typeof this.props.scrollLeft !== "undefined" && (this.element.scrollLeft = this.props.scrollLeft);
+        }
+    }
 
     public render(): React.ReactElement<any> {
         const {
-            rtl,
-            momentum,
-            permanentTrackX,
-            permanentTrackY,
-            permanentTracks,
-            noScrollX,
-            noScrollY,
-            noScroll,
-            className,
-            style,
-            elementRef,
+                  rtl,
+                  momentum,
+                  permanentTrackX,
+                  permanentTrackY,
+                  permanentTracks,
+                  noScrollX,
+                  noScrollY,
+                  noScroll,
+                  className,
+                  style,
+                  elementRef,
 
-            ...props
-        }: NativeScrollbarProps = this.props;
+                  scrollLeft,
+                  scrollTop,
+
+                  ...props
+              }: NativeScrollbarProps = this.props;
 
         const divProps = {
             ...props,
@@ -78,19 +105,15 @@ export default class NativeScrollbar extends React.Component<NativeScrollbarProp
                 overflowX: (noScroll || noScrollX
                     ? "hidden"
                     : permanentTracks || permanentTrackX
-                    ? "scroll"
-                    : "auto") as OverflowXProperty,
+                        ? "scroll"
+                        : "auto") as OverflowXProperty,
                 overflowY: (noScroll || noScrollY
                     ? "hidden"
                     : permanentTracks || permanentTrackY
-                    ? "scroll"
-                    : "auto") as OverflowYProperty,
+                        ? "scroll"
+                        : "auto") as OverflowYProperty,
             },
-            ref: ref => {
-                this.element = ref;
-
-                typeof elementRef === "function" && elementRef(ref);
-            },
+            ref: this.ref,
         };
 
         return <div {...divProps} />;

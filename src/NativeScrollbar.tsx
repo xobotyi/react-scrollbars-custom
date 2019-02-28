@@ -1,12 +1,6 @@
 import * as React from "react";
 import * as PropTypes from "prop-types";
-import {
-    DirectionProperty,
-    OverflowXProperty,
-    OverflowYProperty,
-    PositionProperty,
-    WebkitOverflowScrollingProperty,
-} from "./../node_modules/csstype";
+import cnb from "cnbuilder";
 
 type NativeScrollbarOwnProps = {
     scrollTop?: number;
@@ -69,8 +63,12 @@ export default class NativeScrollbar extends React.Component<NativeScrollbarProp
 
     public componentDidUpdate(): void {
         if (this.element) {
-            this.props.scrollTop !== this.element.scrollTop && typeof this.props.scrollTop !== "undefined" && (this.element.scrollTop = this.props.scrollTop);
-            this.props.scrollLeft !== this.element.scrollLeft && typeof this.props.scrollLeft !== "undefined" && (this.element.scrollLeft = this.props.scrollLeft);
+            this.props.scrollTop !== this.element.scrollTop &&
+            typeof this.props.scrollTop !== "undefined" &&
+            (this.element.scrollTop = this.props.scrollTop);
+            this.props.scrollLeft !== this.element.scrollLeft &&
+            typeof this.props.scrollLeft !== "undefined" &&
+            (this.element.scrollLeft = this.props.scrollLeft);
         }
     }
 
@@ -96,23 +94,23 @@ export default class NativeScrollbar extends React.Component<NativeScrollbarProp
 
         const divProps = {
             ...props,
-            className: "ScrollbarsCustom native" + (rtl ? " rtl" : "") + (className ? " " + className : ""),
+            className: cnb("ScrollbarsCustom native", {rtl}, className),
             style: {
-                position: "relative" as PositionProperty,
+                position: "relative",
                 ...style,
-                ...(rtl && {direction: "rtl" as DirectionProperty}),
-                ...(momentum && {WebkitOverflowScrolling: "touch" as WebkitOverflowScrollingProperty}),
+                ...(rtl && {direction: "rtl"}),
+                ...(momentum && {WebkitOverflowScrolling: "touch"}),
                 overflowX: (noScroll || noScrollX
                     ? "hidden"
                     : permanentTracks || permanentTrackX
                         ? "scroll"
-                        : "auto") as OverflowXProperty,
+                        : "auto"),
                 overflowY: (noScroll || noScrollY
                     ? "hidden"
                     : permanentTracks || permanentTrackY
                         ? "scroll"
-                        : "auto") as OverflowYProperty,
-            },
+                        : "auto"),
+            } as React.CSSProperties,
             ref: this.ref,
         };
 

@@ -2,6 +2,7 @@ import {render, unmountComponentAtNode} from "react-dom";
 import * as  React from "react";
 import Scrollbar, {ScrollbarProps, ScrollbarState, ScrollValues} from "./../src/Scrollbar";
 import {dbgSetScrollbarWidth} from "../src/getScrollbarWidth";
+import cnb from "cnbuilder";
 
 describe("Scrollbar", () => {
     let node: HTMLDivElement;
@@ -83,6 +84,102 @@ describe("Scrollbar", () => {
                            expect(this.thumbXEl.classList.contains("thumbX")).toBeTruthy();
                            expect(this.thumbXEl.classList.contains("customThumbXClassName")).toBeTruthy();
 
+                           expect(this.thumbYEl.classList.contains("thumb")).toBeTruthy();
+                           expect(this.thumbYEl.classList.contains("thumbY")).toBeTruthy();
+                           expect(this.thumbYEl.classList.contains("customThumbYClassName")).toBeTruthy();
+
+                           done();
+                       }, 20);
+                   });
+        });
+
+        it("should use renderer functions", (done) => {
+            render((
+                       <Scrollbar style={{width: 100, height: 70}}
+                                  renderer={
+                                      (props) => <span ref={props.elementRef}
+                                                       style={props.style}
+                                                       children={props.children}
+                                                       className={cnb("customHolderClassname", props.className)} />
+                                  }
+                                  wrapperProps={{
+                                      renderer: (props) => <span ref={props.elementRef}
+                                                                 key={props.key}
+                                                                 style={props.style}
+                                                                 children={props.children}
+                                                                 className={cnb("customWrapperClassName", props.className)} />,
+                                  }}
+                                  contentProps={{
+                                      renderer: (props) => <span ref={props.elementRef}
+                                                                 key={props.key}
+                                                                 style={props.style}
+                                                                 children={props.children}
+                                                                 className={cnb("customContentClassName", props.className)} />,
+                                  }}
+                                  trackXProps={{
+                                      renderer: (props) => <span ref={props.elementRef}
+                                                                 key={props.key}
+                                                                 style={props.style}
+                                                                 children={props.children}
+                                                                 className={cnb("customTrackXClassName", props.className)} />,
+                                  }}
+                                  trackYProps={{
+                                      renderer: (props) => <span ref={props.elementRef}
+                                                                 key={props.key}
+                                                                 style={props.style}
+                                                                 children={props.children}
+                                                                 className={cnb("customTrackYClassName", props.className)} />,
+                                  }}
+                                  thumbXProps={{
+                                      renderer: (props) => <span ref={props.elementRef}
+                                                                 key={props.key}
+                                                                 style={props.style}
+                                                                 children={props.children}
+                                                                 className={cnb("customThumbXClassName", props.className)} />,
+                                  }}
+                                  thumbYProps={{
+                                      renderer: (props) => <span ref={props.elementRef}
+                                                                 key={props.key}
+                                                                 style={props.style}
+                                                                 children={props.children}
+                                                                 className={cnb("customThumbYClassName", props.className)} />,
+                                  }}>
+                           <div style={{width: 200, height: 210}} />
+                       </Scrollbar>
+                   ),
+                   node,
+                   function () {
+                       setTimeout(() => {
+                           expect(this.holderEl.tagName).toBe("SPAN");
+                           expect(this.holderEl.classList.contains("ScrollbarsCustom")).toBeTruthy();
+                           expect(this.holderEl.classList.contains("trackYVisible")).toBeTruthy();
+                           expect(this.holderEl.classList.contains("trackXVisible")).toBeTruthy();
+                           expect(this.holderEl.classList.contains("customHolderClassname")).toBeTruthy();
+
+                           expect(this.wrapperEl.tagName).toBe("SPAN");
+                           expect(this.wrapperEl.classList.contains("wrapper")).toBeTruthy();
+                           expect(this.wrapperEl.classList.contains("customWrapperClassName")).toBeTruthy();
+
+                           expect(this.contentEl.tagName).toBe("SPAN");
+                           expect(this.contentEl.classList.contains("content")).toBeTruthy();
+                           expect(this.contentEl.classList.contains("customContentClassName")).toBeTruthy();
+
+                           expect(this.trackXEl.tagName).toBe("SPAN");
+                           expect(this.trackXEl.classList.contains("track")).toBeTruthy();
+                           expect(this.trackXEl.classList.contains("trackX")).toBeTruthy();
+                           expect(this.trackXEl.classList.contains("customTrackXClassName")).toBeTruthy();
+
+                           expect(this.trackYEl.tagName).toBe("SPAN");
+                           expect(this.trackYEl.classList.contains("track")).toBeTruthy();
+                           expect(this.trackYEl.classList.contains("trackY")).toBeTruthy();
+                           expect(this.trackYEl.classList.contains("customTrackYClassName")).toBeTruthy();
+
+                           expect(this.thumbXEl.tagName).toBe("SPAN");
+                           expect(this.thumbXEl.classList.contains("thumb")).toBeTruthy();
+                           expect(this.thumbXEl.classList.contains("thumbX")).toBeTruthy();
+                           expect(this.thumbXEl.classList.contains("customThumbXClassName")).toBeTruthy();
+
+                           expect(this.thumbYEl.tagName).toBe("SPAN");
                            expect(this.thumbYEl.classList.contains("thumb")).toBeTruthy();
                            expect(this.thumbYEl.classList.contains("thumbY")).toBeTruthy();
                            expect(this.thumbYEl.classList.contains("customThumbYClassName")).toBeTruthy();

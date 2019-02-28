@@ -3,11 +3,12 @@ import {CSSProperties} from "react";
 import * as PropTypes from "prop-types";
 import Track, {DIRECTION_AXIS, TrackClickValues, TrackProps} from "./Track";
 import Thumb, {ThumbDragValues, ThumbProps} from "./Thumb";
-import {getInnerHeight, getInnerWidth} from "./getInnerSizes";
+import {getInnerHeight, getInnerWidth} from "./util";
 import getScrollbarWidth from "./getScrollbarWidth";
 import {UpdateLoop} from "./UpdateLoop";
 import NativeScrollbar from "./NativeScrollbar";
 import * as bowser from "bowser";
+import cnb from "cnbuilder";
 
 declare var global: {
     document?: Document;
@@ -198,10 +199,10 @@ type ScrollbarOwnProps = {
 
     wrapperProps?: ElementProps;
     contentProps?: ElementProps;
-    trackXProps?: Pick<TrackProps, Exclude<keyof TrackProps, "axis">>;
-    trackYProps?: Pick<TrackProps, Exclude<keyof TrackProps, "axis">>;
-    thumbXProps?: Pick<ThumbProps, Exclude<keyof ThumbProps, "axis">>;
-    thumbYProps?: Pick<ThumbProps, Exclude<keyof ThumbProps, "axis">>;
+    trackXProps?: ElementProps & Pick<TrackProps, Exclude<keyof TrackProps, "axis">>;
+    trackYProps?: ElementProps & Pick<TrackProps, Exclude<keyof TrackProps, "axis">>;
+    thumbXProps?: ElementProps & Pick<ThumbProps, Exclude<keyof ThumbProps, "axis">>;
+    thumbYProps?: ElementProps & Pick<ThumbProps, Exclude<keyof ThumbProps, "axis">>;
 
     elementRef?: ElementRef;
 
@@ -994,8 +995,12 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
             this.update();
         }
 
-        this.props.scrollTop !== this.contentEl.scrollTop && typeof this.props.scrollTop !== "undefined" && (this.contentEl.scrollTop = this.props.scrollTop);
-        this.props.scrollLeft !== this.contentEl.scrollLeft && typeof this.props.scrollLeft !== "undefined" && (this.contentEl.scrollLeft = this.props.scrollLeft);
+        this.props.scrollTop !== this.contentEl.scrollTop &&
+        typeof this.props.scrollTop !== "undefined" &&
+        (this.contentEl.scrollTop = this.props.scrollTop);
+        this.props.scrollLeft !== this.contentEl.scrollLeft &&
+        typeof this.props.scrollLeft !== "undefined" &&
+        (this.contentEl.scrollLeft = this.props.scrollLeft);
     }
 
     public render() {
@@ -1068,9 +1073,10 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
                     scrollTop={scrollTop}
                     scrollLeft={scrollLeft}
                     className={
-                        (this.state.trackYVisible ? "trackYVisible " : "") +
-                        (this.state.trackXVisible ? "trackXVisible " : "") +
-                        (className ? " " + className : "")
+                        cnb({
+                                trackYVisible: this.state.trackYVisible,
+                                trackXVisible: this.state.trackXVisible,
+                            }, className)
                     }
                     style={this.props.style}
                     elementRef={ref => (this.contentEl = ref)}
@@ -1140,7 +1146,7 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
             ...propsContentProps,
             style: styles.content,
             key: "content",
-            className: "content" + (propsContentProps!.className ? " " + propsContentProps!.className : ""),
+            className: cnb("content", propsContentProps!.className),
             renderer: undefined,
             children,
         };
@@ -1156,7 +1162,7 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
             ...propsWrapperProps,
             style: styles.wrapper,
             key: "wrapper",
-            className: "wrapper" + (propsWrapperProps!.className ? " " + propsWrapperProps!.className : ""),
+            className: cnb("wrapper", propsWrapperProps!.className),
             renderer: undefined,
             children: propsContentProps!.renderer ? (
                 propsContentProps!.renderer!(contentProps)
@@ -1175,12 +1181,11 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
         const holderProps = {
             ...props,
             style: styles.holder,
-            className:
-                "ScrollbarsCustom" +
-                (this.state.trackYVisible ? " trackYVisible" : "") +
-                (this.state.trackXVisible ? " trackXVisible" : "") +
-                (this.state.isRTL ? " rtl" : "") +
-                (className ? " " + className : ""),
+            className: cnb("ScrollbarsCustom", {
+                trackYVisible: this.state.trackYVisible,
+                trackXVisible: this.state.trackXVisible,
+                rtl: this.state.isRTL,
+            }, className),
             [renderer ? "elementRef" : "ref"]: this.holderElementRef,
             renderer: undefined,
             children: [
@@ -1218,7 +1223,7 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
                 ...(useDefaultStyles && defaultStyles.holder),
                 ...holderStyles,
                 ...(typeof props.rtl !== "undefined" && {
-                    direction: (props.rtl ? "rtl" : "ltr"),
+                    direction: props.rtl ? "rtl" : "ltr",
                 }),
             },
             wrapper: {
@@ -1236,8 +1241,8 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
                 ...contentStyles,
                 ...(props.momentum && {WebkitOverflowScrolling: "touch"}),
 
-                overflowY: (scrollValues.scrollYPossible ? "scroll" : "hidden"),
-                overflowX: (scrollValues.scrollXPossible ? "scroll" : "hidden"),
+                overflowY: scrollValues.scrollYPossible ? "scroll" : "hidden",
+                overflowX: scrollValues.scrollXPossible ? "scroll" : "hidden",
 
                 paddingBottom: !browserScrollbarWidth && scrollValues.scrollXPossible ? scrollbarWidth : undefined,
                 marginBottom: scrollValues.scrollXPossible ? -scrollbarWidth : undefined,

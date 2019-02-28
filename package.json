@@ -27,7 +27,8 @@
     "custom"
   ],
   "dependencies": {
-    "bowser": "^2.1.0"
+    "bowser": "^2.1.0",
+    "cnbuilder": "^1.0.5"
   },
   "peerDependencies": {
     "react": "^0.14.0 || ^15.0.0 || ^16.0.0",

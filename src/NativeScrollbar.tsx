@@ -19,7 +19,7 @@ type NativeScrollbarOwnProps = {
 };
 
 export type NativeScrollbarProps = NativeScrollbarOwnProps &
-                                   Pick<NativeScrollbarOwnProps, Exclude<keyof NativeScrollbarOwnProps, keyof React.HTMLProps<HTMLDivElement>>>;
+    Pick<NativeScrollbarOwnProps, Exclude<keyof NativeScrollbarOwnProps, keyof React.HTMLProps<HTMLDivElement>>>;
 
 export default class NativeScrollbar extends React.Component<NativeScrollbarProps> {
     public static displayName = "Scrollbar NativeScrollbar";
@@ -64,33 +64,33 @@ export default class NativeScrollbar extends React.Component<NativeScrollbarProp
     public componentDidUpdate(): void {
         if (this.element) {
             this.props.scrollTop !== this.element.scrollTop &&
-            typeof this.props.scrollTop !== "undefined" &&
-            (this.element.scrollTop = this.props.scrollTop);
+                typeof this.props.scrollTop !== "undefined" &&
+                (this.element.scrollTop = this.props.scrollTop);
             this.props.scrollLeft !== this.element.scrollLeft &&
-            typeof this.props.scrollLeft !== "undefined" &&
-            (this.element.scrollLeft = this.props.scrollLeft);
+                typeof this.props.scrollLeft !== "undefined" &&
+                (this.element.scrollLeft = this.props.scrollLeft);
         }
     }
 
     public render(): React.ReactElement<any> {
         const {
-                  rtl,
-                  momentum,
-                  permanentTrackX,
-                  permanentTrackY,
-                  permanentTracks,
-                  noScrollX,
-                  noScrollY,
-                  noScroll,
-                  className,
-                  style,
-                  elementRef,
+            rtl,
+            momentum,
+            permanentTrackX,
+            permanentTrackY,
+            permanentTracks,
+            noScrollX,
+            noScrollY,
+            noScroll,
+            className,
+            style,
+            elementRef,
 
-                  scrollLeft,
-                  scrollTop,
+            scrollLeft,
+            scrollTop,
 
-                  ...props
-              }: NativeScrollbarProps = this.props;
+            ...props
+        }: NativeScrollbarProps = this.props;
 
         const divProps = {
             ...props,
@@ -100,16 +100,8 @@ export default class NativeScrollbar extends React.Component<NativeScrollbarProp
                 ...style,
                 ...(rtl && {direction: "rtl"}),
                 ...(momentum && {WebkitOverflowScrolling: "touch"}),
-                overflowX: (noScroll || noScrollX
-                    ? "hidden"
-                    : permanentTracks || permanentTrackX
-                        ? "scroll"
-                        : "auto"),
-                overflowY: (noScroll || noScrollY
-                    ? "hidden"
-                    : permanentTracks || permanentTrackY
-                        ? "scroll"
-                        : "auto"),
+                overflowX: noScroll || noScrollX ? "hidden" : permanentTracks || permanentTrackX ? "scroll" : "auto",
+                overflowY: noScroll || noScrollY ? "hidden" : permanentTracks || permanentTrackY ? "scroll" : "auto",
             } as React.CSSProperties,
             ref: this.ref,
         };

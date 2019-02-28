@@ -29,7 +29,7 @@ type ThumbOwnProps = {
 };
 
 export type ThumbProps = ThumbOwnProps &
-                         Pick<ThumbOwnProps, Exclude<keyof ThumbOwnProps, keyof React.HTMLProps<HTMLDivElement>>>;
+    Pick<ThumbOwnProps, Exclude<keyof ThumbOwnProps, keyof React.HTMLProps<HTMLDivElement>>>;
 
 export default class Thumb extends React.Component<ThumbProps, {}> {
     public static displayName = "Scrollbar Thumb";
@@ -63,7 +63,7 @@ export default class Thumb extends React.Component<ThumbProps, {}> {
         if (!this.element) {
             this.setState(() => {
                 throw new Error(
-                    "Somewhy element was not created. Possibly you haven't provided HTMLElement to elementRef renderer's property.",
+                    "Somewhy element was not created. Possibly you haven't provided HTMLElement to elementRef renderer's property."
                 );
             });
             return;
@@ -80,14 +80,14 @@ export default class Thumb extends React.Component<ThumbProps, {}> {
     public render(): React.ReactElement<any> | null {
         const {renderer, axis, elementRef, onDrag, onDragStart, onDragEnd, ...props} = this.props;
 
-        props.className = cnb("thumb", (axis === DIRECTION_AXIS.X ? "thumbX" : "thumbY"), props.className);
+        props.className = cnb("thumb", axis === DIRECTION_AXIS.X ? "thumbX" : "thumbY", props.className);
 
         return renderer ? (
             renderer({
-                         ...props,
-                         axis,
-                         elementRef: this.ref,
-                     })
+                ...props,
+                axis,
+                elementRef: this.ref,
+            })
         ) : (
             <div {...props} ref={this.ref} />
         );
@@ -135,16 +135,16 @@ export default class Thumb extends React.Component<ThumbProps, {}> {
         this.element.classList.add("dragging");
 
         if (global.document) {
-            this.prevUserSelect                   = global.document.body.style.userSelect;
+            this.prevUserSelect = global.document.body.style.userSelect;
             global.document.body.style.userSelect = "none";
 
             // @ts-ignore
-            this.prevOnSelectStart        = global.document.onselectstart;
+            this.prevOnSelectStart = global.document.onselectstart;
             // @ts-ignore
             global.document.onselectstart = () => false;
         }
 
-        const thumbRect  = this.element.getBoundingClientRect();
+        const thumbRect = this.element.getBoundingClientRect();
         const parentRect = this.element.offsetParent
             ? this.element.offsetParent.getBoundingClientRect()
             : {left: 0, top: 0};
@@ -164,13 +164,13 @@ export default class Thumb extends React.Component<ThumbProps, {}> {
         this.dragInitialOffsetY = clientY - thumbRect.top;
 
         this.props.onDragStart &&
-        this.props.onDragStart({
-                                   axis: this.props.axis,
-                                   offset:
-                                       this.props.axis === DIRECTION_AXIS.X
-                                           ? clientX - parentRect.left - this.dragInitialOffsetX
-                                           : clientY - parentRect.top - this.dragInitialOffsetY,
-                               });
+            this.props.onDragStart({
+                axis: this.props.axis,
+                offset:
+                    this.props.axis === DIRECTION_AXIS.X
+                        ? clientX - parentRect.left - this.dragInitialOffsetX
+                        : clientY - parentRect.top - this.dragInitialOffsetY,
+            });
     };
 
     private handleDrag = (ev: MouseEvent | TouchEvent) => {
@@ -200,13 +200,13 @@ export default class Thumb extends React.Component<ThumbProps, {}> {
         }
 
         this.props.onDrag &&
-        this.props.onDrag({
-                              axis: this.props.axis,
-                              offset:
-                                  this.props.axis === DIRECTION_AXIS.X
-                                      ? clientX - parentRect.left - this.dragInitialOffsetX
-                                      : clientY - parentRect.top - this.dragInitialOffsetY,
-                          });
+            this.props.onDrag({
+                axis: this.props.axis,
+                offset:
+                    this.props.axis === DIRECTION_AXIS.X
+                        ? clientX - parentRect.left - this.dragInitialOffsetX
+                        : clientY - parentRect.top - this.dragInitialOffsetY,
+            });
     };
 
     private handleDragEnd = (ev?: MouseEvent | TouchEvent) => {
@@ -217,10 +217,10 @@ export default class Thumb extends React.Component<ThumbProps, {}> {
             global.document.removeEventListener("mouseup", this.handleDragEnd);
 
             global.document.body.style.userSelect = this.prevUserSelect;
-            this.prevUserSelect                   = null;
+            this.prevUserSelect = null;
             // @ts-ignore
-            global.document.onselectstart         = this.prevOnSelectStart;
-            this.prevOnSelectStart                = null;
+            global.document.onselectstart = this.prevOnSelectStart;
+            this.prevOnSelectStart = null;
         }
 
         let offset = 0;
@@ -262,10 +262,10 @@ export default class Thumb extends React.Component<ThumbProps, {}> {
         this.dragInitialOffsetY = 0;
 
         this.props.onDragEnd &&
-        this.props.onDragEnd({
-                                 axis: this.props.axis,
-                                 offset,
-                             });
+            this.props.onDragEnd({
+                axis: this.props.axis,
+                offset,
+            });
     };
 
     private ref = (ref: HTMLElement | null): void => {

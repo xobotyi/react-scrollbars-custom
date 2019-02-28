@@ -27,7 +27,7 @@ type TrackOwnProps = {
 };
 
 export type TrackProps = TrackOwnProps &
-                         Pick<TrackOwnProps, Exclude<keyof TrackOwnProps, keyof React.HTMLProps<HTMLDivElement>>>;
+    Pick<TrackOwnProps, Exclude<keyof TrackOwnProps, keyof React.HTMLProps<HTMLDivElement>>>;
 
 export default class Track extends React.Component<TrackProps, {}> {
     public static displayName = "Scrollbar Track";
@@ -51,7 +51,7 @@ export default class Track extends React.Component<TrackProps, {}> {
         if (!this.element) {
             this.setState(() => {
                 throw new Error(
-                    "Somewhy element was not created. Possibly you haven't provided HTMLElement to elementRef renderer's property.",
+                    "Somewhy element was not created. Possibly you haven't provided HTMLElement to elementRef renderer's property."
                 );
             });
             return;
@@ -63,14 +63,14 @@ export default class Track extends React.Component<TrackProps, {}> {
     public render(): React.ReactElement<any> | null {
         const {renderer, axis, elementRef, onClick, ...props} = this.props;
 
-        props.className = cnb("track", (axis === DIRECTION_AXIS.X ? "trackX" : "trackY"), props.className);
+        props.className = cnb("track", axis === DIRECTION_AXIS.X ? "trackX" : "trackY", props.className);
 
         return renderer ? (
             renderer({
-                         ...props,
-                         axis,
-                         elementRef: this.ref,
-                     })
+                ...props,
+                axis,
+                elementRef: this.ref,
+            })
         ) : (
             <div {...props} ref={this.ref} />
         );

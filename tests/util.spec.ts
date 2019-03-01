@@ -1,6 +1,21 @@
-import { getInnerDimensions, getInnerHeight, getInnerWidth } from "../src/util";
+import {
+  getInnerDimensions,
+  getInnerHeight,
+  getInnerWidth,
+  uuid
+} from "../src/util";
 
 describe("util", () => {
+  describe("uuid", () => {
+    it("should generate valid UUID v4", () => {
+      expect(
+        /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[0-9a-f]{4}-[0-9a-f]{12}$/.test(
+          uuid()
+        )
+      ).toBeTruthy();
+    });
+  });
+
   describe("in case box-sizing: border-box", () => {
     let div: HTMLDivElement;
 
@@ -39,7 +54,19 @@ describe("util", () => {
         expect(getInnerHeight(div)).toBe(200.25);
       });
 
-      it("should return  0 for blocks width 0 size and padding", () => {
+      it("should return 0 for blocks with display=none||inline", () => {
+        div.style.padding = "";
+        div.style.width = "";
+        div.style.height = "";
+
+        div.style.display = "none";
+        expect(getInnerHeight(div)).toBe(0);
+
+        div.style.display = "inline";
+        expect(getInnerHeight(div)).toBe(0);
+      });
+
+      it("should return 0 for blocks width 0 size and padding", () => {
         const div = document.createElement("div");
         div.style.width = "0";
         div.style.height = "0";
@@ -80,6 +107,18 @@ describe("util", () => {
         div.style.height = "200.25px";
 
         expect(getInnerWidth(div)).toBe(100.25);
+      });
+
+      it("should return 0 for blocks with display=none||inline", () => {
+        div.style.padding = "";
+        div.style.width = "";
+        div.style.height = "";
+
+        div.style.display = "none";
+        expect(getInnerWidth(div)).toBe(0);
+
+        div.style.display = "inline";
+        expect(getInnerWidth(div)).toBe(0);
       });
 
       it("should return 0 for blocks width 0 size and padding", () => {
@@ -134,6 +173,18 @@ describe("util", () => {
 
         expect(sizes.height).toBe(200.25);
         expect(sizes.width).toBe(100.25);
+      });
+
+      it("should return 0 for blocks with display=none||inline", () => {
+        div.style.padding = "";
+        div.style.width = "";
+        div.style.height = "";
+
+        div.style.display = "none";
+        expect(getInnerDimensions(div)).toEqual({ width: 0, height: 0 });
+
+        div.style.display = "inline";
+        expect(getInnerDimensions(div)).toEqual({ width: 0, height: 0 });
       });
 
       it("should return 0 for blocks width 0 size and padding", () => {
@@ -209,6 +260,19 @@ describe("util", () => {
         expect(getInnerHeight(div)).toBe(200.25);
       });
 
+      it("should return 0 for blocks with display=none||inline", () => {
+        div.style.padding = "";
+        div.style.width = "";
+        div.style.height = "";
+        div.style.boxSizing = "";
+
+        div.style.display = "none";
+        expect(getInnerHeight(div)).toBe(0);
+
+        div.style.display = "inline";
+        expect(getInnerHeight(div)).toBe(0);
+      });
+
       it("should return  0 for blocks width 0 size and padding", () => {
         const div = document.createElement("div");
         div.style.width = "0";
@@ -249,6 +313,19 @@ describe("util", () => {
         div.style.height = "200.25px";
 
         expect(getInnerWidth(div)).toBe(100.25);
+      });
+
+      it("should return 0 for blocks with display=none||inline", () => {
+        div.style.padding = "";
+        div.style.width = "";
+        div.style.height = "";
+        div.style.boxSizing = "";
+
+        div.style.display = "none";
+        expect(getInnerWidth(div)).toBe(0);
+
+        div.style.display = "inline";
+        expect(getInnerWidth(div)).toBe(0);
       });
 
       it("should return 0 for blocks width 0 size and padding", () => {
@@ -302,6 +379,19 @@ describe("util", () => {
 
         expect(sizes.height).toBe(200.25);
         expect(sizes.width).toBe(100.25);
+      });
+
+      it("should return 0 for blocks with display=none||inline", () => {
+        div.style.padding = "";
+        div.style.width = "";
+        div.style.height = "";
+        div.style.boxSizing = "";
+
+        div.style.display = "none";
+        expect(getInnerDimensions(div)).toEqual({ width: 0, height: 0 });
+
+        div.style.display = "inline";
+        expect(getInnerDimensions(div)).toEqual({ width: 0, height: 0 });
       });
 
       it("should return 0 for blocks width 0 size and padding", () => {

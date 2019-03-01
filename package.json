@@ -16,23 +16,24 @@
     "customizable",
     "scrollbars",
     "scroll",
-    "scroller",
     "scrollbar",
     "react",
     "component",
-    "react-component",
     "custom"
   ],
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
   "types": "dist/types/index.d.ts",
   "devDependencies": {
+    "@types/jest": "^24.0.9",
     "husky": "^1.3.1",
+    "jest": "^24.1.0",
     "prettier": "^1.16.4",
     "pretty-quick": "^1.10.0",
     "rimraf": "^2.6.3",
     "rollup": "^1.3.2",
     "rollup-plugin-typescript2": "^0.19.3",
+    "ts-jest": "^24.0.0",
     "typescript": "^3.3.3333"
   },
   "husky": {
@@ -41,10 +42,26 @@
     }
   },
   "scripts": {
-    "format": "prettier --write src/**/*.ts tests/**/*.ts",
+    "format": "prettier --write src/**/*.ts tests/**/*.ts src/**/*.js tests/**/*.js *.js *.ts",
     "build": "rimraf ./dist && rollup --config",
+    "test": "jest",
     "preversion": "npm run format && npm run build",
     "postversion": "git push && git push --tags",
     "prepublishOnly": "npm run format && npm run test && npm run build"
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "ts",
+      "js"
+    ],
+    "transform": {
+      "\\.(ts|tsx)$": "ts-jest"
+    },
+    "testRegex": "/tests/.*\\.spec\\.(ts|tsx|js)$",
+    "coverageDirectory": "./coverage",
+    "collectCoverageFrom": [
+      "src/**/*.ts"
+    ],
+    "collectCoverage": true
   }
 }

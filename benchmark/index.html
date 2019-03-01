@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Some critical benchmarks</title>
+
+    <script src="https://unpkg.com/lodash"></script>
+    <script src="https://unpkg.com/benchmark"></script>
+
+    <style>
+      body {
+        padding: 24px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="Results"></div>
+  </body>
+
+  <script>
+    (() => {
+      let container = document.createElement("div");
+      document.getElementById("Results").appendChild(container);
+      container.innerHTML +=
+        "<h3>Element inner sizes detection [border-box]</h3>";
+
+      let div = document.createElement("div");
+      div.style.height = "200.5px";
+      div.style.width = "100.5px";
+      div.style.padding = "25.25px";
+      div.style.position = "absolute";
+      div.style.top = "-9999px";
+      div.style.left = "-9999px";
+      div.style.boxSizing = "border-box";
+      document.body.appendChild(div);
+
+      let suite = new Benchmark.Suite();
+      suite
+        .on("cycle", ({ target: { name, hz, fn } }) => {
+          let p = document.createElement("p");
+          p.innerText = `${name} × ${Math.floor(
+            hz
+          ).toLocaleString()} ops/sec; (result: "${fn()}")`;
+          container.appendChild(p);
+        })
+        .on("complete", () => {
+          document.body.removeChild(div);
+        });
+
+      suite
+        .add("[height] getComputedStyle + clientHeight   ", () => {
+          const styles = getComputedStyle(div);
+          const paddingTop = styles.paddingTop
+            ? styles.paddingTop.slice(0, -2)
+            : 0;
+          const paddingBottom = styles.paddingBottom
+            ? styles.paddingBottom.slice(0, -2)
+            : 0;
+
+          return Math.max(div.clientHeight - paddingTop - paddingBottom, 0);
+        })
+        .add("[height] getComputedStyle (unary plus)", () => {
+          const styles = getComputedStyle(div);
+
+          return styles.boxSizing === "border-box"
+            ? Math.max(
+                (styles.height ? styles.height.slice(0, -2) : 0) -
+                  (styles.paddingBottom
+                    ? styles.paddingBottom.slice(0, -2)
+                    : 0) -
+                  (styles.paddingTop ? styles.paddingTop.slice(0, -2) : 0),
+                0
+              )
+            : +(styles.height && styles.height.slice(0, -2));
+        })
+        .add("[height] getComputedStyle (parse float) ", () => {
+          const styles = getComputedStyle(div);
+
+          return styles.boxSizing === "border-box"
+            ? Math.max(
+                parseFloat(styles.height || 0) -
+                  parseFloat(styles.paddingBottom || 0) -
+                  parseFloat(styles.paddingTop || 0),
+                0
+              )
+            : parseFloat(styles.height || 0);
+        })
+        .add(
+          "[both] getComputedStyle + clientHeight/clientWidth (parse float) ",
+          () => {
+            const styles = getComputedStyle(div);
+            const paddingTop = styles.paddingTop
+              ? styles.paddingTop.slice(0, -2)
+              : 0;
+            const paddingBottom = styles.paddingBottom
+              ? styles.paddingBottom.slice(0, -2)
+              : 0;
+            const paddingLeft = styles.paddingLeft
+              ? styles.paddingLeft.slice(0, -2)
+              : 0;
+            const paddingRight = styles.paddingBottom
+              ? styles.paddingRight.slice(0, -2)
+              : 0;
+
+            return {
+              height: Math.max(
+                div.clientHeight - paddingTop - paddingBottom,
+                0
+              ),
+              width: Math.max(div.clientWidth - paddingLeft - paddingRight, 0)
+            };
+          }
+        )
+        .add("[both] getComputedStyle (parse float) ", () => {
+          const styles = getComputedStyle(div);
+
+          return styles.boxSizing === "border-box"
+            ? {
+                height: Math.max(
+                  parseFloat(styles.height || 0) -
+                    parseFloat(styles.paddingBottom || 0) -
+                    parseFloat(styles.paddingTop || 0),
+                  0
+                ),
+                width: Math.max(
+                  parseFloat(styles.height || 0) -
+                    parseFloat(styles.paddingLeft || 0) -
+                    parseFloat(styles.paddingRight || 0),
+                  0
+                )
+              }
+            : {
+                height: parseFloat(styles.height || 0),
+                width: parseFloat(styles.width || 0)
+              };
+        })
+        .run();
+    })();
+
+    (() => {
+      let container = document.createElement("div");
+      document.getElementById("Results").appendChild(container);
+      container.innerHTML +=
+        "<h3>Element inner sizes detection [content-box]</h3>";
+
+      let div = document.createElement("div");
+      div.style.height = "200.5px";
+      div.style.width = "100.5px";
+      div.style.padding = "25.25px";
+      div.style.position = "absolute";
+      div.style.top = "-9999px";
+      div.style.left = "-9999px";
+      div.style.boxSizing = "content-box";
+      document.body.appendChild(div);
+
+      let suite = new Benchmark.Suite();
+      suite
+        .on("cycle", ({ target: { name, hz, fn } }) => {
+          let p = document.createElement("p");
+          p.innerText = `${name} × ${Math.floor(
+            hz
+          ).toLocaleString()} ops/sec; (result: "${fn()}")`;
+          container.appendChild(p);
+        })
+        .on("complete", () => {
+          document.body.removeChild(div);
+        });
+
+      suite
+        .add("[height] getComputedStyle + clientHeight   ", () => {
+          const styles = getComputedStyle(div);
+          const paddingTop = styles.paddingTop
+            ? styles.paddingTop.slice(0, -2)
+            : 0;
+          const paddingBottom = styles.paddingBottom
+            ? styles.paddingBottom.slice(0, -2)
+            : 0;
+
+          return Math.max(div.clientHeight - paddingTop - paddingBottom, 0);
+        })
+        .add("[height] getComputedStyle (unary plus)", () => {
+          const styles = getComputedStyle(div);
+
+          return styles.boxSizing === "border-box"
+            ? Math.max(
+                div.clientHeight -
+                  (styles.paddingBottom && styles.paddingBottom.slice(0, -2)) -
+                  (styles.paddingTop && styles.paddingTop.slice(0, -2)),
+                0
+              )
+            : +(styles.height && styles.height.slice(0, -2));
+        })
+        .add("[height] getComputedStyle (parse float) ", () => {
+          const styles = getComputedStyle(div);
+
+          return styles.boxSizing === "border-box"
+            ? Math.max(
+                parseFloat(styles.height || 0) -
+                  parseFloat(styles.paddingBottom || 0) -
+                  parseFloat(styles.paddingTop || 0),
+                0
+              )
+            : parseFloat(styles.height || 0);
+        })
+        .add(
+          "[both] getComputedStyle + clientHeight/clientWidth (parse float) ",
+          () => {
+            const styles = getComputedStyle(div);
+            const paddingTop = styles.paddingTop
+              ? styles.paddingTop.slice(0, -2)
+              : 0;
+            const paddingBottom = styles.paddingBottom
+              ? styles.paddingBottom.slice(0, -2)
+              : 0;
+            const paddingLeft = styles.paddingLeft
+              ? styles.paddingLeft.slice(0, -2)
+              : 0;
+            const paddingRight = styles.paddingBottom
+              ? styles.paddingRight.slice(0, -2)
+              : 0;
+
+            return {
+              height: Math.max(
+                div.clientHeight - paddingTop - paddingBottom,
+                0
+              ),
+              width: Math.max(div.clientWidth - paddingLeft - paddingRight, 0)
+            };
+          }
+        )
+        .add("[both] getComputedStyle (parse float) ", () => {
+          const styles = getComputedStyle(div);
+
+          return styles.boxSizing === "border-box"
+            ? {
+                height: Math.max(
+                  parseFloat(styles.height || 0) -
+                    parseFloat(styles.paddingBottom || 0) -
+                    parseFloat(styles.paddingTop || 0),
+                  0
+                ),
+                width: Math.max(
+                  parseFloat(styles.width || 0) -
+                    parseFloat(styles.paddingLeft || 0) -
+                    parseFloat(styles.paddingRight || 0),
+                  0
+                )
+              }
+            : {
+                height: parseFloat(styles.height || 0),
+                width: parseFloat(styles.width || 0)
+              };
+        })
+        .run();
+    })();
+  </script>
+</html>

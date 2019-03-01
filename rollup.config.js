@@ -21,7 +21,8 @@ export default {
       tsconfigOverride: {
         compilerOptions: {
           module: "ESNext",
-          declaration: true
+          declaration: true,
+          declarationDir: "dist/types"
         }
       }
     })

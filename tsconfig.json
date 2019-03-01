@@ -8,6 +8,11 @@
     "strictNullChecks": true,
     "alwaysStrict": true,
 
+    "jsx": "react",
+    "module": "commonjs",
+    "target": "es2015",
+    "lib": ["esnext", "dom"],
+
     "outDir": "dist/esm"
   },
 

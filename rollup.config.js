@@ -6,13 +6,17 @@ export default {
   output: [
     {
       dir: "dist/cjs",
+      extend: true,
       format: "cjs"
     },
     {
       dir: "dist/esm",
+      extend: true,
       format: "esm"
     }
   ],
+
+  external: ["react", "prop-types"],
 
   plugins: [
     ts({
@@ -20,7 +24,8 @@ export default {
       useTsconfigDeclarationDir: true,
       tsconfigOverride: {
         compilerOptions: {
-          module: "ESNext",
+          module: "esnext",
+          target: "esnext",
           declaration: true,
           declarationDir: "dist/types"
         }

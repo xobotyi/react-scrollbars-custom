@@ -1,9 +1,20 @@
 {
-  "extends": "./tsconfig.base.json",
   "compilerOptions": {
-    "module": "ESNext",
-    "moduleResolution": "node",
-    "target": "ESNext",
-    "outDir": "./dist/esm"
-  }
+    "sourceMap": false,
+    "removeComments": false,
+
+    "noImplicitReturns": true,
+    "noUnusedParameters": true,
+    "strictNullChecks": true,
+    "alwaysStrict": true,
+
+    "declaration": true,
+    "declarationDir": "dist/types",
+
+    "outDir": "dist/esm"
+  },
+
+  "include": ["./src/**/*.ts"],
+
+  "exclude": ["node_modules"]
 }

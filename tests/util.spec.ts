@@ -1,4 +1,7 @@
 import {
+  calcScrollForThumbOffset,
+  calcThumbOffset,
+  calcThumbSize,
   getInnerDimensions,
   getInnerHeight,
   getInnerWidth,
@@ -6,6 +9,81 @@ import {
 } from "../src/util";
 
 describe("util", () => {
+  describe("calcThumbSize", () => {
+    it("should return number", () => {
+      expect(
+        typeof calcThumbSize(400, 200, 200, 30, 0) === "number"
+      ).toBeTruthy();
+    });
+
+    it("should return 0 if viewport size >= contentSize", () => {
+      expect(calcThumbSize(100, 200, 200, 30, 0)).toBe(0);
+      expect(calcThumbSize(200, 200, 200, 30, 0)).toBe(0);
+    });
+
+    it("should return proper values", () => {
+      expect(calcThumbSize(200, 100, 100)).toBe(50);
+      expect(calcThumbSize(1000, 100, 100)).toBe(10);
+    });
+
+    it("should no exceed minimal value", () => {
+      expect(calcThumbSize(1000, 100, 100, 30)).toBe(30);
+    });
+    it("should no exceed maximal value", () => {
+      expect(calcThumbSize(200, 100, 100, undefined, 30)).toBe(30);
+    });
+  });
+
+  describe("calcThumbOffset", () => {
+    it("should return number", () => {
+      expect(typeof calcThumbOffset(0, 0, 0, 0, 0) === "number").toBeTruthy();
+    });
+
+    it("should return 0 if viewport size >= contentSize", () => {
+      expect(calcThumbOffset(100, 200, 200, 200, 50)).toBe(0);
+      expect(calcThumbOffset(200, 200, 200, 100, 50)).toBe(0);
+    });
+
+    it("should return 0 if thumb size === 0", () => {
+      expect(calcThumbOffset(100, 200, 200, 0, 50)).toBe(0);
+    });
+
+    it("should return 0 if scroll === 0", () => {
+      expect(calcThumbOffset(100, 200, 200, 0, 0)).toBe(0);
+    });
+
+    it("should return proper values", () => {
+      expect(calcThumbOffset(1000, 500, 500, 250, 100)).toBe(50);
+      expect(calcThumbOffset(200, 100, 100, 50, 100)).toBe(50);
+    });
+  });
+
+  describe("calcScrollForThumbOffset", () => {
+    it("should return number", () => {
+      expect(
+        typeof calcScrollForThumbOffset(0, 0, 0, 0, 0) === "number"
+      ).toBeTruthy();
+    });
+
+    it("should return 0 if viewport size >= contentSize", () => {
+      expect(calcScrollForThumbOffset(100, 200, 200, 200, 50)).toBe(0);
+      expect(calcScrollForThumbOffset(200, 200, 200, 100, 50)).toBe(0);
+    });
+
+    it("should return 0 if thumb size === 0", () => {
+      expect(calcScrollForThumbOffset(100, 200, 200, 0, 50)).toBe(0);
+    });
+
+    it("should return 0 if thumb offset === 0", () => {
+      expect(calcScrollForThumbOffset(100, 200, 200, 0, 50)).toBe(0);
+    });
+
+    it("should return proper values", () => {
+      expect(calcScrollForThumbOffset(1000, 500, 500, 250, 50)).toBe(100);
+      expect(calcScrollForThumbOffset(200, 100, 100, 50, 50)).toBe(100);
+    });
+  });
+
   describe("uuid", () => {
     it("should generate valid UUID v4", () => {
       expect(
@@ -13,6 +91,12 @@ describe("util", () => {
           uuid()
         )
       ).toBeTruthy();
+    });
+
+    it("should generate unique UUID", () => {
+      for (let i: number = 0; i < 50; i++) {
+        expect(uuid()).not.toBe(uuid());
+      }
     });
   });
 

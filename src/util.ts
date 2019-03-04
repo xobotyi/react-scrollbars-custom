@@ -3,15 +3,17 @@
  */
 export const getInnerHeight = (el: HTMLElement): number => {
   const styles = getComputedStyle(el);
+  const height =
+    styles.height && styles.height !== "auto" ? styles.height : "0";
 
   return styles.boxSizing === "border-box"
     ? Math.max(
-        parseFloat(styles.height || "0") -
+        parseFloat(height) -
           parseFloat(styles.paddingBottom || "0") -
           parseFloat(styles.paddingTop || "0"),
         0
       )
-    : parseFloat(styles.height || "0");
+    : parseFloat(height);
 };
 
 /**
@@ -19,15 +21,16 @@ export const getInnerHeight = (el: HTMLElement): number => {
  */
 export const getInnerWidth = (el: HTMLElement): number => {
   const styles = getComputedStyle(el);
+  const width = styles.width && styles.width !== "auto" ? styles.width : "0";
 
   return styles.boxSizing === "border-box"
     ? Math.max(
-        parseFloat(styles.width || "0") -
+        parseFloat(width) -
           parseFloat(styles.paddingRight || "0") -
           parseFloat(styles.paddingLeft || "0"),
         0
       )
-    : parseFloat(styles.width || "0");
+    : parseFloat(width);
 };
 
 /**
@@ -38,24 +41,28 @@ export const getInnerDimensions = (
 ): { width: number; height: number } => {
   let styles = getComputedStyle(el);
 
+  const width = styles.width && styles.width !== "auto" ? styles.width : "0";
+  const height =
+    styles.height && styles.height !== "auto" ? styles.height : "0";
+
   return styles.boxSizing === "border-box"
     ? {
         height: Math.max(
-          parseFloat(styles.height || "0") -
+          parseFloat(height) -
             parseFloat(styles.paddingBottom || "0") -
             parseFloat(styles.paddingTop || "0"),
           0
         ),
         width: Math.max(
-          parseFloat(styles.width || "0") -
+          parseFloat(width) -
             parseFloat(styles.paddingRight || "0") -
             parseFloat(styles.paddingLeft || "0"),
           0
         )
       }
     : {
-        height: parseFloat(styles.height || "0"),
-        width: parseFloat(styles.width || "0")
+        height: parseFloat(height),
+        width: parseFloat(width)
       };
 };
 

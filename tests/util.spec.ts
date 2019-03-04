@@ -46,12 +46,12 @@ describe("util", () => {
         expect(getInnerHeight(div)).toBe(150.25);
       });
 
-      it("should return proper height for unattached element", () => {
+      it("should return 0 for unattached element", () => {
         const div = document.createElement("div");
         div.style.width = "100.25px";
         div.style.height = "200.25px";
 
-        expect(getInnerHeight(div)).toBe(200.25);
+        expect(getInnerHeight(div)).toBe(0);
       });
 
       it("should return 0 for blocks with display=none||inline", () => {
@@ -101,12 +101,12 @@ describe("util", () => {
         expect(getInnerWidth(div)).toBe(50.25);
       });
 
-      it("should return proper width for unattached element", () => {
+      it("should return 0 for unattached element", () => {
         const div = document.createElement("div");
         div.style.width = "100.25px";
         div.style.height = "200.25px";
 
-        expect(getInnerWidth(div)).toBe(100.25);
+        expect(getInnerWidth(div)).toBe(0);
       });
 
       it("should return 0 for blocks with display=none||inline", () => {
@@ -164,15 +164,15 @@ describe("util", () => {
         expect(sizes.width).toBe(50.25);
       });
 
-      it("should return proper sizes for unattached element", () => {
+      it("should return 0 for unattached element", () => {
         const div = document.createElement("div");
         div.style.width = "100.25px";
         div.style.height = "200.25px";
 
         const sizes = getInnerDimensions(div);
 
-        expect(sizes.height).toBe(200.25);
-        expect(sizes.width).toBe(100.25);
+        expect(sizes.height).toBe(0);
+        expect(sizes.width).toBe(0);
       });
 
       it("should return 0 for blocks with display=none||inline", () => {
@@ -252,12 +252,12 @@ describe("util", () => {
         expect(getInnerHeight(div)).toBe(200.5);
       });
 
-      it("should return proper height for unattached element", () => {
+      it("should return 0 for unattached element", () => {
         const div = document.createElement("div");
         div.style.width = "100.25px";
         div.style.height = "200.25px";
 
-        expect(getInnerHeight(div)).toBe(200.25);
+        expect(getInnerHeight(div)).toBe(0);
       });
 
       it("should return 0 for blocks with display=none||inline", () => {
@@ -307,12 +307,12 @@ describe("util", () => {
         expect(getInnerWidth(div)).toBe(100.5);
       });
 
-      it("should return proper width for unattached element", () => {
+      it("should return 0 for unattached element", () => {
         const div = document.createElement("div");
         div.style.width = "100.25px";
         div.style.height = "200.25px";
 
-        expect(getInnerWidth(div)).toBe(100.25);
+        expect(getInnerWidth(div)).toBe(0);
       });
 
       it("should return 0 for blocks with display=none||inline", () => {
@@ -370,15 +370,15 @@ describe("util", () => {
         expect(sizes.width).toBe(100.5);
       });
 
-      it("should return proper sizes for unattached element", () => {
+      it("should return 0 for unattached element", () => {
         const div = document.createElement("div");
         div.style.width = "100.25px";
         div.style.height = "200.25px";
 
         const sizes = getInnerDimensions(div);
 
-        expect(sizes.height).toBe(200.25);
-        expect(sizes.width).toBe(100.25);
+        expect(sizes.height).toBe(0);
+        expect(sizes.width).toBe(0);
       });
 
       it("should return 0 for blocks with display=none||inline", () => {

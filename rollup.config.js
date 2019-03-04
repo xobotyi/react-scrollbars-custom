@@ -16,7 +16,7 @@ export default {
     }
   ],
 
-  external: ["react", "prop-types"],
+  external: ["react", "prop-types", "cnbuilder"],
 
   plugins: [
     ts({

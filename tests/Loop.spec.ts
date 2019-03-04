@@ -4,7 +4,7 @@ describe("Loop", function() {
   const getTarget = () => ({
     _unmounted: false,
     randomField: "Hello World!",
-    update: jest.fn(() => {})
+    update: jasmine.createSpy()
   });
 
   describe(".isActive", function() {
@@ -49,7 +49,7 @@ describe("Loop", function() {
       Loop.addTarget(target, true);
       expect(Loop.isActive).toBeFalsy();
 
-      const spy = jest.fn(() => {});
+      const spy = jasmine.createSpy();
       //@ts-ignore
       Loop.animationFrameID = requestAnimationFrame(spy);
 
@@ -58,7 +58,7 @@ describe("Loop", function() {
 
       setTimeout(() => {
         expect(Loop.isActive).toBeTruthy();
-        expect(spy.mock.calls.length).toBe(0);
+        expect(spy).not.toHaveBeenCalled();
 
         Loop.removeTarget(target);
         expect(Loop.isActive).toBeFalsy();
@@ -81,7 +81,7 @@ describe("Loop", function() {
       expect(Loop.isActive).toBeFalsy();
 
       setTimeout(() => {
-        expect(target.update.mock.calls.length).toBe(0);
+        expect(target.update).not.toHaveBeenCalled();
 
         Loop.removeTarget(target);
         expect(Loop.isActive).toBeFalsy();
@@ -168,7 +168,7 @@ describe("Loop", function() {
       Loop._isActive = true;
       //@ts-ignore
       expect((id = Loop.rafCallback())).not.toBe(0);
-      expect(target.update.mock.calls.length).toBe(1);
+      expect(target.update).toHaveBeenCalled();
       cancelAnimationFrame(id);
       Loop.removeTarget(target);
     });

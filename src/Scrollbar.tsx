@@ -803,22 +803,31 @@ export default class Scrollbar extends React.Component<
     }
 
     const thumbSize = this.thumbXElement!.clientWidth;
+    const trackInnerSize = getInnerWidth(this.trackXElement);
+    const thumbOffset =
+      (this.scrollValues.isRTL && reverseRTL
+        ? values.offset + thumbSize / 2 - trackInnerSize
+        : values.offset - thumbSize / 2) -
+      //@ts-ignore
+      (parseFloat(getComputedStyle(this.trackXElement).paddingLeft) || 0);
+
     let target = calcScrollForThumbOffset(
       this.scrollValues.scrollWidth!,
       this.scrollValues.clientWidth!,
-      getInnerWidth(this.trackXElement),
+      trackInnerSize,
       thumbSize,
-      values.offset - thumbSize / 2
+      thumbOffset
     );
 
-    if (this.props.trackClickBehavior === SCROLLBAR_TRACK_CLICK_BEHAVIOR.JUMP) {
-      this.contentElement.scrollLeft = target;
-    } else {
-      this.contentElement.scrollLeft =
-        this.scrollValues.scrollLeft! < target
-          ? this.scrollValues.scrollLeft! + this.scrollValues.clientWidth!
-          : this.scrollValues.scrollLeft! - this.scrollValues.clientWidth!;
+    if (this.props.trackClickBehavior === SCROLLBAR_TRACK_CLICK_BEHAVIOR.STEP) {
+      target = (this.scrollValues.isRTL
+      ? this.scrollValues.scrollLeft! > target
+      : this.scrollValues.scrollLeft! < target)
+        ? this.scrollValues.scrollLeft! + this.scrollValues.clientWidth!
+        : this.scrollValues.scrollLeft! - this.scrollValues.clientWidth!;
     }
+
+    this.contentElement.scrollLeft = target;
   };
 
   public handleTrackYClick = (
@@ -838,13 +847,16 @@ export default class Scrollbar extends React.Component<
     }
 
     const thumbSize = this.thumbYElement!.clientHeight;
-    let target = calcScrollForThumbOffset(
-      this.scrollValues.scrollHeight!,
-      this.scrollValues.clientHeight!,
-      getInnerHeight(this.trackYElement),
-      thumbSize,
-      values.offset - thumbSize / 2
-    );
+    let target =
+      calcScrollForThumbOffset(
+        this.scrollValues.scrollHeight!,
+        this.scrollValues.clientHeight!,
+        getInnerHeight(this.trackYElement),
+        thumbSize,
+        values.offset - thumbSize / 2
+      ) -
+      //@ts-ignore
+      (parseFloat(getComputedStyle(this.trackYElement).paddingTop) || 0);
 
     if (this.props.trackClickBehavior === SCROLLBAR_TRACK_CLICK_BEHAVIOR.JUMP) {
       this.contentElement.scrollTop = target;
@@ -1129,8 +1141,8 @@ export default class Scrollbar extends React.Component<
       wrapper: {
         ...(useDefaultStyles && {
           ...defaultStyles.wrapper,
-          [state.isRTL ? "left" : "right"]: state.trackYVisible ? 8 : 0,
-          bottom: state.trackXVisible ? 8 : 0
+          [state.isRTL ? "left" : "right"]: state.trackYVisible ? 10 : 0,
+          bottom: state.trackXVisible ? 10 : 0
         }),
         ...props.wrapperProps!.style,
         position: "absolute",
@@ -1223,15 +1235,15 @@ const defaultStyles = {
       userSelect: "none"
     } as React.CSSProperties,
     x: {
-      height: 8,
-      width: "calc(100% - 16px)",
+      height: 10,
+      width: "calc(100% - 20px)",
       bottom: 0,
-      left: 8
+      left: 10
     } as React.CSSProperties,
     y: {
-      width: 8,
-      height: "calc(100% - 16px)",
-      top: 8
+      width: 10,
+      height: "calc(100% - 20px)",
+      top: 10
     } as React.CSSProperties
   },
   thumb: {

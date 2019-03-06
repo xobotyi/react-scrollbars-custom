@@ -666,6 +666,7 @@ describe("util", () => {
       });
 
       it("should return false if document is not presented", () => {
+        _dbgSetIsReverseRTLScrollNeeded(null);
         _dbgSetDocument(null);
         expect(shouldReverseRTLScroll()).toBeFalsy();
       });

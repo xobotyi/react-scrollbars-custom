@@ -56,70 +56,90 @@ export const _dbgSetIsReverseRTLScrollNeeded = (
 
 /**
  * @description Return element's height without padding
+ *
+ * ts-ignore here is okay here, because it brigs around 40% of performance
  */
 export const getInnerHeight = (el: HTMLElement): number => {
   const styles = getComputedStyle(el);
-  const height =
-    styles.height && styles.height !== "auto" ? styles.height : "0";
 
-  return styles.boxSizing === "border-box"
-    ? Math.max(
-        parseFloat(height) -
-          parseFloat(styles.paddingBottom || "0") -
-          parseFloat(styles.paddingTop || "0"),
-        0
-      )
-    : parseFloat(height);
+  if (styles.boxSizing === "border-box") {
+    return Math.max(
+      // @ts-ignore
+      (parseFloat(styles.height) || 0) -
+        // @ts-ignore
+        (parseFloat(styles.paddingTop) || 0) -
+        // @ts-ignore
+        (parseFloat(styles.paddingBottom) || 0),
+      0
+    );
+  }
+
+  // @ts-ignore
+  return parseFloat(styles.height) || 0;
 };
 
 /**
  * @description Return element's width without padding
+ *
+ * ts-ignore here is okay here, because it brigs around 40% of performance
  */
 export const getInnerWidth = (el: HTMLElement): number => {
   const styles = getComputedStyle(el);
-  const width = styles.width && styles.width !== "auto" ? styles.width : "0";
 
-  return styles.boxSizing === "border-box"
-    ? Math.max(
-        parseFloat(width) -
-          parseFloat(styles.paddingRight || "0") -
-          parseFloat(styles.paddingLeft || "0"),
-        0
-      )
-    : parseFloat(width);
+  if (styles.boxSizing === "border-box") {
+    return Math.max(
+      // @ts-ignore
+      (parseFloat(styles.width) || 0) -
+        // @ts-ignore
+        (parseFloat(styles.paddingLeft) || 0) -
+        // @ts-ignore
+        (parseFloat(styles.paddingRight) || 0),
+      0
+    );
+  }
+
+  // @ts-ignore
+  return parseFloat(styles.width) || 0;
 };
 
 /**
  * @description Return element's dimensions without padding
+ *
+ * ts-ignore here is okay here, because it brigs around 40% of performance
  */
 export const getInnerDimensions = (
   el: HTMLElement
 ): { width: number; height: number } => {
   let styles = getComputedStyle(el);
 
-  const width = styles.width && styles.width !== "auto" ? styles.width : "0";
-  const height =
-    styles.height && styles.height !== "auto" ? styles.height : "0";
-
-  return styles.boxSizing === "border-box"
-    ? {
-        height: Math.max(
-          parseFloat(height) -
-            parseFloat(styles.paddingBottom || "0") -
-            parseFloat(styles.paddingTop || "0"),
-          0
-        ),
-        width: Math.max(
-          parseFloat(width) -
-            parseFloat(styles.paddingRight || "0") -
-            parseFloat(styles.paddingLeft || "0"),
-          0
-        )
-      }
-    : {
-        height: parseFloat(height),
-        width: parseFloat(width)
-      };
+  if (styles.boxSizing === "border-box") {
+    return {
+      height: Math.max(
+        // @ts-ignore
+        (parseFloat(styles.height) || 0) -
+          // @ts-ignore
+          (parseFloat(styles.paddingTop) || 0) -
+          // @ts-ignore
+          (parseFloat(styles.paddingBottom) || 0),
+        0
+      ),
+      width: Math.max(
+        // @ts-ignore
+        (parseFloat(styles.width) || 0) -
+          // @ts-ignore
+          (parseFloat(styles.paddingLeft) || 0) -
+          // @ts-ignore
+          (parseFloat(styles.paddingRight) || 0),
+        0
+      )
+    };
+  }
+  return {
+    // @ts-ignore
+    height: parseFloat(styles.height) || 0,
+    // @ts-ignore
+    width: parseFloat(styles.width) || 0
+  };
 };
 
 /**

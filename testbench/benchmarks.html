@@ -205,6 +205,19 @@
               );
             }
           )
+          .add("[height] [border-box] getComputedStyle (parse float) ", () => {
+            const styles = getComputedStyle(div1);
+
+            if (styles.boxSizing === "border-box") {
+              return Math.max(
+                (parseFloat(styles.height) || 0) -
+                  (parseFloat(styles.paddingTop) || 0) -
+                  (parseFloat(styles.paddingBottom) || 0),
+                0
+              );
+            }
+            return parseFloat(styles.height) || 0;
+          })
           .add("[height] [border-box] getComputedStyle (unary plus)", () => {
             const styles = getComputedStyle(div1);
 
@@ -218,18 +231,6 @@
                   0
                 )
               : +(styles.height && styles.height.slice(0, -2));
-          })
-          .add("[height] [border-box] getComputedStyle (parse float) ", () => {
-            const styles = getComputedStyle(div1);
-
-            return styles.boxSizing === "border-box"
-              ? Math.max(
-                  parseFloat(styles.height || "0") -
-                    parseFloat(styles.paddingBottom || "0") -
-                    parseFloat(styles.paddingTop || "0"),
-                  0
-                )
-              : parseFloat(styles.height || "0");
           })
           .add(
             "[both] [border-box] getComputedStyle + clientHeight/clientWidth (parse float) ",
@@ -261,26 +262,26 @@
             }
           )
           .add("[both] [border-box] getComputedStyle (parse float) ", () => {
-            const styles = getComputedStyle(div1);
+            let styles = getComputedStyle(div1);
 
             return styles.boxSizing === "border-box"
               ? {
                   height: Math.max(
-                    parseFloat(styles.height || "0") -
-                      parseFloat(styles.paddingBottom || "0") -
-                      parseFloat(styles.paddingTop || "0"),
+                    (parseFloat(styles.height) || 0) -
+                      (parseFloat(styles.paddingTop) || 0) -
+                      (parseFloat(styles.paddingBottom) || 0),
                     0
                   ),
                   width: Math.max(
-                    parseFloat(styles.height || "0") -
-                      parseFloat(styles.paddingLeft || "0") -
-                      parseFloat(styles.paddingRight || "0"),
+                    (parseFloat(styles.width) || 0) -
+                      (parseFloat(styles.paddingLeft) || 0) -
+                      (parseFloat(styles.paddingRight) || 0),
                     0
                   )
                 }
               : {
-                  height: parseFloat(styles.height || "0"),
-                  width: parseFloat(styles.width || "0")
+                  height: parseFloat(styles.height) || 0,
+                  width: parseFloat(styles.width) || 0
                 };
           })
 
@@ -317,17 +318,18 @@
           .add("[height] [content-box] getComputedStyle (parse float) ", () => {
             const styles = getComputedStyle(div2);
 
-            return styles.boxSizing === "border-box"
-              ? Math.max(
-                  parseFloat(styles.height || "0") -
-                    parseFloat(styles.paddingBottom || "0") -
-                    parseFloat(styles.paddingTop || "0"),
-                  0
-                )
-              : parseFloat(styles.height || "0");
+            if (styles.boxSizing === "border-box") {
+              return Math.max(
+                (parseFloat(styles.height) || 0) -
+                  (parseFloat(styles.paddingTop) || 0) -
+                  (parseFloat(styles.paddingBottom) || 0),
+                0
+              );
+            }
+            return parseFloat(styles.height) || 0;
           })
           .add(
-            "[both] [content-box] getComputedStyle + clientHeight/clientWidth (parse float) ",
+            "[both] [content-box] getComputedStyle + clientHeight/clientWidth ",
             () => {
               const styles = getComputedStyle(div2);
               const paddingTop = styles.paddingTop
@@ -356,26 +358,26 @@
             }
           )
           .add("[both] [content-box] getComputedStyle (parse float) ", () => {
-            const styles = getComputedStyle(div2);
+            let styles = getComputedStyle(div2);
 
             return styles.boxSizing === "border-box"
               ? {
                   height: Math.max(
-                    parseFloat(styles.height || "0") -
-                      parseFloat(styles.paddingBottom || "0") -
-                      parseFloat(styles.paddingTop || "0"),
+                    (parseFloat(styles.height) || 0) -
+                      (parseFloat(styles.paddingTop) || 0) -
+                      (parseFloat(styles.paddingBottom) || 0),
                     0
                   ),
                   width: Math.max(
-                    parseFloat(styles.width || "0") -
-                      parseFloat(styles.paddingLeft || "0") -
-                      parseFloat(styles.paddingRight || "0"),
+                    (parseFloat(styles.width) || 0) -
+                      (parseFloat(styles.paddingLeft) || 0) -
+                      (parseFloat(styles.paddingRight) || 0),
                     0
                   )
                 }
               : {
-                  height: parseFloat(styles.height || "0"),
-                  width: parseFloat(styles.width || "0")
+                  height: parseFloat(styles.height) || 0,
+                  width: parseFloat(styles.width) || 0
                 };
           })
           .run({ async: true });

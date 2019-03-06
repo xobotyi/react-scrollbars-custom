@@ -8,7 +8,10 @@ import Scrollbar, {
 } from "./../src/Scrollbar";
 import cnb from "cnbuilder";
 import * as simulant from "simulant";
-import { _dbgSetScrollbarWidth } from "../src/util";
+import {
+  _dbgSetIsReverseRTLScrollNeeded,
+  _dbgSetScrollbarWidth
+} from "../src/util";
 
 class ScrollbarPropsUpdater extends React.Component<
   { scrollbarProps: ScrollbarProps },
@@ -47,6 +50,7 @@ describe("Scrollbar", () => {
   });
   beforeEach(() => {
     _dbgSetScrollbarWidth(null);
+    _dbgSetIsReverseRTLScrollNeeded(null);
   });
   afterEach(() => {
     ReactDOM.unmountComponentAtNode(node);
@@ -1496,7 +1500,7 @@ describe("Scrollbar", () => {
         );
 
         expect(result.content.direction).toBe("rtl");
-        expect(result.wrapper.left).toBe(8);
+        expect(result.wrapper.left).toBe(10);
 
         result = Scrollbar.calculateStyles(
           {
@@ -1511,7 +1515,7 @@ describe("Scrollbar", () => {
           17
         );
         expect(result.content.direction).toBe("ltr");
-        expect(result.wrapper.right).toBe(8);
+        expect(result.wrapper.right).toBe(10);
 
         result = Scrollbar.calculateStyles(
           {
@@ -1526,7 +1530,7 @@ describe("Scrollbar", () => {
           17
         );
         expect(result.content.direction).toBe(undefined);
-        expect(result.wrapper.right).toBe(8);
+        expect(result.wrapper.right).toBe(10);
       });
 
       it("should return proper content paddings for mobile browsers", () => {
@@ -1839,7 +1843,123 @@ describe("Scrollbar", () => {
         <Scrollbar
           trackClickBehavior={SCROLLBAR_TRACK_CLICK_BEHAVIOR.JUMP}
           style={{ width: 100, height: 100, position: "relative" }}
-          scrollbarWidth={17}
+        >
+          <div style={{ width: 1000, height: 1000 }} />
+        </Scrollbar>,
+        node,
+        function() {
+          setTimeout(() => {
+            const {
+              top: topX,
+              height: heightX,
+              left: leftX,
+              width: widthX
+            } = this.trackXElement.getBoundingClientRect();
+            const {
+              top: topY,
+              height: heightY,
+              left: leftY,
+              width: widthY
+            } = this.trackYElement.getBoundingClientRect();
+
+            simulant.fire(this.trackXElement, "click", {
+              which: 1,
+              clientY: Math.floor(topX + heightX / 2),
+              clientX: Math.floor(leftX + widthX / 2)
+            });
+            simulant.fire(this.trackYElement, "click", {
+              which: 1,
+              clientY: Math.floor(topY + heightY / 2),
+              clientX: Math.floor(leftY + widthY / 2)
+            });
+
+            setTimeout(() => {
+              expect(this.contentElement.scrollTop).toBe(
+                Math.floor(
+                  (this.contentElement.scrollHeight -
+                    this.contentElement.clientHeight) /
+                    2
+                )
+              );
+              expect(this.contentElement.scrollLeft).toBe(
+                Math.floor(
+                  (this.contentElement.scrollWidth -
+                    this.contentElement.clientWidth) /
+                    2
+                )
+              );
+
+              done();
+            }, 20);
+          }, 20);
+        }
+      );
+    });
+
+    it('[RTL] track click should cause `jump` to the respective position if `trackClickBehavior="jump"`', done => {
+      ReactDOM.render(
+        <Scrollbar
+          trackClickBehavior={SCROLLBAR_TRACK_CLICK_BEHAVIOR.JUMP}
+          style={{ width: 100, height: 100, position: "relative" }}
+          rtl
+        >
+          <div style={{ width: 1000, height: 1000 }} />
+        </Scrollbar>,
+        node,
+        function() {
+          setTimeout(() => {
+            const {
+              top: topX,
+              height: heightX,
+              left: leftX,
+              width: widthX
+            } = this.trackXElement.getBoundingClientRect();
+            const {
+              top: topY,
+              height: heightY,
+              left: leftY,
+              width: widthY
+            } = this.trackYElement.getBoundingClientRect();
+
+            simulant.fire(this.trackXElement, "click", {
+              which: 1,
+              clientY: Math.floor(topX + heightX / 2),
+              clientX: Math.floor(leftX + widthX / 2)
+            });
+            simulant.fire(this.trackYElement, "click", {
+              which: 1,
+              clientY: Math.floor(topY + heightY / 2),
+              clientX: Math.floor(leftY + widthY / 2)
+            });
+
+            setTimeout(() => {
+              expect(this.contentElement.scrollTop).toBe(
+                Math.floor(
+                  (this.contentElement.scrollHeight -
+                    this.contentElement.clientHeight) /
+                    2
+                )
+              );
+              expect(this.contentElement.scrollLeft).toBe(
+                Math.floor(
+                  (this.contentElement.scrollWidth -
+                    this.contentElement.clientWidth) /
+                    2
+                )
+              );
+
+              done();
+            }, 20);
+          }, 20);
+        }
+      );
+    });
+
+    it('track click should cause `step` towards clicked position if `trackClickBehavior="step"`', done => {
+      ReactDOM.render(
+        <Scrollbar
+          trackClickBehavior={SCROLLBAR_TRACK_CLICK_BEHAVIOR.STEP}
+          style={{ width: 100, height: 100, position: "relative" }}
         >
           <div style={{ width: 1000, height: 1000 }} />
         </Scrollbar>,
@@ -1872,24 +1992,76 @@ describe("Scrollbar", () => {
 
             setTimeout(() => {
               expect(this.contentElement.scrollTop).toBe(
-                (this.contentElement.scrollHeight -
-                  this.contentElement.clientHeight) /
-                  2
+                this.contentElement.clientHeight
               );
               expect(this.contentElement.scrollLeft).toBe(
-                (this.contentElement.scrollWidth -
-                  this.contentElement.clientWidth) /
-                  2
+                this.contentElement.clientWidth
               );
 
-              done();
+              simulant.fire(this.trackXElement, "click", {
+                which: 1,
+                clientY: topX + heightX / 2,
+                clientX: leftX + widthX / 2
+              });
+              simulant.fire(this.trackYElement, "click", {
+                which: 1,
+                clientY: topY + heightY / 2,
+                clientX: leftY + widthY / 2
+              });
+
+              setTimeout(() => {
+                expect(this.contentElement.scrollTop).toBe(
+                  2 * this.contentElement.clientHeight
+                );
+                expect(this.contentElement.scrollLeft).toBe(
+                  2 * this.contentElement.clientWidth
+                );
+
+                simulant.fire(this.trackXElement, "click", {
+                  which: 1,
+                  clientY: topX,
+                  clientX: leftX
+                });
+                simulant.fire(this.trackYElement, "click", {
+                  which: 1,
+                  clientY: topY,
+                  clientX: leftY
+                });
+
+                setTimeout(() => {
+                  expect(this.contentElement.scrollTop).toBe(
+                    this.contentElement.clientHeight
+                  );
+                  expect(this.contentElement.scrollLeft).toBe(
+                    this.contentElement.clientWidth
+                  );
+
+                  simulant.fire(this.trackXElement, "click", {
+                    which: 1,
+                    clientY: topX,
+                    clientX: leftX
+                  });
+                  simulant.fire(this.trackYElement, "click", {
+                    which: 1,
+                    clientY: topY,
+                    clientX: leftY
+                  });
+
+                  setTimeout(() => {
+                    expect(this.contentElement.scrollTop).toBe(0);
+                    expect(this.contentElement.scrollLeft).toBe(0);
+
+                    done();
+                  }, 20);
+                }, 20);
+              }, 20);
             }, 20);
           }, 20);
         }
       );
     });
 
-    it('track click should cause `step` towards clicked position if `trackClickBehavior="step"`', done => {
+    it('[RTL] track click should cause `step` towards clicked position if `trackClickBehavior="step"`', done => {
       ReactDOM.render(
         <Scrollbar
           trackClickBehavior={SCROLLBAR_TRACK_CLICK_BEHAVIOR.STEP}

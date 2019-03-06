@@ -13,8 +13,11 @@ import getScrollbarWidth, {
   calcThumbOffset,
   calcThumbSize,
   getInnerHeight,
-  getInnerWidth
+  getInnerWidth,
+  shouldReverseRTLScroll
 } from "./util";
+
+const reverseRTL: boolean = shouldReverseRTLScroll();
 
 export type ScrollValues = {
   /**
@@ -721,8 +724,8 @@ export default class Scrollbar extends React.Component<
             scrollValues.scrollLeft
           );
 
-          if (this.state.isRTL) {
-            thumbOffset += thumbSize - trackInnerSize;
+          if (reverseRTL) {
+            thumbOffset += trackInnerSize - thumbSize;
           }
 
           this.thumbXElement.style.transform = `translateX(${thumbOffset}px)`;

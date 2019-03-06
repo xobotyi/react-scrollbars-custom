@@ -1,6 +1,7 @@
 import getScrollbarWidth, {
   _dbgGetDocument,
   _dbgSetDocument,
+  _dbgSetIsReverseRTLScrollNeeded,
   _dbgSetScrollbarWidth,
   calcScrollForThumbOffset,
   calcThumbOffset,
@@ -8,6 +9,7 @@ import getScrollbarWidth, {
   getInnerDimensions,
   getInnerHeight,
   getInnerWidth,
+  shouldReverseRTLScroll,
   uuid
 } from "../src/util";
 
@@ -611,6 +613,61 @@ describe("util", () => {
       it("should return 0 if document is not presented", () => {
         _dbgSetDocument(null);
         expect(getScrollbarWidth()).toBe(0);
+      });
+    });
+  });
+
+  describe("shouldReverseRTLScroll", () => {
+    beforeEach(() => {
+      _dbgSetScrollbarWidth(null);
+      _dbgSetDocument(document);
+    });
+
+    describe("_dbgSetIsReverseRTLScrollNeeded()", () => {
+      it("should set the value returned by getScrollbarWidth()", () => {
+        _dbgSetIsReverseRTLScrollNeeded(false);
+        expect(shouldReverseRTLScroll()).toBeFalsy();
+
+        _dbgSetIsReverseRTLScrollNeeded(true);
+        expect(shouldReverseRTLScroll()).toBeTruthy();
+      });
+
+      it("null should force getScrollbarWidth() to recalculate val", () => {
+        _dbgSetIsReverseRTLScrollNeeded(null);
+        expect(typeof shouldReverseRTLScroll()).toBe("boolean");
+      });
+
+      it("should throw if value not null or boolean", () => {
+        // @ts-ignore
+        expect(() => _dbgSetIsReverseRTLScrollNeeded(321)).toThrow(
+          new TypeError(
+            "override value expected to be a boolean or null, got number"
+          )
+        );
+        // @ts-ignore
+        expect(() => _dbgSetIsReverseRTLScrollNeeded(undefined)).toThrow(
+          new TypeError(
+            "override value expected to be a boolean or null, got undefined"
+          )
+        );
+      });
+    });
+
+    describe("shouldReverseRTLScroll()", () => {
+      it("should return boolean", () => {
+        expect(typeof shouldReverseRTLScroll()).toBe("boolean");
+      });
+
+      it("should forced recalculate sbw if true passed as 1st parameter", () => {
+        _dbgSetIsReverseRTLScrollNeeded(false);
+        expect(shouldReverseRTLScroll()).toBeFalsy();
+
+        expect(typeof shouldReverseRTLScroll()).toBe("boolean");
+      });
+
+      it("should return false if document is not presented", () => {
+        _dbgSetDocument(null);
+        expect(shouldReverseRTLScroll()).toBeFalsy();
       });
     });
   });

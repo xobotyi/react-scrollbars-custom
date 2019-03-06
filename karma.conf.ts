@@ -19,6 +19,12 @@ module.exports = cfg => {
       "./tests/**/*.spec.tsx"
     ],
 
+    client: {
+      jasmine: {
+        random: false
+      }
+    },
+
     karmaTypescriptConfig: {
       bundlerOptions: {
         constants: {

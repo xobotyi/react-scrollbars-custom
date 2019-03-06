@@ -8,6 +8,7 @@ import Scrollbar, {
 } from "./../src/Scrollbar";
 import cnb from "cnbuilder";
 import * as simulant from "simulant";
+import { _dbgSetScrollbarWidth } from "../src/util";
 
 class ScrollbarPropsUpdater extends React.Component<
   { scrollbarProps: ScrollbarProps },
@@ -43,6 +44,9 @@ describe("Scrollbar", () => {
   beforeAll(() => {
     node = document.createElement("div");
     document.body.appendChild(node);
+  });
+  beforeEach(() => {
+    _dbgSetScrollbarWidth(null);
   });
   afterEach(() => {
     ReactDOM.unmountComponentAtNode(node);
@@ -919,7 +923,6 @@ describe("Scrollbar", () => {
             style={{ width: 100, height: 100 }}
             scrollTop={450}
             scrollLeft={400}
-            scrollbarWidth={17}
           >
             <div style={{ width: 900, height: 1000 }} />
           </Scrollbar>,
@@ -928,12 +931,24 @@ describe("Scrollbar", () => {
             setTimeout(() => {
               const scrollValues = this.getScrollValues();
 
-              expect(scrollValues.clientHeight).toBe(92);
-              expect(scrollValues.clientWidth).toBe(92);
-              expect(scrollValues.scrollHeight).toBe(1000);
-              expect(scrollValues.scrollWidth).toBe(900);
-              expect(scrollValues.scrollTop).toBe(450);
-              expect(scrollValues.scrollLeft).toBe(400);
+              expect(scrollValues.clientHeight).toBe(
+                this.contentElement.clientHeight
+              );
+              expect(scrollValues.clientWidth).toBe(
+                this.contentElement.clientWidth
+              );
+              expect(scrollValues.scrollHeight).toBe(
+                this.contentElement.scrollHeight
+              );
+              expect(scrollValues.scrollWidth).toBe(
+                this.contentElement.scrollWidth
+              );
+              expect(scrollValues.scrollTop).toBe(
+                this.contentElement.scrollTop
+              );
+              expect(scrollValues.scrollLeft).toBe(
+                this.contentElement.scrollLeft
+              );
               expect(scrollValues.scrollYBlocked).toBeFalsy();
               expect(scrollValues.scrollXBlocked).toBeFalsy();
               expect(scrollValues.scrollYPossible).toBeTruthy();
@@ -943,7 +958,7 @@ describe("Scrollbar", () => {
               expect(scrollValues.isRTL).toBeFalsy();
 
               done();
-            }, 30);
+            }, 60);
           }
         );
       });

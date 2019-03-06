@@ -13,7 +13,7 @@ export interface ScrollbarTrackClickParameters {
   offset: number;
 }
 
-type ScrollbarTrackProps = ElementProps & {
+export type ScrollbarTrackProps = ElementProps & {
   axis: DIRECTION_AXIS;
 
   className?: string;
@@ -105,7 +105,7 @@ export default class ScrollbarTrack extends React.Component<
       typeof this.props.onClick === "function" &&
       ev.target === this.element
     ) {
-      if (ev.hasOwnProperty("offsetX")) {
+      if (typeof ev.offsetX !== "undefined") {
         this.props.onClick(ev, {
           axis: this.props.axis,
           offset: this.props.axis === DIRECTION_AXIS.X ? ev.offsetX : ev.offsetY

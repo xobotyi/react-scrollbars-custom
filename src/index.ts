@@ -1,2 +1,3 @@
-export { default } from "./Scrollbar";
-export { default as ScrollbarTrack } from "./ScrollbarTrack";
+import Scrollbar from "./Scrollbar";
+
+export { Scrollbar as default, Scrollbar };

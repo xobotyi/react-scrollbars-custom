@@ -2,12 +2,15 @@ import ScrollbarThumb from "../src/ScrollbarThumb";
 import * as ReactDOM from "react-dom";
 import * as React from "react";
 import { DIRECTION_AXIS } from "../src/ScrollbarTrack";
+import { _dbgSetDocument, _dbgSetScrollbarWidth } from "../src/util";
 
 describe("ScrollbarThumb", () => {
   let node: HTMLDivElement;
   beforeAll(() => {
     node = document.createElement("div");
     document.body.appendChild(node);
+    _dbgSetDocument(null);
+    _dbgSetScrollbarWidth(null);
   });
   afterEach(() => {
     ReactDOM.unmountComponentAtNode(node);
@@ -159,8 +162,6 @@ describe("ScrollbarThumb", () => {
       node,
       function() {
         setTimeout(() => {
-          console.log(this.state.error);
-
           expect(this.state.error instanceof Error).toBeTruthy();
           expect(this.state.error.message).toBe(
             "Element was not created. Possibly you haven't provided HTMLElement to renderer's `elementRef` function."

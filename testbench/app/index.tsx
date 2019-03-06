@@ -1,14 +1,17 @@
 import * as React from "react";
 import * as ReactDom from "react-dom";
-import ScrollbarTrack, { DIRECTION_AXIS } from "../../src/ScrollbarTrack";
+import Scrollbar from "../../src/Scrollbar";
 
 class App extends React.Component {
   public render(): React.ReactNode {
     return (
-      <ScrollbarTrack
-        axis={DIRECTION_AXIS.X}
-        style={{ width: 150, height: 300, background: "red" }}
-      />
+      <Scrollbar
+        style={{ width: 200, height: 200 }}
+        scrollTop={450}
+        scrollLeft={400}
+      >
+        <div style={{ width: 1000, height: 1000 }} />
+      </Scrollbar>
     );
   }
 }

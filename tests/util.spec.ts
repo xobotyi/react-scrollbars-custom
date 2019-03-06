@@ -1,4 +1,7 @@
-import {
+import getScrollbarWidth, {
+  _dbgGetDocument,
+  _dbgSetDocument,
+  _dbgSetScrollbarWidth,
   calcScrollForThumbOffset,
   calcThumbOffset,
   calcThumbSize,
@@ -9,6 +12,11 @@ import {
 } from "../src/util";
 
 describe("util", () => {
+  afterAll(() => {
+    _dbgSetDocument(null);
+    _dbgSetScrollbarWidth(null);
+  });
+
   describe("calcThumbSize", () => {
     it("should return number", () => {
       expect(
@@ -508,6 +516,101 @@ describe("util", () => {
 
         expect(sizes.height).toBe(200.5);
         expect(sizes.width).toBe(100.5);
+      });
+    });
+  });
+
+  describe("getScrollbarWidth", () => {
+    beforeEach(() => {
+      _dbgSetScrollbarWidth(null);
+      _dbgSetDocument(document);
+    });
+
+    describe("_dbgGetDocument()", () => {
+      it("should return document or null", () => {
+        expect(_dbgGetDocument()).toBe(document);
+      });
+
+      it("should return overrided value", () => {
+        _dbgSetDocument(null);
+        expect(_dbgGetDocument()).toBe(null);
+      });
+    });
+
+    describe("_dbgSetDocument()", () => {
+      it("should set the document or null", () => {
+        _dbgSetDocument(null);
+        expect(_dbgGetDocument()).toBe(null);
+
+        _dbgSetDocument(document);
+        expect(_dbgGetDocument()).toBe(document);
+      });
+
+      it("should throw if value not null or document", () => {
+        // @ts-ignore
+        expect(() => _dbgSetDocument(123)).toThrow(
+          new TypeError(
+            "override value expected to be an instance of HTMLDocument or null, got number"
+          )
+        );
+        // @ts-ignore
+        expect(() => _dbgSetDocument(false)).toThrow(
+          new TypeError(
+            "override value expected to be an instance of HTMLDocument or null, got boolean"
+          )
+        );
+      });
+    });
+
+    describe("_dbgSetScrollbarWidth ()", () => {
+      it("should set the value returned by getScrollbarWidth()", () => {
+        _dbgSetScrollbarWidth(2);
+        expect(getScrollbarWidth()).toBe(2);
+      });
+
+      it("null value should force getScrollbarWidth() to recalculate sbw", () => {
+        _dbgSetScrollbarWidth(2);
+        expect(getScrollbarWidth()).toBe(2);
+
+        _dbgSetScrollbarWidth(null);
+        expect([17, 15].includes(getScrollbarWidth())).toBeTruthy();
+      });
+
+      it("should throw if value not null or number", () => {
+        // @ts-ignore
+        expect(() => _dbgSetScrollbarWidth(false)).toThrow(
+          new TypeError(
+            "override value expected to be a number or null, got boolean"
+          )
+        );
+        // @ts-ignore
+        expect(() => _dbgSetScrollbarWidth(undefined)).toThrow(
+          new TypeError(
+            "override value expected to be a number or null, got undefined"
+          )
+        );
+      });
+    });
+
+    describe("getScrollbarWidth()", () => {
+      it("should return number", () => {
+        expect(typeof getScrollbarWidth()).toBe("number");
+      });
+
+      it("should return proper number", () => {
+        expect([17, 15].includes(getScrollbarWidth())).toBeTruthy();
+      });
+
+      it("should forced recalculate sbw if true passed as 1st parameter", () => {
+        _dbgSetScrollbarWidth(2);
+        expect(getScrollbarWidth()).toBe(2);
+        _dbgSetDocument(document);
+        expect([17, 15].includes(getScrollbarWidth(true))).toBeTruthy();
+      });
+
+      it("should return 0 if document is not presented", () => {
+        _dbgSetDocument(null);
+        expect(getScrollbarWidth()).toBe(0);
       });
     });
   });

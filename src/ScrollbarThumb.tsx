@@ -3,18 +3,16 @@ import * as PropTypes from "prop-types";
 import cnb from "cnbuilder";
 import { DIRECTION_AXIS } from "./ScrollbarTrack";
 import { ElementProps } from "./Scrollbar";
+import { DraggableCore, DraggableData, DraggableEvent } from "react-draggable";
 
 declare var global: {
   document?: Document;
 };
 
-export type ScrollbarThumbDragValues = {
-  axis: DIRECTION_AXIS;
-  clientX: number;
-  clientY: number;
-  offsetX: number;
-  offsetY: number;
-};
+export type DragCallbackData = Pick<
+  DraggableData,
+  Exclude<keyof DraggableData, "node">
+>;
 
 export type ScrollbarThumbProps = ElementProps & {
   axis: DIRECTION_AXIS;
@@ -22,9 +20,9 @@ export type ScrollbarThumbProps = ElementProps & {
   className?: string;
   style?: React.CSSProperties;
 
-  onDrag?: (values: ScrollbarThumbDragValues) => void;
-  onDragStart?: (values: ScrollbarThumbDragValues) => void;
-  onDragEnd?: (values: ScrollbarThumbDragValues) => void;
+  onDrag?: (data: DragCallbackData) => void;
+  onDragStart?: (data: DragCallbackData) => void;
+  onDragEnd?: (data: DragCallbackData) => void;
 
   renderer?: React.FunctionComponent<ScrollbarThumbProps>;
 };
@@ -35,16 +33,20 @@ export default class ScrollbarThumb extends React.Component<
 > {
   public element: HTMLElement | null = null;
 
-  private dragging: boolean = false;
-
   private prevUserSelect: string | null;
   private prevOnSelectStart: (() => boolean) | null;
 
-  private offsetX: number = 0;
-  private offsetY: number = 0;
+  public initialOffsetX: number = 0;
+  public initialOffsetY: number = 0;
 
-  private lastClientX: number = 0;
-  private lastClientY: number = 0;
+  public lastDragData: DragCallbackData = {
+    x: 0,
+    y: 0,
+    deltaX: 0,
+    deltaY: 0,
+    lastX: 0,
+    lastY: 0
+  };
 
   static propTypes = {
     axis: PropTypes.oneOf([DIRECTION_AXIS.X, DIRECTION_AXIS.Y]),
@@ -69,91 +71,19 @@ export default class ScrollbarThumb extends React.Component<
       });
       return;
     }
-
-    this.element.addEventListener("mousedown", this.handleMouseDown);
-    this.element.addEventListener("touchstart", this.handleTouchStart);
   }
 
   public componentWillUnmount(): void {
-    this.handleDragEnd();
+    this.handleOnDragStop();
   }
-
-  private handleMouseDown = (ev: MouseEvent) => {
-    if (ev.button !== 0 || !this.element) {
-      return;
-    }
-
-    ev.preventDefault();
-    ev.stopImmediatePropagation();
-
-    if (global.document) {
-      global.document.addEventListener("mousemove", this.handleMouseMove, {
-        passive: true
-      });
-      global.document.addEventListener("mouseup", this.handleMouseDragEnd, {
-        passive: true
-      });
-      global.document.addEventListener("mousedown", this.handleMouseDragEnd, {
-        passive: true
-      });
-    }
-
-    if (typeof ev.offsetX !== "undefined") {
-      this.handleDragStart(ev.clientX, ev.clientY, ev.offsetX, ev.offsetY);
-    } else {
-      // support for old browsers
-      const rect: ClientRect = this.element.getBoundingClientRect();
-      this.handleDragStart(
-        ev.clientX,
-        ev.clientY,
-        ev.clientX - rect.left,
-        ev.clientY - rect.top
-      );
-    }
-  };
-  private handleMouseMove = (ev: MouseEvent) => {
-    this.handleDrag(ev.clientX, ev.clientY);
-  };
-  private handleMouseDragEnd = (ev: MouseEvent) => {
-    this.handleDragEnd(ev.clientX, ev.clientY);
-  };
-
-  private handleTouchStart = (ev: TouchEvent) => {
-    if (!ev.touches.length || !this.element) {
-      return;
-    }
-
-    if (global.document) {
-      global.document.addEventListener("touchmove", this.handleTouchMove, {
-        passive: true
-      });
-      global.document.addEventListener("touchend", this.handleTouchEnd, {
-        passive: true
-      });
-    }
-  };
-  private handleTouchMove = (ev: TouchEvent) => {
-    console.log(ev);
-  };
-  private handleTouchEnd = (ev: TouchEvent) => {
-    console.log(ev);
-  };
 
   private static selectStartReplacer = () => false;
 
-  private handleDragStart = (
-    clientX: number,
-    clientY: number,
-    offsetX: number = 0,
-    offsetY: number = 0
-  ) => {
+  public handleOnDragStart = (ev: DraggableEvent, data: DraggableData) => {
     if (!this.element) {
-      this.handleDragEnd(clientX, clientY);
+      this.handleOnDragStop(ev, data);
       return;
     }
-
-    this.dragging = true;
-    this.element.classList.add("dragging");
 
     if (global.document) {
       this.prevUserSelect = global.document.body.style.userSelect;
@@ -165,73 +95,57 @@ export default class ScrollbarThumb extends React.Component<
       global.document.onselectstart = ScrollbarThumb.selectStartReplacer;
     }
 
+    this.props.onDragStart &&
+      this.props.onDragStart(
+        (this.lastDragData = {
+          x: data.x - this.initialOffsetX,
+          y: data.y - this.initialOffsetY,
+          lastX: data.lastX - this.initialOffsetX,
+          lastY: data.lastY - this.initialOffsetY,
+          deltaX: data.deltaX,
+          deltaY: data.deltaY
+        })
+      );
+
     this.element.classList.add("dragging");
-
-    this.dragging = true;
-    this.offsetX = offsetX;
-    this.offsetY = offsetY;
-
-    this.lastClientX = clientX;
-    this.lastClientY = clientY;
-
-    typeof this.props.onDragStart === "function" &&
-      this.props.onDragStart({
-        axis: this.props.axis,
-        clientY: clientY - this.offsetY,
-        clientX: clientX - this.offsetX,
-        offsetY: this.offsetY,
-        offsetX: this.offsetX
-      });
   };
 
-  private handleDrag = (clientX: number, clientY: number) => {
-    if (!this.dragging || !this.element) {
-      this.handleDragEnd(clientX, clientY);
+  public handleOnDrag = (ev: DraggableEvent, data: DraggableData) => {
+    if (!this.element) {
+      this.handleOnDragStop(ev, data);
       return;
     }
 
-    if (typeof this.props.onDrag !== "function") {
-      return;
-    }
-
-    this.lastClientX = clientX;
-    this.lastClientY = clientY;
-
-    this.props.onDrag({
-      axis: this.props.axis,
-      clientY: clientY - this.offsetY,
-      clientX: clientX - this.offsetX,
-      offsetY: this.offsetY,
-      offsetX: this.offsetX
-    });
+    this.props.onDrag &&
+      this.props.onDrag(
+        (this.lastDragData = {
+          x: data.x - this.initialOffsetX,
+          y: data.y - this.initialOffsetY,
+          lastX: data.lastX - this.initialOffsetX,
+          lastY: data.lastY - this.initialOffsetY,
+          deltaX: data.deltaX,
+          deltaY: data.deltaY
+        })
+      );
   };
 
-  private handleDragEnd = (clientX?: number, clientY?: number) => {
-    if (this.dragging) {
-      if (this.props.onDragEnd) {
-        this.props.onDragEnd({
-          axis: this.props.axis,
-          clientY: (clientY || this.lastClientY) - this.offsetY,
-          clientX: (clientX || this.lastClientX) - this.offsetX,
-          offsetY: this.offsetY,
-          offsetX: this.offsetX
-        });
-      }
-    }
+  public handleOnDragStop = (ev?: DraggableEvent, data?: DraggableData) => {
+    const resultData = data
+      ? {
+          x: data.x - this.initialOffsetX,
+          y: data.y - this.initialOffsetY,
+          lastX: data.lastX - this.initialOffsetX,
+          lastY: data.lastY - this.initialOffsetY,
+          deltaX: data.deltaX,
+          deltaY: data.deltaY
+        }
+      : this.lastDragData;
 
-    this.dragging = false;
-    this.offsetX = 0;
-    this.offsetY = 0;
-    this.lastClientX = 0;
-    this.lastClientY = 0;
+    this.props.onDragEnd && this.props.onDragEnd(resultData);
+
+    this.element && this.element.classList.remove("dragging");
 
     if (global.document) {
-      global.document.removeEventListener("mousemove", this.handleMouseMove);
-      global.document.removeEventListener("mouseup", this.handleMouseDragEnd);
-      global.document.removeEventListener("mousedown", this.handleMouseDragEnd);
-      global.document.removeEventListener("touchmove", this.handleTouchMove);
-      global.document.removeEventListener("touchend", this.handleTouchEnd);
-
       global.document.body.style.userSelect = this.prevUserSelect;
       this.prevUserSelect = null;
       // @ts-ignore
@@ -239,8 +153,32 @@ export default class ScrollbarThumb extends React.Component<
       this.prevOnSelectStart = null;
     }
 
-    if (this.element) {
-      this.element.classList.remove("dragging");
+    this.initialOffsetX = 0;
+    this.initialOffsetY = 0;
+    this.lastDragData = {
+      x: 0,
+      y: 0,
+      deltaX: 0,
+      deltaY: 0,
+      lastX: 0,
+      lastY: 0
+    };
+  };
+
+  public handleOnMouseDown = (ev: MouseEvent) => {
+    if (!this.element) {
+      return;
+    }
+
+    ev.stopPropagation();
+
+    if (typeof ev.offsetX !== "undefined") {
+      this.initialOffsetX = ev.offsetX;
+      this.initialOffsetY = ev.offsetY;
+    } else {
+      const rect: ClientRect = this.element.getBoundingClientRect();
+      this.initialOffsetX = ev.clientX - rect.left;
+      this.initialOffsetY = ev.clientY - rect.top;
     }
   };
 
@@ -252,6 +190,10 @@ export default class ScrollbarThumb extends React.Component<
       axis,
       onClick,
 
+      onDrag,
+      onDragEnd,
+      onDragStart,
+
       ...props
     } = this.props;
 
@@ -261,14 +203,25 @@ export default class ScrollbarThumb extends React.Component<
       props.className
     );
 
-    return renderer ? (
-      renderer({
-        ...props,
-        axis,
-        elementRef: this.ref
-      })
-    ) : (
-      <div {...props} ref={this.ref} />
+    return (
+      <DraggableCore
+        allowAnyClick={false}
+        enableUserSelectHack={false}
+        onMouseDown={this.handleOnMouseDown}
+        onDrag={this.handleOnDrag}
+        onStart={this.handleOnDragStart}
+        onStop={this.handleOnDragStop}
+      >
+        {renderer ? (
+          renderer({
+            ...props,
+            axis,
+            elementRef: this.ref
+          })
+        ) : (
+          <div {...props} ref={this.ref} />
+        )}
+      </DraggableCore>
     );
   }
 

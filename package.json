@@ -29,7 +29,8 @@
     "react": "^16.0.0"
   },
   "dependencies": {
-    "cnbuilder": "^1.0.8"
+    "cnbuilder": "^1.0.8",
+    "react-draggable": "^3.2.1"
   },
   "devDependencies": {
     "@types/jasmine": "^3.3.9",

@@ -197,9 +197,8 @@ describe("ScrollbarThumb", () => {
         });
 
         setTimeout(() => {
-          expect(spy.calls.argsFor(0)[0].axis).toBe(DIRECTION_AXIS.Y);
-          expect(spy.calls.argsFor(0)[0].clientY).toBe(top);
-          expect(spy.calls.argsFor(0)[0].clientX).toBe(left);
+          expect(spy.calls.argsFor(0)[0].y).toBe(top);
+          expect(spy.calls.argsFor(0)[0].x).toBe(left);
           done();
         }, 5);
       }
@@ -263,21 +262,22 @@ describe("ScrollbarThumb", () => {
           clientY: top + height / 2,
           clientX: left + width / 2
         });
-        simulant.fire(document, "mouseup", {
-          button: 0,
-          clientY: top + height / 2,
-          clientX: left + width / 2
-        });
-
         setTimeout(() => {
-          expect(start).toHaveBeenCalled();
-          expect(end).toHaveBeenCalled();
-          expect(start).toHaveBeenCalledBefore(end);
+          simulant.fire(document, "mouseup", {
+            button: 0,
+            clientY: top + height / 2,
+            clientX: left + width / 2
+          });
 
-          expect(end.calls.argsFor(0)[0].axis).toBe(DIRECTION_AXIS.Y);
-          expect(end.calls.argsFor(0)[0].clientY).toBe(top);
-          expect(end.calls.argsFor(0)[0].clientX).toBe(left);
-          done();
+          setTimeout(() => {
+            expect(start).toHaveBeenCalled();
+            expect(end).toHaveBeenCalled();
+            expect(start).toHaveBeenCalledBefore(end);
+
+            expect(end.calls.argsFor(0)[0].y).toBe(top);
+            expect(end.calls.argsFor(0)[0].x).toBe(left);
+            done();
+          }, 5);
         }, 5);
       }
     );
@@ -310,28 +310,30 @@ describe("ScrollbarThumb", () => {
           clientY: top + height / 2,
           clientX: left + width / 2
         });
-        simulant.fire(document, "mousemove", {
-          button: 0,
-          clientY: top + height / 2,
-          clientX: left + width / 2
-        });
-        simulant.fire(document, "mouseup", {
-          button: 0,
-          clientY: top + height / 2,
-          clientX: left + width / 2
-        });
 
         setTimeout(() => {
-          expect(drag).toHaveBeenCalled();
-          expect(start).toHaveBeenCalled();
-          expect(end).toHaveBeenCalled();
-          expect(start).toHaveBeenCalledBefore(drag);
-          expect(drag).toHaveBeenCalledBefore(end);
+          simulant.fire(document, "mousemove", {
+            button: 0,
+            clientY: top + height / 2,
+            clientX: left + width / 2
+          });
+          simulant.fire(document, "mouseup", {
+            button: 0,
+            clientY: top + height / 2,
+            clientX: left + width / 2
+          });
 
-          expect(drag.calls.argsFor(0)[0].axis).toBe(DIRECTION_AXIS.Y);
-          expect(drag.calls.argsFor(0)[0].clientY).toBe(top);
-          expect(drag.calls.argsFor(0)[0].clientX).toBe(left);
-          done();
+          setTimeout(() => {
+            expect(drag).toHaveBeenCalled();
+            expect(start).toHaveBeenCalled();
+            expect(end).toHaveBeenCalled();
+            expect(start).toHaveBeenCalledBefore(drag);
+            expect(drag).toHaveBeenCalledBefore(end);
+
+            expect(drag.calls.argsFor(0)[0].y).toBe(top);
+            expect(drag.calls.argsFor(0)[0].x).toBe(left);
+            done();
+          }, 5);
         }, 5);
       }
     );
@@ -384,102 +386,6 @@ describe("ScrollbarThumb", () => {
     );
   });
 
-  it("onDragEnd should return proper axis value (X)", done => {
-    let start = jasmine.createSpy();
-    let end = jasmine.createSpy();
-    let drag = jasmine.createSpy();
-
-    ReactDOM.render(
-      <ScrollbarThumb
-        axis={DIRECTION_AXIS.X}
-        style={{ width: 80, height: 100 }}
-        onDragStart={start}
-        onDrag={drag}
-        onDragEnd={end}
-      />,
-      node,
-      function() {
-        const {
-          top,
-          height,
-          left,
-          width
-        } = this.element.getBoundingClientRect();
-
-        simulant.fire(this.element, "mousedown", {
-          button: 0,
-          clientY: top + height / 2,
-          clientX: left + width / 2
-        });
-        simulant.fire(this.element, "mousemove", {
-          button: 0,
-          clientY: top + height / 2,
-          clientX: left + width / 2
-        });
-        simulant.fire(this.element, "mouseup", {
-          button: 0,
-          clientY: top + height / 2,
-          clientX: left + width / 2
-        });
-
-        setTimeout(() => {
-          expect(start.calls.argsFor(0)[0].axis).toBe(DIRECTION_AXIS.X);
-          expect(drag.calls.argsFor(0)[0].axis).toBe(DIRECTION_AXIS.X);
-          expect(end.calls.argsFor(0)[0].axis).toBe(DIRECTION_AXIS.X);
-          done();
-        }, 5);
-      }
-    );
-  });
-
-  it("onDragEnd should return proper axis value (Y)", done => {
-    let start = jasmine.createSpy();
-    let end = jasmine.createSpy();
-    let drag = jasmine.createSpy();
-
-    ReactDOM.render(
-      <ScrollbarThumb
-        axis={DIRECTION_AXIS.Y}
-        style={{ width: 80, height: 100 }}
-        onDragStart={start}
-        onDrag={drag}
-        onDragEnd={end}
-      />,
-      node,
-      function() {
-        const {
-          top,
-          height,
-          left,
-          width
-        } = this.element.getBoundingClientRect();
-
-        simulant.fire(this.element, "mousedown", {
-          button: 0,
-          clientY: top + height / 2,
-          clientX: left + width / 2
-        });
-        simulant.fire(this.element, "mousemove", {
-          button: 0,
-          clientY: top + height / 2,
-          clientX: left + width / 2
-        });
-        simulant.fire(this.element, "mouseup", {
-          button: 0,
-          clientY: top + height / 2,
-          clientX: left + width / 2
-        });
-
-        setTimeout(() => {
-          expect(start.calls.argsFor(0)[0].axis).toBe(DIRECTION_AXIS.Y);
-          expect(drag.calls.argsFor(0)[0].axis).toBe(DIRECTION_AXIS.Y);
-          expect(end.calls.argsFor(0)[0].axis).toBe(DIRECTION_AXIS.Y);
-          done();
-        }, 5);
-      }
-    );
-  });
-
   it("handleDragStart while element was removed should not emit callbacks", done => {
     let start = jasmine.createSpy();
     let end = jasmine.createSpy();
@@ -502,13 +408,18 @@ describe("ScrollbarThumb", () => {
           width
         } = this.element.getBoundingClientRect();
 
+        let elt = this.element;
         this.element = null;
-        this.handleDragStart(top + height / 2, left + width / 2);
+        simulant.fire(elt, "mousedown", {
+          button: 0,
+          clientY: top + height / 2,
+          clientX: left + width / 2
+        });
 
         setTimeout(() => {
           expect(drag).not.toHaveBeenCalled();
           expect(start).not.toHaveBeenCalled();
-          expect(end).not.toHaveBeenCalled();
+          expect(end).toHaveBeenCalled();
           done();
         }, 5);
       }
@@ -530,7 +441,11 @@ describe("ScrollbarThumb", () => {
           width
         } = this.element.getBoundingClientRect();
 
-        this.handleDragStart(top + height / 2, left + width / 2);
+        simulant.fire(this.element, "mousedown", {
+          button: 0,
+          clientY: top + height / 2,
+          clientX: left + width / 2
+        });
 
         setTimeout(() => {
           expect(this.element.classList.contains("dragging")).toBeTruthy();
@@ -558,14 +473,24 @@ describe("ScrollbarThumb", () => {
           width
         } = this.element.getBoundingClientRect();
 
-        this.handleDragStart(top + height / 2, left + width / 2);
-        this.handleDrag(top + height / 2, left + width / 2); // this is for LOC coverage
-
+        simulant.fire(this.element, "mousedown", {
+          button: 0,
+          clientY: top + height / 2,
+          clientX: left + width / 2
+        });
         setTimeout(() => {
-          ReactDOM.unmountComponentAtNode(node);
-          expect(end).toHaveBeenCalled();
+          simulant.fire(document, "mousemove", {
+            button: 0,
+            clientY: top + height / 2,
+            clientX: left + width / 2
+          });
 
-          done();
+          setTimeout(() => {
+            ReactDOM.unmountComponentAtNode(node);
+            expect(end).toHaveBeenCalled();
+
+            done();
+          }, 5);
         }, 5);
       }
     );
@@ -586,7 +511,11 @@ describe("ScrollbarThumb", () => {
           width
         } = this.element.getBoundingClientRect();
 
-        this.handleDragStart(top + height / 2, left + width / 2);
+        simulant.fire(this.element, "mousedown", {
+          button: 0,
+          clientY: top + height / 2,
+          clientX: left + width / 2
+        });
 
         setTimeout(() => {
           expect(document.body.style.userSelect).toBe("none");

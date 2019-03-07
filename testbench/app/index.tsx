@@ -5,7 +5,12 @@ import Scrollbar from "../../src/Scrollbar";
 class App extends React.Component {
   public render(): React.ReactNode {
     return (
-      <Scrollbar style={{ width: 200, height: 200 }} rtl>
+      <Scrollbar
+        style={{ width: 200, height: 200 }}
+        trackXProps={{
+          style: { padding: "0 10px", width: "calc(100% - 40px)" }
+        }}
+      >
         <p style={{ width: 1000 }}>
           Lorem Ipsum is simply dummy text of the printing and typesetting
           industry. Lorem Ipsum has been the industry's standard dummy text ever

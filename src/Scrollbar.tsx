@@ -7,10 +7,7 @@ import ScrollbarTrack, {
   ScrollbarTrackClickParameters,
   ScrollbarTrackProps
 } from "./ScrollbarTrack";
-import ScrollbarThumb, {
-  ScrollbarThumbDragValues,
-  ScrollbarThumbProps
-} from "./ScrollbarThumb";
+import ScrollbarThumb, { ScrollbarThumbProps } from "./ScrollbarThumb";
 import getScrollbarWidth, {
   calcScrollForThumbOffset,
   calcThumbOffset,
@@ -19,6 +16,7 @@ import getScrollbarWidth, {
   getInnerWidth,
   shouldReverseRTLScroll
 } from "./util";
+import { DraggableData } from "react-draggable";
 
 const reverseRTL: boolean = shouldReverseRTLScroll();
 
@@ -897,7 +895,7 @@ export default class Scrollbar extends React.Component<
     this.scrollLeft += ev.deltaX;
   };
 
-  public handleThumbXDrag = (vals: ScrollbarThumbDragValues): void => {
+  public handleThumbXDrag = (data: DraggableData): void => {
     if (
       !this.trackXElement ||
       !this.thumbXElement ||
@@ -914,17 +912,12 @@ export default class Scrollbar extends React.Component<
     const paddingLeft: number = parseFloat(styles.paddingLeft) || 0;
     //@ts-ignore
     const paddingRight: number = parseFloat(styles.paddingRight) || 0;
-
     const trackInnerSize = trackRect.width - paddingLeft - paddingRight;
     const thumbSize = this.thumbXElement.clientWidth;
     const offset =
       this.scrollValues.isRTL && reverseRTL
-        ? vals.clientX -
-          trackRect.left -
-          paddingLeft +
-          thumbSize -
-          trackInnerSize
-        : vals.clientX - trackRect.left - paddingLeft;
+        ? data.x + thumbSize - trackInnerSize + paddingLeft
+        : data.lastX - paddingLeft;
 
     let target = calcScrollForThumbOffset(
       this.scrollValues.scrollWidth,
@@ -936,7 +929,7 @@ export default class Scrollbar extends React.Component<
 
     this.contentElement.scrollLeft = target;
   };
-  public handleThumbYDrag = (vals: ScrollbarThumbDragValues): void => {
+  public handleThumbYDrag = (data: DraggableData): void => {
     if (
       !this.contentElement ||
       !this.trackYElement ||
@@ -953,10 +946,9 @@ export default class Scrollbar extends React.Component<
     const paddingTop: number = parseFloat(styles.paddingTop) || 0;
     //@ts-ignore
     const paddingBottom: number = parseFloat(styles.paddingBottom) || 0;
-
     const trackInnerSize = trackRect.height - paddingTop - paddingBottom;
     const thumbSize = this.thumbYElement.clientHeight;
-    const offset = Math.max(vals.clientY - trackRect.top - paddingTop, 0);
+    const offset = data.y - paddingTop;
 
     let target = calcScrollForThumbOffset(
       this.scrollValues.scrollHeight,

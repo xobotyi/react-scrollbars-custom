@@ -2167,4 +2167,174 @@ describe("Scrollbar", () => {
       );
     });
   });
+
+  describe("thumb interaction", () => {
+    it("should scroll on Y thumb drag", done => {
+      ReactDOM.render(
+        <Scrollbar style={{ width: 100, height: 100, position: "relative" }}>
+          <div style={{ width: 1000, height: 1000 }} />
+        </Scrollbar>,
+        node,
+        function() {
+          setTimeout(() => {
+            const {
+              top: thumbTop,
+              height: thumbHeight,
+              left: thumbLeft,
+              width: thumbWidth
+            } = this.thumbYElement.getBoundingClientRect();
+
+            const {
+              height: trackHeight,
+              width: trackWidth
+            } = this.trackYElement.getBoundingClientRect();
+
+            simulant.fire(this.thumbYElement, "mousedown", {
+              button: 0,
+              clientY: thumbTop + thumbHeight / 2,
+              clientX: thumbLeft + thumbWidth / 2
+            });
+
+            setTimeout(() => {
+              simulant.fire(document, "mousemove", {
+                button: 0,
+                clientY: thumbTop + trackHeight,
+                clientX: thumbLeft + trackWidth
+              });
+
+              setTimeout(() => {
+                simulant.fire(document, "mouseup", {
+                  button: 0,
+                  clientY: thumbTop + trackHeight,
+                  clientX: thumbLeft + trackWidth
+                });
+
+                setTimeout(() => {
+                  expect(this.scrollValues.scrollTop).toBe(
+                    this.scrollValues.scrollHeight -
+                      this.scrollValues.clientHeight
+                  );
+                  expect(this.scrollValues.scrollLeft).toBe(0);
+                  done();
+                }, 20);
+              }, 5);
+            }, 5);
+          }, 20);
+        }
+      );
+    });
+
+    it("should scroll on X thumb drag", done => {
+      ReactDOM.render(
+        <Scrollbar style={{ width: 100, height: 100, position: "relative" }}>
+          <div style={{ width: 1000, height: 1000 }} />
+        </Scrollbar>,
+        node,
+        function() {
+          setTimeout(() => {
+            const {
+              top: thumbTop,
+              height: thumbHeight,
+              left: thumbLeft,
+              width: thumbWidth
+            } = this.thumbXElement.getBoundingClientRect();
+
+            const {
+              height: trackHeight,
+              width: trackWidth
+            } = this.trackXElement.getBoundingClientRect();
+
+            simulant.fire(this.thumbXElement, "mousedown", {
+              button: 0,
+              clientY: thumbTop + thumbHeight / 2,
+              clientX: thumbLeft + thumbWidth / 2
+            });
+
+            setTimeout(() => {
+              simulant.fire(document, "mousemove", {
+                button: 0,
+                clientY: thumbTop + trackHeight,
+                clientX: thumbLeft + trackWidth
+              });
+
+              setTimeout(() => {
+                simulant.fire(document, "mouseup", {
+                  button: 0,
+                  clientY: thumbTop + trackHeight,
+                  clientX: thumbLeft + trackWidth
+                });
+
+                setTimeout(() => {
+                  expect(this.scrollValues.scrollLeft).toBe(
+                    this.scrollValues.scrollWidth -
+                      this.scrollValues.clientWidth
+                  );
+                  expect(this.scrollValues.scrollTop).toBe(0);
+                  done();
+                }, 20);
+              }, 5);
+            }, 5);
+          }, 20);
+        }
+      );
+    });
+
+    it("should scroll on X thumb drag while RTL", done => {
+      ReactDOM.render(
+        <Scrollbar
+          style={{ width: 100, height: 100, position: "relative" }}
+          rtl
+        >
+          <div style={{ width: 1000, height: 1000 }} />
+        </Scrollbar>,
+        node,
+        function() {
+          setTimeout(() => {
+            const {
+              top: thumbTop,
+              height: thumbHeight,
+              left: thumbLeft,
+              width: thumbWidth
+            } = this.thumbXElement.getBoundingClientRect();
+
+            const {
+              height: trackHeight,
+              width: trackWidth
+            } = this.trackXElement.getBoundingClientRect();
+
+            simulant.fire(this.thumbXElement, "mousedown", {
+              button: 0,
+              clientY: thumbTop + thumbHeight / 2,
+              clientX: thumbLeft + thumbWidth / 2
+            });
+
+            setTimeout(() => {
+              simulant.fire(document, "mousemove", {
+                button: 0,
+                clientY: thumbTop + trackHeight,
+                clientX: thumbLeft + trackWidth
+              });
+
+              setTimeout(() => {
+                simulant.fire(document, "mouseup", {
+                  button: 0,
+                  clientY: thumbTop + trackHeight,
+                  clientX: thumbLeft + trackWidth
+                });
+
+                setTimeout(() => {
+                  expect(this.scrollValues.scrollLeft).toBe(
+                    this.scrollValues.scrollWidth -
+                      this.scrollValues.clientWidth
+                  );
+                  expect(this.scrollValues.scrollTop).toBe(0);
+                  done();
+                }, 20);
+              }, 5);
+            }, 5);
+          }, 20);
+        }
+      );
+    });
+  });
 });

@@ -919,15 +919,13 @@ export default class Scrollbar extends React.Component<
         ? data.x + thumbSize - trackInnerSize + paddingLeft
         : data.lastX - paddingLeft;
 
-    let target = calcScrollForThumbOffset(
+    this.contentElement.scrollLeft = calcScrollForThumbOffset(
       this.scrollValues.scrollWidth,
       this.scrollValues.clientWidth,
       trackInnerSize,
       thumbSize,
       offset
     );
-
-    this.contentElement.scrollLeft = target;
   };
   public handleThumbYDrag = (data: DraggableData): void => {
     if (
@@ -950,15 +948,13 @@ export default class Scrollbar extends React.Component<
     const thumbSize = this.thumbYElement.clientHeight;
     const offset = data.y - paddingTop;
 
-    let target = calcScrollForThumbOffset(
+    this.contentElement.scrollTop = calcScrollForThumbOffset(
       this.scrollValues.scrollHeight,
       this.scrollValues.clientHeight,
       trackInnerSize,
       thumbSize,
       offset
     );
-
-    this.contentElement.scrollTop = target;
   };
 
   public render(): React.ReactElement<any> | null {
@@ -1120,7 +1116,8 @@ export default class Scrollbar extends React.Component<
         key: "ScrollbarCustom-thumbY",
         style: styles.thumbY,
         elementRef: this.elementRefThumbY,
-        onDrag: this.handleThumbYDrag
+        onDrag: this.handleThumbYDrag,
+        onDragEnd: this.handleThumbYDrag
       } as ScrollbarThumbProps;
 
       const trackYProps = {
@@ -1160,7 +1157,8 @@ export default class Scrollbar extends React.Component<
         key: "ScrollbarCustom-thumbX",
         style: styles.thumbX,
         elementRef: this.elementRefThumbX,
-        onDrag: this.handleThumbXDrag
+        onDrag: this.handleThumbXDrag,
+        onDragEnd: this.handleThumbXDrag
       } as ScrollbarThumbProps;
 
       const trackXProps = {

@@ -2,6 +2,8 @@ import * as ReactDOM from "react-dom";
 import * as React from "react";
 import Scrollbar, {
   SCROLLBAR_TRACK_CLICK_BEHAVIOR,
+  ScrollbarContext,
+  ScrollbarContextValue,
   ScrollbarProps,
   ScrollbarState,
   ScrollValues
@@ -1093,6 +1095,41 @@ describe("Scrollbar", () => {
   });
 
   describe("props", () => {
+    it("shoud create context if createContext is passed", done => {
+      let consumedContext: ScrollbarContextValue;
+
+      class ScrollbarContextConsumer extends React.Component<{}, {}> {
+        static contextType = ScrollbarContext;
+
+        public componentDidMount(): void {
+          consumedContext = this.context;
+        }
+
+        render() {
+          return <div className="element" />;
+        }
+      }
+
+      ReactDOM.render(
+        <Scrollbar
+          style={{ width: 100, height: 70 }}
+          scrollLeft={20}
+          scrollTop={40}
+          createContext={true}
+        >
+          <ScrollbarContextConsumer />
+        </Scrollbar>,
+        node,
+        function() {
+          setTimeout(() => {
+            expect(consumedContext).not.toBeUndefined();
+            expect(consumedContext!.parentScrollbar).toBe(this);
+            done();
+          }, 50);
+        }
+      );
+    });
+
     it("should apply props scroll values", done => {
       ReactDOM.render(
         <Scrollbar

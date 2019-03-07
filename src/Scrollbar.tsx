@@ -14,7 +14,8 @@ import getScrollbarWidth, {
   calcThumbSize,
   getInnerHeight,
   getInnerWidth,
-  shouldReverseRTLScroll
+  shouldReverseRTLScroll,
+  uuid
 } from "./util";
 import { DraggableData } from "react-draggable";
 
@@ -89,6 +90,8 @@ export enum SCROLLBAR_TRACK_CLICK_BEHAVIOR {
 }
 
 export type ScrollbarProps = ElementProps & {
+  createContext?: boolean;
+
   rtl?: boolean;
 
   momentum?: boolean;
@@ -151,10 +154,25 @@ export type ScrollbarState = {
   isRTL?: boolean;
 };
 
+export type ScrollbarContextValue = {
+  parentScrollbar: Scrollbar | null;
+};
+
+export const ScrollbarContext: React.Context<
+  ScrollbarContextValue
+> = React.createContext({ parentScrollbar: null });
+
 export default class Scrollbar extends React.Component<
   ScrollbarProps,
   ScrollbarState
 > {
+  static contextType = ScrollbarContext;
+
+  /**
+   * @description UUID identifying scrollbar instance
+   */
+  public readonly id: string;
+
   /**
    * @description Reference to the holder HTMLElement or null if it wasn't rendered or <i>native</i> property is true
    */
@@ -185,6 +203,7 @@ export default class Scrollbar extends React.Component<
   public thumbYElement: HTMLElement | null;
 
   static propTypes = {
+    createContext: PropTypes.bool,
     rtl: PropTypes.bool,
     native: PropTypes.bool,
     momentum: PropTypes.bool,
@@ -270,6 +289,8 @@ export default class Scrollbar extends React.Component<
     };
 
     this.scrollValues = this.getScrollValues(true);
+
+    this.id = uuid();
   }
 
   public componentDidMount(): void {
@@ -959,6 +980,7 @@ export default class Scrollbar extends React.Component<
 
   public render(): React.ReactElement<any> | null {
     const {
+      createContext,
       rtl,
       native,
       momentum,
@@ -1064,7 +1086,13 @@ export default class Scrollbar extends React.Component<
       [propsContentProps!.renderer ? "elementRef" : "ref"]: this
         .elementRefContent,
       [propsContentProps!.renderer ? "ref" : "elementRef"]: undefined,
-      children
+      children: createContext ? (
+        <ScrollbarContext.Provider value={{ parentScrollbar: this }}>
+          {children}
+        </ScrollbarContext.Provider>
+      ) : (
+        children
+      )
     } as ElementProps<HTMLDivElement>;
 
     const wrapperProps = {

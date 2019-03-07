@@ -1112,7 +1112,7 @@ export default class Scrollbar extends React.Component<
 
     const holderProps = {
       ...props,
-      key: "ScrollbarCustom-holder",
+      key: "ScrollbarCustom-holder_" + this.id,
       className: cnb(
         "ScrollbarsCustom",
         {

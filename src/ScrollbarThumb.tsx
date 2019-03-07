@@ -12,6 +12,8 @@ export type ScrollbarThumbDragValues = {
   axis: DIRECTION_AXIS;
   clientX: number;
   clientY: number;
+  offsetX: number;
+  offsetY: number;
 };
 
 export type ScrollbarThumbProps = ElementProps & {
@@ -41,6 +43,9 @@ export default class ScrollbarThumb extends React.Component<
   private offsetX: number = 0;
   private offsetY: number = 0;
 
+  private lastClientX: number = 0;
+  private lastClientY: number = 0;
+
   static propTypes = {
     axis: PropTypes.oneOf([DIRECTION_AXIS.X, DIRECTION_AXIS.Y]),
 
@@ -69,6 +74,10 @@ export default class ScrollbarThumb extends React.Component<
     this.element.addEventListener("touchstart", this.handleTouchStart);
   }
 
+  public componentWillUnmount(): void {
+    this.handleDragEnd();
+  }
+
   private handleMouseDown = (ev: MouseEvent) => {
     if (ev.button !== 0 || !this.element) {
       return;
@@ -81,24 +90,32 @@ export default class ScrollbarThumb extends React.Component<
       global.document.addEventListener("mousemove", this.handleMouseMove, {
         passive: true
       });
-      global.document.addEventListener("mouseup", this.handleDragEnd, {
+      global.document.addEventListener("mouseup", this.handleMouseDragEnd, {
         passive: true
       });
-      global.document.addEventListener("mousedown", this.handleDragEnd, {
+      global.document.addEventListener("mousedown", this.handleMouseDragEnd, {
         passive: true
       });
     }
 
     if (typeof ev.offsetX !== "undefined") {
-      this.handleDragStart(ev.offsetX, ev.offsetY);
+      this.handleDragStart(ev.clientX, ev.clientY, ev.offsetX, ev.offsetY);
     } else {
       // support for old browsers
       const rect: ClientRect = this.element.getBoundingClientRect();
-      this.handleDragStart(ev.clientX - rect.left, ev.clientY - rect.top);
+      this.handleDragStart(
+        ev.clientX,
+        ev.clientY,
+        ev.clientX - rect.left,
+        ev.clientY - rect.top
+      );
     }
   };
   private handleMouseMove = (ev: MouseEvent) => {
     this.handleDrag(ev.clientX, ev.clientY);
+  };
+  private handleMouseDragEnd = (ev: MouseEvent) => {
+    this.handleDragEnd(ev.clientX, ev.clientY);
   };
 
   private handleTouchStart = (ev: TouchEvent) => {
@@ -114,8 +131,6 @@ export default class ScrollbarThumb extends React.Component<
         passive: true
       });
     }
-
-    this.handleDragStart();
   };
   private handleTouchMove = (ev: TouchEvent) => {
     console.log(ev);
@@ -126,9 +141,14 @@ export default class ScrollbarThumb extends React.Component<
 
   private static selectStartReplacer = () => false;
 
-  private handleDragStart = (offsetX: number = 0, offsetY: number = 0) => {
+  private handleDragStart = (
+    clientX: number,
+    clientY: number,
+    offsetX: number = 0,
+    offsetY: number = 0
+  ) => {
     if (!this.element) {
-      this.handleDragEnd();
+      this.handleDragEnd(clientX, clientY);
       return;
     }
 
@@ -150,10 +170,23 @@ export default class ScrollbarThumb extends React.Component<
     this.dragging = true;
     this.offsetX = offsetX;
     this.offsetY = offsetY;
+
+    this.lastClientX = clientX;
+    this.lastClientY = clientY;
+
+    typeof this.props.onDragStart === "function" &&
+      this.props.onDragStart({
+        axis: this.props.axis,
+        clientY: clientY - this.offsetY,
+        clientX: clientX - this.offsetX,
+        offsetY: this.offsetY,
+        offsetX: this.offsetX
+      });
   };
 
   private handleDrag = (clientX: number, clientY: number) => {
     if (!this.dragging || !this.element) {
+      this.handleDragEnd(clientX, clientY);
       return;
     }
 
@@ -161,28 +194,27 @@ export default class ScrollbarThumb extends React.Component<
       return;
     }
 
+    this.lastClientX = clientX;
+    this.lastClientY = clientY;
+
     this.props.onDrag({
       axis: this.props.axis,
       clientY: clientY - this.offsetY,
-      clientX: clientX - this.offsetX
+      clientX: clientX - this.offsetX,
+      offsetY: this.offsetY,
+      offsetX: this.offsetX
     });
   };
 
-  private handleDragEnd = (
-    ev?: MouseEvent | TouchEvent,
-    clientX?: number,
-    clientY?: number
-  ) => {
+  private handleDragEnd = (clientX?: number, clientY?: number) => {
     if (this.dragging) {
-      if (
-        typeof clientX === "number" &&
-        typeof clientY === "number" &&
-        this.props.onDragEnd
-      ) {
+      if (this.props.onDragEnd) {
         this.props.onDragEnd({
           axis: this.props.axis,
-          clientY: clientY - this.offsetY,
-          clientX: clientX - this.offsetX
+          clientY: (clientY || this.lastClientY) - this.offsetY,
+          clientX: (clientX || this.lastClientX) - this.offsetX,
+          offsetY: this.offsetY,
+          offsetX: this.offsetX
         });
       }
     }
@@ -190,11 +222,13 @@ export default class ScrollbarThumb extends React.Component<
     this.dragging = false;
     this.offsetX = 0;
     this.offsetY = 0;
+    this.lastClientX = 0;
+    this.lastClientY = 0;
 
     if (global.document) {
       global.document.removeEventListener("mousemove", this.handleMouseMove);
-      global.document.removeEventListener("mouseup", this.handleDragEnd);
-      global.document.removeEventListener("mousedown", this.handleDragEnd);
+      global.document.removeEventListener("mouseup", this.handleMouseDragEnd);
+      global.document.removeEventListener("mousedown", this.handleMouseDragEnd);
       global.document.removeEventListener("touchmove", this.handleTouchMove);
       global.document.removeEventListener("touchend", this.handleTouchEnd);
 

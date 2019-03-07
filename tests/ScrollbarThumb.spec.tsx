@@ -2,15 +2,14 @@ import ScrollbarThumb from "../src/ScrollbarThumb";
 import * as ReactDOM from "react-dom";
 import * as React from "react";
 import { DIRECTION_AXIS } from "../src/ScrollbarTrack";
-import { _dbgSetDocument, _dbgSetScrollbarWidth } from "../src/util";
+
+import * as simulant from "simulant";
 
 describe("ScrollbarThumb", () => {
   let node: HTMLDivElement;
   beforeAll(() => {
     node = document.createElement("div");
     document.body.appendChild(node);
-    _dbgSetDocument(null);
-    _dbgSetScrollbarWidth(null);
   });
   afterEach(() => {
     ReactDOM.unmountComponentAtNode(node);
@@ -169,6 +168,433 @@ describe("ScrollbarThumb", () => {
 
           done();
         }, 10);
+      }
+    );
+  });
+
+  it("should emit onDragStart on mousedown LMB", done => {
+    let spy = jasmine.createSpy();
+
+    ReactDOM.render(
+      <ScrollbarThumb
+        axis={DIRECTION_AXIS.Y}
+        style={{ width: 80, height: 100 }}
+        onDragStart={spy}
+      />,
+      node,
+      function() {
+        const {
+          top,
+          height,
+          left,
+          width
+        } = this.element.getBoundingClientRect();
+
+        simulant.fire(this.element, "mousedown", {
+          button: 0,
+          clientY: top + height / 2,
+          clientX: left + width / 2
+        });
+
+        setTimeout(() => {
+          expect(spy.calls.argsFor(0)[0].axis).toBe(DIRECTION_AXIS.Y);
+          expect(spy.calls.argsFor(0)[0].clientY).toBe(top);
+          expect(spy.calls.argsFor(0)[0].clientX).toBe(left);
+          done();
+        }, 5);
+      }
+    );
+  });
+
+  it("should NOT emit onDragStart on mousedown not LMB", done => {
+    let spy = jasmine.createSpy();
+
+    ReactDOM.render(
+      <ScrollbarThumb
+        axis={DIRECTION_AXIS.Y}
+        style={{ width: 80, height: 100 }}
+        onDragStart={spy}
+      />,
+      node,
+      function() {
+        const {
+          top,
+          height,
+          left,
+          width
+        } = this.element.getBoundingClientRect();
+
+        simulant.fire(this.element, "mousedown", {
+          button: 1,
+          clientY: top + height / 2,
+          clientX: left + width / 2
+        });
+
+        setTimeout(() => {
+          expect(spy).not.toHaveBeenCalled();
+          done();
+        }, 5);
+      }
+    );
+  });
+
+  it("should emit onDragEnd on mouseup", done => {
+    let start = jasmine.createSpy();
+    let end = jasmine.createSpy();
+
+    ReactDOM.render(
+      <ScrollbarThumb
+        axis={DIRECTION_AXIS.Y}
+        style={{ width: 80, height: 100 }}
+        onDragStart={start}
+        onDragEnd={end}
+      />,
+      node,
+      function() {
+        const {
+          top,
+          height,
+          left,
+          width
+        } = this.element.getBoundingClientRect();
+
+        simulant.fire(this.element, "mousedown", {
+          button: 0,
+          clientY: top + height / 2,
+          clientX: left + width / 2
+        });
+        simulant.fire(document, "mouseup", {
+          button: 0,
+          clientY: top + height / 2,
+          clientX: left + width / 2
+        });
+
+        setTimeout(() => {
+          expect(start).toHaveBeenCalled();
+          expect(end).toHaveBeenCalled();
+          expect(start).toHaveBeenCalledBefore(end);
+
+          expect(end.calls.argsFor(0)[0].axis).toBe(DIRECTION_AXIS.Y);
+          expect(end.calls.argsFor(0)[0].clientY).toBe(top);
+          expect(end.calls.argsFor(0)[0].clientX).toBe(left);
+          done();
+        }, 5);
+      }
+    );
+  });
+
+  it("should emit onDrag on mousemove", done => {
+    let start = jasmine.createSpy();
+    let end = jasmine.createSpy();
+    let drag = jasmine.createSpy();
+
+    ReactDOM.render(
+      <ScrollbarThumb
+        axis={DIRECTION_AXIS.Y}
+        style={{ width: 80, height: 100 }}
+        onDragStart={start}
+        onDrag={drag}
+        onDragEnd={end}
+      />,
+      node,
+      function() {
+        const {
+          top,
+          height,
+          left,
+          width
+        } = this.element.getBoundingClientRect();
+
+        simulant.fire(this.element, "mousedown", {
+          button: 0,
+          clientY: top + height / 2,
+          clientX: left + width / 2
+        });
+        simulant.fire(document, "mousemove", {
+          button: 0,
+          clientY: top + height / 2,
+          clientX: left + width / 2
+        });
+        simulant.fire(document, "mouseup", {
+          button: 0,
+          clientY: top + height / 2,
+          clientX: left + width / 2
+        });
+
+        setTimeout(() => {
+          expect(drag).toHaveBeenCalled();
+          expect(start).toHaveBeenCalled();
+          expect(end).toHaveBeenCalled();
+          expect(start).toHaveBeenCalledBefore(drag);
+          expect(drag).toHaveBeenCalledBefore(end);
+
+          expect(drag.calls.argsFor(0)[0].axis).toBe(DIRECTION_AXIS.Y);
+          expect(drag.calls.argsFor(0)[0].clientY).toBe(top);
+          expect(drag.calls.argsFor(0)[0].clientX).toBe(left);
+          done();
+        }, 5);
+      }
+    );
+  });
+
+  it("should end the dragging if element was removed", done => {
+    let start = jasmine.createSpy();
+    let end = jasmine.createSpy();
+    let drag = jasmine.createSpy();
+
+    ReactDOM.render(
+      <ScrollbarThumb
+        axis={DIRECTION_AXIS.Y}
+        style={{ width: 80, height: 100 }}
+        onDragStart={start}
+        onDrag={drag}
+        onDragEnd={end}
+      />,
+      node,
+      function() {
+        const {
+          top,
+          height,
+          left,
+          width
+        } = this.element.getBoundingClientRect();
+
+        simulant.fire(this.element, "mousedown", {
+          button: 0,
+          clientY: top + height / 2,
+          clientX: left + width / 2
+        });
+
+        this.element = null;
+        simulant.fire(document, "mousemove", {
+          button: 0,
+          clientY: top + height / 2,
+          clientX: left + width / 2
+        });
+
+        setTimeout(() => {
+          expect(drag).not.toHaveBeenCalled();
+          expect(start).toHaveBeenCalled();
+          expect(end).toHaveBeenCalled();
+
+          expect(start).toHaveBeenCalledBefore(end);
+          done();
+        }, 5);
+      }
+    );
+  });
+
+  it("onDragEnd should return proper axis value (X)", done => {
+    let start = jasmine.createSpy();
+    let end = jasmine.createSpy();
+    let drag = jasmine.createSpy();
+
+    ReactDOM.render(
+      <ScrollbarThumb
+        axis={DIRECTION_AXIS.X}
+        style={{ width: 80, height: 100 }}
+        onDragStart={start}
+        onDrag={drag}
+        onDragEnd={end}
+      />,
+      node,
+      function() {
+        const {
+          top,
+          height,
+          left,
+          width
+        } = this.element.getBoundingClientRect();
+
+        simulant.fire(this.element, "mousedown", {
+          button: 0,
+          clientY: top + height / 2,
+          clientX: left + width / 2
+        });
+        simulant.fire(this.element, "mousemove", {
+          button: 0,
+          clientY: top + height / 2,
+          clientX: left + width / 2
+        });
+        simulant.fire(this.element, "mouseup", {
+          button: 0,
+          clientY: top + height / 2,
+          clientX: left + width / 2
+        });
+
+        setTimeout(() => {
+          expect(start.calls.argsFor(0)[0].axis).toBe(DIRECTION_AXIS.X);
+          expect(drag.calls.argsFor(0)[0].axis).toBe(DIRECTION_AXIS.X);
+          expect(end.calls.argsFor(0)[0].axis).toBe(DIRECTION_AXIS.X);
+          done();
+        }, 5);
+      }
+    );
+  });
+
+  it("onDragEnd should return proper axis value (Y)", done => {
+    let start = jasmine.createSpy();
+    let end = jasmine.createSpy();
+    let drag = jasmine.createSpy();
+
+    ReactDOM.render(
+      <ScrollbarThumb
+        axis={DIRECTION_AXIS.Y}
+        style={{ width: 80, height: 100 }}
+        onDragStart={start}
+        onDrag={drag}
+        onDragEnd={end}
+      />,
+      node,
+      function() {
+        const {
+          top,
+          height,
+          left,
+          width
+        } = this.element.getBoundingClientRect();
+
+        simulant.fire(this.element, "mousedown", {
+          button: 0,
+          clientY: top + height / 2,
+          clientX: left + width / 2
+        });
+        simulant.fire(this.element, "mousemove", {
+          button: 0,
+          clientY: top + height / 2,
+          clientX: left + width / 2
+        });
+        simulant.fire(this.element, "mouseup", {
+          button: 0,
+          clientY: top + height / 2,
+          clientX: left + width / 2
+        });
+
+        setTimeout(() => {
+          expect(start.calls.argsFor(0)[0].axis).toBe(DIRECTION_AXIS.Y);
+          expect(drag.calls.argsFor(0)[0].axis).toBe(DIRECTION_AXIS.Y);
+          expect(end.calls.argsFor(0)[0].axis).toBe(DIRECTION_AXIS.Y);
+          done();
+        }, 5);
+      }
+    );
+  });
+
+  it("handleDragStart while element was removed should not emit callbacks", done => {
+    let start = jasmine.createSpy();
+    let end = jasmine.createSpy();
+    let drag = jasmine.createSpy();
+
+    ReactDOM.render(
+      <ScrollbarThumb
+        axis={DIRECTION_AXIS.Y}
+        style={{ width: 80, height: 100 }}
+        onDragStart={start}
+        onDrag={drag}
+        onDragEnd={end}
+      />,
+      node,
+      function() {
+        const {
+          top,
+          height,
+          left,
+          width
+        } = this.element.getBoundingClientRect();
+
+        this.element = null;
+        this.handleDragStart(top + height / 2, left + width / 2);
+
+        setTimeout(() => {
+          expect(drag).not.toHaveBeenCalled();
+          expect(start).not.toHaveBeenCalled();
+          expect(end).not.toHaveBeenCalled();
+          done();
+        }, 5);
+      }
+    );
+  });
+
+  it("while dragging element should have the `dragging` classname", done => {
+    ReactDOM.render(
+      <ScrollbarThumb
+        axis={DIRECTION_AXIS.Y}
+        style={{ width: 80, height: 100 }}
+      />,
+      node,
+      function() {
+        const {
+          top,
+          height,
+          left,
+          width
+        } = this.element.getBoundingClientRect();
+
+        this.handleDragStart(top + height / 2, left + width / 2);
+
+        setTimeout(() => {
+          expect(this.element.classList.contains("dragging")).toBeTruthy();
+          done();
+        }, 5);
+      }
+    );
+  });
+
+  it("should end the dragging when component is unmounted", done => {
+    let end = jasmine.createSpy();
+
+    ReactDOM.render(
+      <ScrollbarThumb
+        axis={DIRECTION_AXIS.Y}
+        style={{ width: 80, height: 100 }}
+        onDragEnd={end}
+      />,
+      node,
+      function() {
+        const {
+          top,
+          height,
+          left,
+          width
+        } = this.element.getBoundingClientRect();
+
+        this.handleDragStart(top + height / 2, left + width / 2);
+        this.handleDrag(top + height / 2, left + width / 2); // this is for LOC coverage
+
+        setTimeout(() => {
+          ReactDOM.unmountComponentAtNode(node);
+          expect(end).toHaveBeenCalled();
+
+          done();
+        }, 5);
+      }
+    );
+  });
+
+  it("should set document`s user-select to none and replace onselectstart callback", done => {
+    ReactDOM.render(
+      <ScrollbarThumb
+        axis={DIRECTION_AXIS.Y}
+        style={{ width: 80, height: 100 }}
+      />,
+      node,
+      function() {
+        const {
+          top,
+          height,
+          left,
+          width
+        } = this.element.getBoundingClientRect();
+
+        this.handleDragStart(top + height / 2, left + width / 2);
+
+        setTimeout(() => {
+          expect(document.body.style.userSelect).toBe("none");
+          // @ts-ignore
+          expect(document.onselectstart()).toBe(false);
+
+          done();
+        }, 5);
       }
     );
   });

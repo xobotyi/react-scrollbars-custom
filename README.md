@@ -24,7 +24,7 @@
 - Momentum scrolling for iOS
 - RTL support ([read more](#rtl-support))
 
-### INSTALLATION
+## INSTALLATION
 
 ```bash
 npm install react-scrollbars-custom
@@ -32,7 +32,7 @@ npm install react-scrollbars-custom
 yarn add react-scrollbars-custom
 ```
 
-### USAGE
+## USAGE
 
 Underneath `react-scrollbars-custom` uses `requestAnimationFrame` loop, which check and update each known scrollbar, and as result - scrollbars updates synchronised with browser's render flow.
 The `<Scrollbar />` component works out of the box, with only need of `width` and `height` to be set, inline or via CSS;
@@ -102,120 +102,120 @@ There are several things you have to know about:
 - If `rtl` prop is `true` - `direction: rtl;` style will be applied to hte content element;
 - If `rtl` prop is `false` - no style will be applied to holder;
 
-### API
+## API
 
-#### PROPS
+### PROPS
 
 You can pass any HTMLElement props to the component - they'll be respectfully passed to the element/renderer.
 
-**`createContext`** _:boolean_ = false
+**createContext** _`:boolean`_ = false
 
-**`rtl`** _:boolean_ = undefined
+**rtl** _`:boolean`_ = undefined
 
-**`native`** _:boolean_ = false
+**native** _`:boolean`_ = false
 
-**`momentum`** _:boolean_ = true
+**momentum** _`:boolean`_ = true
 
-**`noDefaultStyles`** _:boolean_ = false
+**noDefaultStyles** _`:boolean`_ = false
 
-**`minimalThumbSize`** _:number_ = 30
+**minimalThumbSize** _`:number`_ = 30
 
-**`maximalThumbSize`** _:number_ = undefined
+**maximalThumbSize** _`:number`_ = undefined
 
-**`minimalThumbXSize`** _:number_ = undefined
+**minimalThumbXSize** _`:number`_ = undefined
 
-**`maximalThumbXSize`** _:number_ = undefined
+**maximalThumbXSize** _`:number`_ = undefined
 
-**`minimalThumbYSize`** _:number_ = undefined
+**minimalThumbYSize** _`:number`_ = undefined
 
-**`maximalThumbYSize`** _:number_ = undefined
+**maximalThumbYSize** _`:number`_ = undefined
 
-**`noScrollX`** _:boolean_ = false
+**noScrollX** _`:boolean`_ = false
 
-**`noScrollY`** _:boolean_ = false
+**noScrollY** _`:boolean`_ = false
 
-**`noScroll`** _:boolean_ = false
+**noScroll** _`:boolean`_ = false
 
-**`permanentTrackX`** _:boolean_ = false
+**permanentTrackX** _`:boolean`_ = false
 
-**`permanentTrackY`** _:boolean_ = false
+**permanentTrackY** _`:boolean`_ = false
 
-**`permanentTracks`** _:boolean_ = false
+**permanentTracks** _`:boolean`_ = false
 
-**`removeTracksWhenNotUsed`** _:boolean_ = false
+**removeTracksWhenNotUsed** _`:boolean`_ = false
 
-**`removeTrackYWhenNotUsed`** _:boolean_ = false
+**removeTrackYWhenNotUsed** _`:boolean`_ = false
 
-**`removeTrackXWhenNotUsed`** _:boolean_ = false
+**removeTrackXWhenNotUsed** _`:boolean`_ = false
 
-**`trackClickBehavior`** _:string_ = "jump"
+**trackClickBehavior** _`:string`_ = "jump"
 
-**`scrollbarWidth`** _:number_ = undefined
+**scrollbarWidth** _`:number`_ = undefined
 
-**`fallbackScrollbarWidth`** _:number_ = 20
+**fallbackScrollbarWidth** _`:number`_ = 20
 
-**`scrollTop`** _:number_ = undefined
+**scrollTop** _`:number`_ = undefined
 
-**`scrollLeft`** _:number_ = undefined
+**scrollLeft** _`:number`_ = undefined
 
-**`elementRef`** _:function_ = undefined
+**elementRef** _`:function`_ = undefined
 
-**`renderer`** _:SFC_ = undefined
+**renderer** _`:SFC`_ = undefined
 
-**`wrapperProps`** _:object_ = {}
+**wrapperProps** _`:object`_ = {}
 
-**`contentProps`** _:object_ = {}
+**contentProps** _`:object`_ = {}
 
-**`trackXProps`** _:object_ = {}
+**trackXProps** _`:object`_ = {}
 
-**`trackYProps`** _:object_ = {}
+**trackYProps** _`:object`_ = {}
 
-**`thumbXProps`** _:object_ = {}
+**thumbXProps** _`:object`_ = {}
 
-**`thumbYProps`** _:object_ = {}
+**thumbYProps** _`:object`_ = {}
 
-#### INSTANCE PROPERTIES
+### INSTANCE PROPERTIES
 
-**`holderElement`** _:HTMLElement | null_
+**holderElement** _`:HTMLElement | null`_
 
-**`wrapperElement`** _:HTMLElement | null_
+**wrapperElement** _`:HTMLElement | null`_
 
-**`contentElement`** _:HTMLElement | null_
+**contentElement** _`:HTMLElement | null`_
 
-**`trackXElement`** _:HTMLElement | null_
+**trackXElement** _`:HTMLElement | null`_
 
-**`trackYElement`** _:HTMLElement | null_
+**trackYElement** _`:HTMLElement | null`_
 
-**`thumbXElement`** _:HTMLElement | null_
+**thumbXElement** _`:HTMLElement | null`_
 
-**`thumbYElement`** _:HTMLElement | null_
+**thumbYElement** _`:HTMLElement | null`_
 
-(get|set) **`scrollTop`** _:number_
+(get|set) **scrollTop** _`:number`_
 
-(get|set) **`scrollLeft`** _:number_
+(get|set) **scrollLeft** _`:number`_
 
-(get) **`scrollHeight`** _:number_
+(get) **scrollHeight** _`:number`_
 
-(get) **`scrollWidth`** _:number_
+(get) **scrollWidth** _`:number`_
 
-(get) **`clientHeight`** _:number_
+(get) **clientHeight** _`:number`_
 
-(get) **`clientWidth`** _:number_
+(get) **clientWidth** _`:number`_
 
-#### INSTANCE METHODS
+### INSTANCE METHODS
 
-**`getScrollValues()`** _:this_
+**getScrollValues()** _`:this`_
 
-**`scrollToTop()`** _:this_
+**scrollToTop()** _`:this`_
 
-**`scrollToLeft()`** _:this_
+**scrollToLeft()** _`:this`_
 
-**`scrollToBottom()`** _:this_
+**scrollToBottom()** _`:this`_
 
-**`scrollToRight()`** _:this_
+**scrollToRight()** _`:this`_
 
-**`scrollTo(x?: number, y?: number)`** _:this_
+**scrollTo(x?: number, y?: number)** _`:this`_
 
-**`centerAt(x?: number, y?: number)`** _:this_
+**centerAt(x?: number, y?: number)** _`:this`_
 
-### CUSTOMISATION
+## CUSTOMISATION

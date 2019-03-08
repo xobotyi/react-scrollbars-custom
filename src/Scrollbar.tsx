@@ -1007,6 +1007,8 @@ export default class Scrollbar extends React.Component<
 
       fallbackScrollbarWidth,
 
+      trackClickBehavior,
+
       wrapperProps: propsWrapperProps,
       contentProps: propsContentProps,
       trackXProps: propsTrackXProps,

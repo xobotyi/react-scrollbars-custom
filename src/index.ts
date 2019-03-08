@@ -1,3 +1,3 @@
-import Scrollbar from "./Scrollbar";
+import Scrollbar, { ScrollbarContext } from "./Scrollbar";
 
-export { Scrollbar as default, Scrollbar };
+export { Scrollbar as default, Scrollbar, ScrollbarContext };

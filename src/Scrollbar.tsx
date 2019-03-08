@@ -249,6 +249,7 @@ export default class Scrollbar extends React.Component<
   };
 
   static defaultProps = {
+    createContext: false,
     native: false,
     momentum: true,
     noDefaultStyles: false,
@@ -443,7 +444,7 @@ export default class Scrollbar extends React.Component<
   /**
    * @description Scroll to top border
    */
-  public scrollToTop = (): Scrollbar => {
+  public scrollToTop = (): this => {
     if (this.contentElement) {
       this.contentElement.scrollTop = 0;
     }
@@ -453,7 +454,7 @@ export default class Scrollbar extends React.Component<
   /**
    * @description Scroll to left border
    */
-  public scrollToLeft = (): Scrollbar => {
+  public scrollToLeft = (): this => {
     if (this.contentElement) {
       this.contentElement.scrollLeft = 0;
     }
@@ -463,7 +464,7 @@ export default class Scrollbar extends React.Component<
   /**
    * @description Scroll to bottom border
    */
-  public scrollToBottom = (): Scrollbar => {
+  public scrollToBottom = (): this => {
     if (this.contentElement) {
       this.contentElement.scrollTop =
         this.contentElement.scrollHeight - this.contentElement.clientHeight;
@@ -474,7 +475,7 @@ export default class Scrollbar extends React.Component<
   /**
    * @description Scroll to right border
    */
-  public scrollToRight = (): Scrollbar => {
+  public scrollToRight = (): this => {
     if (this.contentElement) {
       this.contentElement.scrollLeft =
         this.contentElement.scrollWidth - this.contentElement.clientWidth;
@@ -487,7 +488,7 @@ export default class Scrollbar extends React.Component<
    * @description Set the scrolls at given coordinates.<br/>
    * If coordinate is undefined - current scroll value will persist.
    */
-  public scrollTo = (x?: number, y?: number): Scrollbar => {
+  public scrollTo = (x?: number, y?: number): this => {
     if (this.contentElement) {
       typeof x === "number" && (this.contentElement.scrollLeft = x);
       typeof y === "number" && (this.contentElement.scrollTop = y);
@@ -500,7 +501,7 @@ export default class Scrollbar extends React.Component<
    * @description Center the viewport at given coordinates.<br/>
    * If coordinate is undefined - current scroll value will persist.
    */
-  public centerAt = (x?: number, y?: number): Scrollbar => {
+  public centerAt = (x?: number, y?: number): this => {
     if (this.contentElement) {
       typeof x === "number" &&
         (this.contentElement.scrollLeft =
@@ -673,12 +674,12 @@ export default class Scrollbar extends React.Component<
     return this.scrollValues;
   };
 
-  public updaterNative = (): boolean => {
+  private updaterNative = (): boolean => {
     // just for future
     return true;
   };
 
-  public updaterCustom = (
+  private updaterCustom = (
     bitmask: number,
     scrollValues: ScrollValues
   ): boolean => {
@@ -761,54 +762,49 @@ export default class Scrollbar extends React.Component<
       }
     }
 
-    // if (this.props.translateContentSizesToHolder && this.holderEl && (bitmask & (1 << 2) || bitmask & (1 << 3))) {
-    //     this.holderEl.style.width  = scrollValues.scrollWidth + "px";
-    //     this.holderEl.style.height = scrollValues.scrollHeight + "px";
-    // }
-
     return true;
   };
 
-  public elementRefHolder = (ref: HTMLElement | null) => {
+  private elementRefHolder = (ref: HTMLElement | null) => {
     this.holderElement = ref;
     typeof this.props.elementRef === "function" && this.props.elementRef(ref);
   };
 
-  public elementRefWrapper = (ref: HTMLElement | null) => {
+  private elementRefWrapper = (ref: HTMLElement | null) => {
     this.wrapperElement = ref;
     typeof this.props.wrapperProps!.elementRef === "function" &&
       this.props.wrapperProps!.elementRef(ref);
   };
 
-  public elementRefContent = (ref: HTMLElement | null) => {
+  private elementRefContent = (ref: HTMLElement | null) => {
     this.contentElement = ref;
     typeof this.props.contentProps!.elementRef === "function" &&
       this.props.contentProps!.elementRef(ref);
   };
 
-  public elementRefTrackX = (ref: HTMLElement | null) => {
+  private elementRefTrackX = (ref: HTMLElement | null) => {
     this.trackXElement = ref;
     typeof this.props.trackXProps!.elementRef === "function" &&
       this.props.trackXProps!.elementRef(ref);
   };
-  public elementRefTrackY = (ref: HTMLElement | null) => {
+  private elementRefTrackY = (ref: HTMLElement | null) => {
     this.trackYElement = ref;
     typeof this.props.trackYProps!.elementRef === "function" &&
       this.props.trackYProps!.elementRef(ref);
   };
 
-  public elementRefThumbX = (ref: HTMLElement | null) => {
+  private elementRefThumbX = (ref: HTMLElement | null) => {
     this.thumbXElement = ref;
     typeof this.props.thumbXProps!.elementRef === "function" &&
       this.props.thumbXProps!.elementRef(ref);
   };
-  public elementRefThumbY = (ref: HTMLElement | null) => {
+  private elementRefThumbY = (ref: HTMLElement | null) => {
     this.thumbYElement = ref;
     typeof this.props.thumbYProps!.elementRef === "function" &&
       this.props.thumbYProps!.elementRef(ref);
   };
 
-  public handleTrackXClick = (
+  private handleTrackXClick = (
     ev: MouseEvent,
     values: ScrollbarTrackClickParameters
   ): void => {
@@ -853,7 +849,7 @@ export default class Scrollbar extends React.Component<
     this.contentElement.scrollLeft = target;
   };
 
-  public handleTrackYClick = (
+  private handleTrackYClick = (
     ev: MouseEvent,
     values: ScrollbarTrackClickParameters
   ): void => {
@@ -892,7 +888,7 @@ export default class Scrollbar extends React.Component<
     }
   };
 
-  public handleTrackYMouseWheel = (ev: React.WheelEvent<HTMLElement>) => {
+  private handleTrackYMouseWheel = (ev: React.WheelEvent<HTMLElement>) => {
     this.props.trackYProps &&
       this.props.trackYProps.onWheel &&
       this.props.trackYProps.onWheel(ev);
@@ -904,7 +900,7 @@ export default class Scrollbar extends React.Component<
     this.scrollTop += ev.deltaY;
   };
 
-  public handleTrackXMouseWheel = (ev: React.WheelEvent<HTMLElement>) => {
+  private handleTrackXMouseWheel = (ev: React.WheelEvent<HTMLElement>) => {
     this.props.trackXProps &&
       this.props.trackXProps.onWheel &&
       this.props.trackXProps.onWheel(ev);
@@ -916,7 +912,7 @@ export default class Scrollbar extends React.Component<
     this.scrollLeft += ev.deltaX;
   };
 
-  public handleThumbXDrag = (data: DraggableData): void => {
+  private handleThumbXDrag = (data: DraggableData): void => {
     if (
       !this.trackXElement ||
       !this.thumbXElement ||
@@ -948,7 +944,7 @@ export default class Scrollbar extends React.Component<
       offset
     );
   };
-  public handleThumbYDrag = (data: DraggableData): void => {
+  private handleThumbYDrag = (data: DraggableData): void => {
     if (
       !this.contentElement ||
       !this.trackYElement ||

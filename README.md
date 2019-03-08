@@ -11,7 +11,9 @@
     </p>
     × <strong><a href="https://xobotyi.github.io/react-scrollbars-custom/">DEMO</a></strong> ×
 </div>
-
+----
+  
+  
 - Native browser scroll behavior - it don't emulate scrolling, only showing custom scrollbars, scrolling itself still native
 - Cross-browser and cross-platform - does not matter where and how, scrollbars looks the same everywhere
 - Ultimate performance - 60 FPS (using RAF) and highly optimised code
@@ -20,7 +22,7 @@
 - Scrollbars nesting
 - Total tests coverage
 - Momentum scrolling for iOS
-- RTL support ([read more]())
+- RTL support ([read more](#rtl-support))
 
 ### INSTALLATION
 
@@ -43,26 +45,24 @@ The `<Scrollbar />` component works out of the box, with only need of `width` an
 
 #### Generated HTML
 
-```typescript jsx
+```html
 <div class="ScrollbarsCustom trackYVisible trackXVisible">
   // scrollbar.holderElement
   <div class="ScrollbarWrapper">
-    {" "}
     // scrollbar.wrapperElement
     <div class="ScrollbarContent">
-      {" "}
       // scrollbar.contentElement // YOUR CONTENT IS HERE
     </div>
   </div>
   <div class="ScrollbarTrack ScrollbarTrack-Y">
-    {" "}
     // scrollbar.trackYElement
-    <div class="ScrollbarThumb ScrollbarThumb-Y" /> // scrollbar.thumbYElement
+    <div class="ScrollbarThumb ScrollbarThumb-Y" />
+    // scrollbar.thumbYElement
   </div>
   <div class="ScrollbarTrack ScrollbarTrack-X">
-    {" "}
     // scrollbar.trackXElement
-    <div class="ScrollbarThumb ScrollbarThumb-X" /> // scrollbar.thumbXElement
+    <div class="ScrollbarThumb ScrollbarThumb-X" />
+    // scrollbar.thumbXElement
   </div>
 </div>
 ```
@@ -82,7 +82,7 @@ But some of styles will remain due to their need for proper component work.
 One more pretty common need is to disable custom scrollbars and fallback to native ones, it can be done by passing `native` prop.
 It'll change the generated markup:
 
-```typescript jsx
+```html
 <div class="ScrollbarsCustom native trackYVisible trackXVisible">
   // scrollbar.contentElement // YOUR CONTENT IS HERE
 </div>
@@ -103,5 +103,119 @@ There are several things you have to know about:
 - If `rtl` prop is `false` - no style will be applied to holder;
 
 ### API
+
+#### PROPS
+
+You can pass any HTMLElement props to the component - they'll be respectfully passed to the element/renderer.
+
+**`createContext`** _:boolean_ = false
+
+**`rtl`** _:boolean_ = undefined
+
+**`native`** _:boolean_ = false
+
+**`momentum`** _:boolean_ = true
+
+**`noDefaultStyles`** _:boolean_ = false
+
+**`minimalThumbSize`** _:number_ = 30
+
+**`maximalThumbSize`** _:number_ = undefined
+
+**`minimalThumbXSize`** _:number_ = undefined
+
+**`maximalThumbXSize`** _:number_ = undefined
+
+**`minimalThumbYSize`** _:number_ = undefined
+
+**`maximalThumbYSize`** _:number_ = undefined
+
+**`noScrollX`** _:boolean_ = false
+
+**`noScrollY`** _:boolean_ = false
+
+**`noScroll`** _:boolean_ = false
+
+**`permanentTrackX`** _:boolean_ = false
+
+**`permanentTrackY`** _:boolean_ = false
+
+**`permanentTracks`** _:boolean_ = false
+
+**`removeTracksWhenNotUsed`** _:boolean_ = false
+
+**`removeTrackYWhenNotUsed`** _:boolean_ = false
+
+**`removeTrackXWhenNotUsed`** _:boolean_ = false
+
+**`trackClickBehavior`** _:string_ = "jump"
+
+**`scrollbarWidth`** _:number_ = undefined
+
+**`fallbackScrollbarWidth`** _:number_ = 20
+
+**`scrollTop`** _:number_ = undefined
+
+**`scrollLeft`** _:number_ = undefined
+
+**`elementRef`** _:function_ = undefined
+
+**`renderer`** _:SFC_ = undefined
+
+**`wrapperProps`** _:object_ = {}
+
+**`contentProps`** _:object_ = {}
+
+**`trackXProps`** _:object_ = {}
+
+**`trackYProps`** _:object_ = {}
+
+**`thumbXProps`** _:object_ = {}
+
+**`thumbYProps`** _:object_ = {}
+
+#### INSTANCE PROPERTIES
+
+**`holderElement`** _:HTMLElement | null_
+
+**`wrapperElement`** _:HTMLElement | null_
+
+**`contentElement`** _:HTMLElement | null_
+
+**`trackXElement`** _:HTMLElement | null_
+
+**`trackYElement`** _:HTMLElement | null_
+
+**`thumbXElement`** _:HTMLElement | null_
+
+**`thumbYElement`** _:HTMLElement | null_
+
+(get|set) **`scrollTop`** _:number_
+
+(get|set) **`scrollLeft`** _:number_
+
+(get) **`scrollHeight`** _:number_
+
+(get) **`scrollWidth`** _:number_
+
+(get) **`clientHeight`** _:number_
+
+(get) **`clientWidth`** _:number_
+
+#### INSTANCE METHODS
+
+**`getScrollValues()`** _:this_
+
+**`scrollToTop()`** _:this_
+
+**`scrollToLeft()`** _:this_
+
+**`scrollToBottom()`** _:this_
+
+**`scrollToRight()`** _:this_
+
+**`scrollTo(x?: number, y?: number)`** _:this_
+
+**`centerAt(x?: number, y?: number)`** _:this_
 
 ### CUSTOMISATION

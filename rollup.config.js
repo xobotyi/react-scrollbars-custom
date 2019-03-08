@@ -16,7 +16,7 @@ export default {
     }
   ],
 
-  external: ["react", "prop-types", "cnbuilder"],
+  external: ["react", "prop-types", "cnbuilder", "react-draggable"],
 
   plugins: [
     ts({

@@ -46,23 +46,24 @@ The `<Scrollbar />` component works out of the box, with only need of `width` an
 #### Generated HTML
 
 ```html
+// scrollbar.holderElement
 <div class="ScrollbarsCustom trackYVisible trackXVisible">
-  // scrollbar.holderElement
+  // scrollbar.wrapperElement
   <div class="ScrollbarWrapper">
-    // scrollbar.wrapperElement
+    // scrollbar.contentElement
     <div class="ScrollbarContent">
-      // scrollbar.contentElement // YOUR CONTENT IS HERE
+      // YOUR CONTENT IS HERE
     </div>
   </div>
+  // scrollbar.trackYElement
   <div class="ScrollbarTrack ScrollbarTrack-Y">
-    // scrollbar.trackYElement
-    <div class="ScrollbarThumb ScrollbarThumb-Y" />
     // scrollbar.thumbYElement
+    <div class="ScrollbarThumb ScrollbarThumb-Y" />
   </div>
+  // scrollbar.trackXElement
   <div class="ScrollbarTrack ScrollbarTrack-X">
-    // scrollbar.trackXElement
-    <div class="ScrollbarThumb ScrollbarThumb-X" />
     // scrollbar.thumbXElement
+    <div class="ScrollbarThumb ScrollbarThumb-X" />
   </div>
 </div>
 ```
@@ -83,8 +84,9 @@ One more pretty common need is to disable custom scrollbars and fallback to nati
 It'll change the generated markup:
 
 ```html
+// scrollbar.contentElement
 <div class="ScrollbarsCustom native trackYVisible trackXVisible">
-  // scrollbar.contentElement // YOUR CONTENT IS HERE
+  // YOUR CONTENT IS HERE
 </div>
 ```
 
@@ -106,73 +108,111 @@ There are several things you have to know about:
 
 ### PROPS
 
-You can pass any HTMLElement props to the component - they'll be respectfully passed to the element/renderer.
+You can pass any HTMLElement props to the component - they'll be respectfully passed to the holder element/renderer.
 
-**createContext** _`:boolean`_ = false
+**createContext** _`:boolean`_ = false  
+Whether to create context that will contain scrollbar instance reference.
 
-**rtl** _`:boolean`_ = undefined
+**rtl** _`:boolean`_ = undefined  
+`true` - set content's direction RTL, `false` - LTR, `undefined` - autodetect according content's style.
 
-**native** _`:boolean`_ = false
+**native** _`:boolean`_ = false  
+Do not use custom scrollbars, and render the content in a single div.
 
-**momentum** _`:boolean`_ = true
+**momentum** _`:boolean`_ = true  
+Whether to use momentum scrolling, suitable for iOS (will add `-webkit-overflow-scrolling: touch` to the content element).
 
-**noDefaultStyles** _`:boolean`_ = false
+**noDefaultStyles** _`:boolean`_ = false  
+Whether to use default visual styles.  
+_Note:_ Styles needed to proper component work will be passed regardless of this option.
 
-**minimalThumbSize** _`:number`_ = 30
+**minimalThumbSize** _`:number`_ = 30  
+Minimal size of both, vertical and horizontal thumbs. This option has priority to `minimalThumbXSize`/`minimalThumbYSize` props.
 
-**maximalThumbSize** _`:number`_ = undefined
+**maximalThumbSize** _`:number`_ = undefined  
+Maximal size of both, vertical and horizontal thumbs. This option has priority to `maximalThumbXSize`/`maximalThumbYSize` props.
 
-**minimalThumbXSize** _`:number`_ = undefined
+**minimalThumbXSize** _`:number`_ = undefined  
+Minimal size of horizontal thumb.
 
-**maximalThumbXSize** _`:number`_ = undefined
+**maximalThumbXSize** _`:number`_ = undefined  
+Maximal size of horizontal thumb.
 
-**minimalThumbYSize** _`:number`_ = undefined
+**minimalThumbYSize** _`:number`_ = undefined  
+Minimal size of vertical thumb.
 
-**maximalThumbYSize** _`:number`_ = undefined
+**maximalThumbYSize** _`:number`_ = undefined  
+Maximal size of vertical thumb.
 
-**noScrollX** _`:boolean`_ = false
+**noScroll** _`:boolean`_ = false  
+Whether to disable both vertical and horizontal scrolling.
 
-**noScrollY** _`:boolean`_ = false
+**noScrollX** _`:boolean`_ = false  
+Whether to disable horizontal scrolling.
 
-**noScroll** _`:boolean`_ = false
+**noScrollY** _`:boolean`_ = false  
+Whether to disable vertical scrolling.
 
-**permanentTrackX** _`:boolean`_ = false
+**permanentTracks** _`:boolean`_ = false  
+Whether to display both tracks regardless of scrolling ability.
 
-**permanentTrackY** _`:boolean`_ = false
+**permanentTrackX** _`:boolean`_ = false  
+Whether to display horizontal track regardless of scrolling ability.
 
-**permanentTracks** _`:boolean`_ = false
+**permanentTrackY** _`:boolean`_ = false  
+Whether to display vertical track regardless of scrolling ability.
 
-**removeTracksWhenNotUsed** _`:boolean`_ = false
+**removeTracksWhenNotUsed** _`:boolean`_ = false  
+Whether to remove both vertical and horizontal tracks if scrolling is not possible/bocked and tracks are not permanent.
 
-**removeTrackYWhenNotUsed** _`:boolean`_ = false
+**removeTrackYWhenNotUsed** _`:boolean`_ = false  
+Whether to remove horizontal track if scrolling is not possible/bocked and tracks are not permanent.
 
-**removeTrackXWhenNotUsed** _`:boolean`_ = false
+**removeTrackXWhenNotUsed** _`:boolean`_ = false  
+Whether to remove vertical track if scrolling is not possible/bocked and tracks are not permanent.
 
-**trackClickBehavior** _`:string`_ = "jump"
+**trackClickBehavior** _`:string`_ = "jump"  
+The way scrolling behaves while user clicked the track:
 
-**scrollbarWidth** _`:number`_ = undefined
+- _jump_ - will cause straight scroll to the respective position.
+- _step_ - will cause one screen step towards (like PageUp/PageDown) the clicked position.
 
-**fallbackScrollbarWidth** _`:number`_ = 20
+**scrollbarWidth** _`:number`_ = undefined  
+Scrollbar width value needed to proper native scrollbars hide. While `undefined` it is detected automatically (once per module require).  
+This prop is needed generally for testing purposes.
 
-**scrollTop** _`:number`_ = undefined
+**fallbackScrollbarWidth** _`:number`_ = 20  
+This value will be used in case of falsy `scrollbarWidth` prop. E.g. it is used for mobile devices, because it is impossible to detect their real scrollbar width (due to their absolute positioning).
 
-**scrollLeft** _`:number`_ = undefined
+**scrollTop** _`:number`_ = undefined  
+Prop that allow you to set vertical scroll.
 
-**elementRef** _`:function`_ = undefined
+**scrollLeft** _`:number`_ = undefined  
+Prop that allow you to set horizontal scroll.
 
-**renderer** _`:SFC`_ = undefined
+**elementRef** _`:function(ref: Scrollbar)`_ = undefined  
+Function that receive the scrollbar instance as 1st parameter.
 
-**wrapperProps** _`:object`_ = {}
+**renderer** _`:SFC`_ = undefined  
+SFC used to render the holder. [More about renderers usage](#customisation).
 
-**contentProps** _`:object`_ = {}
+**wrapperProps** _`:object`_ = {}  
+Here you can pass any props for wrapper, which is usually HTMLDivElement plus `elementRef` props which behaves as holder's `elementRef` prop.
 
-**trackXProps** _`:object`_ = {}
+**contentProps** _`:object`_ = {}  
+Here you can pass any props for content, which is usually HTMLDivElement plus `elementRef` props which behaves as holder's `elementRef` prop.
 
-**trackYProps** _`:object`_ = {}
+**trackXProps** _`:object`_ = {}  
+Here you can pass any props for trackX, which is usually HTMLDivElement plus `elementRef` props which behaves as holder's `elementRef` prop.
 
-**thumbXProps** _`:object`_ = {}
+**trackYProps** _`:object`_ = {}  
+Here you can pass any props for trackY, which is usually HTMLDivElement plus `elementRef` props which behaves as holder's `elementRef` prop.
 
-**thumbYProps** _`:object`_ = {}
+**thumbXProps** _`:object`_ = {}  
+Here you can pass any props for thumbX, which is usually HTMLDivElement plus `elementRef` props which behaves as holder's `elementRef` prop.
+
+**thumbYProps** _`:object`_ = {}  
+Here you can pass any props for thumbY, which is usually HTMLDivElement plus `elementRef` props which behaves as holder's `elementRef` prop.
 
 ### INSTANCE PROPERTIES
 

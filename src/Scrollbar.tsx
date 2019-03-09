@@ -1034,7 +1034,7 @@ export default class Scrollbar extends React.Component<
 
       return (
         <div
-          key="ScrollbarCustom-content"
+          key="ScrollbarCustom"
           className={cnb(
             "ScrollbarsCustom native",
             {

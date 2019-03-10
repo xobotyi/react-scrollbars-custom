@@ -11,9 +11,9 @@
     </p>
     × <strong><a href="https://xobotyi.github.io/react-scrollbars-custom/">DEMO</a></strong> ×
 </div>
-----
-  
-  
+
+---
+
 - Native browser scroll behavior - it don't emulate scrolling, only showing custom scrollbars, scrolling itself still native
 - Cross-browser and cross-platform - does not matter where and how, scrollbars looks the same everywhere
 - Ultimate performance - 60 FPS (using RAF) and highly optimised code

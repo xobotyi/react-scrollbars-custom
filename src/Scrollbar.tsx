@@ -386,7 +386,7 @@ export default class Scrollbar extends React.Component<
    *
    * @return ScrollValues
    */
-  public getScrollValues = (force = false): ScrollValues => {
+  public getScrollValues = (force: boolean = false): ScrollValues => {
     if (this.scrollValues && !force) {
       return { ...this.scrollValues };
     }

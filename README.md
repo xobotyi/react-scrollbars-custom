@@ -216,46 +216,124 @@ Here you can pass any props for thumbY, which is usually HTMLDivElement plus `el
 
 ### INSTANCE PROPERTIES
 
-**holderElement** _`:HTMLElement | null`_
+**holderElement** _`:HTMLElement | null`_  
+Holder DOM element reference or null if element was not rendered
 
-**wrapperElement** _`:HTMLElement | null`_
+**wrapperElement** _`:HTMLElement | null`_  
+Wrapper DOM element reference or null if element was not rendered
 
-**contentElement** _`:HTMLElement | null`_
+**contentElement** _`:HTMLElement | null`_  
+Content DOM element reference or null if element was not rendered
 
-**trackXElement** _`:HTMLElement | null`_
+**trackXElement** _`:HTMLElement | null`_  
+Horizontal track DOM element reference or null if element was not rendered
 
-**trackYElement** _`:HTMLElement | null`_
+**trackYElement** _`:HTMLElement | null`_  
+Vertical track DOM element reference or null if element was not rendered
 
-**thumbXElement** _`:HTMLElement | null`_
+**thumbXElement** _`:HTMLElement | null`_  
+Horizontal thumb DOM element reference or null if element was not rendered
 
-**thumbYElement** _`:HTMLElement | null`_
+**thumbYElement** _`:HTMLElement | null`_  
+Vertical thumb DOM element reference or null if element was not rendered
 
-(get|set) **scrollTop** _`:number`_
+(get|set) **scrollTop** _`:number`_  
+Content's element scroll top
 
-(get|set) **scrollLeft** _`:number`_
+(get|set) **scrollLeft** _`:number`_  
+Content's element scroll left
 
-(get) **scrollHeight** _`:number`_
+(get) **scrollHeight** _`:number`_  
+Content's element scroll height
 
-(get) **scrollWidth** _`:number`_
+(get) **scrollWidth** _`:number`_  
+Content's element scroll width
 
-(get) **clientHeight** _`:number`_
+(get) **clientHeight** _`:number`_  
+Content's element client height
 
-(get) **clientWidth** _`:number`_
+(get) **clientWidth** _`:number`_  
+Content's element client width
 
 ### INSTANCE METHODS
 
-**getScrollValues()** _`:this`_
+**getScrollValues(force:boolean = false)** _`:plain object`_
+Current scroll-related values, if `force` parameter is falsy - returns cached value which updated with RAF loop
+Returned values:
 
-**scrollToTop()** _`:this`_
+```typescript
+type ScrollValues = {
+  /**
+   * @description Content's native clientHeight parameter
+   */
+  clientHeight: number;
+  /**
+   * @description Content's native clientWidth parameter
+   */
+  clientWidth: number;
+  /**
+   * @description Content's native scrollHeight parameter
+   */
+  scrollHeight: number;
+  /**
+   * @description Content's native scrollWidth parameter
+   */
+  scrollWidth: number;
+  /**
+   * @description Content's native scrollTop parameter
+   */
+  scrollTop: number;
+  /**
+   * @description Content's native scrollLeft parameter
+   */
+  scrollLeft: number;
+  /**
+   * @description Indicates whether vertical scroll blocked via properties
+   */
+  scrollYBlocked: boolean;
+  /**
+   * @description Indicates whether horizontal scroll blocked via properties
+   */
+  scrollXBlocked: boolean;
+  /**
+   * @description Indicates whether the content overflows vertically and scrolling not blocked
+   */
+  scrollYPossible: boolean;
+  /**
+   * @description Indicates whether the content overflows horizontally and scrolling not blocked
+   */
+  scrollXPossible: boolean;
+  /**
+   * @description Indicates whether vertical track is visible
+   */
+  trackYVisible: boolean;
+  /**
+   * @description Indicates whether horizontal track is visible
+   */
+  trackXVisible: boolean;
+  /**
+   * @description Indicates whether display direction is right-to-left
+   */
+  isRTL?: boolean;
+};
+```
 
-**scrollToLeft()** _`:this`_
+**scrollToTop()** _`:this`_  
+Scroll to the very top border of scrollable area
 
-**scrollToBottom()** _`:this`_
+**scrollToLeft()** _`:this`_  
+Scroll to the very left border of scrollable area
 
-**scrollToRight()** _`:this`_
+**scrollToBottom()** _`:this`_  
+Scroll to the very bottom border of scrollable area
 
-**scrollTo(x?: number, y?: number)** _`:this`_
+**scrollToRight()** _`:this`_  
+Scroll to the very right border of scrollable area
 
-**centerAt(x?: number, y?: number)** _`:this`_
+**scrollTo(x?: number, y?: number)** _`:this`_  
+Set the current scroll at given coordinates. If any value is `undefined` it'll be left as is.
+
+**centerAt(x?: number, y?: number)** _`:this`_  
+Center viewport at given coordinates. If any value is `undefined` it'll be left as is.
 
 ## CUSTOMISATION

@@ -104,6 +104,71 @@ There are several things you have to know about:
 - If `rtl` prop is `true` - `direction: rtl;` style will be applied to hte content element;
 - If `rtl` prop is `false` - no style will be applied to holder;
 
+## CUSTOMISATION
+
+In some cases you may want to change the default className or tagName of elements or add extra markup or whatever. For these purposes `react-scrollbars-cistom` made fully customizable.
+You can do absolutely what ever you want y simply passing renderer SFC to the needed props.
+
+> **IMPORTANT**: Renderer will receive elementRef function that expect the DOM element's reference as first parameter.  
+> Furthermore you have to pass the styles, cause they needed to proper component work.
+
+```typescript jsx
+<Scrollbar
+  renderer={props => {
+    const { elementRef, ...restProps } = props;
+    return (
+      <span
+        {...restProps}
+        ref={elementRef}
+        className="MyAwesomeScrollbarsHolder"
+      />
+    );
+  }}
+  wrapperProps={{
+    renderer: props => {
+      const { elementRef, ...restProps } = props;
+      return (
+        <span
+          {...restProps}
+          ref={elementRef}
+          className="MyAwesomeScrollbarsWrapper"
+        />
+      );
+    }
+  }}
+  contentProps={{
+    renderer: props => {
+      const { elementRef, ...restProps } = props;
+      return <span {...restProps} ref={elementRef} className="Content" />;
+    }
+  }}
+  trackXProps={{
+    renderer: props => {
+      const { elementRef, ...restProps } = props;
+      return <span {...restProps} ref={elementRef} className="TrackX" />;
+    }
+  }}
+  trackYProps={{
+    renderer: props => {
+      const { elementRef, ...restProps } = props;
+      return <span {...restProps} ref={elementRef} className="trackY" />;
+    }
+  }}
+  thumbXProps={{
+    renderer: props => {
+      const { elementRef, ...restProps } = props;
+      return <span {...restProps} ref={elementRef} className="ThUmBX" />;
+    }
+  }}
+  thumbYProps={{
+    renderer: props => {
+      const { elementRef, ...restProps } = props;
+      return <span {...restProps} ref={elementRef} className="tHuMbY" />;
+    }
+  }}
+/>
+```
+
 ## API
 
 ### PROPS
@@ -335,5 +400,3 @@ Set the current scroll at given coordinates. If any value is `undefined` it'll b
 
 **centerAt(x?: number, y?: number)** _`:this`_  
 Center viewport at given coordinates. If any value is `undefined` it'll be left as is.
-
-## CUSTOMISATION

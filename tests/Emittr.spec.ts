@@ -373,7 +373,7 @@ describe("Emittr", () => {
     it("should emit removeHandler event", () => {
       let instance = new Emittr();
       let removeHandler = jasmine.createSpy();
-      instance.once("removeHandler", removeHandler);
+      instance.on("removeHandler", removeHandler);
       let handler1 = jasmine.createSpy();
       let handler2 = jasmine.createSpy();
       instance.once("test", handler1);
@@ -392,7 +392,7 @@ describe("Emittr", () => {
       let instance = new Emittr();
 
       let removeHandler = jasmine.createSpy();
-      instance.once("removeHandler", removeHandler);
+      instance.on("removeHandler", removeHandler);
 
       let handler1 = jasmine.createSpy();
       let handler2 = jasmine.createSpy();
@@ -410,7 +410,7 @@ describe("Emittr", () => {
       //@ts-ignore
       expect(instance._handlers["test3"].length).toBe(1);
       //@ts-ignore
-      expect(Object.keys(instance._handlers).length).toBe(3);
+      expect(Object.keys(instance._handlers).length).toBe(4);
 
       instance.removeAllHandlers();
 
@@ -418,7 +418,7 @@ describe("Emittr", () => {
       expect(Object.keys(instance._handlers).length).toBe(0);
 
       expect(removeHandler).toHaveBeenCalledTimes(3);
-      expect(removeHandler.calls.argsFor(0)[0]).toBe("test");
+      expect(removeHandler.calls.argsFor(0)[0]).toBe("test1");
       expect(removeHandler.calls.argsFor(0)[1]).toBe(handler1);
     });
   });

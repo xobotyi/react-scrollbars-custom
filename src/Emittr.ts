@@ -46,20 +46,30 @@ export default class Emittr {
       return false;
     }
 
-    if (this._handlers[name].length) {
-      if (this._handlers[name].length === 1) {
-        Reflect.apply(this._handlers[name][0], this, args);
-        return true;
-      }
-
-      const handlers: EventHandlersList = [...this._handlers[name]];
-      let i;
-      for (i = 0; i < handlers.length; i++) {
-        Reflect.apply(handlers[i], this, args);
-      }
-    }
+    Emittr._callEventHandlers(this, this._handlers[name], args);
 
     return true;
+  }
+
+  private static _callEventHandlers(
+    emitter: Emittr,
+    handlers: EventHandlersList,
+    args: any[]
+  ) {
+    if (!handlers.length) {
+      return;
+    }
+
+    if (handlers.length === 1) {
+      Reflect.apply(handlers[0], emitter, args);
+      return;
+    }
+
+    handlers = [...handlers];
+    let idx;
+    for (idx = 0; idx < handlers.length; idx++) {
+      Reflect.apply(handlers[idx], emitter, args);
+    }
   }
 
   private static _addHandler = (
@@ -214,15 +224,17 @@ export default class Emittr {
 
     this._handlers = Object.create(null);
 
+    const removeHandlers = handlers["removeHandler"];
+    delete handlers["removeHandler"];
+
     let idx, eventName;
     for (eventName in handlers) {
       for (idx = handlers[eventName].length - 1; idx >= 0; idx--) {
-        this.emit(
-          "removeHandler",
+        Emittr._callEventHandlers(this, removeHandlers, [
           eventName,
           (handlers[eventName][idx] as OnceHandler).handler ||
             handlers[eventName][idx]
-        );
+        ]);
       }
     }
 

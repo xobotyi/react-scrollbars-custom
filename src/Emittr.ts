@@ -1,4 +1,4 @@
-type EventHandler = () => void;
+type EventHandler = (...args: any[]) => void;
 type OnceHandlerState = {
   fired: boolean;
   handler: EventHandler;

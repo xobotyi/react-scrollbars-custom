@@ -1635,7 +1635,9 @@ describe("Scrollbar", () => {
   describe("callbacks", () => {
     it("should call an onScroll only if scroll has changed", done => {
       let setScrollbarProps;
-      let spy = jasmine.createSpy();
+      let spy = jasmine.createSpy("scroll", scrollValues => {
+        console.log(scrollValues.scrollTop, scrollValues.scrollLeft);
+      });
 
       ReactDOM.render(
         <ScrollbarPropsUpdater

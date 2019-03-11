@@ -255,6 +255,9 @@ Prop that allow you to set vertical scroll.
 **scrollLeft** _`:number`_ = undefined  
 Prop that allow you to set horizontal scroll.
 
+**scrollDetectionThreshold** _`:number`_ = 100  
+Amount of seconds after which scrolling will be treated as completed and `scrollStop` event emitted.
+
 **elementRef** _`:function(ref: Scrollbar)`_ = undefined  
 Function that receive the scrollbar instance as 1st parameter.
 
@@ -279,7 +282,22 @@ Here you can pass any props for thumbX, which is usually HTMLDivElement plus `el
 **thumbYProps** _`:object`_ = {}  
 Here you can pass any props for thumbY, which is usually HTMLDivElement plus `elementRef` props which behaves as holder's `elementRef` prop.
 
+**onUpdate** _`:function(scrollValues: ScrollValues, prevScrollValues: ScrollValues)`_ = undefined  
+Function called each time any of scroll values changed and component performed an update. It is called after component's update.
+
+**onScroll** _`:function(scrollValues: ScrollValues, prevScrollValues: ScrollValues)`_ = undefined  
+Function called each time scrollTop or scrollLeft has changed. It is called after component's update and even if scrollTop/scrollLeft has been changed through the code (not by user).
+
+**onScrollStart** _`:function(scrollValues: ScrollValues)`_ = undefined  
+Callback that called immediately when user started scrolling (no matter how, thumb dragging, keyboard, mousewheel and etc.).
+
+**onScrollStop** _`:function(scrollValues: ScrollValues)`_ = undefined  
+Callback that called after `props.scrollDetectionThreshold` milliseconds after last scroll event.
+
 ### INSTANCE PROPERTIES
+
+**eventEmitter** _`:Emittr`_  
+Event emitter that allow you to add events handler for cases when you access Scrollbars through context
 
 **holderElement** _`:HTMLElement | null`_  
 Holder DOM element reference or null if element was not rendered

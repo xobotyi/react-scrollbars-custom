@@ -1172,9 +1172,6 @@ export default class Scrollbar extends React.Component<
       className: cnb("ScrollbarContent", propsContentProps!.className),
       style: styles.content,
       onScroll: this.handleContentScroll,
-      [propsContentProps!.renderer ? "elementRef" : "ref"]: this
-        .elementRefContent,
-      [propsContentProps!.renderer ? "ref" : "elementRef"]: undefined,
       children: createContext ? (
         <ScrollbarContext.Provider value={{ parentScrollbar: this }}>
           {children}
@@ -1184,20 +1181,32 @@ export default class Scrollbar extends React.Component<
       )
     } as ElementProps<HTMLDivElement>;
 
+    if (propsContentProps!.renderer) {
+      delete contentProps.ref;
+      contentProps.elementRef = this.elementRefContent;
+    } else {
+      delete contentProps.elementRef;
+      contentProps.ref = this.elementRefContent;
+    }
+
     const wrapperProps = {
       ...propsWrapperProps,
       key: "ScrollbarCustom-wrapper",
       className: cnb("ScrollbarWrapper", propsWrapperProps!.className),
       style: styles.wrapper,
-      [propsWrapperProps!.renderer ? "elementRef" : "ref"]: this
-        .elementRefWrapper,
-      [propsWrapperProps!.renderer ? "ref" : "elementRef"]: undefined,
       children: propsContentProps!.renderer ? (
         propsContentProps!.renderer(contentProps)
       ) : (
         <div {...contentProps} />
       )
     } as ElementProps<HTMLDivElement>;
+    if (propsWrapperProps!.renderer) {
+      delete wrapperProps.ref;
+      wrapperProps.elementRef = this.elementRefWrapper;
+    } else {
+      delete wrapperProps.elementRef;
+      wrapperProps.ref = this.elementRefWrapper;
+    }
 
     const holderProps = {
       ...props,
@@ -1211,10 +1220,15 @@ export default class Scrollbar extends React.Component<
         },
         this.props.className
       ),
-      style: styles.holder,
-      [renderer ? "elementRef" : "ref"]: this.elementRefHolder,
-      [renderer ? "ref" : "elementRef"]: undefined
+      style: styles.holder
     } as ElementProps<HTMLDivElement>;
+    if (renderer) {
+      delete holderProps.ref;
+      holderProps.elementRef = this.elementRefHolder;
+    } else {
+      delete holderProps.elementRef;
+      holderProps.ref = this.elementRefHolder;
+    }
 
     const holderChildren = [
       propsWrapperProps!.renderer ? (

@@ -5,6 +5,7 @@ node_modules
 coverage
 src
 tests
+testbench
 .gitignore
 .travis.yml
 CODE_OF_CONDUCT.md

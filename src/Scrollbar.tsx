@@ -1393,8 +1393,8 @@ export default class Scrollbar extends React.Component<
       trackY: {
         ...(useDefaultStyles && defaultStyles.track.common),
         ...(useDefaultStyles && defaultStyles.track.y),
-        ...props.trackYProps!.style,
         [state.isRTL ? "left" : "right"]: 0,
+        ...props.trackYProps!.style,
         ...(!state.trackYVisible && { display: "none" })
       },
       thumbX: {

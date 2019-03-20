@@ -1336,6 +1336,7 @@ export default class Scrollbar extends React.Component<
     return {
       holder: {
         ...(useDefaultStyles && defaultStyles.holder),
+        position: "relative",
         ...props.style
       },
       wrapper: {
@@ -1349,7 +1350,11 @@ export default class Scrollbar extends React.Component<
         overflow: "hidden"
       },
       content: {
-        ...(useDefaultStyles && defaultStyles.content),
+        position: "absolute",
+        top: 0,
+        left: 0,
+        bottom: 0,
+        right: 0,
         ...props.contentProps!.style,
 
         ...(typeof props.rtl !== "undefined" && {

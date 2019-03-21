@@ -125,6 +125,10 @@ export type ScrollbarProps = ElementProps & {
   scrollLeft?: number;
   scrollDetectionThreshold?: number;
 
+  translateContentSizesToHolder?: boolean;
+  translateContentSizeYToHolder?: boolean;
+  translateContentSizeXToHolder?: boolean;
+
   noDefaultStyles?: boolean;
 
   trackClickBehavior?: SCROLLBAR_TRACK_CLICK_BEHAVIOR;
@@ -238,6 +242,10 @@ export default class Scrollbar extends React.Component<
     permanentTrackY: PropTypes.bool,
     permanentTracks: PropTypes.bool,
 
+    translateContentSizesToHolder: PropTypes.bool,
+    translateContentSizeYToHolder: PropTypes.bool,
+    translateContentSizeXToHolder: PropTypes.bool,
+
     removeTracksWhenNotUsed: PropTypes.bool,
     removeTrackYWhenNotUsed: PropTypes.bool,
     removeTrackXWhenNotUsed: PropTypes.bool,
@@ -269,22 +277,7 @@ export default class Scrollbar extends React.Component<
   };
 
   static defaultProps = {
-    createContext: false,
-    native: false,
     momentum: true,
-    noDefaultStyles: false,
-
-    noScrollX: false,
-    noScrollY: false,
-    noScroll: false,
-
-    permanentTrackX: false,
-    permanentTrackY: false,
-    permanentTracks: false,
-
-    removeTracksWhenNotUsed: false,
-    removeTrackYWhenNotUsed: false,
-    removeTrackXWhenNotUsed: false,
 
     minimalThumbSize: 30,
 
@@ -819,6 +812,17 @@ export default class Scrollbar extends React.Component<
       }
     }
 
+    if (this.holderElement) {
+      bitmask & (1 << 2) &&
+        (this.props.translateContentSizesToHolder ||
+          this.props.translateContentSizeYToHolder) &&
+        (this.holderElement.style.height = scrollValues.scrollHeight + "px");
+      bitmask & (1 << 3) &&
+        (this.props.translateContentSizesToHolder ||
+          this.props.translateContentSizeXToHolder) &&
+        (this.holderElement.style.width = scrollValues.scrollWidth + "px");
+    }
+
     return true;
   };
 
@@ -1110,6 +1114,10 @@ export default class Scrollbar extends React.Component<
       onScroll,
       onScrollStart,
       onScrollEnd,
+
+      translateContentSizesToHolder,
+      translateContentSizeYToHolder,
+      translateContentSizeXToHolder,
 
       children,
 

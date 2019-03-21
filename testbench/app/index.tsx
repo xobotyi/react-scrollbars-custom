@@ -6,10 +6,8 @@ class App extends React.Component {
   public render(): React.ReactNode {
     return (
       <Scrollbar
-        style={{ width: 200, height: 200 }}
-        trackXProps={{
-          style: { padding: "0 10px", width: "calc(100% - 40px)" }
-        }}
+        style={{ minHeight: 200, width: 0 }}
+        translateContentSizeXToHolder
       >
         <p style={{ width: 1000 }}>
           Lorem Ipsum is simply dummy text of the printing and typesetting

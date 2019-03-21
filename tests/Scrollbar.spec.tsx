@@ -1095,7 +1095,76 @@ describe("Scrollbar", () => {
   });
 
   describe("props", () => {
-    it("shoud create context if createContext is passed", done => {
+    it("should translate content's size to the holder element if translateContentSizesToHolder is passed", done => {
+      ReactDOM.render(
+        <Scrollbar
+          style={{ width: 0, height: 0 }}
+          translateContentSizesToHolder
+        >
+          <div style={{ width: 200, height: 210 }} />
+        </Scrollbar>,
+        node,
+        function() {
+          setTimeout(() => {
+            expect(this.holderElement.clientWidth).toBe(
+              this.contentElement.scrollWidth
+            );
+            expect(this.holderElement.clientHeight).toBe(
+              this.contentElement.scrollHeight
+            );
+            done();
+          }, 30);
+        }
+      );
+    });
+
+    it("should translate content's width to the holder element if translateContentSizeXToHolder is passed", done => {
+      ReactDOM.render(
+        <Scrollbar
+          style={{ width: 0, height: 0 }}
+          translateContentSizeXToHolder
+        >
+          <div style={{ width: 200, height: 210 }} />
+        </Scrollbar>,
+        node,
+        function() {
+          setTimeout(() => {
+            expect(this.holderElement.clientWidth).toBe(
+              this.contentElement.scrollWidth
+            );
+            expect(this.holderElement.clientHeight).not.toBe(
+              this.contentElement.scrollHeight
+            );
+            done();
+          }, 30);
+        }
+      );
+    });
+
+    it("should translate content's height to the holder element if translateContentSizeYToHolder is passed", done => {
+      ReactDOM.render(
+        <Scrollbar
+          style={{ width: 0, height: 0 }}
+          translateContentSizeYToHolder
+        >
+          <div style={{ width: 200, height: 210 }} />
+        </Scrollbar>,
+        node,
+        function() {
+          setTimeout(() => {
+            expect(this.holderElement.clientWidth).not.toBe(
+              this.contentElement.scrollWidth
+            );
+            expect(this.holderElement.clientHeight).toBe(
+              this.contentElement.scrollHeight
+            );
+            done();
+          }, 30);
+        }
+      );
+    });
+
+    it("should create context if createContext is passed", done => {
       let consumedContext: ScrollbarContextValue;
 
       class ScrollbarContextConsumer extends React.Component<{}, {}> {

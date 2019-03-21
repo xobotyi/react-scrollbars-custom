@@ -175,19 +175,19 @@ You can do absolutely what ever you want y simply passing renderer SFC to the ne
 
 You can pass any HTMLElement props to the component - they'll be respectfully passed to the holder element/renderer.
 
-**createContext** _`:boolean`_ = false  
+**createContext** _`:boolean`_ = undefined  
 Whether to create context that will contain scrollbar instance reference.
 
 **rtl** _`:boolean`_ = undefined  
 `true` - set content's direction RTL, `false` - LTR, `undefined` - autodetect according content's style.
 
-**native** _`:boolean`_ = false  
+**native** _`:boolean`_ = undefined  
 Do not use custom scrollbars, and render the content in a single div.
 
 **momentum** _`:boolean`_ = true  
 Whether to use momentum scrolling, suitable for iOS (will add `-webkit-overflow-scrolling: touch` to the content element).
 
-**noDefaultStyles** _`:boolean`_ = false  
+**noDefaultStyles** _`:boolean`_ = undefined  
 Whether to use default visual styles.  
 _Note:_ Styles needed to proper component work will be passed regardless of this option.
 
@@ -209,32 +209,41 @@ Minimal size of vertical thumb.
 **maximalThumbYSize** _`:number`_ = undefined  
 Maximal size of vertical thumb.
 
-**noScroll** _`:boolean`_ = false  
+**noScroll** _`:boolean`_ = undefined  
 Whether to disable both vertical and horizontal scrolling.
 
-**noScrollX** _`:boolean`_ = false  
+**noScrollX** _`:boolean`_ = undefined  
 Whether to disable horizontal scrolling.
 
-**noScrollY** _`:boolean`_ = false  
+**noScrollY** _`:boolean`_ = undefined  
 Whether to disable vertical scrolling.
 
-**permanentTracks** _`:boolean`_ = false  
+**permanentTracks** _`:boolean`_ = undefined  
 Whether to display both tracks regardless of scrolling ability.
 
-**permanentTrackX** _`:boolean`_ = false  
+**permanentTrackX** _`:boolean`_ = undefined  
 Whether to display horizontal track regardless of scrolling ability.
 
-**permanentTrackY** _`:boolean`_ = false  
+**permanentTrackY** _`:boolean`_ = undefined  
 Whether to display vertical track regardless of scrolling ability.
 
-**removeTracksWhenNotUsed** _`:boolean`_ = false  
+**removeTracksWhenNotUsed** _`:boolean`_ = undefined  
 Whether to remove both vertical and horizontal tracks if scrolling is not possible/bocked and tracks are not permanent.
 
-**removeTrackYWhenNotUsed** _`:boolean`_ = false  
+**removeTrackYWhenNotUsed** _`:boolean`_ = undefined  
 Whether to remove horizontal track if scrolling is not possible/bocked and tracks are not permanent.
 
-**removeTrackXWhenNotUsed** _`:boolean`_ = false  
+**removeTrackXWhenNotUsed** _`:boolean`_ = undefined  
 Whether to remove vertical track if scrolling is not possible/bocked and tracks are not permanent.
+
+**translateContentSizesToHolder** _`:boolean`_ = undefined  
+Pass content's `scrollHeight` and `scrollWidth` values to the holder's `height` and `width` styles. _Not working with `native` behavior._
+
+**translateContentSizeYToHolder** _`:boolean`_ = undefined  
+Pass content's `scrollHeight` values to the holder's `height` style. _Not working with `native` behavior._
+
+**translateContentSizeXToHolder** _`:boolean`_ = undefined  
+Pass content's `scrollWidth` values to the holder's `width` style. _Not working with `native` behavior._
 
 **trackClickBehavior** _`:string`_ = "jump"  
 The way scrolling behaves while user clicked the track:

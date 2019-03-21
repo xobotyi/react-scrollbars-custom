@@ -1106,7 +1106,10 @@ export default class Scrollbar extends React.Component<
       elementRef,
       renderer,
 
+      onUpdate,
       onScroll,
+      onScrollStart,
+      onScrollEnd,
 
       children,
 

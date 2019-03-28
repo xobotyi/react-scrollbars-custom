@@ -696,7 +696,10 @@ export default class Scrollbar extends React.Component<
         scrollValues.clientWidth === 0 &&
         scrollValues.scrollWidth &&
         scrollValues.clientHeight === 0 &&
-        scrollValues.scrollHeight
+        scrollValues.scrollHeight &&
+        (this.props.translateContentSizesToHolder ||
+          this.props.translateContentSizeYToHolder ||
+          this.props.translateContentSizeXToHolder)
       ) {
         return;
       }

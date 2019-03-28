@@ -394,7 +394,7 @@ describe("Scrollbar", () => {
             ).toBeTruthy();
 
             done();
-          }, 20);
+          }, 60);
         }
       );
     });

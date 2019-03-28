@@ -44,8 +44,8 @@ export default {
           {
             targets: {
               esmodules: false,
-              chrome: "58",
-              ie: "11"
+              chrome: "52",
+              ie: "10"
             }
           }
         ]

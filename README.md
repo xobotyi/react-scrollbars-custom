@@ -43,6 +43,10 @@ The `<Scrollbar />` component works out of the box, with only need of `width` an
 </Scrollbar>
 ```
 
+### Internet Explorer
+
+`react-scrollbars-custom` is syntax-compatible with IE10, but you'll have to use polyfills - for example [@babel/polyfill](https://babeljs.io/docs/en/babel-polyfill).
+
 #### Generated HTML
 
 ```html

@@ -1,7 +1,7 @@
 {
   "name": "react-scrollbars-custom",
   "description": "The best React custom scrollbars component",
-  "version": "4.0.0-alpha.8",
+  "version": "4.0.0-alpha.9",
   "repository": {
     "type": "git",
     "url": "https://github.com/xobotyi/react-scrollbars-custom.git"
@@ -29,7 +29,7 @@
     "react": "^16.0.0"
   },
   "dependencies": {
-    "cnbuilder": "^1.0.8",
+    "cnbuilder": "^1.0.9",
     "react-draggable": "^3.2.1"
   },
   "devDependencies": {

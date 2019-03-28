@@ -5,7 +5,8 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const dist = path.join(__dirname, "dist");
 
 module.exports = {
-  mode: "production",
+  mode: "development",
+  devtool: "source-map",
   target: "web",
   entry: {
     "dist/bundle.js": path.join(__dirname, "app/index.tsx")
@@ -27,7 +28,7 @@ module.exports = {
     contentBase: dist,
     port: 3000,
     compress: true,
-    open: true,
+    //open:        true,
     progress: true
   },
   plugins: [
@@ -36,7 +37,8 @@ module.exports = {
       inject: false
     }),
     new MiniCssExtractPlugin({
-      filename: "[name].css"
+      filename: "[name].css",
+      chunkFilename: "[id].css"
     })
   ],
   module: {
@@ -47,13 +49,40 @@ module.exports = {
       },
       {
         test: /\.scss$/,
-        exclude: /node_modules/,
         use: [MiniCssExtractPlugin.loader, "css-loader", "sass-loader"]
       },
       {
-        test: /\.tsx?$/,
-        use: "ts-loader",
-        exclude: /node_modules/
+        test: /\.[tj]sx?$/,
+        exclude: /node_modules/,
+        use: {
+          loader: "babel-loader",
+          options: {
+            comments: true,
+            cacheDirectory: false,
+            presets: [
+              [
+                "@babel/preset-env",
+                {
+                  targets: {
+                    browsers: [
+                      "Chrome >= 52",
+                      "FireFox >= 44",
+                      "Safari >= 7",
+                      "Explorer 11",
+                      "last 4 Edge versions"
+                    ]
+                  }
+                }
+              ],
+              "@babel/preset-typescript",
+              "@babel/preset-react"
+            ],
+            plugins: [
+              "@babel/plugin-proposal-class-properties",
+              "@babel/plugin-proposal-object-rest-spread"
+            ]
+          }
+        }
       }
     ]
   }

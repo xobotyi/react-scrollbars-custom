@@ -1,3 +1,7 @@
+declare var global: {
+  window?: Window;
+};
+
 import * as React from "react";
 import * as PropTypes from "prop-types";
 import Loop from "./Loop";
@@ -19,7 +23,6 @@ import getScrollbarWidth, {
 } from "./util";
 import { DraggableData } from "react-draggable";
 import Emittr from "./Emittr";
-import Timeout = NodeJS.Timeout;
 
 const reverseRTL: boolean = shouldReverseRTLScroll();
 
@@ -679,6 +682,26 @@ export default class Scrollbar extends React.Component<
       bitmask = 0b1111111111111;
     }
 
+    if (!this.props.native && this.holderElement) {
+      bitmask & (1 << 2) &&
+        (this.props.translateContentSizesToHolder ||
+          this.props.translateContentSizeYToHolder) &&
+        (this.holderElement.style.height = scrollValues.scrollHeight + "px");
+      bitmask & (1 << 3) &&
+        (this.props.translateContentSizesToHolder ||
+          this.props.translateContentSizeXToHolder) &&
+        (this.holderElement.style.width = scrollValues.scrollWidth + "px");
+
+      if (
+        scrollValues.clientWidth === 0 &&
+        scrollValues.scrollWidth &&
+        scrollValues.clientHeight === 0 &&
+        scrollValues.scrollHeight
+      ) {
+        return;
+      }
+    }
+
     // if scrollbars visibility has changed
     if (bitmask & (1 << 10) || bitmask & (1 << 11)) {
       prevScrollValues.scrollYBlocked = scrollValues.scrollYBlocked;
@@ -810,17 +833,6 @@ export default class Scrollbar extends React.Component<
           this.thumbXElement.style.display = "none";
         }
       }
-    }
-
-    if (this.holderElement) {
-      bitmask & (1 << 2) &&
-        (this.props.translateContentSizesToHolder ||
-          this.props.translateContentSizeYToHolder) &&
-        (this.holderElement.style.height = scrollValues.scrollHeight + "px");
-      bitmask & (1 << 3) &&
-        (this.props.translateContentSizesToHolder ||
-          this.props.translateContentSizeXToHolder) &&
-        (this.holderElement.style.width = scrollValues.scrollWidth + "px");
     }
 
     return true;
@@ -1048,17 +1060,21 @@ export default class Scrollbar extends React.Component<
   private handleContentScroll = () => {
     this._scrollDetection();
   };
-  private _scrollDetectionTO: Timeout | null;
+  private _scrollDetectionTO: number | null;
   private _scrollDetection = () => {
     !this._scrollDetectionTO &&
       this.eventEmitter.emit("scrollStart", this.getScrollValues());
 
-    this._scrollDetectionTO && global.clearTimeout(this._scrollDetectionTO);
+    this._scrollDetectionTO &&
+      global.window &&
+      global.window.clearTimeout(this._scrollDetectionTO);
 
-    this._scrollDetectionTO = global.setTimeout(
-      this._scrollDetectionCallback,
-      this.props.scrollDetectionThreshold || 0
-    );
+    this._scrollDetectionTO = global.window
+      ? global.window.setTimeout(
+          this._scrollDetectionCallback,
+          this.props.scrollDetectionThreshold || 0
+        )
+      : null;
   };
   private _scrollDetectionCallback = () => {
     this._scrollDetectionTO = null;

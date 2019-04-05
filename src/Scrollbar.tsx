@@ -823,7 +823,7 @@ export default class Scrollbar extends React.Component<
             scrollValues.scrollLeft
           );
 
-          if (reverseRTL) {
+          if (this.state.isRTL && reverseRTL) {
             thumbOffset += trackInnerSize - thumbSize;
           }
 

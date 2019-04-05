@@ -5,10 +5,7 @@ import Scrollbar from "../../src/Scrollbar";
 class App extends React.Component {
   public render(): React.ReactNode {
     return (
-      <Scrollbar
-        style={{ minHeight: 200, width: 0 }}
-        translateContentSizeXToHolder
-      >
+      <Scrollbar style={{ minHeight: 200, width: 200, margin: 64 }}>
         <p style={{ width: 1000 }}>
           Lorem Ipsum is simply dummy text of the printing and typesetting
           industry. Lorem Ipsum has been the industry's standard dummy text ever

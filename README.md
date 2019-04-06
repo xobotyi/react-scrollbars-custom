@@ -110,7 +110,7 @@ There are several things you have to know about:
 
 ## CUSTOMISATION
 
-In some cases you may want to change the default className or tagName of elements or add extra markup or whatever. For these purposes `react-scrollbars-cistom` made fully customizable.
+In some cases you may want to change the default className or tagName of elements or add extra markup or whatever. For these purposes `react-scrollbars-custom` made fully customizable.
 You can do absolutely what ever you want y simply passing renderer SFC to the needed props.
 
 > **IMPORTANT**: Renderer will receive elementRef function that expect the DOM element's reference as first parameter.  
@@ -120,24 +120,12 @@ You can do absolutely what ever you want y simply passing renderer SFC to the ne
 <Scrollbar
   renderer={props => {
     const { elementRef, ...restProps } = props;
-    return (
-      <span
-        {...restProps}
-        ref={elementRef}
-        className="MyAwesomeScrollbarsHolder"
-      />
-    );
+    return <span {...restProps} ref={elementRef} className="MyAwesomeScrollbarsHolder" />;
   }}
   wrapperProps={{
     renderer: props => {
       const { elementRef, ...restProps } = props;
-      return (
-        <span
-          {...restProps}
-          ref={elementRef}
-          className="MyAwesomeScrollbarsWrapper"
-        />
-      );
+      return <span {...restProps} ref={elementRef} className="MyAwesomeScrollbarsWrapper" />;
     }
   }}
   contentProps={{

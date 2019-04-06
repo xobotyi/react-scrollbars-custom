@@ -9,10 +9,7 @@ declare var global: {
   document?: Document;
 };
 
-export type DragCallbackData = Pick<
-  DraggableData,
-  Exclude<keyof DraggableData, "node">
->;
+export type DragCallbackData = Pick<DraggableData, Exclude<keyof DraggableData, "node">>;
 
 export type ScrollbarThumbProps = ElementProps & {
   axis: DIRECTION_AXIS;
@@ -27,10 +24,7 @@ export type ScrollbarThumbProps = ElementProps & {
   renderer?: React.FunctionComponent<ScrollbarThumbProps>;
 };
 
-export default class ScrollbarThumb extends React.Component<
-  ScrollbarThumbProps,
-  {}
-> {
+export default class ScrollbarThumb extends React.Component<ScrollbarThumbProps, {}> {
   public element: HTMLElement | null = null;
 
   private prevUserSelect: string | null;
@@ -60,7 +54,7 @@ export default class ScrollbarThumb extends React.Component<
     elementRef: PropTypes.func,
 
     renderer: PropTypes.func
-  };
+  } as PropTypes.InferProps<ScrollbarThumbProps>;
 
   public componentDidMount(): void {
     if (!this.element) {

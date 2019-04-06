@@ -23,10 +23,7 @@ export const shouldReverseRTLScroll = (force: boolean = false): boolean => {
     "style",
     "display:block;position:absolute;width:100px;height:100px;top:-9999px;overflow:scroll;direction:rtl;"
   );
-  child.setAttribute(
-    "style",
-    "display:block;position:relative;width:1000px;height:1000px;direction:rtl;"
-  );
+  child.setAttribute("style", "display:block;position:relative;width:1000px;height:1000px;direction:rtl;");
   el.appendChild(child);
 
   doc.body.appendChild(el);
@@ -42,16 +39,12 @@ export const shouldReverseRTLScroll = (force: boolean = false): boolean => {
  * @description Set the cached value to given value.<br/>
  *              <i>null</i> will force to recalculate value on next get.
  */
-export const _dbgSetIsReverseRTLScrollNeeded = (
-  v: boolean | null
-): boolean | null => {
+export const _dbgSetIsReverseRTLScrollNeeded = (v: boolean | null): boolean | null => {
   if (typeof v === "boolean" || v === null) {
     return (isReverseRTLScrollNeeded = v);
   }
 
-  throw new TypeError(
-    "override value expected to be a boolean or null, got " + typeof v
-  );
+  throw new TypeError("override value expected to be a boolean or null, got " + typeof v);
 };
 
 /**
@@ -107,9 +100,7 @@ export const getInnerWidth = (el: HTMLElement): number => {
  *
  * ts-ignore here is okay here, because it brigs around 40% of performance
  */
-export const getInnerDimensions = (
-  el: HTMLElement
-): { width: number; height: number } => {
+export const getInnerDimensions = (el: HTMLElement): { width: number; height: number } => {
   let styles = getComputedStyle(el);
 
   if (styles.boxSizing === "border-box") {
@@ -256,10 +247,7 @@ export default function getScrollbarWidth(force = false) {
   }
 
   let el = doc.createElement("div");
-  el.setAttribute(
-    "style",
-    "display:block;position:absolute;width:100px;height:100px;top:-9999px;overflow:scroll;"
-  );
+  el.setAttribute("style", "display:block;position:absolute;width:100px;height:100px;top:-9999px;overflow:scroll;");
 
   doc.body.appendChild(el);
   scrollbarWidth = el.offsetWidth - el.clientWidth;
@@ -277,9 +265,7 @@ export const _dbgSetScrollbarWidth = (v: number | null): number | null => {
     return (scrollbarWidth = v);
   }
 
-  throw new TypeError(
-    "override value expected to be a number or null, got " + typeof v
-  );
+  throw new TypeError("override value expected to be a number or null, got " + typeof v);
 };
 
 /**
@@ -291,10 +277,7 @@ export const _dbgSetDocument = (v: Document | null): Document | null => {
     return (doc = v);
   }
 
-  throw new TypeError(
-    "override value expected to be an instance of HTMLDocument or null, got " +
-      typeof v
-  );
+  throw new TypeError("override value expected to be an instance of HTMLDocument or null, got " + typeof v);
 };
 
 /**

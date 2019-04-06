@@ -21,9 +21,7 @@ describe("util", () => {
 
   describe("calcThumbSize", () => {
     it("should return number", () => {
-      expect(
-        typeof calcThumbSize(400, 200, 200, 30, 0) === "number"
-      ).toBeTruthy();
+      expect(typeof calcThumbSize(400, 200, 200, 30, 0) === "number").toBeTruthy();
     });
 
     it("should return 0 if viewport size >= contentSize", () => {
@@ -70,9 +68,7 @@ describe("util", () => {
 
   describe("calcScrollForThumbOffset", () => {
     it("should return number", () => {
-      expect(
-        typeof calcScrollForThumbOffset(0, 0, 0, 0, 0) === "number"
-      ).toBeTruthy();
+      expect(typeof calcScrollForThumbOffset(0, 0, 0, 0, 0) === "number").toBeTruthy();
     });
 
     it("should return 0 if viewport size >= contentSize", () => {
@@ -96,11 +92,7 @@ describe("util", () => {
 
   describe("uuid", () => {
     it("should generate valid UUID v4", () => {
-      expect(
-        /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[0-9a-f]{4}-[0-9a-f]{12}$/.test(
-          uuid()
-        )
-      ).toBeTruthy();
+      expect(/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[0-9a-f]{4}-[0-9a-f]{12}$/.test(uuid())).toBeTruthy();
     });
 
     it("should generate unique UUID", () => {
@@ -551,15 +543,11 @@ describe("util", () => {
       it("should throw if value not null or document", () => {
         // @ts-ignore
         expect(() => _dbgSetDocument(123)).toThrow(
-          new TypeError(
-            "override value expected to be an instance of HTMLDocument or null, got number"
-          )
+          new TypeError("override value expected to be an instance of HTMLDocument or null, got number")
         );
         // @ts-ignore
         expect(() => _dbgSetDocument(false)).toThrow(
-          new TypeError(
-            "override value expected to be an instance of HTMLDocument or null, got boolean"
-          )
+          new TypeError("override value expected to be an instance of HTMLDocument or null, got boolean")
         );
       });
     });
@@ -581,15 +569,11 @@ describe("util", () => {
       it("should throw if value not null or number", () => {
         // @ts-ignore
         expect(() => _dbgSetScrollbarWidth(false)).toThrow(
-          new TypeError(
-            "override value expected to be a number or null, got boolean"
-          )
+          new TypeError("override value expected to be a number or null, got boolean")
         );
         // @ts-ignore
         expect(() => _dbgSetScrollbarWidth(undefined)).toThrow(
-          new TypeError(
-            "override value expected to be a number or null, got undefined"
-          )
+          new TypeError("override value expected to be a number or null, got undefined")
         );
       });
     });
@@ -640,15 +624,11 @@ describe("util", () => {
       it("should throw if value not null or boolean", () => {
         // @ts-ignore
         expect(() => _dbgSetIsReverseRTLScrollNeeded(321)).toThrow(
-          new TypeError(
-            "override value expected to be a boolean or null, got number"
-          )
+          new TypeError("override value expected to be a boolean or null, got number")
         );
         // @ts-ignore
         expect(() => _dbgSetIsReverseRTLScrollNeeded(undefined)).toThrow(
-          new TypeError(
-            "override value expected to be a boolean or null, got undefined"
-          )
+          new TypeError("override value expected to be a boolean or null, got undefined")
         );
       });
     });

@@ -23,10 +23,7 @@ export type ScrollbarTrackProps = ElementProps & {
   renderer?: React.FunctionComponent<ScrollbarTrackProps>;
 };
 
-export default class ScrollbarTrack extends React.Component<
-  ScrollbarTrackProps,
-  {}
-> {
+export default class ScrollbarTrack extends React.Component<ScrollbarTrackProps, {}> {
   public element: HTMLElement | null = null;
 
   static propTypes = {
@@ -41,7 +38,7 @@ export default class ScrollbarTrack extends React.Component<
     elementRef: PropTypes.func,
 
     renderer: PropTypes.func
-  };
+  } as PropTypes.InferProps<ScrollbarTrackProps>;
 
   public componentDidMount(): void {
     if (!this.element) {
@@ -101,10 +98,7 @@ export default class ScrollbarTrack extends React.Component<
       return;
     }
 
-    if (
-      typeof this.props.onClick === "function" &&
-      ev.target === this.element
-    ) {
+    if (typeof this.props.onClick === "function" && ev.target === this.element) {
       if (typeof ev.offsetX !== "undefined") {
         this.props.onClick(ev, {
           axis: this.props.axis,
@@ -115,10 +109,7 @@ export default class ScrollbarTrack extends React.Component<
         const rect: ClientRect = this.element.getBoundingClientRect();
         this.props.onClick(ev, {
           axis: this.props.axis,
-          offset:
-            this.props.axis === DIRECTION_AXIS.X
-              ? ev.clientX - rect.left
-              : ev.clientY - rect.top
+          offset: this.props.axis === DIRECTION_AXIS.X ? ev.clientX - rect.left : ev.clientY - rect.top
         });
       }
     }

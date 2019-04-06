@@ -12,12 +12,7 @@ module.exports = cfg => {
       "**/*.tsx": "karma-typescript"
     },
 
-    files: [
-      "./src/**/*.ts",
-      "./src/**/*.tsx",
-      "./tests/**/*.spec.ts",
-      "./tests/**/*.spec.tsx"
-    ],
+    files: ["./src/**/*.ts", "./src/**/*.tsx", "./tests/**/*.spec.ts", "./tests/**/*.spec.tsx"],
 
     client: {
       jasmine: {

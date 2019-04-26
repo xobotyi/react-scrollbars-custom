@@ -292,7 +292,7 @@ Function called each time scrollTop or scrollLeft has changed. It is called afte
 **onScrollStart** _`:function(scrollValues: ScrollValues)`_ = undefined  
 Callback that called immediately when user started scrolling (no matter how, thumb dragging, keyboard, mousewheel and etc.).
 
-**onScrollStop** _`:function(scrollValues: ScrollValues)`_ = undefined  
+**onScrollStop** _`:function(scrollValues: ScrollValues)`_ = undefined
 Callback that called after `props.scrollDetectionThreshold` milliseconds after last scroll event.
 
 ### INSTANCE PROPERTIES

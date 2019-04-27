@@ -142,7 +142,7 @@ export type ScrollbarProps = ElementProps & {
   onUpdate?: (scrollValues: ScrollValues, prevScrollValues: ScrollValues) => void;
   onScroll?: (scrollValues: ScrollValues, prevScrollValues: ScrollValues) => void;
   onScrollStart?: (scrollValues: ScrollValues) => void;
-  onScrollEnd?: (scrollValues: ScrollValues) => void;
+  onScrollStop?: (scrollValues: ScrollValues) => void;
 };
 
 export type ScrollbarState = {
@@ -244,7 +244,7 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
     onUpdate: PropTypes.func,
     onScroll: PropTypes.func,
     onScrollStart: PropTypes.func,
-    onScrollEnd: PropTypes.func
+    onScrollStop: PropTypes.func
   } as PropTypes.InferProps<ScrollbarProps>;
 
   static defaultProps = {
@@ -282,7 +282,7 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
     this.props.onUpdate && this.eventEmitter.on("update", this.props.onUpdate);
     this.props.onScroll && this.eventEmitter.on("scroll", this.props.onScroll);
     this.props.onScrollStart && this.eventEmitter.on("scrollStart", this.props.onScrollStart);
-    this.props.onScrollEnd && this.eventEmitter.on("scrollEnd", this.props.onScrollEnd);
+    this.props.onScrollStop && this.eventEmitter.on("scrollStop", this.props.onScrollStop);
 
     this.id = uuid();
   }
@@ -370,9 +370,9 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
       this.props.onScrollStart && this.eventEmitter.on("scrollStart", this.props.onScrollStart);
     }
 
-    if (prevProps.onScrollEnd !== this.props.onScrollEnd) {
-      prevProps.onScrollEnd && this.eventEmitter.off("scrollEnd", prevProps.onScrollEnd);
-      this.props.onScrollEnd && this.eventEmitter.on("scrollEnd", this.props.onScrollEnd);
+    if (prevProps.onScrollStop !== this.props.onScrollStop) {
+      prevProps.onScrollStop && this.eventEmitter.off("scrollStop", prevProps.onScrollStop);
+      this.props.onScrollStop && this.eventEmitter.on("scrollStop", this.props.onScrollStop);
     }
   }
 
@@ -1014,7 +1014,7 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
       onUpdate,
       onScroll,
       onScrollStart,
-      onScrollEnd,
+      onScrollStop,
 
       translateContentSizesToHolder,
       translateContentSizeYToHolder,

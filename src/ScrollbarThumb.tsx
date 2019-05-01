@@ -54,7 +54,7 @@ export default class ScrollbarThumb extends React.Component<ScrollbarThumbProps,
     elementRef: PropTypes.func,
 
     renderer: PropTypes.func
-  } as PropTypes.InferProps<ScrollbarThumbProps>;
+  };
 
   public componentDidMount(): void {
     if (!this.element) {

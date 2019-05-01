@@ -245,7 +245,7 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
     onScroll: PropTypes.func,
     onScrollStart: PropTypes.func,
     onScrollStop: PropTypes.func
-  } as PropTypes.InferProps<ScrollbarProps>;
+  };
 
   static defaultProps = {
     momentum: true,

@@ -38,7 +38,7 @@ export default class ScrollbarTrack extends React.Component<ScrollbarTrackProps,
     elementRef: PropTypes.func,
 
     renderer: PropTypes.func
-  } as PropTypes.InferProps<ScrollbarTrackProps>;
+  };
 
   public componentDidMount(): void {
     if (!this.element) {

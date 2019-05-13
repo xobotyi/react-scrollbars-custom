@@ -165,7 +165,7 @@ You can do absolutely what ever you want y simply passing renderer SFC to the ne
 
 ### PROPS
 
-You can pass any HTMLElement props to the component - they'll be respectfully passed to the holder element/renderer.
+You can pass any HTMLDivElement props to the component - they'll be respectfully passed to the holder element/renderer.
 
 **createContext** _`:boolean`_ = undefined  
 Whether to create context that will contain scrollbar instance reference.
@@ -300,25 +300,25 @@ Callback that called after `props.scrollDetectionThreshold` milliseconds after l
 **eventEmitter** _`:Emittr`_  
 Event emitter that allow you to add events handler for cases when you access Scrollbars through context
 
-**holderElement** _`:HTMLElement | null`_  
+**holderElement** _`:HTMLDivElement | null`_  
 Holder DOM element reference or null if element was not rendered
 
-**wrapperElement** _`:HTMLElement | null`_  
+**wrapperElement** _`:HTMLDivElement | null`_  
 Wrapper DOM element reference or null if element was not rendered
 
-**contentElement** _`:HTMLElement | null`_  
+**contentElement** _`:HTMLDivElement | null`_  
 Content DOM element reference or null if element was not rendered
 
-**trackXElement** _`:HTMLElement | null`_  
+**trackXElement** _`:HTMLDivElement | null`_  
 Horizontal track DOM element reference or null if element was not rendered
 
-**trackYElement** _`:HTMLElement | null`_  
+**trackYElement** _`:HTMLDivElement | null`_  
 Vertical track DOM element reference or null if element was not rendered
 
-**thumbXElement** _`:HTMLElement | null`_  
+**thumbXElement** _`:HTMLDivElement | null`_  
 Horizontal thumb DOM element reference or null if element was not rendered
 
-**thumbYElement** _`:HTMLElement | null`_  
+**thumbYElement** _`:HTMLDivElement | null`_  
 Vertical thumb DOM element reference or null if element was not rendered
 
 (get|set) **scrollTop** _`:number`_  

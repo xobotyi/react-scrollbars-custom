@@ -25,7 +25,7 @@ export type ScrollbarThumbProps = ElementProps & {
 };
 
 export default class ScrollbarThumb extends React.Component<ScrollbarThumbProps, {}> {
-  public element: HTMLElement | null = null;
+  public element: HTMLDivElement | null = null;
 
   private prevUserSelect: string | null;
   private prevOnSelectStart: (() => boolean) | null;
@@ -60,7 +60,7 @@ export default class ScrollbarThumb extends React.Component<ScrollbarThumbProps,
     if (!this.element) {
       this.setState(() => {
         throw new Error(
-          "Element was not created. Possibly you haven't provided HTMLElement to renderer's `elementRef` function."
+          "Element was not created. Possibly you haven't provided HTMLDivElement to renderer's `elementRef` function."
         );
       });
       return;
@@ -219,7 +219,7 @@ export default class ScrollbarThumb extends React.Component<ScrollbarThumbProps,
     );
   }
 
-  private ref = (ref: HTMLElement | null): void => {
+  private ref = (ref: HTMLDivElement | null): void => {
     typeof this.props.elementRef === "function" && this.props.elementRef(ref);
     this.element = ref;
   };

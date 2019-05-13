@@ -52,7 +52,7 @@ export const _dbgSetIsReverseRTLScrollNeeded = (v: boolean | null): boolean | nu
  *
  * ts-ignore here is okay here, because it brigs around 40% of performance
  */
-export const getInnerHeight = (el: HTMLElement): number => {
+export const getInnerHeight = (el: HTMLDivElement): number => {
   const styles = getComputedStyle(el);
 
   if (styles.boxSizing === "border-box") {
@@ -76,7 +76,7 @@ export const getInnerHeight = (el: HTMLElement): number => {
  *
  * ts-ignore here is okay here, because it brigs around 40% of performance
  */
-export const getInnerWidth = (el: HTMLElement): number => {
+export const getInnerWidth = (el: HTMLDivElement): number => {
   const styles = getComputedStyle(el);
 
   if (styles.boxSizing === "border-box") {
@@ -100,7 +100,7 @@ export const getInnerWidth = (el: HTMLElement): number => {
  *
  * ts-ignore here is okay here, because it brigs around 40% of performance
  */
-export const getInnerDimensions = (el: HTMLElement): { width: number; height: number } => {
+export const getInnerDimensions = (el: HTMLDivElement): { width: number; height: number } => {
   let styles = getComputedStyle(el);
 
   if (styles.boxSizing === "border-box") {

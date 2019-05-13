@@ -77,12 +77,12 @@ export type ScrollValues = {
   isRTL?: boolean;
 };
 
-export type ElementRef<T = HTMLElement> = (element: T | null) => void;
+export type ElementRef<T = HTMLDivElement> = (element: T | null) => void;
 
-export type ElementProps<T = HTMLElement> = React.HTMLProps<T> & {
+export type ElementProps<T = HTMLDivElement> = React.HTMLProps<T> & {
   elementRef?: ElementRef;
 
-  renderer?: React.FunctionComponent<ElementProps>;
+  renderer?: React.FunctionComponent<ElementProps<T>>;
 };
 
 export enum SCROLLBAR_TRACK_CLICK_BEHAVIOR {
@@ -164,33 +164,33 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
   public readonly id: string;
 
   /**
-   * @description Reference to the holder HTMLElement or null if it wasn't rendered or <i>native</i> property is true
+   * @description Reference to the holder HTMLDivElement or null if it wasn't rendered or <i>native</i> property is true
    */
-  public holderElement: HTMLElement | null;
+  public holderElement: HTMLDivElement | null;
   /**
-   * @description Reference to the wrapper HTMLElement or null if it wasn't rendered or <i>native</i> property is true
+   * @description Reference to the wrapper HTMLDivElement or null if it wasn't rendered or <i>native</i> property is true
    */
-  public wrapperElement: HTMLElement | null;
+  public wrapperElement: HTMLDivElement | null;
   /**
-   * @description Reference to the content HTMLElement that contains component's children (and has browser's scrollbars)
+   * @description Reference to the content HTMLDivElement that contains component's children (and has browser's scrollbars)
    */
-  public contentElement: HTMLElement | null;
+  public contentElement: HTMLDivElement | null;
   /**
-   * @description Reference to the horizontal track HTMLElement or null if it wasn't rendered
+   * @description Reference to the horizontal track HTMLDivElement or null if it wasn't rendered
    */
-  public trackXElement: HTMLElement | null;
+  public trackXElement: HTMLDivElement | null;
   /**
-   * @description Reference to the vertical track HTMLElement or null if it wasn't rendered
+   * @description Reference to the vertical track HTMLDivElement or null if it wasn't rendered
    */
-  public trackYElement: HTMLElement | null;
+  public trackYElement: HTMLDivElement | null;
   /**
-   * @description Reference to the horizontal thumb HTMLElement or null if it wasn't rendered
+   * @description Reference to the horizontal thumb HTMLDivElement or null if it wasn't rendered
    */
-  public thumbXElement: HTMLElement | null;
+  public thumbXElement: HTMLDivElement | null;
   /**
-   * @description Reference to the vertical thumb HTMLElement or null if it wasn't rendered
+   * @description Reference to the vertical thumb HTMLDivElement or null if it wasn't rendered
    */
-  public thumbYElement: HTMLElement | null;
+  public thumbYElement: HTMLDivElement | null;
 
   public readonly eventEmitter: Emittr;
 
@@ -291,7 +291,7 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
     if (!this.contentElement) {
       this.setState(() => {
         throw new Error(
-          "content element was not created. Possibly you haven't provided HTMLElement to renderer's `elementRef` function."
+          "content element was not created. Possibly you haven't provided HTMLDivElement to renderer's `elementRef` function."
         );
       });
       return;
@@ -301,7 +301,7 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
       if (!this.holderElement) {
         this.setState(() => {
           throw new Error(
-            "holder element was not created. Possibly you haven't provided HTMLElement to renderer's `elementRef` function."
+            "holder element was not created. Possibly you haven't provided HTMLDivElement to renderer's `elementRef` function."
           );
         });
         return;
@@ -310,7 +310,7 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
       if (!this.wrapperElement) {
         this.setState(() => {
           throw new Error(
-            "wrapper element was not created. Possibly you haven't provided HTMLElement to renderer's `elementRef` function."
+            "wrapper element was not created. Possibly you haven't provided HTMLDivElement to renderer's `elementRef` function."
           );
         });
         return;
@@ -747,35 +747,35 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
     return true;
   };
 
-  private elementRefHolder = (ref: HTMLElement | null) => {
+  private elementRefHolder = (ref: HTMLDivElement | null) => {
     this.holderElement = ref;
     typeof this.props.elementRef === "function" && this.props.elementRef(ref);
   };
 
-  private elementRefWrapper = (ref: HTMLElement | null) => {
+  private elementRefWrapper = (ref: HTMLDivElement | null) => {
     this.wrapperElement = ref;
     typeof this.props.wrapperProps!.elementRef === "function" && this.props.wrapperProps!.elementRef(ref);
   };
 
-  private elementRefContent = (ref: HTMLElement | null) => {
+  private elementRefContent = (ref: HTMLDivElement | null) => {
     this.contentElement = ref;
     typeof this.props.contentProps!.elementRef === "function" && this.props.contentProps!.elementRef(ref);
   };
 
-  private elementRefTrackX = (ref: HTMLElement | null) => {
+  private elementRefTrackX = (ref: HTMLDivElement | null) => {
     this.trackXElement = ref;
     typeof this.props.trackXProps!.elementRef === "function" && this.props.trackXProps!.elementRef(ref);
   };
-  private elementRefTrackY = (ref: HTMLElement | null) => {
+  private elementRefTrackY = (ref: HTMLDivElement | null) => {
     this.trackYElement = ref;
     typeof this.props.trackYProps!.elementRef === "function" && this.props.trackYProps!.elementRef(ref);
   };
 
-  private elementRefThumbX = (ref: HTMLElement | null) => {
+  private elementRefThumbX = (ref: HTMLDivElement | null) => {
     this.thumbXElement = ref;
     typeof this.props.thumbXProps!.elementRef === "function" && this.props.thumbXProps!.elementRef(ref);
   };
-  private elementRefThumbY = (ref: HTMLElement | null) => {
+  private elementRefThumbY = (ref: HTMLDivElement | null) => {
     this.thumbYElement = ref;
     typeof this.props.thumbYProps!.elementRef === "function" && this.props.thumbYProps!.elementRef(ref);
   };
@@ -860,7 +860,7 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
     }
   };
 
-  private handleTrackYMouseWheel = (ev: React.WheelEvent<HTMLElement>) => {
+  private handleTrackYMouseWheel = (ev: React.WheelEvent<HTMLDivElement>) => {
     this.props.trackYProps && this.props.trackYProps.onWheel && this.props.trackYProps.onWheel(ev);
 
     this._scrollDetection();
@@ -872,7 +872,7 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
     this.scrollTop += ev.deltaY;
   };
 
-  private handleTrackXMouseWheel = (ev: React.WheelEvent<HTMLElement>) => {
+  private handleTrackXMouseWheel = (ev: React.WheelEvent<HTMLDivElement>) => {
     this.props.trackXProps && this.props.trackXProps.onWheel && this.props.trackXProps.onWheel(ev);
 
     this._scrollDetection();
@@ -1096,6 +1096,7 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
     } as ElementProps<HTMLDivElement>;
     if (propsWrapperProps!.renderer) {
       delete wrapperProps.ref;
+      delete wrapperProps.renderer;
       wrapperProps.elementRef = this.elementRefWrapper;
     } else {
       delete wrapperProps.elementRef;
@@ -1118,6 +1119,7 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
     } as ElementProps<HTMLDivElement>;
     if (renderer) {
       delete holderProps.ref;
+      delete holderProps.renderer;
       holderProps.elementRef = this.elementRefHolder;
     } else {
       delete holderProps.elementRef;

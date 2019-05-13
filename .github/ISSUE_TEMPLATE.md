@@ -2,7 +2,7 @@
 
 **What is the current behavior?**
 
-**If the current behavior is a bug, please provide the steps to reproduce and if possible a minimal demo of the problem. Your bug will get fixed much faster if we can run your code and it doesn't have extra dependencies other than `react-scrollbars-custom`. Paste the link to your JSFiddle (https://jsfiddle.net/) example below:**
+**If current behavior is a bug, please provide the steps to reproduce it and if possible a minimal demo of the problem. Your bug will get fixed much faster if we can run your code and it doesn't have extra dependencies other than `react-scrollbars-custom`. Paste the link to your JSFiddle (https://jsfiddle.net/) example below:**
 
 **What is the expected behavior?**
 

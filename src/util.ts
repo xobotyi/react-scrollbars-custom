@@ -3,50 +3,6 @@ declare var global: {
 };
 let doc: Document | null = global.document || null;
 
-let isReverseRTLScrollNeeded: boolean | null = null;
-
-/**
- * @description Detect need of horizontal scroll reverse while RTL
- */
-export const shouldReverseRTLScroll = (force: boolean = false): boolean => {
-  if (!force && isReverseRTLScrollNeeded !== null) {
-    return isReverseRTLScrollNeeded;
-  }
-
-  if (!doc) {
-    return (isReverseRTLScrollNeeded = false);
-  }
-
-  let el = doc.createElement("div");
-  let child = doc.createElement("div");
-  el.setAttribute(
-    "style",
-    "display:block;position:absolute;width:100px;height:100px;top:-9999px;overflow:scroll;direction:rtl;"
-  );
-  child.setAttribute("style", "display:block;position:relative;width:1000px;height:1000px;direction:rtl;");
-  el.appendChild(child);
-
-  doc.body.appendChild(el);
-  el.scrollLeft;
-  el.scrollLeft = 45;
-  isReverseRTLScrollNeeded = el.scrollLeft === 0;
-  doc.body.removeChild(el);
-
-  return isReverseRTLScrollNeeded;
-};
-
-/**
- * @description Set the cached value to given value.<br/>
- *              <i>null</i> will force to recalculate value on next get.
- */
-export const _dbgSetIsReverseRTLScrollNeeded = (v: boolean | null): boolean | null => {
-  if (typeof v === "boolean" || v === null) {
-    return (isReverseRTLScrollNeeded = v);
-  }
-
-  throw new TypeError("override value expected to be a boolean or null, got " + typeof v);
-};
-
 /**
  * @description Return element's height without padding
  *
@@ -237,7 +193,7 @@ let scrollbarWidth: number | null = null;
 /**
  * @description Returns scrollbar width specific for current environment
  */
-export default function getScrollbarWidth(force = false) {
+export function getScrollbarWidth(force = false) {
   if (!force && scrollbarWidth !== null) {
     return scrollbarWidth;
   }
@@ -284,3 +240,47 @@ export const _dbgSetDocument = (v: Document | null): Document | null => {
  * @description Return current document node
  */
 export const _dbgGetDocument = (): Document | null => doc;
+
+let isReverseRTLScrollNeeded: boolean | null = null;
+
+/**
+ * @description Detect need of horizontal scroll reverse while RTL
+ */
+export const shouldReverseRTLScroll = (force: boolean = false): boolean => {
+  if (!force && isReverseRTLScrollNeeded !== null) {
+    return isReverseRTLScrollNeeded;
+  }
+
+  if (!doc) {
+    return (isReverseRTLScrollNeeded = false);
+  }
+
+  let el = doc.createElement("div");
+  let child = doc.createElement("div");
+  el.setAttribute(
+    "style",
+    "display:block;position:absolute;width:100px;height:100px;top:-9999px;overflow:scroll;direction:rtl;"
+  );
+  child.setAttribute("style", "display:block;position:relative;width:1000px;height:1000px;direction:rtl;");
+  el.appendChild(child);
+
+  doc.body.appendChild(el);
+  el.scrollLeft;
+  el.scrollLeft = 45;
+  isReverseRTLScrollNeeded = el.scrollLeft === 0;
+  doc.body.removeChild(el);
+
+  return isReverseRTLScrollNeeded;
+};
+
+/**
+ * @description Set the cached value to given value.<br/>
+ *              <i>null</i> will force to recalculate value on next get.
+ */
+export const _dbgSetIsReverseRTLScrollNeeded = (v: boolean | null): boolean | null => {
+  if (typeof v === "boolean" || v === null) {
+    return (isReverseRTLScrollNeeded = v);
+  }
+
+  throw new TypeError("override value expected to be a boolean or null, got " + typeof v);
+};

@@ -107,6 +107,18 @@ describe("Loop", function() {
       Loop.removeTarget(target);
     });
 
+    it("should not add the target twice", function() {
+      const target = getTarget();
+      Loop.addTarget(target)
+        .addTarget(target)
+        .addTarget(target);
+      //@ts-ignore
+      expect(Loop.targets.length).toBe(1);
+      //@ts-ignore
+      expect(Loop.targets[0]).toBe(target);
+      Loop.removeTarget(target);
+    });
+
     it("should start the loop if added first target", function() {
       const target = getTarget();
       Loop.addTarget(target);

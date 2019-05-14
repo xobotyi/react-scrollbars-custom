@@ -1,9 +1,13 @@
 import * as React from "react";
 import * as PropTypes from "prop-types";
 import cnb from "cnbuilder";
-import { DIRECTION_AXIS } from "./ScrollbarTrack";
-import { ElementProps } from "./Scrollbar";
 import { DraggableCore, DraggableData, DraggableEvent } from "react-draggable";
+import {
+  AXIS_DIRECTION,
+  AXIS_DIRECTION_PROP_TYPE,
+  ElementPropsWithElementRefAndRenderer,
+  renderDivWithRenderer
+} from "./common";
 
 declare var global: {
   document?: Document;
@@ -11,24 +15,19 @@ declare var global: {
 
 export type DragCallbackData = Pick<DraggableData, Exclude<keyof DraggableData, "node">>;
 
-export type ScrollbarThumbProps = ElementProps & {
-  axis: DIRECTION_AXIS;
-
-  className?: string;
-  style?: React.CSSProperties;
+export type ScrollbarThumbProps = ElementPropsWithElementRefAndRenderer & {
+  axis: AXIS_DIRECTION;
 
   onDrag?: (data: DragCallbackData) => void;
   onDragStart?: (data: DragCallbackData) => void;
   onDragEnd?: (data: DragCallbackData) => void;
 
-  renderer?: React.FunctionComponent<ScrollbarThumbProps>;
+  ref?: (ref: ScrollbarThumb | null) => void;
 };
 
 export default class ScrollbarThumb extends React.Component<ScrollbarThumbProps, {}> {
-  public element: HTMLDivElement | null = null;
-
   private prevUserSelect: string | null;
-  private prevOnSelectStart: (() => boolean) | null;
+  private prevOnSelectStart: ((ev: Event) => boolean) | null;
 
   public initialOffsetX: number = 0;
   public initialOffsetY: number = 0;
@@ -42,17 +41,16 @@ export default class ScrollbarThumb extends React.Component<ScrollbarThumbProps,
     lastY: 0
   };
 
+  public element: HTMLDivElement | null = null;
+
   static propTypes = {
-    axis: PropTypes.oneOf([DIRECTION_AXIS.X, DIRECTION_AXIS.Y]),
+    axis: AXIS_DIRECTION_PROP_TYPE,
 
-    className: PropTypes.string,
-
-    style: PropTypes.object,
-
-    onClick: PropTypes.func,
+    onDrag: PropTypes.func,
+    onDragStart: PropTypes.func,
+    onDragEnd: PropTypes.func,
 
     elementRef: PropTypes.func,
-
     renderer: PropTypes.func
   };
 
@@ -69,6 +67,8 @@ export default class ScrollbarThumb extends React.Component<ScrollbarThumbProps,
 
   public componentWillUnmount(): void {
     this.handleOnDragStop();
+
+    this.elementRef(null);
   }
 
   private static selectStartReplacer = () => false;
@@ -83,9 +83,7 @@ export default class ScrollbarThumb extends React.Component<ScrollbarThumbProps,
       this.prevUserSelect = global.document.body.style.userSelect;
       global.document.body.style.userSelect = "none";
 
-      //@ts-ignore
       this.prevOnSelectStart = global.document.onselectstart;
-      //@ts-ignore
       global.document.onselectstart = ScrollbarThumb.selectStartReplacer;
     }
 
@@ -142,7 +140,7 @@ export default class ScrollbarThumb extends React.Component<ScrollbarThumbProps,
     if (global.document) {
       global.document.body.style.userSelect = this.prevUserSelect;
       this.prevUserSelect = null;
-      // @ts-ignore
+
       global.document.onselectstart = this.prevOnSelectStart;
       this.prevOnSelectStart = null;
     }
@@ -179,10 +177,8 @@ export default class ScrollbarThumb extends React.Component<ScrollbarThumbProps,
   public render(): React.ReactElement<any> | null {
     const {
       elementRef,
-      renderer,
 
       axis,
-      onClick,
 
       onDrag,
       onDragEnd,
@@ -192,10 +188,14 @@ export default class ScrollbarThumb extends React.Component<ScrollbarThumbProps,
     } = this.props;
 
     props.className = cnb(
-      "ScrollbarThumb",
-      axis === DIRECTION_AXIS.X ? "ScrollbarThumb-X" : "ScrollbarThumb-Y",
+      "ScrollbarsCustom-Thumb",
+      axis === AXIS_DIRECTION.X ? "ScrollbarsCustom-ThumbX" : "ScrollbarsCustom-ThumbY",
       props.className
     );
+
+    if (props.renderer) {
+      (props as ScrollbarThumbProps).axis = axis;
+    }
 
     return (
       <DraggableCore
@@ -205,21 +205,12 @@ export default class ScrollbarThumb extends React.Component<ScrollbarThumbProps,
         onDrag={this.handleOnDrag}
         onStart={this.handleOnDragStart}
         onStop={this.handleOnDragStop}
-      >
-        {renderer ? (
-          renderer({
-            ...props,
-            axis,
-            elementRef: this.ref
-          })
-        ) : (
-          <div {...props} ref={this.ref} />
-        )}
-      </DraggableCore>
+        children={renderDivWithRenderer(props, this.elementRef)}
+      />
     );
   }
 
-  private ref = (ref: HTMLDivElement | null): void => {
+  private elementRef = (ref: HTMLDivElement | null): void => {
     typeof this.props.elementRef === "function" && this.props.elementRef(ref);
     this.element = ref;
   };

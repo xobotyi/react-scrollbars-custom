@@ -1,4 +1,4 @@
-import getScrollbarWidth, {
+import {
   _dbgGetDocument,
   _dbgSetDocument,
   _dbgSetIsReverseRTLScrollNeeded,
@@ -9,6 +9,7 @@ import getScrollbarWidth, {
   getInnerDimensions,
   getInnerHeight,
   getInnerWidth,
+  getScrollbarWidth,
   shouldReverseRTLScroll,
   uuid
 } from "../src/util";

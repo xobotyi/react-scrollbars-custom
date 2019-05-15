@@ -17,3 +17,9 @@
 > Earlier some things been named not obvious and there was a little mess with classnames.  
 > From now i can surely say that basic elements classnames are locked and API will be developed with maximum backward capability.  
 > Sorry for any inconvenience. 🙏
+
+#### v4.0.0-alpha.17
+
+- Sizes translation fixes and improvements;
+- Added `compensateScrollbarsWidth` prop to be able make an overflowing scrollbars if needed.  
+  Also useful when sizes translation enabled;

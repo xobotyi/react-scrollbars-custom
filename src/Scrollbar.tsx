@@ -1,0 +1,1208 @@
+import {
+  AXIS_DIRECTION,
+  ElementPropsWithElementRefAndRenderer,
+  renderDivWithRenderer,
+  ScrollState,
+  TRACK_CLICK_BEHAVIOR,
+  TRACK_CLICK_BEHAVIOR_PROP_TYPE
+} from "./common";
+import * as React from "react";
+import * as PropTypes from "prop-types";
+import Loop from "./Loop";
+import cnb from "cnbuilder";
+import ScrollbarTrack, { ScrollbarTrackClickParameters, ScrollbarTrackProps } from "./ScrollbarTrack";
+import ScrollbarThumb, { ScrollbarThumbProps } from "./ScrollbarThumb";
+import * as util from "./util";
+import { DraggableData } from "react-draggable";
+import Emittr from "./Emittr";
+import defaultStyle from "./style";
+
+declare var global: {
+  window?: Window;
+};
+
+const reverseRTL: boolean = util.shouldReverseRTLScroll();
+
+export type ScrollbarProps = ElementPropsWithElementRefAndRenderer & {
+  createContext?: boolean;
+
+  rtl?: boolean;
+
+  momentum?: boolean;
+  native?: boolean;
+
+  noScrollX?: boolean;
+  noScrollY?: boolean;
+  noScroll?: boolean;
+
+  permanentTrackX?: boolean;
+  permanentTrackY?: boolean;
+  permanentTracks?: boolean;
+
+  removeTracksWhenNotUsed?: boolean;
+  removeTrackYWhenNotUsed?: boolean;
+  removeTrackXWhenNotUsed?: boolean;
+
+  minimalThumbSize?: number;
+  maximalThumbSize?: number;
+  minimalThumbXSize?: number;
+  maximalThumbXSize?: number;
+  minimalThumbYSize?: number;
+  maximalThumbYSize?: number;
+
+  scrollbarWidth?: number;
+  fallbackScrollbarWidth?: number;
+
+  scrollTop?: number;
+  scrollLeft?: number;
+  scrollDetectionThreshold?: number;
+
+  translateContentSizesToHolder?: boolean;
+  translateContentSizeYToHolder?: boolean;
+  translateContentSizeXToHolder?: boolean;
+
+  noDefaultStyles?: boolean;
+
+  trackClickBehavior?: TRACK_CLICK_BEHAVIOR;
+
+  wrapperProps?: ElementPropsWithElementRefAndRenderer;
+  scrollerProps?: ElementPropsWithElementRefAndRenderer;
+  contentProps?: ElementPropsWithElementRefAndRenderer;
+
+  trackXProps?: Pick<ScrollbarTrackProps, Exclude<keyof ScrollbarTrackProps, "axis">>;
+  trackYProps?: Pick<ScrollbarTrackProps, Exclude<keyof ScrollbarTrackProps, "axis">>;
+
+  thumbXProps?: Pick<ScrollbarThumbProps, Exclude<keyof ScrollbarThumbProps, "axis">>;
+  thumbYProps?: Pick<ScrollbarThumbProps, Exclude<keyof ScrollbarThumbProps, "axis">>;
+
+  onUpdate?: (scrollValues: ScrollState, prevScrollState: ScrollState) => void;
+  onScroll?: (scrollValues: ScrollState, prevScrollState: ScrollState) => void;
+  onScrollStart?: (scrollValues: ScrollState) => void;
+  onScrollStop?: (scrollValues: ScrollState) => void;
+};
+
+export type ScrollbarState = {
+  trackXVisible: boolean;
+  trackYVisible: boolean;
+  isRTL?: boolean;
+};
+
+export type ScrollbarContextValue = { parentScrollbar: Scrollbar | null };
+
+export const ScrollbarContext: React.Context<ScrollbarContextValue> = React.createContext({ parentScrollbar: null });
+
+export default class Scrollbar extends React.Component<ScrollbarProps, ScrollbarState> {
+  static contextType = ScrollbarContext;
+
+  /**
+   * @description UUID identifying scrollbar instance
+   */
+  public readonly id: string;
+
+  /**
+   * @description Reference to the holder HTMLDivElement or null if it wasn't rendered or <i>native</i> property is true
+   */
+  public holderElement: HTMLDivElement | null;
+  /**
+   * @description Reference to the wrapper HTMLDivElement or null if it wasn't rendered or <i>native</i> property is true
+   */
+  public wrapperElement: HTMLDivElement | null;
+  /**
+   * @description Reference to the HTMLDivElement that actually has browser's scrollbars
+   */
+  public scrollerElement: HTMLDivElement | null;
+  /**
+   * @description Reference to the content HTMLDivElement that contains component's children (and has browser's scrollbars)
+   */
+  public contentElement: HTMLDivElement | null;
+  public trackXElement: HTMLDivElement | null;
+  /**
+   * @description Reference to the vertical track HTMLDivElement or null if it wasn't rendered
+   */
+  public trackYElement: HTMLDivElement | null;
+  /**
+   * @description Reference to the horizontal thumb HTMLDivElement or null if it wasn't rendered
+   */
+  public thumbXElement: HTMLDivElement | null;
+  /**
+   * @description Reference to the vertical thumb HTMLDivElement or null if it wasn't rendered
+   */
+  public thumbYElement: HTMLDivElement | null;
+
+  public readonly eventEmitter: Emittr;
+
+  static propTypes = {
+    createContext: PropTypes.bool,
+    rtl: PropTypes.bool,
+    native: PropTypes.bool,
+    momentum: PropTypes.bool,
+    noDefaultStyles: PropTypes.bool,
+
+    minimalThumbSize: PropTypes.number,
+    maximalThumbSize: PropTypes.number,
+    minimalThumbXSize: PropTypes.number,
+    maximalThumbXSize: PropTypes.number,
+    minimalThumbYSize: PropTypes.number,
+    maximalThumbYSize: PropTypes.number,
+
+    noScrollX: PropTypes.bool,
+    noScrollY: PropTypes.bool,
+    noScroll: PropTypes.bool,
+
+    permanentTrackX: PropTypes.bool,
+    permanentTrackY: PropTypes.bool,
+    permanentTracks: PropTypes.bool,
+
+    translateContentSizesToHolder: PropTypes.bool,
+    translateContentSizeYToHolder: PropTypes.bool,
+    translateContentSizeXToHolder: PropTypes.bool,
+
+    removeTracksWhenNotUsed: PropTypes.bool,
+    removeTrackYWhenNotUsed: PropTypes.bool,
+    removeTrackXWhenNotUsed: PropTypes.bool,
+
+    trackClickBehavior: TRACK_CLICK_BEHAVIOR_PROP_TYPE,
+
+    scrollbarWidth: PropTypes.number,
+    fallbackScrollbarWidth: PropTypes.number,
+    scrollDetectionThreshold: PropTypes.number,
+    scrollTop: PropTypes.number,
+    scrollLeft: PropTypes.number,
+
+    className: PropTypes.string,
+
+    wrapperProps: PropTypes.object,
+    contentProps: PropTypes.object,
+    trackXProps: PropTypes.object,
+    trackYProps: PropTypes.object,
+    thumbXProps: PropTypes.object,
+    thumbYProps: PropTypes.object,
+
+    onUpdate: PropTypes.func,
+    onScroll: PropTypes.func,
+    onScrollStart: PropTypes.func,
+    onScrollStop: PropTypes.func
+  };
+
+  static defaultProps = {
+    momentum: true,
+
+    minimalThumbSize: 30,
+
+    fallbackScrollbarWidth: 20,
+
+    trackClickBehavior: TRACK_CLICK_BEHAVIOR.JUMP,
+
+    scrollDetectionThreshold: 100,
+
+    wrapperProps: {},
+    scrollerProps: {},
+    contentProps: {},
+    trackXProps: {},
+    trackYProps: {},
+    thumbXProps: {},
+    thumbYProps: {}
+  };
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      trackXVisible: false,
+      trackYVisible: false,
+      isRTL: this.props.rtl
+    };
+
+    this.scrollValues = this.getScrollState(true);
+
+    this.eventEmitter = new Emittr(15);
+
+    this.props.onUpdate && this.eventEmitter.on("update", this.props.onUpdate);
+    this.props.onScroll && this.eventEmitter.on("scroll", this.props.onScroll);
+    this.props.onScrollStart && this.eventEmitter.on("scrollStart", this.props.onScrollStart);
+    this.props.onScrollStop && this.eventEmitter.on("scrollStop", this.props.onScrollStop);
+
+    this.id = util.uuid();
+  }
+
+  public componentDidMount(): void {
+    if (!this.scrollerElement) {
+      this.setState(() => {
+        throw new Error(
+          "scroller element was not created. Possibly you haven't provided HTMLDivElement to renderer's `elementRef` function."
+        );
+      });
+      return;
+    }
+
+    if (!this.contentElement) {
+      this.setState(() => {
+        throw new Error(
+          "content element was not created. Possibly you haven't provided HTMLDivElement to renderer's `elementRef` function."
+        );
+      });
+      return;
+    }
+
+    if (!this.props.native) {
+      if (!this.holderElement) {
+        this.setState(() => {
+          throw new Error(
+            "holder element was not created. Possibly you haven't provided HTMLDivElement to renderer's `elementRef` function."
+          );
+        });
+        return;
+      }
+
+      if (!this.wrapperElement) {
+        this.setState(() => {
+          throw new Error(
+            "wrapper element was not created. Possibly you haven't provided HTMLDivElement to renderer's `elementRef` function."
+          );
+        });
+        return;
+      }
+    }
+
+    Loop.addTarget(this);
+
+    if (typeof this.props.scrollTop !== "undefined") {
+      this.scrollerElement.scrollTop = this.props.scrollTop;
+    }
+
+    if (typeof this.props.scrollLeft !== "undefined") {
+      this.scrollerElement.scrollLeft = this.props.scrollLeft;
+    }
+
+    this.update(true);
+  }
+
+  public componentWillUnmount(): void {
+    Loop.removeTarget(this);
+  }
+
+  public componentDidUpdate(prevProps: Readonly<ScrollbarProps>, prevState: Readonly<ScrollbarState>): void {
+    if (!this.scrollerElement) {
+      return;
+    }
+
+    if (this.props.rtl !== prevProps.rtl && this.props.rtl !== this.state.isRTL) {
+      this.setState({ isRTL: this.props.rtl });
+    }
+
+    if (this.state.isRTL !== prevState.isRTL) {
+      this.update();
+    }
+
+    if (typeof this.props.scrollTop !== "undefined" && this.props.scrollTop !== this.scrollerElement.scrollTop) {
+      this.scrollerElement.scrollTop = this.props.scrollTop;
+    }
+
+    if (typeof this.props.scrollLeft !== "undefined" && this.props.scrollLeft !== this.scrollerElement.scrollLeft) {
+      this.scrollerElement.scrollLeft = this.props.scrollLeft;
+    }
+
+    if (prevProps.onUpdate !== this.props.onUpdate) {
+      prevProps.onUpdate && this.eventEmitter.off("update", prevProps.onUpdate);
+      this.props.onUpdate && this.eventEmitter.on("update", this.props.onUpdate);
+    }
+
+    if (prevProps.onScroll !== this.props.onScroll) {
+      prevProps.onScroll && this.eventEmitter.off("scroll", prevProps.onScroll);
+      this.props.onScroll && this.eventEmitter.on("scroll", this.props.onScroll);
+    }
+
+    if (prevProps.onScrollStart !== this.props.onScrollStart) {
+      prevProps.onScrollStart && this.eventEmitter.off("scrollStart", prevProps.onScrollStart);
+      this.props.onScrollStart && this.eventEmitter.on("scrollStart", this.props.onScrollStart);
+    }
+
+    if (prevProps.onScrollStop !== this.props.onScrollStop) {
+      prevProps.onScrollStop && this.eventEmitter.off("scrollStop", prevProps.onScrollStop);
+      this.props.onScrollStop && this.eventEmitter.on("scrollStop", this.props.onScrollStop);
+    }
+  }
+
+  /**
+   * @description Current ScrollState (cached)
+   */
+  private scrollValues: ScrollState;
+
+  /**
+   * @description Get current scroll-related values.<br/>
+   * If <i>force</i> if truthy - will recalculate them instead of returning cached values.
+   *
+   * @return ScrollState
+   */
+  public getScrollState = (force: boolean = false): ScrollState => {
+    if (this.scrollValues && !force) {
+      return { ...this.scrollValues };
+    }
+
+    let scrollValues: ScrollState = {
+      clientHeight: 0,
+      clientWidth: 0,
+      scrollHeight: 0,
+      scrollWidth: 0,
+      scrollTop: 0,
+      scrollLeft: 0,
+      scrollYBlocked: false,
+      scrollXBlocked: false,
+      scrollYPossible: false,
+      scrollXPossible: false,
+      trackYVisible: false,
+      trackXVisible: false,
+      isRTL: undefined
+    };
+
+    scrollValues.isRTL = this.state.isRTL;
+
+    scrollValues.scrollYBlocked = this.props.noScroll! || this.props.noScrollY!;
+    scrollValues.scrollXBlocked = this.props.noScroll! || this.props.noScrollX!;
+
+    if (this.scrollerElement) {
+      scrollValues.clientHeight = this.scrollerElement.clientHeight;
+      scrollValues.clientWidth = this.scrollerElement.clientWidth;
+
+      scrollValues.scrollHeight = this.scrollerElement.scrollHeight;
+      scrollValues.scrollWidth = this.scrollerElement.scrollWidth;
+      scrollValues.scrollTop = this.scrollerElement.scrollTop;
+      scrollValues.scrollLeft = this.scrollerElement.scrollLeft;
+
+      scrollValues.scrollYPossible =
+        !scrollValues.scrollYBlocked && scrollValues.scrollHeight > scrollValues.clientHeight;
+      scrollValues.scrollXPossible =
+        !scrollValues.scrollXBlocked && scrollValues.scrollWidth > scrollValues.clientWidth;
+
+      scrollValues.trackYVisible =
+        scrollValues.scrollYPossible || this.props.permanentTracks! || this.props.permanentTrackY!;
+      scrollValues.trackXVisible =
+        scrollValues.scrollXPossible || this.props.permanentTracks! || this.props.permanentTrackX!;
+    }
+
+    return scrollValues;
+  };
+
+  /**
+   * @description Scroll to top border
+   */
+  public scrollToTop = (): this => {
+    if (this.scrollerElement) {
+      this.scrollerElement.scrollTop = 0;
+    }
+
+    return this;
+  };
+  /**
+   * @description Scroll to left border
+   */
+  public scrollToLeft = (): this => {
+    if (this.scrollerElement) {
+      this.scrollerElement.scrollLeft = 0;
+    }
+
+    return this;
+  };
+  /**
+   * @description Scroll to bottom border
+   */
+  public scrollToBottom = (): this => {
+    if (this.scrollerElement) {
+      this.scrollerElement.scrollTop = this.scrollerElement.scrollHeight - this.scrollerElement.clientHeight;
+    }
+
+    return this;
+  };
+  /**
+   * @description Scroll to right border
+   */
+  public scrollToRight = (): this => {
+    if (this.scrollerElement) {
+      this.scrollerElement.scrollLeft = this.scrollerElement.scrollWidth - this.scrollerElement.clientWidth;
+    }
+
+    return this;
+  };
+
+  /**
+   * @description Set the scrolls at given coordinates.<br/>
+   * If coordinate is undefined - current scroll value will persist.
+   */
+  public scrollTo = (x?: number, y?: number): this => {
+    if (this.scrollerElement) {
+      typeof x === "number" && (this.scrollerElement.scrollLeft = x);
+      typeof y === "number" && (this.scrollerElement.scrollTop = y);
+    }
+
+    return this;
+  };
+
+  /**
+   * @description Center the viewport at given coordinates.<br/>
+   * If coordinate is undefined - current scroll value will persist.
+   */
+  public centerAt = (x?: number, y?: number): this => {
+    if (this.scrollerElement) {
+      typeof x === "number" && (this.scrollerElement.scrollLeft = x - this.scrollerElement.clientWidth / 2);
+      typeof y === "number" && (this.scrollerElement.scrollTop = y - this.scrollerElement.clientHeight / 2);
+    }
+
+    return this;
+  };
+
+  get scrollTop() {
+    if (this.scrollerElement) {
+      return this.scrollerElement.scrollTop;
+    }
+
+    return 0;
+  }
+
+  set scrollTop(top) {
+    if (this.scrollerElement) {
+      this.scrollerElement.scrollTop = top;
+      this.update();
+    }
+  }
+
+  get scrollLeft() {
+    if (this.scrollerElement) {
+      return this.scrollerElement.scrollLeft;
+    }
+
+    return 0;
+  }
+
+  set scrollLeft(left) {
+    if (this.scrollerElement) {
+      this.scrollerElement.scrollLeft = left;
+    }
+  }
+
+  get scrollHeight() {
+    if (this.scrollerElement) {
+      return this.scrollerElement.scrollHeight;
+    }
+
+    return 0;
+  }
+
+  get scrollWidth() {
+    if (this.scrollerElement) {
+      return this.scrollerElement.scrollWidth;
+    }
+
+    return 0;
+  }
+
+  get clientHeight() {
+    if (this.scrollerElement) {
+      return this.scrollerElement.clientHeight;
+    }
+
+    return 0;
+  }
+
+  get clientWidth() {
+    if (this.scrollerElement) {
+      return this.scrollerElement.clientWidth;
+    }
+
+    return 0;
+  }
+
+  public update = (force = false): ScrollState | void => {
+    if (!this.scrollerElement) {
+      return;
+    }
+
+    // autodetect direction if not defined
+    if (typeof this.state.isRTL === "undefined") {
+      this.setState({
+        isRTL: getComputedStyle(this.scrollerElement).direction === "rtl"
+      });
+
+      return this.getScrollState();
+    }
+
+    const scrollValues: ScrollState = this.getScrollState(true);
+    const prevScrollState: ScrollState = { ...this.scrollValues };
+
+    let bitmask: number = 0;
+
+    if (!force) {
+      prevScrollState.clientHeight !== scrollValues.clientHeight && (bitmask |= 1 << 0);
+      prevScrollState.clientWidth !== scrollValues.clientWidth && (bitmask |= 1 << 1);
+      prevScrollState.scrollHeight !== scrollValues.scrollHeight && (bitmask |= 1 << 2);
+      prevScrollState.scrollWidth !== scrollValues.scrollWidth && (bitmask |= 1 << 3);
+      prevScrollState.scrollTop !== scrollValues.scrollTop && (bitmask |= 1 << 4);
+      prevScrollState.scrollLeft !== scrollValues.scrollLeft && (bitmask |= 1 << 5);
+      prevScrollState.scrollYBlocked !== scrollValues.scrollYBlocked && (bitmask |= 1 << 6);
+      prevScrollState.scrollXBlocked !== scrollValues.scrollXBlocked && (bitmask |= 1 << 7);
+      prevScrollState.scrollYPossible !== scrollValues.scrollYPossible && (bitmask |= 1 << 8);
+      prevScrollState.scrollXPossible !== scrollValues.scrollXPossible && (bitmask |= 1 << 9);
+      prevScrollState.trackYVisible !== scrollValues.trackYVisible && (bitmask |= 1 << 10);
+      prevScrollState.trackXVisible !== scrollValues.trackXVisible && (bitmask |= 1 << 11);
+      prevScrollState.isRTL !== scrollValues.isRTL && (bitmask |= 1 << 12);
+
+      // if not forced and nothing has changed - skip this update
+      if (bitmask === 0) {
+        return prevScrollState;
+      }
+    } else {
+      bitmask = 0b1111111111111;
+    }
+
+    if (!this.props.native && this.holderElement) {
+      bitmask & (1 << 2) &&
+        (this.props.translateContentSizesToHolder || this.props.translateContentSizeYToHolder) &&
+        (this.holderElement.style.height = scrollValues.scrollHeight + "px");
+      bitmask & (1 << 3) &&
+        (this.props.translateContentSizesToHolder || this.props.translateContentSizeXToHolder) &&
+        (this.holderElement.style.width = scrollValues.scrollWidth + "px");
+
+      if (
+        scrollValues.clientWidth === 0 &&
+        scrollValues.scrollWidth &&
+        scrollValues.clientHeight === 0 &&
+        scrollValues.scrollHeight &&
+        (this.props.translateContentSizesToHolder ||
+          this.props.translateContentSizeYToHolder ||
+          this.props.translateContentSizeXToHolder)
+      ) {
+        return;
+      }
+    }
+
+    // if scrollbars visibility has changed
+    if (bitmask & (1 << 10) || bitmask & (1 << 11)) {
+      prevScrollState.scrollYBlocked = scrollValues.scrollYBlocked;
+      prevScrollState.scrollXBlocked = scrollValues.scrollXBlocked;
+      prevScrollState.scrollYPossible = scrollValues.scrollYPossible;
+      prevScrollState.scrollXPossible = scrollValues.scrollXPossible;
+
+      if (this.trackYElement && bitmask & (1 << 10)) {
+        this.trackYElement.style.display = scrollValues.trackYVisible ? null : "none";
+      }
+
+      if (this.trackXElement && bitmask & (1 << 11)) {
+        this.trackXElement.style.display = scrollValues.trackXVisible ? null : "none";
+      }
+
+      this.scrollValues = prevScrollState;
+      this.setState({
+        trackYVisible: (this.scrollValues.trackYVisible = scrollValues.trackYVisible)!,
+        trackXVisible: (this.scrollValues.trackXVisible = scrollValues.trackXVisible)!
+      });
+
+      return;
+    }
+
+    (this.props.native ? this.updaterNative : this.updaterCustom)(bitmask, scrollValues);
+
+    this.scrollValues = scrollValues;
+
+    this.eventEmitter.emit("update", { ...scrollValues }, prevScrollState);
+
+    (bitmask & (1 << 4) || bitmask & (1 << 5)) &&
+      this.eventEmitter.emit("scroll", { ...scrollValues }, prevScrollState);
+
+    return this.scrollValues;
+  };
+
+  private updaterNative = (): boolean => {
+    // just for future
+    return true;
+  };
+
+  private updaterCustom = (bitmask: number, scrollValues: ScrollState): boolean => {
+    if (this.trackYElement) {
+      if (
+        this.thumbYElement &&
+        (bitmask & (1 << 0) || bitmask & (1 << 2) || bitmask & (1 << 4) || bitmask & (1 << 6) || bitmask & (1 << 8))
+      ) {
+        if (scrollValues.scrollYPossible) {
+          const trackInnerSize = util.getInnerHeight(this.trackYElement);
+          const thumbSize = util.calcThumbSize(
+            scrollValues.scrollHeight,
+            scrollValues.clientHeight,
+            trackInnerSize,
+            this.props.minimalThumbYSize || this.props.minimalThumbSize,
+            this.props.maximalThumbYSize || this.props.maximalThumbSize
+          );
+          const thumbOffset = util.calcThumbOffset(
+            scrollValues.scrollHeight,
+            scrollValues.clientHeight,
+            trackInnerSize,
+            thumbSize,
+            scrollValues.scrollTop
+          );
+
+          this.thumbYElement.style.transform = `translateY(${thumbOffset}px)`;
+          this.thumbYElement.style.height = thumbSize + "px";
+          this.thumbYElement.style.display = null;
+        } else {
+          this.thumbYElement.style.transform = null;
+          this.thumbYElement.style.height = "0px";
+          this.thumbYElement.style.display = "none";
+        }
+      }
+    }
+
+    if (this.trackXElement) {
+      if (
+        this.thumbXElement &&
+        (bitmask & (1 << 1) ||
+          bitmask & (1 << 3) ||
+          bitmask & (1 << 5) ||
+          bitmask & (1 << 7) ||
+          bitmask & (1 << 9) ||
+          bitmask & (1 << 12))
+      ) {
+        if (scrollValues.scrollXPossible) {
+          const trackInnerSize = util.getInnerWidth(this.trackXElement);
+          const thumbSize = util.calcThumbSize(
+            scrollValues.scrollWidth,
+            scrollValues.clientWidth,
+            trackInnerSize,
+            this.props.minimalThumbXSize || this.props.minimalThumbSize,
+            this.props.maximalThumbXSize || this.props.maximalThumbSize
+          );
+          let thumbOffset = util.calcThumbOffset(
+            scrollValues.scrollWidth,
+            scrollValues.clientWidth,
+            trackInnerSize,
+            thumbSize,
+            scrollValues.scrollLeft
+          );
+
+          if (this.state.isRTL && reverseRTL) {
+            thumbOffset += trackInnerSize - thumbSize;
+          }
+
+          this.thumbXElement.style.transform = `translateX(${thumbOffset}px)`;
+          this.thumbXElement.style.width = thumbSize + "px";
+          this.thumbXElement.style.display = null;
+        } else {
+          this.thumbXElement.style.transform = null;
+          this.thumbXElement.style.width = "0px";
+          this.thumbXElement.style.display = "none";
+        }
+      }
+    }
+
+    return true;
+  };
+
+  private elementRefHolder = (ref: HTMLDivElement | null) => {
+    this.holderElement = ref;
+    typeof this.props.elementRef === "function" && this.props.elementRef(ref);
+  };
+
+  private elementRefWrapper = (ref: HTMLDivElement | null) => {
+    this.wrapperElement = ref;
+    typeof this.props.wrapperProps!.elementRef === "function" && this.props.wrapperProps!.elementRef(ref);
+  };
+
+  private elementRefScroller = (ref: HTMLDivElement | null) => {
+    this.scrollerElement = ref;
+    typeof this.props.scrollerProps!.elementRef === "function" && this.props.scrollerProps!.elementRef(ref);
+  };
+
+  private elementRefContent = (ref: HTMLDivElement | null) => {
+    this.contentElement = ref;
+    typeof this.props.contentProps!.elementRef === "function" && this.props.contentProps!.elementRef(ref);
+  };
+
+  private elementRefTrackX = (ref: HTMLDivElement | null) => {
+    this.trackXElement = ref;
+    typeof this.props.trackXProps!.elementRef === "function" && this.props.trackXProps!.elementRef(ref);
+  };
+  private elementRefTrackY = (ref: HTMLDivElement | null) => {
+    this.trackYElement = ref;
+    typeof this.props.trackYProps!.elementRef === "function" && this.props.trackYProps!.elementRef(ref);
+  };
+
+  private elementRefThumbX = (ref: HTMLDivElement | null) => {
+    this.thumbXElement = ref;
+    typeof this.props.thumbXProps!.elementRef === "function" && this.props.thumbXProps!.elementRef(ref);
+  };
+  private elementRefThumbY = (ref: HTMLDivElement | null) => {
+    this.thumbYElement = ref;
+    typeof this.props.thumbYProps!.elementRef === "function" && this.props.thumbYProps!.elementRef(ref);
+  };
+
+  private handleTrackXClick = (ev: MouseEvent, values: ScrollbarTrackClickParameters): void => {
+    this.props.trackXProps!.onClick && this.props.trackXProps!.onClick!(ev, values);
+
+    if (
+      !this.scrollerElement ||
+      !this.trackXElement ||
+      !this.thumbXElement ||
+      !this.scrollValues ||
+      !this.scrollValues.scrollXPossible
+    ) {
+      return;
+    }
+
+    this._scrollDetection();
+
+    const thumbSize = this.thumbXElement.clientWidth;
+    const trackInnerSize = util.getInnerWidth(this.trackXElement);
+    const thumbOffset =
+      (this.scrollValues.isRTL && reverseRTL
+        ? values.offset + thumbSize / 2 - trackInnerSize
+        : values.offset - thumbSize / 2) -
+      //@ts-ignore
+      (parseFloat(getComputedStyle(this.trackXElement).paddingLeft) || 0);
+
+    let target = util.calcScrollForThumbOffset(
+      this.scrollValues.scrollWidth,
+      this.scrollValues.clientWidth,
+      trackInnerSize,
+      thumbSize,
+      thumbOffset
+    );
+
+    if (this.props.trackClickBehavior === TRACK_CLICK_BEHAVIOR.STEP) {
+      target = (this.scrollValues.isRTL
+      ? this.scrollValues.scrollLeft > target
+      : this.scrollValues.scrollLeft < target)
+        ? this.scrollValues.scrollLeft + this.scrollValues.clientWidth
+        : this.scrollValues.scrollLeft - this.scrollValues.clientWidth;
+    }
+
+    this.scrollerElement.scrollLeft = target;
+  };
+
+  private handleTrackYClick = (ev: MouseEvent, values: ScrollbarTrackClickParameters): void => {
+    this.props.trackYProps!.onClick && this.props.trackYProps!.onClick!(ev, values);
+
+    if (
+      !this.scrollerElement ||
+      !this.trackYElement ||
+      !this.thumbYElement ||
+      !this.scrollValues ||
+      !this.scrollValues.scrollYPossible
+    ) {
+      return;
+    }
+
+    this._scrollDetection();
+
+    const thumbSize = this.thumbYElement!.clientHeight;
+    let target =
+      util.calcScrollForThumbOffset(
+        this.scrollValues.scrollHeight,
+        this.scrollValues.clientHeight,
+        util.getInnerHeight(this.trackYElement),
+        thumbSize,
+        values.offset - thumbSize / 2
+      ) -
+      //@ts-ignore
+      (parseFloat(getComputedStyle(this.trackYElement).paddingTop) || 0);
+
+    if (this.props.trackClickBehavior === TRACK_CLICK_BEHAVIOR.JUMP) {
+      this.scrollerElement.scrollTop = target;
+    } else {
+      this.scrollerElement.scrollTop =
+        this.scrollValues.scrollTop < target
+          ? this.scrollValues.scrollTop + this.scrollValues.clientHeight
+          : this.scrollValues.scrollTop - this.scrollValues.clientHeight;
+    }
+  };
+
+  private handleTrackYMouseWheel = (ev: React.WheelEvent<HTMLDivElement>) => {
+    this.props.trackYProps && this.props.trackYProps.onWheel && this.props.trackYProps.onWheel(ev);
+
+    this._scrollDetection();
+
+    if (!this.scrollerElement || this.scrollValues.scrollYBlocked) {
+      return;
+    }
+
+    this.scrollTop += ev.deltaY;
+  };
+
+  private handleTrackXMouseWheel = (ev: React.WheelEvent<HTMLDivElement>) => {
+    this.props.trackXProps && this.props.trackXProps.onWheel && this.props.trackXProps.onWheel(ev);
+
+    this._scrollDetection();
+
+    if (!this.scrollerElement || this.scrollValues.scrollXBlocked) {
+      return;
+    }
+
+    this.scrollLeft += ev.deltaX;
+  };
+
+  private handleThumbXDrag = (data: DraggableData): void => {
+    if (
+      !this.trackXElement ||
+      !this.thumbXElement ||
+      !this.scrollerElement ||
+      !this.scrollValues ||
+      !this.scrollValues.scrollXPossible
+    ) {
+      return;
+    }
+    this._scrollDetection();
+
+    const trackRect: ClientRect = this.trackXElement.getBoundingClientRect();
+    const styles: CSSStyleDeclaration = getComputedStyle(this.trackXElement);
+    //@ts-ignore
+    const paddingLeft: number = parseFloat(styles.paddingLeft) || 0;
+    //@ts-ignore
+    const paddingRight: number = parseFloat(styles.paddingRight) || 0;
+    const trackInnerSize = trackRect.width - paddingLeft - paddingRight;
+    const thumbSize = this.thumbXElement.clientWidth;
+    const offset =
+      this.scrollValues.isRTL && reverseRTL
+        ? data.x + thumbSize - trackInnerSize + paddingLeft
+        : data.lastX - paddingLeft;
+
+    this.scrollerElement.scrollLeft = util.calcScrollForThumbOffset(
+      this.scrollValues.scrollWidth,
+      this.scrollValues.clientWidth,
+      trackInnerSize,
+      thumbSize,
+      offset
+    );
+  };
+  private handleThumbYDrag = (data: DraggableData): void => {
+    if (
+      !this.scrollerElement ||
+      !this.trackYElement ||
+      !this.thumbYElement ||
+      !this.scrollValues ||
+      !this.scrollValues.scrollYPossible
+    ) {
+      return;
+    }
+    this._scrollDetection();
+
+    const trackRect: ClientRect = this.trackYElement.getBoundingClientRect();
+    const styles: CSSStyleDeclaration = getComputedStyle(this.trackYElement);
+    //@ts-ignore
+    const paddingTop: number = parseFloat(styles.paddingTop) || 0;
+    //@ts-ignore
+    const paddingBottom: number = parseFloat(styles.paddingBottom) || 0;
+    const trackInnerSize = trackRect.height - paddingTop - paddingBottom;
+    const thumbSize = this.thumbYElement.clientHeight;
+    const offset = data.y - paddingTop;
+
+    this.scrollerElement.scrollTop = util.calcScrollForThumbOffset(
+      this.scrollValues.scrollHeight,
+      this.scrollValues.clientHeight,
+      trackInnerSize,
+      thumbSize,
+      offset
+    );
+  };
+
+  private handleScrollerScroll = () => {
+    this._scrollDetection();
+  };
+  private _scrollDetectionTO: number | null;
+  private _scrollDetection = () => {
+    !this._scrollDetectionTO && this.eventEmitter.emit("scrollStart", this.getScrollState());
+
+    this._scrollDetectionTO && global.window && global.window.clearTimeout(this._scrollDetectionTO);
+
+    this._scrollDetectionTO = global.window
+      ? global.window.setTimeout(this._scrollDetectionCallback, this.props.scrollDetectionThreshold || 0)
+      : null;
+  };
+  private _scrollDetectionCallback = () => {
+    this._scrollDetectionTO = null;
+    this.eventEmitter.emit("scrollStop", this.getScrollState());
+  };
+
+  public render(): React.ReactNode {
+    const {
+      createContext,
+      rtl,
+      native,
+      momentum,
+      noDefaultStyles,
+
+      noScrollX,
+      noScrollY,
+      noScroll,
+
+      permanentTrackX,
+      permanentTrackY,
+      permanentTracks,
+
+      removeTracksWhenNotUsed,
+      removeTrackYWhenNotUsed,
+      removeTrackXWhenNotUsed,
+
+      minimalThumbSize,
+      maximalThumbSize,
+      minimalThumbXSize,
+      maximalThumbXSize,
+      minimalThumbYSize,
+      maximalThumbYSize,
+
+      fallbackScrollbarWidth,
+
+      trackClickBehavior,
+
+      scrollDetectionThreshold,
+
+      wrapperProps: propsWrapperProps,
+      scrollerProps: propsScrollerProps,
+      contentProps: propsContentProps,
+      trackXProps: propsTrackXProps,
+      trackYProps: propsTrackYProps,
+      thumbXProps: propsThumbXProps,
+      thumbYProps: propsThumbYProps,
+
+      scrollbarWidth: propsScrollbarWidth,
+
+      elementRef,
+
+      onUpdate,
+      onScroll,
+      onScrollStart,
+      onScrollStop,
+
+      translateContentSizesToHolder,
+      translateContentSizeYToHolder,
+      translateContentSizeXToHolder,
+
+      children,
+
+      ...propsHolderProps
+    } = this.props;
+
+    if (native) {
+      this.elementRefHolder(null);
+      this.elementRefWrapper(null);
+      this.elementRefTrackX(null);
+      this.elementRefTrackY(null);
+      this.elementRefThumbX(null);
+      this.elementRefThumbY(null);
+
+      const contentProps = {
+        ...this.props.contentProps,
+        key: "ScrollbarsCustom-Content",
+        className: cnb("ScrollbarsCustom-Content", propsContentProps!.className),
+        children: this.props.children
+      } as ElementPropsWithElementRefAndRenderer;
+
+      const scrollerProps = {
+        ...propsHolderProps,
+        className: cnb(
+          "ScrollbarsCustom native",
+          this.state.trackYVisible && "trackYVisible",
+          this.state.trackXVisible && "trackXVisible",
+          this.state.isRTL && "rtl",
+          propsHolderProps.className
+        ),
+        style: {
+          ...propsHolderProps.style,
+          ...(typeof rtl !== "undefined" && {
+            direction: rtl ? "rtl" : "ltr"
+          }),
+
+          ...(momentum && { WebkitOverflowScrolling: "touch" }),
+          overflowX: noScroll || noScrollX ? "hidden" : permanentTracks || permanentTrackX ? "scroll" : "auto",
+          overflowY: noScroll || noScrollY ? "hidden" : permanentTracks || permanentTrackY ? "scroll" : "auto"
+        },
+        onScroll: this.handleScrollerScroll,
+        children: renderDivWithRenderer(contentProps, this.elementRefContent),
+        renderer: propsScrollerProps!.renderer,
+        elementRef: propsScrollerProps!.elementRef
+      } as ElementPropsWithElementRefAndRenderer;
+
+      return renderDivWithRenderer(scrollerProps, this.elementRefScroller);
+    }
+
+    const styles = Scrollbar.calculateStyles(
+      this.props,
+      this.state,
+      this.scrollValues,
+      typeof propsScrollbarWidth !== "undefined" ? propsScrollbarWidth : util.getScrollbarWidth()
+    );
+
+    const holderChildren = [] as Array<React.ReactNode>;
+
+    const contentProps = {
+      ...propsContentProps,
+      key: "ScrollbarsCustom-Content",
+      className: cnb("ScrollbarsCustom-Content", propsContentProps!.className),
+      style: styles.content,
+      children: createContext ? (
+        <ScrollbarContext.Provider value={{ parentScrollbar: this }} children={children} />
+      ) : (
+        children
+      )
+    } as ElementPropsWithElementRefAndRenderer;
+
+    const scrollerProps = {
+      ...propsScrollerProps,
+      key: "ScrollbarsCustom-Scroller",
+      className: cnb("ScrollbarsCustom-Scroller", propsScrollerProps!.className),
+      style: styles.scroller,
+      children: renderDivWithRenderer(contentProps, this.elementRefContent),
+      onScroll: this.handleScrollerScroll
+    } as ElementPropsWithElementRefAndRenderer;
+
+    const wrapperProps = {
+      ...propsWrapperProps,
+      key: "ScrollbarsCustom-Wrapper",
+      className: cnb("ScrollbarsCustom-Wrapper", propsWrapperProps!.className),
+      style: styles.wrapper,
+      children: renderDivWithRenderer(scrollerProps, this.elementRefScroller)
+    } as ElementPropsWithElementRefAndRenderer;
+
+    holderChildren.push(renderDivWithRenderer(wrapperProps, this.elementRefWrapper));
+
+    if (this.state.trackYVisible || (!removeTracksWhenNotUsed && !removeTrackYWhenNotUsed)) {
+      const thumbYProps = {
+        ...propsThumbYProps,
+        key: "ScrollbarsCustom-ThumbY",
+        style: styles.thumbY,
+        elementRef: this.elementRefThumbY,
+        onDrag: this.handleThumbYDrag,
+        onDragEnd: this.handleThumbYDrag,
+        axis: AXIS_DIRECTION.Y
+      } as ScrollbarThumbProps;
+
+      const trackYProps = {
+        ...propsTrackYProps,
+        key: "ScrollbarsCustom-TrackY",
+        style: styles.trackY,
+        elementRef: this.elementRefTrackY,
+        onClick: this.handleTrackYClick,
+        onWheel: this.handleTrackYMouseWheel,
+        axis: AXIS_DIRECTION.Y
+      } as ScrollbarTrackProps;
+
+      trackYProps.children = <ScrollbarThumb {...thumbYProps} />;
+      holderChildren.push(<ScrollbarTrack {...trackYProps} />);
+    } else {
+      this.elementRefTrackY(null);
+      this.elementRefThumbY(null);
+    }
+
+    if (this.state.trackXVisible || (!removeTracksWhenNotUsed && !removeTrackXWhenNotUsed)) {
+      const thumbXProps = {
+        ...propsThumbXProps,
+        key: "ScrollbarsCustom-ThumbX",
+        style: styles.thumbX,
+        elementRef: this.elementRefThumbX,
+        onDrag: this.handleThumbXDrag,
+        onDragEnd: this.handleThumbXDrag,
+        axis: AXIS_DIRECTION.X
+      } as ScrollbarThumbProps;
+
+      const trackXProps = {
+        ...propsTrackXProps,
+        key: "ScrollbarsCustom-TrackX",
+        style: styles.trackX,
+        elementRef: this.elementRefTrackX,
+        onClick: this.handleTrackXClick,
+        onWheel: this.handleTrackXMouseWheel,
+        axis: AXIS_DIRECTION.X
+      } as ScrollbarTrackProps;
+
+      trackXProps.children = <ScrollbarThumb {...thumbXProps} />;
+      holderChildren.push(<ScrollbarTrack {...trackXProps} />);
+    } else {
+      this.elementRefTrackX(null);
+      this.elementRefThumbX(null);
+    }
+
+    const holderProps = {
+      ...propsHolderProps,
+      className: cnb(
+        "ScrollbarsCustom",
+        this.state.trackYVisible && "trackYVisible",
+        this.state.trackXVisible && "trackXVisible",
+        this.state.isRTL && "rtl",
+        propsHolderProps.className
+      ),
+      style: styles.holder,
+      children: holderChildren
+    } as ElementPropsWithElementRefAndRenderer;
+
+    return renderDivWithRenderer(holderProps, this.elementRefHolder);
+  }
+
+  public static calculateStyles(props: ScrollbarProps, state: ScrollbarState, scrollValues, scrollbarWidth: number) {
+    const useDefaultStyles = !props.noDefaultStyles;
+
+    return {
+      holder: {
+        ...(useDefaultStyles && defaultStyle.holder),
+        position: "relative",
+        ...props.style
+      } as React.CSSProperties,
+      wrapper: {
+        ...(useDefaultStyles && {
+          ...defaultStyle.wrapper,
+          [state.isRTL ? "left" : "right"]: state.trackYVisible ? 10 : 0,
+          bottom: state.trackXVisible ? 10 : 0
+        }),
+        ...props.wrapperProps!.style,
+        position: "absolute",
+        overflow: "hidden"
+      } as React.CSSProperties,
+      content: {
+        ...(useDefaultStyles && defaultStyle.content)
+      } as React.CSSProperties,
+      scroller: {
+        position: "absolute",
+        top: 0,
+        left: 0,
+        bottom: 0,
+        right: 0,
+        ...props.contentProps!.style,
+
+        ...(typeof props.rtl !== "undefined" && {
+          direction: props.rtl ? "rtl" : "ltr"
+        }),
+
+        ...(props.momentum && { WebkitOverflowScrolling: "touch" }),
+
+        overflowY: scrollValues.scrollYPossible ? "scroll" : "hidden",
+        overflowX: scrollValues.scrollXPossible ? "scroll" : "hidden",
+
+        paddingBottom: !scrollbarWidth && scrollValues.scrollXPossible ? props.fallbackScrollbarWidth : undefined,
+        marginBottom: scrollValues.scrollXPossible ? -(scrollbarWidth || props.fallbackScrollbarWidth!) : undefined,
+
+        [state.isRTL ? "paddingLeft" : "paddingRight"]:
+          !scrollbarWidth && scrollValues.scrollYPossible ? props.fallbackScrollbarWidth : undefined,
+        [state.isRTL ? "marginLeft" : "marginRight"]: scrollValues.scrollYPossible
+          ? -(scrollbarWidth || props.fallbackScrollbarWidth!)
+          : undefined
+      } as React.CSSProperties,
+      trackX: {
+        ...(useDefaultStyles && defaultStyle.track.common),
+        ...(useDefaultStyles && defaultStyle.track.x),
+        ...props.trackXProps!.style,
+        ...(!state.trackXVisible && { display: "none" })
+      } as React.CSSProperties,
+      trackY: {
+        ...(useDefaultStyles && defaultStyle.track.common),
+        ...(useDefaultStyles && defaultStyle.track.y),
+        [state.isRTL ? "left" : "right"]: 0,
+        ...props.trackYProps!.style,
+        ...(!state.trackYVisible && { display: "none" })
+      } as React.CSSProperties,
+      thumbX: {
+        ...(useDefaultStyles && defaultStyle.thumb.common),
+        ...(useDefaultStyles && defaultStyle.thumb.x),
+        ...props.thumbXProps!.style
+      } as React.CSSProperties,
+      thumbY: {
+        ...(useDefaultStyles && defaultStyle.thumb.common),
+        ...(useDefaultStyles && defaultStyle.thumb.y),
+        ...props.thumbYProps!.style
+      } as React.CSSProperties
+    };
+  }
+}

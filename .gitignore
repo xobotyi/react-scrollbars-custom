@@ -1,5 +1,6 @@
-node_modules/
-coverage/
-.idea/
-examples/static/
+.idea
+.rpt2_cache
 package-lock.json
+node_modules
+coverage
+dist

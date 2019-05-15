@@ -1,74 +1,438 @@
-<h1 align="center">react-scrollbars-custom</h1>
-<p align="center">
-    <a href="https://www.npmjs.com/package/react-scrollbars-custom"><img src="https://img.shields.io/badge/npm-react--scrollbars--custom-brightgreen.svg" /></a>
-    <a href="https://www.npmjs.com/package/react-scrollbars-custom"><img src="https://img.shields.io/npm/v/react-scrollbars-custom.svg" /></a>
-    <a href="https://www.npmjs.com/package/react-scrollbars-custom"><img src="https://img.shields.io/npm/dt/react-scrollbars-custom.svg" /></a>
-    <a href="https://www.npmjs.com/package/react-scrollbars-custom"><img src="https://img.shields.io/travis/xobotyi/react-scrollbars-custom.svg" /></a>
-    <a href="https://www.codacy.com/app/xobotyi/react-scrollbars-custom"><img src="https://api.codacy.com/project/badge/Grade/f0875490cea1497a9eca9c25f3f7774e"/></a>
-    <a href="https://www.codacy.com/app/xobotyi/react-scrollbars-custom"><img src="https://api.codacy.com/project/badge/Coverage/f0875490cea1497a9eca9c25f3f7774e"/></a>
-    <a href="https://www.npmjs.com/package/react-scrollbars-custom"><img src="https://img.shields.io/npm/l/react-scrollbars-custom.svg" /></a>
-</p>
-<p align="center">
-    <a href="https://xobotyi.github.io/react-scrollbars-custom/">DEMO</a> · <a href="https://github.com/xobotyi/react-scrollbars-custom/tree/master/docs">DOCUMENTATION</a>
-</p>
+<div align="center">
+    <h1>react-scrollbars-custom</h1>
+    <p>
+        <a href="https://www.npmjs.com/package/react-scrollbars-custom"><img src="https://img.shields.io/badge/npm-react--scrollbars--custom-brightgreen.svg" /></a>
+        <a href="https://www.npmjs.com/package/react-scrollbars-custom"><img src="https://img.shields.io/npm/v/react-scrollbars-custom.svg" /></a>
+        <a href="https://www.npmjs.com/package/react-scrollbars-custom"><img src="https://img.shields.io/npm/dt/react-scrollbars-custom.svg" /></a>
+        <a href="https://www.npmjs.com/package/react-scrollbars-custom"><img src="https://img.shields.io/travis/xobotyi/react-scrollbars-custom.svg" /></a>
+        <a href="https://www.codacy.com/app/xobotyi/react-scrollbars-custom"><img src="https://api.codacy.com/project/badge/Grade/f0875490cea1497a9eca9c25f3f7774e"/></a>
+        <a href="https://www.codacy.com/app/xobotyi/react-scrollbars-custom"><img src="https://api.codacy.com/project/badge/Coverage/f0875490cea1497a9eca9c25f3f7774e"/></a>
+        <a href="https://www.npmjs.com/package/react-scrollbars-custom"><img src="https://img.shields.io/npm/l/react-scrollbars-custom.svg" /></a>
+    </p>
+    × <strong><a href="https://xobotyi.github.io/react-scrollbars-custom/">DEMO</a></strong> ×
+</div>
 
-* Native browser scrolling behaviour - component don't emulate scrolling, only showing custom scrollbars
-* Ultimate performance - 60 fps with help of RAF loop
-* Desktop or mobile - scrollbars looks the same on any device
-* No extra stylesheets required - minimum inline styles out of the box
-* Fully customizable - want a hippo as a scrollbar thumb? Well.. I don't judge you
-* No matter what changes the content - scrollbars always stay actual
-* Total tests coverage
-* Scrollbars nesting
-* RTL support ([read more](https://github.com/xobotyi/react-scrollbars-custom/blob/master/docs/USAGE.md#rtl-support))
-* momentum scrolling for iOS
+---
 
->**IMPORTANT:** default component styles uses [Flexible Box Layout](https://developer.mozilla.org/ru/docs/Web/CSS/CSS_Flexible_Box_Layout) for proper scrollbars display.  
->But you can customize it with help pf inline or linked styles as you wish ([see docs](https://github.com/xobotyi/react-scrollbars-custom/blob/master/docs/CUSTOMISATION.md)). 
+- Native browser scroll behavior - it don't emulate scrolling, only showing custom scrollbars, scrolling itself still native
+- Cross-browser and cross-platform - does not matter where and how, scrollbars looks the same everywhere
+- Ultimate performance - 60 FPS (using RAF) and highly optimised code
+- No extra stylesheets required - minimum inline styles out of the box or you can style it yourself however you want
+- Fully customizable - want a hippo as a scrollbar thumb? Well.. I don't judge you, you're free to do it!
+- Scrollbars nesting
+- Total tests coverage
+- Momentum scrolling for iOS
+- RTL support ([read more](#rtl-support))
 
-## Installation
+## INSTALLATION
+
 ```bash
-npm i --save react-scrollbars-custom
+npm install react-scrollbars-custom
+# or via yarn
+yarn add react-scrollbars-custom
 ```
 
-## Usage
-Minimal configuration
-```javascript
-class App extends Component
-{
-    render() {
-        return (
-                <Scrollbar style={ {width: '100%', height: '100%', minHeight: 300} } >
-                    <p>Hello world!</p>
-                </Scrollbar>
-        );
+## USAGE
+
+Underneath `react-scrollbars-custom` uses `requestAnimationFrame` loop, which check and update each known scrollbar, and as result - scrollbars updates synchronised with browser's render flow.
+The `<Scrollbar />` component works out of the box, with only need of `width` and `height` to be set, inline or via CSS;
+
+```typescript jsx
+<Scrollbar style={{ width: 250, height: 250 }}>
+  <p>Hello world!</p>
+</Scrollbar>
+```
+
+### Internet Explorer
+
+`react-scrollbars-custom` is syntax-compatible with IE10, but you'll have to use polyfills - for example [@babel/polyfill](https://babeljs.io/docs/en/babel-polyfill).
+
+#### Generated HTML
+
+```html
+// scrollbar.holderElement
+<div class="ScrollbarsCustom trackYVisible trackXVisible">
+  // scrollbar.wrapperElement - the one that hiding native scrollbars
+  <div class="ScrollbarsCustom-Wrapper">
+    // scrollbar.scrollerElement - the one that actually has browser's scrollbars
+    <div class="ScrollbarsCustom-Scroller">
+      // scrollbar.contentElement - the one that holds tour content
+      <div class="ScrollbarsCustom-Content">
+        // YOUR CONTENT IS HERE
+      </div>
+    </div>
+  </div>
+  // scrollbar.trackYElement
+  <div class="ScrollbarsCustom-Track ScrollbarsCustom-TrackY">
+    // scrollbar.thumbYElement
+    <div class="ScrollbarsCustom-Thumb ScrollbarsCustom-ThumbY" />
+  </div>
+  // scrollbar.trackXElement
+  <div class="ScrollbarsCustom-Track ScrollbarsCustom-TrackX">
+    // scrollbar.thumbXElement
+    <div class="ScrollbarsCustom-Thumb ScrollbarsCustom-ThumbX" />
+  </div>
+</div>
+```
+
+- If scrolling is possible or tracks are shown die to `permanentScrollbar*` prop - `trackYVisible`/`trackXVisible` classnames are applied to the holder element.
+- When thumb is dragged it'll have `dragging` classname.
+- If direction is RTL - `rtl` classname will be added to the holder element.
+- By default whole structure described above is rendered in spite of tracks visibility, but it can be changed by passing `removeTrackXWhenNotUsed`/`removeTrackYWhenNotUsed`/`removeTracksWhenNotUsed` props to the component. Respective tracks will not be rendered if it is unnecessary.
+
+#### Default styles
+
+Probably you'll wish to customize your scrollbars on your own way via CSS - then simply pass `noDefaultStyles` prop - it will prevent all inline styling from appear.  
+But some of styles will remain due to their need for proper component work.
+
+#### Native mode
+
+One more pretty common need is to disable custom scrollbars and fallback to native ones, it can be done by passing `native` prop.
+It'll change the generated markup:
+
+```html
+// scrollbar.scrollerElement
+<div class="ScrollbarsCustom native trackYVisible trackXVisible">
+  // scrollbar.contentElement - the one that holds tour content
+  <div class="ScrollbarsCustom-Content">
+    // YOUR CONTENT IS HERE
+  </div>
+</div>
+```
+
+As you see here - now the root element has the `scrollerElement` ref, but otherwise its treated as a before (as holder). `contentElement` behaves as it was before.
+
+#### RTL support
+
+`react-scrollbars-custom` supports RTL direction out of the box, you don't have to pass extra parameters to make it work, it'll be detected automatically on first component's render. But you still able to override it through the prop.
+There are several things you have to know about:
+
+- Due to performance reasons direction autodetect happens is 3 cases:
+  - On component mount;
+  - On rtl property change;
+  - On state `isRtl` set to non-boolean value;
+- `rtl` property has priority over the `style` or CSS properties;
+- If `rtl` prop has not been set (undefined) - direction will be detected automatically according to content element's CSS;
+- If `rtl` prop is `true` - `direction: rtl;` style will be applied to hte content element;
+- If `rtl` prop is `false` - no style will be applied to holder;
+
+## CUSTOMISATION
+
+In some cases you may want to change the default className or tagName of elements or add extra markup or whatever. For these purposes `react-scrollbars-custom` made fully customizable.
+You can do absolutely what ever you want y simply passing renderer SFC to the needed props.
+
+> **IMPORTANT**: Renderer will receive elementRef function that expect the DOM element's reference as first parameter.  
+> Furthermore you have to pass the styles, cause they needed to proper component work.
+
+```typescript jsx
+<Scrollbar
+  renderer={props => {
+    const { elementRef, ...restProps } = props;
+    return <span {...restProps} ref={elementRef} className="MyAwesomeScrollbarsHolder" />;
+  }}
+  wrapperProps={{
+    renderer: props => {
+      const { elementRef, ...restProps } = props;
+      return <span {...restProps} ref={elementRef} className="MyAwesomeScrollbarsWrapper" />;
     }
-}
+  }}
+  scrollerProps={{
+    renderer: props => {
+      const { elementRef, ...restProps } = props;
+      return <span {...restProps} ref={elementRef} className="MyAwesomeScrollbarsScroller" />;
+    }
+  }}
+  contentProps={{
+    renderer: props => {
+      const { elementRef, ...restProps } = props;
+      return <span {...restProps} ref={elementRef} className="Content" />;
+    }
+  }}
+  trackXProps={{
+    renderer: props => {
+      const { elementRef, ...restProps } = props;
+      return <span {...restProps} ref={elementRef} className="TrackX" />;
+    }
+  }}
+  trackYProps={{
+    renderer: props => {
+      const { elementRef, ...restProps } = props;
+      return <span {...restProps} ref={elementRef} className="trackY" />;
+    }
+  }}
+  thumbXProps={{
+    renderer: props => {
+      const { elementRef, ...restProps } = props;
+      return <span {...restProps} ref={elementRef} className="ThUmBX" />;
+    }
+  }}
+  thumbYProps={{
+    renderer: props => {
+      const { elementRef, ...restProps } = props;
+      return <span {...restProps} ref={elementRef} className="tHuMbY" />;
+    }
+  }}
+/>
 ```
-All properties and methods are in the [API Documentation](https://github.com/xobotyi/react-scrollbars-custom/tree/master/docs/API.md)
 
-## Examples
-Run the example, it will install dependencies, build current component version and run local web-server listening `localhost:3000` (browser window will open automatically)
-```bash
-# install dependencies if you haven't yet
-npm install
-npm run examples
+## API
+
+### PROPS
+
+You can pass any HTMLDivElement props to the component - they'll be respectfully passed to the holder element/renderer.
+
+**createContext** _`:boolean`_ = undefined  
+Whether to create context that will contain scrollbar instance reference.
+
+**rtl** _`:boolean`_ = undefined  
+`true` - set content's direction RTL, `false` - LTR, `undefined` - autodetect according content's style.
+
+**native** _`:boolean`_ = undefined  
+Do not use custom scrollbars, and render the content in a single div.
+
+**momentum** _`:boolean`_ = true  
+Whether to use momentum scrolling, suitable for iOS (will add `-webkit-overflow-scrolling: touch` to the content element).
+
+**noDefaultStyles** _`:boolean`_ = undefined  
+Whether to use default visual styles.  
+_Note:_ Styles needed to proper component work will be passed regardless of this option.
+
+**minimalThumbSize** _`:number`_ = 30  
+Minimal size of both, vertical and horizontal thumbs. This option has priority to `minimalThumbXSize`/`minimalThumbYSize` props.
+
+**maximalThumbSize** _`:number`_ = undefined  
+Maximal size of both, vertical and horizontal thumbs. This option has priority to `maximalThumbXSize`/`maximalThumbYSize` props.
+
+**minimalThumbXSize** _`:number`_ = undefined  
+Minimal size of horizontal thumb.
+
+**maximalThumbXSize** _`:number`_ = undefined  
+Maximal size of horizontal thumb.
+
+**minimalThumbYSize** _`:number`_ = undefined  
+Minimal size of vertical thumb.
+
+**maximalThumbYSize** _`:number`_ = undefined  
+Maximal size of vertical thumb.
+
+**noScroll** _`:boolean`_ = undefined  
+Whether to disable both vertical and horizontal scrolling.
+
+**noScrollX** _`:boolean`_ = undefined  
+Whether to disable horizontal scrolling.
+
+**noScrollY** _`:boolean`_ = undefined  
+Whether to disable vertical scrolling.
+
+**permanentTracks** _`:boolean`_ = undefined  
+Whether to display both tracks regardless of scrolling ability.
+
+**permanentTrackX** _`:boolean`_ = undefined  
+Whether to display horizontal track regardless of scrolling ability.
+
+**permanentTrackY** _`:boolean`_ = undefined  
+Whether to display vertical track regardless of scrolling ability.
+
+**removeTracksWhenNotUsed** _`:boolean`_ = undefined  
+Whether to remove both vertical and horizontal tracks if scrolling is not possible/bocked and tracks are not permanent.
+
+**removeTrackYWhenNotUsed** _`:boolean`_ = undefined  
+Whether to remove horizontal track if scrolling is not possible/bocked and tracks are not permanent.
+
+**removeTrackXWhenNotUsed** _`:boolean`_ = undefined  
+Whether to remove vertical track if scrolling is not possible/bocked and tracks are not permanent.
+
+**translateContentSizesToHolder** _`:boolean`_ = undefined  
+Pass content's `scrollHeight` and `scrollWidth` values to the holder's `height` and `width` styles. _Not working with `native` behavior._
+
+**translateContentSizeYToHolder** _`:boolean`_ = undefined  
+Pass content's `scrollHeight` values to the holder's `height` style. _Not working with `native` behavior._
+
+**translateContentSizeXToHolder** _`:boolean`_ = undefined  
+Pass content's `scrollWidth` values to the holder's `width` style. _Not working with `native` behavior._
+
+**trackClickBehavior** _`:string`_ = "jump"  
+The way scrolling behaves while user clicked the track:
+
+- _jump_ - will cause straight scroll to the respective position.
+- _step_ - will cause one screen step towards (like PageUp/PageDown) the clicked position.
+
+**scrollbarWidth** _`:number`_ = undefined  
+Scrollbar width value needed to proper native scrollbars hide. While `undefined` it is detected automatically (once per module require).  
+This prop is needed generally for testing purposes.
+
+**fallbackScrollbarWidth** _`:number`_ = 20  
+This value will be used in case of falsy `scrollbarWidth` prop. E.g. it is used for mobile devices, because it is impossible to detect their real scrollbar width (due to their absolute positioning).
+
+**scrollTop** _`:number`_ = undefined  
+Prop that allow you to set vertical scroll.
+
+**scrollLeft** _`:number`_ = undefined  
+Prop that allow you to set horizontal scroll.
+
+**scrollDetectionThreshold** _`:number`_ = 100  
+Amount of seconds after which scrolling will be treated as completed and `scrollStop` event emitted.
+
+**elementRef** _`:function(ref: Scrollbar)`_ = undefined  
+Function that receive the scrollbar instance as 1st parameter.
+
+**renderer** _`:SFC`_ = undefined  
+SFC used to render the holder. [More about renderers usage](#customisation).
+
+**wrapperProps** _`:object`_ = {}  
+Here you can pass any props for wrapper, which is usually HTMLDivElement plus `elementRef` props which behaves as holder's `elementRef` prop.
+
+**contentProps** _`:object`_ = {}  
+Here you can pass any props for content, which is usually HTMLDivElement plus `elementRef` props which behaves as holder's `elementRef` prop.
+
+**trackXProps** _`:object`_ = {}  
+Here you can pass any props for trackX, which is usually HTMLDivElement plus `elementRef` props which behaves as holder's `elementRef` prop.
+
+**trackYProps** _`:object`_ = {}  
+Here you can pass any props for trackY, which is usually HTMLDivElement plus `elementRef` props which behaves as holder's `elementRef` prop.
+
+**thumbXProps** _`:object`_ = {}  
+Here you can pass any props for thumbX, which is usually HTMLDivElement plus `elementRef` props which behaves as holder's `elementRef` prop.
+
+**thumbYProps** _`:object`_ = {}  
+Here you can pass any props for thumbY, which is usually HTMLDivElement plus `elementRef` props which behaves as holder's `elementRef` prop.
+
+**onUpdate** _`:function(scrollValues: ScrollValues, prevScrollValues: ScrollValues)`_ = undefined  
+Function called each time any of scroll values changed and component performed an update. It is called after component's update.
+
+**onScroll** _`:function(scrollValues: ScrollValues, prevScrollValues: ScrollValues)`_ = undefined  
+Function called each time scrollTop or scrollLeft has changed. It is called after component's update and even if scrollTop/scrollLeft has been changed through the code (not by user).
+
+**onScrollStart** _`:function(scrollValues: ScrollValues)`_ = undefined  
+Callback that called immediately when user started scrolling (no matter how, thumb dragging, keyboard, mousewheel and etc.).
+
+**onScrollStop** _`:function(scrollValues: ScrollValues)`_ = undefined
+Callback that called after `props.scrollDetectionThreshold` milliseconds after last scroll event.
+
+### INSTANCE PROPERTIES
+
+**eventEmitter** _`:Emittr`_  
+Event emitter that allow you to add events handler for cases when you access Scrollbars through context
+
+**holderElement** _`:HTMLDivElement | null`_  
+Holder DOM element reference or null if element was not rendered
+
+**wrapperElement** _`:HTMLDivElement | null`_  
+Wrapper DOM element reference or null if element was not rendered
+
+**scrollerElement** _`:HTMLDivElement | null`_  
+Scroller DOM element reference or null if element was not rendered
+
+**contentElement** _`:HTMLDivElement | null`_  
+Content DOM element reference or null if element was not rendered
+
+**trackXElement** _`:HTMLDivElement | null`_  
+Horizontal track DOM element reference or null if element was not rendered
+
+**trackYElement** _`:HTMLDivElement | null`_  
+Vertical track DOM element reference or null if element was not rendered
+
+**thumbXElement** _`:HTMLDivElement | null`_  
+Horizontal thumb DOM element reference or null if element was not rendered
+
+**thumbYElement** _`:HTMLDivElement | null`_  
+Vertical thumb DOM element reference or null if element was not rendered
+
+(get|set) **scrollTop** _`:number`_  
+Content's element scroll top
+
+(get|set) **scrollLeft** _`:number`_  
+Content's element scroll left
+
+(get) **scrollHeight** _`:number`_  
+Content's element scroll height
+
+(get) **scrollWidth** _`:number`_  
+Content's element scroll width
+
+(get) **clientHeight** _`:number`_  
+Content's element client height
+
+(get) **clientWidth** _`:number`_  
+Content's element client width
+
+### INSTANCE METHODS
+
+**getScrollState(force:boolean = false)** _`:plain object`_
+Current scroll-related values, if `force` parameter is falsy - returns cached value which updated with RAF loop
+Returned values:
+
+```typescript
+type ScrollState = {
+  /**
+   * @description Content's native clientHeight parameter
+   */
+  clientHeight: number;
+  /**
+   * @description Content's native clientWidth parameter
+   */
+  clientWidth: number;
+  /**
+   * @description Content's native scrollHeight parameter
+   */
+  scrollHeight: number;
+  /**
+   * @description Content's native scrollWidth parameter
+   */
+  scrollWidth: number;
+  /**
+   * @description Content's native scrollTop parameter
+   */
+  scrollTop: number;
+  /**
+   * @description Content's native scrollLeft parameter
+   */
+  scrollLeft: number;
+  /**
+   * @description Indicates whether vertical scroll blocked via properties
+   */
+  scrollYBlocked: boolean;
+  /**
+   * @description Indicates whether horizontal scroll blocked via properties
+   */
+  scrollXBlocked: boolean;
+  /**
+   * @description Indicates whether the content overflows vertically and scrolling not blocked
+   */
+  scrollYPossible: boolean;
+  /**
+   * @description Indicates whether the content overflows horizontally and scrolling not blocked
+   */
+  scrollXPossible: boolean;
+  /**
+   * @description Indicates whether vertical track is visible
+   */
+  trackYVisible: boolean;
+  /**
+   * @description Indicates whether horizontal track is visible
+   */
+  trackXVisible: boolean;
+  /**
+   * @description Indicates whether display direction is right-to-left
+   */
+  isRTL?: boolean;
+};
 ```
 
-## Tests
-```bash
-# install dependencies if you haven't yet
-npm install
-npm run test
-```
+**scrollToTop()** _`:this`_  
+Scroll to the very top border of scrollable area
 
-## Coverage
-```bash
-# install dependencies if you haven't yet
-npm install
-npm run test:coverage
-```
+**scrollToLeft()** _`:this`_  
+Scroll to the very left border of scrollable area
 
-## Credits
-Big thanks to [@malte-wessel](https://github.com/malte-wessel) with his [react-custom-scrollbars](https://github.com/malte-wessel/react-custom-scrollbars) which I used before writing this component.  
-So don't be wondered that repos and code look similar in some places, his package used as ethalon. And for the users convenience i've tried to make API's seamless as much as it possible.
+**scrollToBottom()** _`:this`_  
+Scroll to the very bottom border of scrollable area
+
+**scrollToRight()** _`:this`_  
+Scroll to the very right border of scrollable area
+
+**scrollTo(x?: number, y?: number)** _`:this`_  
+Set the current scroll at given coordinates. If any value is `undefined` it'll be left as is.
+
+**centerAt(x?: number, y?: number)** _`:this`_  
+Center viewport at given coordinates. If any value is `undefined` it'll be left as is.

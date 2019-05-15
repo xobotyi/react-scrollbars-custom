@@ -1,9 +1,7 @@
 {
   "name": "react-scrollbars-custom",
   "description": "The best React custom scrollbars component",
-  "version": "3.1.5",
-  "main": "dist/index.js",
-  "types": "index.d.ts",
+  "version": "4.0.0-alpha.15",
   "repository": {
     "type": "git",
     "url": "https://github.com/xobotyi/react-scrollbars-custom.git"
@@ -18,78 +16,63 @@
     "customizable",
     "scrollbars",
     "scroll",
-    "scroller",
     "scrollbar",
     "react",
     "component",
-    "react-component",
     "custom"
   ],
-  "dependencies": {
-    "bowser": "^2.0.0-beta.3"
-  },
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "types": "dist/types/index.d.ts",
   "peerDependencies": {
-    "react": "^0.14.0 || ^15.0.0 || ^16.0.0",
-    "react-dom": "^0.14.0 || ^15.0.0 || ^16.0.0",
-    "prop-types": "^15.0.0"
+    "prop-types": "^15.0.0",
+    "react": "^16.0.0"
+  },
+  "dependencies": {
+    "cnbuilder": "^1.0.14",
+    "react-draggable": "^3.3.0"
   },
   "devDependencies": {
-    "@babel/cli": "^7.1.5",
-    "@babel/core": "^7.1.5",
-    "@babel/plugin-proposal-class-properties": "^7.1.0",
-    "@babel/preset-env": "^7.1.5",
-    "@babel/preset-react": "^7.0.0",
-    "babel-loader": "^8.0.4",
-    "babel-plugin-istanbul": "^5.1.0",
-    "cleandir-webpack-plugin": "^0.1.4",
-    "codacy-coverage": "^3.2.0",
+    "@babel/core": "^7.4.4",
+    "@babel/preset-env": "^7.4.4",
+    "@types/jasmine": "^3.3.12",
+    "@types/karma": "^3.0.2",
+    "@types/prop-types": "^15.7.1",
+    "@types/react": "^16.8.15",
     "cross-env": "^5.2.0",
-    "css-loader": "^1.0.1",
-    "enzyme": "^3.7.0",
-    "enzyme-adapter-react-16": "^1.7.0",
-    "expect": "^23.6.0",
-    "html-loader": "^0.5.5",
-    "html-webpack-plugin": "^3.2.0",
-    "husky": "^1.1.3",
-    "karma": "^3.1.1",
+    "husky": "^1.3.1",
+    "jasmine-core": "^3.3.0",
+    "karma": "^4.1.0",
     "karma-chrome-launcher": "^2.2.0",
-    "karma-coverage-istanbul-reporter": "^2.0.4",
-    "karma-mocha": "^1.3.0",
-    "karma-mocha-reporter": "^2.2.5",
-    "karma-webpack": "^3.0.5",
-    "mini-css-extract-plugin": "^0.4.4",
-    "mocha": "^5.2.0",
-    "node-sass": "^4.10.0",
-    "prettier": "^1.15.2",
-    "prop-types": "^15.6.2",
-    "react": "^16.6.1",
-    "react-dom": "^16.6.1",
-    "rimraf": "^2.6.2",
-    "sass-loader": "^7.1.0",
+    "karma-jasmine": "^2.0.1",
+    "karma-typescript": "^4.0.0",
+    "prettier": "^1.17.0",
+    "pretty-quick": "^1.10.0",
+    "prop-types": "^15.0.0",
+    "react": "^16.8.5",
+    "react-dom": "^16.8.5",
+    "rimraf": "^2.6.3",
+    "rollup": "^1.10.1",
+    "rollup-plugin-babel": "^4.3.2",
+    "rollup-plugin-typescript2": "^0.19.3",
     "simulant": "^0.2.2",
-    "sinon": "^7.1.1",
-    "webpack": "^4.25.1",
-    "webpack-cli": "^3.1.2",
-    "webpack-dev-server": "^3.1.10"
+    "typescript": "^3.4.5"
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npm run build && npm run format && git add .",
-      "post-commit": "git update-index -g"
+      "pre-commit": "pretty-quick --staged"
     }
   },
   "scripts": {
-    "build": "rimraf ./dist && babel src -d dist --ignore \"node-modules/**\" --presets \"@babel/preset-react,@babel/preset-env\" --plugins \"@babel/plugin-proposal-class-properties\"",
-    "push-codacy-coverage": "cat ./coverage/lcov.info | codacy-coverage -p .",
-    "examples": "cd ./examples && webpack-dev-server --mode development --hot --colors --progress --config webpack.config.dev.js",
-    "examples:build": "cd ./examples && rimraf ./static && cross-env NODE_ENV=production webpack --colors --progress --config webpack.config.prod.js",
-    "test": "cross-env NODE_ENV=test karma start",
-    "test:watch": "cross-env NODE_ENV=test karma start --auto-watch --no-single-run",
-    "test:coverage": "cross-env NODE_ENV=test COVERAGE=true karma start --single-run",
-    "format": "prettier --write src/**/*.js tests/**/*.js examples/**/*.js",
-    "format:list": "prettier -l src/**/*.js tests/**/*.js examples/**/*.js",
-    "preversion": "npm run test && npm run build && npm run format",
+    "format": "prettier --write src/**/*.ts tests/**/*.ts src/**/*.js tests/**/*.js *.js *.ts",
+    "devserver": "cd ./testbench && npm i && npm run devserver",
+    "build": "rimraf ./dist && rollup --config",
+    "test": "cross-env NODE_ENV=production karma start",
+    "preversion": "npm run format && npm run build",
     "postversion": "git push && git push --tags",
-    "prepublishOnly": "npm run test && npm run build"
+    "prepublishOnly": "npm run format && npm run test && npm run build"
+  },
+  "prettier": {
+    "printWidth": 120
   }
 }

@@ -52,22 +52,25 @@ The `<Scrollbar />` component works out of the box, with only need of `width` an
 ```html
 // scrollbar.holderElement
 <div class="ScrollbarsCustom trackYVisible trackXVisible">
-  // scrollbar.wrapperElement
-  <div class="ScrollbarWrapper">
-    // scrollbar.contentElement
-    <div class="ScrollbarContent">
-      // YOUR CONTENT IS HERE
+  // scrollbar.wrapperElement - the one that hiding native scrollbars
+  <div class="ScrollbarsCustom-Wrapper">
+    // scrollbar.scrollerElement - the one that actually has browser's scrollbars
+    <div class="ScrollbarsCustom-Scroller">
+      // scrollbar.contentElement - the one that holds tour content
+      <div class="ScrollbarsCustom-Content">
+        // YOUR CONTENT IS HERE
+      </div>
     </div>
   </div>
   // scrollbar.trackYElement
-  <div class="ScrollbarTrack ScrollbarTrack-Y">
+  <div class="ScrollbarsCustom-Track ScrollbarsCustom-TrackY">
     // scrollbar.thumbYElement
-    <div class="ScrollbarThumb ScrollbarThumb-Y" />
+    <div class="ScrollbarsCustom-Thumb ScrollbarsCustom-ThumbY" />
   </div>
   // scrollbar.trackXElement
-  <div class="ScrollbarTrack ScrollbarTrack-X">
+  <div class="ScrollbarsCustom-Track ScrollbarsCustom-TrackX">
     // scrollbar.thumbXElement
-    <div class="ScrollbarThumb ScrollbarThumb-X" />
+    <div class="ScrollbarsCustom-Thumb ScrollbarsCustom-ThumbX" />
   </div>
 </div>
 ```
@@ -88,11 +91,16 @@ One more pretty common need is to disable custom scrollbars and fallback to nati
 It'll change the generated markup:
 
 ```html
-// scrollbar.contentElement
+// scrollbar.scrollerElement
 <div class="ScrollbarsCustom native trackYVisible trackXVisible">
-  // YOUR CONTENT IS HERE
+  // scrollbar.contentElement - the one that holds tour content
+  <div class="ScrollbarsCustom-Content">
+    // YOUR CONTENT IS HERE
+  </div>
 </div>
 ```
+
+As you see here - now the root element has the `scrollerElement` ref, but otherwise its treated as a before (as holder). `contentElement` behaves as it was before.
 
 #### RTL support
 
@@ -126,6 +134,12 @@ You can do absolutely what ever you want y simply passing renderer SFC to the ne
     renderer: props => {
       const { elementRef, ...restProps } = props;
       return <span {...restProps} ref={elementRef} className="MyAwesomeScrollbarsWrapper" />;
+    }
+  }}
+  scrollerProps={{
+    renderer: props => {
+      const { elementRef, ...restProps } = props;
+      return <span {...restProps} ref={elementRef} className="MyAwesomeScrollbarsScroller" />;
     }
   }}
   contentProps={{
@@ -306,6 +320,9 @@ Holder DOM element reference or null if element was not rendered
 **wrapperElement** _`:HTMLDivElement | null`_  
 Wrapper DOM element reference or null if element was not rendered
 
+**scrollerElement** _`:HTMLDivElement | null`_  
+Scroller DOM element reference or null if element was not rendered
+
 **contentElement** _`:HTMLDivElement | null`_  
 Content DOM element reference or null if element was not rendered
 
@@ -341,12 +358,12 @@ Content's element client width
 
 ### INSTANCE METHODS
 
-**getScrollValues(force:boolean = false)** _`:plain object`_
+**getScrollState(force:boolean = false)** _`:plain object`_
 Current scroll-related values, if `force` parameter is falsy - returns cached value which updated with RAF loop
 Returned values:
 
 ```typescript
-type ScrollValues = {
+type ScrollState = {
   /**
    * @description Content's native clientHeight parameter
    */

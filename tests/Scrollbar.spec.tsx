@@ -1009,10 +1009,10 @@ describe("Scrollbar", () => {
         node,
         function() {
           setTimeout(() => {
-            expect(this.holderElement.clientWidth).toBe(this.contentElement.offsetWidth);
-            expect(this.holderElement.clientHeight).toBe(this.contentElement.offsetHeight);
+            expect(this.holderElement.clientWidth).toBe(this.contentElement.scrollWidth);
+            expect(this.holderElement.clientHeight).toBe(this.contentElement.scrollHeight);
             done();
-          }, 30);
+          }, 50);
         }
       );
     });
@@ -1025,10 +1025,10 @@ describe("Scrollbar", () => {
         node,
         function() {
           setTimeout(() => {
-            expect(this.holderElement.clientWidth).toBe(this.contentElement.offsetWidth);
-            expect(this.holderElement.clientHeight).not.toBe(this.contentElement.offsetHeight);
+            expect(this.holderElement.clientWidth).toBe(this.contentElement.scrollWidth);
+            expect(this.holderElement.clientHeight).not.toBe(this.contentElement.scrollHeight);
             done();
-          }, 30);
+          }, 50);
         }
       );
     });
@@ -1044,7 +1044,7 @@ describe("Scrollbar", () => {
             expect(this.holderElement.clientWidth).not.toBe(this.contentElement.scrollWidth);
             expect(this.holderElement.clientHeight).toBe(this.contentElement.scrollHeight);
             done();
-          }, 30);
+          }, 50);
         }
       );
     });
@@ -1419,8 +1419,8 @@ describe("Scrollbar", () => {
         clientHeight: 0,
         clientWidth: 0,
 
-        contentOffsetWidth: 0,
-        contentOffsetHeight: 0,
+        contentScrollHeight: 0,
+        contentScrollWidth: 0,
 
         scrollHeight: 0,
         scrollWidth: 0,
@@ -1546,6 +1546,49 @@ describe("Scrollbar", () => {
   });
 
   describe("callbacks", () => {
+    it("these goes for coverage to ensure it is triggered", done => {
+      const onUpdateSpy1 = jasmine.createSpy();
+      const onUpdateSpy2 = jasmine.createSpy();
+
+      const onScrollSpy1 = jasmine.createSpy();
+      const onScrollSpy2 = jasmine.createSpy();
+
+      const onScrollStartSpy1 = jasmine.createSpy();
+      const onScrollStartSpy2 = jasmine.createSpy();
+
+      const onScrollStopSpy1 = jasmine.createSpy();
+      const onScrollStopSpy2 = jasmine.createSpy();
+
+      let setScrollbarProps;
+
+      ReactDOM.render(
+        <ScrollbarPropsUpdater
+          ref={ref => (setScrollbarProps = ref && ref.setScrollbarProps)}
+          scrollbarProps={{
+            onUpdate: onUpdateSpy1,
+            onScroll: onScrollSpy1,
+            onScrollStart: onScrollStartSpy1,
+            onScrollStop: onScrollStopSpy1
+          }}
+        >
+          <div style={{ width: 200, height: 200 }} />
+        </ScrollbarPropsUpdater>,
+        node,
+        function() {
+          setScrollbarProps({
+            onUpdate: onUpdateSpy2,
+            onScroll: onScrollSpy2,
+            onScrollStart: onScrollStartSpy2,
+            onScrollStop: onScrollStopSpy2
+          });
+
+          setTimeout(() => {
+            done();
+          }, 30);
+        }
+      );
+    });
+
     it("should call an onScroll only if scroll has changed", done => {
       let setScrollbarProps;
       let spy = jasmine.createSpy("scroll", scrollValues => {

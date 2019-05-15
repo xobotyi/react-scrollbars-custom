@@ -63,13 +63,13 @@ export type ScrollState = {
   clientWidth: number;
 
   /**
-   * @description Content's offset height
+   * @description Content's scroll height
    */
-  contentOffsetHeight: number;
+  contentScrollHeight: number;
   /**
-   * @description Content's offset width
+   * @description Content's scroll width
    */
-  contentOffsetWidth: number;
+  contentScrollWidth: number;
 
   /**
    * @description Scroller's native scrollHeight parameter

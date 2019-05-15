@@ -7,7 +7,7 @@ class App extends React.Component<{}, { count: number }> {
   public render(): React.ReactNode {
     return (
       <Scrollbar
-        style={{ minHeight: 200, minWidth: 200, maxHeight: 600, maxWidth: 600, margin: 64 }}
+        style={{ minHeight: 200, minWidth: 200, maxHeight: 500, maxWidth: 600, margin: 64 }}
         translateContentSizesToHolder
         compensateScrollbarsWidth={false}
       >

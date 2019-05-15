@@ -16,9 +16,8 @@ export const style = {
   } as React.CSSProperties,
 
   content: {
-    display: "block",
-    position: "relative",
-    boxSizing: "border-box"
+    display: "inline-block",
+    verticalAlign: "bottom"
   } as React.CSSProperties,
 
   track: {

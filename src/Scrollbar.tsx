@@ -484,8 +484,8 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
     let scrollState: ScrollState = {
       clientHeight: 0,
       clientWidth: 0,
-      contentOffsetHeight: 0,
-      contentOffsetWidth: 0,
+      contentScrollHeight: 0,
+      contentScrollWidth: 0,
       scrollHeight: 0,
       scrollWidth: 0,
       scrollTop: 0,
@@ -523,8 +523,8 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
     }
 
     if (this.contentElement) {
-      scrollState.contentOffsetHeight = this.contentElement.offsetHeight;
-      scrollState.contentOffsetWidth = this.contentElement.offsetWidth;
+      scrollState.contentScrollHeight = this.contentElement.scrollHeight;
+      scrollState.contentScrollWidth = this.contentElement.scrollWidth;
     }
 
     return scrollState;
@@ -614,28 +614,28 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
       return this.getScrollState();
     }
 
-    const scrollValues: ScrollState = this.getScrollState(true);
+    const scrollState: ScrollState = this.getScrollState(true);
     const prevScrollState: ScrollState = { ...this.scrollValues };
 
     let bitmask: number = 0;
 
     if (!force) {
-      prevScrollState.clientHeight !== scrollValues.clientHeight && (bitmask |= 1 << 0);
-      prevScrollState.clientWidth !== scrollValues.clientWidth && (bitmask |= 1 << 1);
-      prevScrollState.scrollHeight !== scrollValues.scrollHeight && (bitmask |= 1 << 2);
-      prevScrollState.scrollWidth !== scrollValues.scrollWidth && (bitmask |= 1 << 3);
-      prevScrollState.scrollTop !== scrollValues.scrollTop && (bitmask |= 1 << 4);
-      prevScrollState.scrollLeft !== scrollValues.scrollLeft && (bitmask |= 1 << 5);
-      prevScrollState.scrollYBlocked !== scrollValues.scrollYBlocked && (bitmask |= 1 << 6);
-      prevScrollState.scrollXBlocked !== scrollValues.scrollXBlocked && (bitmask |= 1 << 7);
-      prevScrollState.scrollYPossible !== scrollValues.scrollYPossible && (bitmask |= 1 << 8);
-      prevScrollState.scrollXPossible !== scrollValues.scrollXPossible && (bitmask |= 1 << 9);
-      prevScrollState.trackYVisible !== scrollValues.trackYVisible && (bitmask |= 1 << 10);
-      prevScrollState.trackXVisible !== scrollValues.trackXVisible && (bitmask |= 1 << 11);
-      prevScrollState.isRTL !== scrollValues.isRTL && (bitmask |= 1 << 12);
+      prevScrollState.clientHeight !== scrollState.clientHeight && (bitmask |= 1 << 0);
+      prevScrollState.clientWidth !== scrollState.clientWidth && (bitmask |= 1 << 1);
+      prevScrollState.scrollHeight !== scrollState.scrollHeight && (bitmask |= 1 << 2);
+      prevScrollState.scrollWidth !== scrollState.scrollWidth && (bitmask |= 1 << 3);
+      prevScrollState.scrollTop !== scrollState.scrollTop && (bitmask |= 1 << 4);
+      prevScrollState.scrollLeft !== scrollState.scrollLeft && (bitmask |= 1 << 5);
+      prevScrollState.scrollYBlocked !== scrollState.scrollYBlocked && (bitmask |= 1 << 6);
+      prevScrollState.scrollXBlocked !== scrollState.scrollXBlocked && (bitmask |= 1 << 7);
+      prevScrollState.scrollYPossible !== scrollState.scrollYPossible && (bitmask |= 1 << 8);
+      prevScrollState.scrollXPossible !== scrollState.scrollXPossible && (bitmask |= 1 << 9);
+      prevScrollState.trackYVisible !== scrollState.trackYVisible && (bitmask |= 1 << 10);
+      prevScrollState.trackXVisible !== scrollState.trackXVisible && (bitmask |= 1 << 11);
+      prevScrollState.isRTL !== scrollState.isRTL && (bitmask |= 1 << 12);
 
-      prevScrollState.contentOffsetHeight !== scrollValues.contentOffsetHeight && (bitmask |= 1 << 13);
-      prevScrollState.contentOffsetWidth !== scrollValues.contentOffsetWidth && (bitmask |= 1 << 14);
+      prevScrollState.contentScrollHeight !== scrollState.contentScrollHeight && (bitmask |= 1 << 13);
+      prevScrollState.contentScrollWidth !== scrollState.contentScrollWidth && (bitmask |= 1 << 14);
 
       // if not forced and nothing has changed - skip this update
       if (bitmask === 0) {
@@ -650,14 +650,14 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
         bitmask & (1 << 13) &&
         (this.props.translateContentSizesToHolder || this.props.translateContentSizeYToHolder)
       ) {
-        this.holderElement.style.height = scrollValues.contentOffsetHeight + "px";
+        this.holderElement.style.height = scrollState.contentScrollHeight + "px";
       }
 
       if (
         bitmask & (1 << 14) &&
         (this.props.translateContentSizesToHolder || this.props.translateContentSizeXToHolder)
       ) {
-        this.holderElement.style.width = scrollValues.contentOffsetWidth + "px";
+        this.holderElement.style.width = scrollState.contentScrollWidth + "px";
       }
 
       if (
@@ -666,8 +666,8 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
         this.props.translateContentSizeXToHolder
       ) {
         if (
-          (!scrollValues.clientHeight && scrollValues.contentOffsetHeight) ||
-          (!scrollValues.clientWidth && scrollValues.contentOffsetWidth)
+          (!scrollState.clientHeight && scrollState.contentScrollHeight) ||
+          (!scrollState.clientWidth && scrollState.contentScrollWidth)
         ) {
           return;
         }
@@ -676,36 +676,35 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
 
     // if scrollbars visibility has changed
     if (bitmask & (1 << 10) || bitmask & (1 << 11)) {
-      prevScrollState.scrollYBlocked = scrollValues.scrollYBlocked;
-      prevScrollState.scrollXBlocked = scrollValues.scrollXBlocked;
-      prevScrollState.scrollYPossible = scrollValues.scrollYPossible;
-      prevScrollState.scrollXPossible = scrollValues.scrollXPossible;
+      prevScrollState.scrollYBlocked = scrollState.scrollYBlocked;
+      prevScrollState.scrollXBlocked = scrollState.scrollXBlocked;
+      prevScrollState.scrollYPossible = scrollState.scrollYPossible;
+      prevScrollState.scrollXPossible = scrollState.scrollXPossible;
 
       if (this.trackYElement && bitmask & (1 << 10)) {
-        this.trackYElement.style.display = scrollValues.trackYVisible ? null : "none";
+        this.trackYElement.style.display = scrollState.trackYVisible ? null : "none";
       }
 
       if (this.trackXElement && bitmask & (1 << 11)) {
-        this.trackXElement.style.display = scrollValues.trackXVisible ? null : "none";
+        this.trackXElement.style.display = scrollState.trackXVisible ? null : "none";
       }
 
       this.scrollValues = prevScrollState;
       this.setState({
-        trackYVisible: (this.scrollValues.trackYVisible = scrollValues.trackYVisible)!,
-        trackXVisible: (this.scrollValues.trackXVisible = scrollValues.trackXVisible)!
+        trackYVisible: (this.scrollValues.trackYVisible = scrollState.trackYVisible)!,
+        trackXVisible: (this.scrollValues.trackXVisible = scrollState.trackXVisible)!
       });
 
       return;
     }
 
-    (this.props.native ? this.updaterNative : this.updaterCustom)(bitmask, scrollValues);
+    (this.props.native ? this.updaterNative : this.updaterCustom)(bitmask, scrollState);
 
-    this.scrollValues = scrollValues;
+    this.scrollValues = scrollState;
 
-    this.eventEmitter.emit("update", { ...scrollValues }, prevScrollState);
+    this.eventEmitter.emit("update", { ...scrollState }, prevScrollState);
 
-    (bitmask & (1 << 4) || bitmask & (1 << 5)) &&
-      this.eventEmitter.emit("scroll", { ...scrollValues }, prevScrollState);
+    (bitmask & (1 << 4) || bitmask & (1 << 5)) && this.eventEmitter.emit("scroll", { ...scrollState }, prevScrollState);
 
     return this.scrollValues;
   };

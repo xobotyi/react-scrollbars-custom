@@ -55,21 +55,6 @@ export class RAFLoop {
   };
 
   /**
-   * @description Callback that called each animation frame.
-   */
-  private rafCallback = (): number => {
-    if (!this._isActive) {
-      return 0;
-    }
-
-    for (let i = 0; i < this.targets.length; i++) {
-      !this.targets[i]._unmounted && this.targets[i].update();
-    }
-
-    return (this.animationFrameID = requestAnimationFrame(this.rafCallback));
-  };
-
-  /**
    * @description Add target to the iteration list if it's not there.
    */
   public addTarget = (target: UpdatableItem, silent: boolean = false): this => {
@@ -95,6 +80,21 @@ export class RAFLoop {
     }
 
     return this;
+  };
+
+  /**
+   * @description Callback that called each animation frame.
+   */
+  private rafCallback = (): number => {
+    if (!this._isActive) {
+      return 0;
+    }
+
+    for (let i = 0; i < this.targets.length; i++) {
+      !this.targets[i]._unmounted && this.targets[i].update();
+    }
+
+    return (this.animationFrameID = requestAnimationFrame(this.rafCallback));
   };
 }
 

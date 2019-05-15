@@ -23,6 +23,7 @@
 - Total tests coverage
 - Momentum scrolling for iOS
 - RTL support ([read more](#rtl-support))
+- Content sizes translation ([read more](#content-sizes-translation))
 
 ## INSTALLATION
 
@@ -47,40 +48,7 @@ The `<Scrollbar />` component works out of the box, with only need of `width` an
 
 `react-scrollbars-custom` is syntax-compatible with IE10, but you'll have to use polyfills - for example [@babel/polyfill](https://babeljs.io/docs/en/babel-polyfill).
 
-#### Generated HTML
-
-```html
-// scrollbar.holderElement
-<div class="ScrollbarsCustom trackYVisible trackXVisible">
-  // scrollbar.wrapperElement - the one that hiding native scrollbars
-  <div class="ScrollbarsCustom-Wrapper">
-    // scrollbar.scrollerElement - the one that actually has browser's scrollbars
-    <div class="ScrollbarsCustom-Scroller">
-      // scrollbar.contentElement - the one that holds tour content
-      <div class="ScrollbarsCustom-Content">
-        // YOUR CONTENT IS HERE
-      </div>
-    </div>
-  </div>
-  // scrollbar.trackYElement
-  <div class="ScrollbarsCustom-Track ScrollbarsCustom-TrackY">
-    // scrollbar.thumbYElement
-    <div class="ScrollbarsCustom-Thumb ScrollbarsCustom-ThumbY" />
-  </div>
-  // scrollbar.trackXElement
-  <div class="ScrollbarsCustom-Track ScrollbarsCustom-TrackX">
-    // scrollbar.thumbXElement
-    <div class="ScrollbarsCustom-Thumb ScrollbarsCustom-ThumbX" />
-  </div>
-</div>
-```
-
-- If scrolling is possible or tracks are shown die to `permanentScrollbar*` prop - `trackYVisible`/`trackXVisible` classnames are applied to the holder element.
-- When thumb is dragged it'll have `dragging` classname.
-- If direction is RTL - `rtl` classname will be added to the holder element.
-- By default whole structure described above is rendered in spite of tracks visibility, but it can be changed by passing `removeTrackXWhenNotUsed`/`removeTrackYWhenNotUsed`/`removeTracksWhenNotUsed` props to the component. Respective tracks will not be rendered if it is unnecessary.
-
-#### Default styles
+#### Styling
 
 Probably you'll wish to customize your scrollbars on your own way via CSS - then simply pass `noDefaultStyles` prop - it will prevent all inline styling from appear.  
 But some of styles will remain due to their need for proper component work.
@@ -102,6 +70,12 @@ It'll change the generated markup:
 
 As you see here - now the root element has the `scrollerElement` ref, but otherwise its treated as a before (as holder). `contentElement` behaves as it was before.
 
+#### Content sizes translation
+
+In some situations you may want to make the scrollbars block of variable sizes - just pass `translateContentSize*ToHolder` prop and component will automatically translate corresponding `contentElement`'s sizes to the `holderElement`.  
+If you are using default styles - it'll be handy to pass `compensateScrollbarsWidth={false}` props, to avoid infinite shrinking when it's not supposed to.  
+_Note:_ This wont work for native mode.
+
 #### RTL support
 
 `react-scrollbars-custom` supports RTL direction out of the box, you don't have to pass extra parameters to make it work, it'll be detected automatically on first component's render. But you still able to override it through the prop.
@@ -116,7 +90,7 @@ There are several things you have to know about:
 - If `rtl` prop is `true` - `direction: rtl;` style will be applied to hte content element;
 - If `rtl` prop is `false` - no style will be applied to holder;
 
-## CUSTOMISATION
+## Customisation
 
 In some cases you may want to change the default className or tagName of elements or add extra markup or whatever. For these purposes `react-scrollbars-custom` made fully customizable.
 You can do absolutely what ever you want y simply passing renderer SFC to the needed props.
@@ -175,6 +149,39 @@ You can do absolutely what ever you want y simply passing renderer SFC to the ne
 />
 ```
 
+#### Generated HTML
+
+```html
+// scrollbar.holderElement
+<div class="ScrollbarsCustom trackYVisible trackXVisible">
+  // scrollbar.wrapperElement - the one that hiding native scrollbars
+  <div class="ScrollbarsCustom-Wrapper">
+    // scrollbar.scrollerElement - the one that actually has browser's scrollbars
+    <div class="ScrollbarsCustom-Scroller">
+      // scrollbar.contentElement - the one that holds tour content
+      <div class="ScrollbarsCustom-Content">
+        // YOUR CONTENT IS HERE
+      </div>
+    </div>
+  </div>
+  // scrollbar.trackYElement
+  <div class="ScrollbarsCustom-Track ScrollbarsCustom-TrackY">
+    // scrollbar.thumbYElement
+    <div class="ScrollbarsCustom-Thumb ScrollbarsCustom-ThumbY" />
+  </div>
+  // scrollbar.trackXElement
+  <div class="ScrollbarsCustom-Track ScrollbarsCustom-TrackX">
+    // scrollbar.thumbXElement
+    <div class="ScrollbarsCustom-Thumb ScrollbarsCustom-ThumbX" />
+  </div>
+</div>
+```
+
+- If scrolling is possible or tracks are shown die to `permanentScrollbar*` prop - `trackYVisible`/`trackXVisible` classnames are applied to the holder element.
+- When thumb is dragged it'll have `dragging` classname.
+- If direction is RTL - `rtl` classname will be added to the holder element.
+- By default whole structure described above is rendered in spite of tracks visibility, but it can be changed by passing `removeTrackXWhenNotUsed`/`removeTrackYWhenNotUsed`/`removeTracksWhenNotUsed` props to the component. Respective tracks will not be rendered if it is unnecessary.
+
 ## API
 
 ### PROPS
@@ -196,6 +203,10 @@ Whether to use momentum scrolling, suitable for iOS (will add `-webkit-overflow-
 **noDefaultStyles** _`:boolean`_ = undefined  
 Whether to use default visual styles.  
 _Note:_ Styles needed to proper component work will be passed regardless of this option.
+
+**compensateScrollbarsWidth** _`:boolean`_ = true  
+Whether to add indents to wrapper element in order to not let content flow under the tracks.
+_Note:_ Works only with default styles enabled.
 
 **minimalThumbSize** _`:number`_ = 30  
 Minimal size of both, vertical and horizontal thumbs. This option has priority to `minimalThumbXSize`/`minimalThumbYSize` props.

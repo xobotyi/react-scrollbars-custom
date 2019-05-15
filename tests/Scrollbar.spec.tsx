@@ -1009,8 +1009,8 @@ describe("Scrollbar", () => {
         node,
         function() {
           setTimeout(() => {
-            expect(this.holderElement.clientWidth).toBe(this.contentElement.scrollWidth);
-            expect(this.holderElement.clientHeight).toBe(this.contentElement.scrollHeight);
+            expect(this.holderElement.clientWidth).toBe(this.contentElement.offsetWidth);
+            expect(this.holderElement.clientHeight).toBe(this.contentElement.offsetHeight);
             done();
           }, 30);
         }
@@ -1025,8 +1025,8 @@ describe("Scrollbar", () => {
         node,
         function() {
           setTimeout(() => {
-            expect(this.holderElement.clientWidth).toBe(this.contentElement.scrollWidth);
-            expect(this.holderElement.clientHeight).not.toBe(this.contentElement.scrollHeight);
+            expect(this.holderElement.clientWidth).toBe(this.contentElement.offsetWidth);
+            expect(this.holderElement.clientHeight).not.toBe(this.contentElement.offsetHeight);
             done();
           }, 30);
         }
@@ -1041,8 +1041,8 @@ describe("Scrollbar", () => {
         node,
         function() {
           setTimeout(() => {
-            expect(this.holderElement.clientWidth).not.toBe(this.scrollerElement.scrollWidth);
-            expect(this.holderElement.clientHeight).toBe(this.scrollerElement.scrollHeight);
+            expect(this.holderElement.clientWidth).not.toBe(this.contentElement.scrollWidth);
+            expect(this.holderElement.clientHeight).toBe(this.contentElement.scrollHeight);
             done();
           }, 30);
         }
@@ -1404,18 +1404,24 @@ describe("Scrollbar", () => {
       const props: ScrollbarProps = {
         wrapperProps: {},
         contentProps: {},
+        scrollerProps: {},
         trackYProps: {},
         trackXProps: {},
         thumbXProps: {},
-        thumbYProps: {}
+        thumbYProps: {},
+        compensateScrollbarsWidth: true
       };
       const state: ScrollbarState = {
         trackYVisible: true,
         trackXVisible: true
       };
-      const scrollValues: ScrollState = {
+      const scrollState: ScrollState = {
         clientHeight: 0,
         clientWidth: 0,
+
+        contentOffsetWidth: 0,
+        contentOffsetHeight: 0,
+
         scrollHeight: 0,
         scrollWidth: 0,
         scrollTop: 0,
@@ -1439,7 +1445,7 @@ describe("Scrollbar", () => {
             ...state,
             isRTL: true
           },
-          scrollValues,
+          scrollState,
           17
         );
 
@@ -1455,7 +1461,7 @@ describe("Scrollbar", () => {
             ...state,
             isRTL: false
           },
-          scrollValues,
+          scrollState,
           17
         );
         expect(result.scroller.direction).toBe("ltr");
@@ -1470,7 +1476,7 @@ describe("Scrollbar", () => {
             ...state,
             isRTL: false
           },
-          scrollValues,
+          scrollState,
           17
         );
         expect(result.scroller.direction).toBe(undefined);
@@ -1488,7 +1494,7 @@ describe("Scrollbar", () => {
             ...state,
             isRTL: true
           },
-          scrollValues,
+          scrollState,
           0
         );
 
@@ -1507,7 +1513,7 @@ describe("Scrollbar", () => {
             ...state,
             isRTL: false
           },
-          scrollValues,
+          scrollState,
           0
         );
 
@@ -1527,7 +1533,7 @@ describe("Scrollbar", () => {
             isRTL: true
           },
           {
-            ...scrollValues,
+            ...scrollState,
             scrollYPossible: false
           },
           0

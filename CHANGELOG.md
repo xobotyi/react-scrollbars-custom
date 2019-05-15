@@ -8,7 +8,7 @@
 
 #### v4.0.0-alpha.15
 
-- Due to some issues with content size translation and paddings added extra wrapper element;
+- Due to some issues with content paddings added extra wrapper element;
 - Little API changes;
 - Classnames changes;
 

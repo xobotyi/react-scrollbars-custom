@@ -54,29 +54,38 @@ export type ElementPropsWithElementRefAndRenderer<T = HTMLDivElement> = React.HT
  */
 export type ScrollState = {
   /**
-   * @description Content's native clientHeight parameter
+   * @description Scroller's native clientHeight parameter
    */
   clientHeight: number;
   /**
-   * @description Content's native clientWidth parameter
+   * @description Scroller's native clientWidth parameter
    */
   clientWidth: number;
 
   /**
-   * @description Content's native scrollHeight parameter
+   * @description Content's scroll height
+   */
+  contentScrollHeight: number;
+  /**
+   * @description Content's scroll width
+   */
+  contentScrollWidth: number;
+
+  /**
+   * @description Scroller's native scrollHeight parameter
    */
   scrollHeight: number;
   /**
-   * @description Content's native scrollWidth parameter
+   * @description Scroller's native scrollWidth parameter
    */
   scrollWidth: number;
 
   /**
-   * @description Content's native scrollTop parameter
+   * @description Scroller's native scrollTop parameter
    */
   scrollTop: number;
   /**
-   * @description Content's native scrollLeft parameter
+   * @description Scroller's native scrollLeft parameter
    */
   scrollLeft: number;
 

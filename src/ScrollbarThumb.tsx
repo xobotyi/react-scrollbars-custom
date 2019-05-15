@@ -26,23 +26,6 @@ export type ScrollbarThumbProps = ElementPropsWithElementRefAndRenderer & {
 };
 
 export default class ScrollbarThumb extends React.Component<ScrollbarThumbProps, {}> {
-  private prevUserSelect: string | null;
-  private prevOnSelectStart: ((ev: Event) => boolean) | null;
-
-  public initialOffsetX: number = 0;
-  public initialOffsetY: number = 0;
-
-  public lastDragData: DragCallbackData = {
-    x: 0,
-    y: 0,
-    deltaX: 0,
-    deltaY: 0,
-    lastX: 0,
-    lastY: 0
-  };
-
-  public element: HTMLDivElement | null = null;
-
   static propTypes = {
     axis: AXIS_DIRECTION_PROP_TYPE,
 
@@ -53,6 +36,21 @@ export default class ScrollbarThumb extends React.Component<ScrollbarThumbProps,
     elementRef: PropTypes.func,
     renderer: PropTypes.func
   };
+  public initialOffsetX: number = 0;
+  public initialOffsetY: number = 0;
+  public lastDragData: DragCallbackData = {
+    x: 0,
+    y: 0,
+    deltaX: 0,
+    deltaY: 0,
+    lastX: 0,
+    lastY: 0
+  };
+  public element: HTMLDivElement | null = null;
+  private prevUserSelect: string | null;
+  private prevOnSelectStart: ((ev: Event) => boolean) | null;
+
+  private static selectStartReplacer = () => false;
 
   public componentDidMount(): void {
     if (!this.element) {
@@ -70,8 +68,6 @@ export default class ScrollbarThumb extends React.Component<ScrollbarThumbProps,
 
     this.elementRef(null);
   }
-
-  private static selectStartReplacer = () => false;
 
   public handleOnDragStart = (ev: DraggableEvent, data: DraggableData) => {
     if (!this.element) {

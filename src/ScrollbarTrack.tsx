@@ -22,8 +22,6 @@ export type ScrollbarTrackProps = ElementPropsWithElementRefAndRenderer & {
 };
 
 export default class ScrollbarTrack extends React.Component<ScrollbarTrackProps, {}> {
-  public element: HTMLDivElement | null = null;
-
   static propTypes = {
     axis: AXIS_DIRECTION_PROP_TYPE,
 
@@ -32,6 +30,7 @@ export default class ScrollbarTrack extends React.Component<ScrollbarTrackProps,
     elementRef: PropTypes.func,
     renderer: PropTypes.func
   };
+  public element: HTMLDivElement | null = null;
 
   public componentDidMount(): void {
     if (!this.element) {

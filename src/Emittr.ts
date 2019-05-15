@@ -19,26 +19,6 @@ export default class Emittr {
     this._handlers = Object.create(null);
   }
 
-  setMaxHandlers(count: number): this {
-    if (typeof count !== "number" || count < 0 || !count) {
-      throw new TypeError(`Expected maxHandlers to be a positive number, got '${count}' of type ${typeof count}`);
-    }
-    this._maxHandlers = count;
-    return this;
-  }
-
-  getMaxHandlers(): number {
-    return this._maxHandlers;
-  }
-
-  public emit(name: string, ...args: any[]): boolean {
-    if (typeof this._handlers[name] !== "object" || !Array.isArray(this._handlers[name])) {
-      return false;
-    }
-    Emittr._callEventHandlers(this, this._handlers[name], args);
-    return true;
-  }
-
   private static _callEventHandlers(emitter: Emittr, handlers: EventHandlersList, args: any[]) {
     if (!handlers.length) {
       return;
@@ -68,6 +48,7 @@ export default class Emittr {
     prepend ? emitter._handlers[name].unshift(handler) : emitter._handlers[name].push(handler);
     return emitter;
   };
+
   private static _onceWrapper = function _onceWrapper(...args: any[]) {
     if (!this.fired) {
       this.fired = true;
@@ -75,21 +56,6 @@ export default class Emittr {
       Reflect.apply(this.handler, this.emitter, args);
     }
   };
-
-  private _wrapOnceHandler(name: string, handler: EventHandler): OnceHandler {
-    const onceState: OnceHandlerState = {
-      fired: false,
-      handler,
-      wrappedHandler: undefined,
-      emitter: this,
-      event: name
-    };
-    const wrappedHandler: OnceHandler = Emittr._onceWrapper.bind(onceState);
-    onceState.wrappedHandler = wrappedHandler;
-    wrappedHandler.handler = handler;
-    wrappedHandler.event = name;
-    return wrappedHandler;
-  }
 
   private static _removeHandler = (emitter: Emittr, name: string, handler: EventHandler): Emittr => {
     if (typeof handler !== "function") {
@@ -122,6 +88,26 @@ export default class Emittr {
     emitter.emit("removeHandler", name, handler);
     return emitter;
   };
+
+  setMaxHandlers(count: number): this {
+    if (typeof count !== "number" || count < 0 || !count) {
+      throw new TypeError(`Expected maxHandlers to be a positive number, got '${count}' of type ${typeof count}`);
+    }
+    this._maxHandlers = count;
+    return this;
+  }
+
+  getMaxHandlers(): number {
+    return this._maxHandlers;
+  }
+
+  public emit(name: string, ...args: any[]): boolean {
+    if (typeof this._handlers[name] !== "object" || !Array.isArray(this._handlers[name])) {
+      return false;
+    }
+    Emittr._callEventHandlers(this, this._handlers[name], args);
+    return true;
+  }
 
   public on(name: string, handler: EventHandler): this {
     Emittr._addHandler(this, name, handler);
@@ -169,5 +155,20 @@ export default class Emittr {
       }
     }
     return this;
+  }
+
+  private _wrapOnceHandler(name: string, handler: EventHandler): OnceHandler {
+    const onceState: OnceHandlerState = {
+      fired: false,
+      handler,
+      wrappedHandler: undefined,
+      emitter: this,
+      event: name
+    };
+    const wrappedHandler: OnceHandler = Emittr._onceWrapper.bind(onceState);
+    onceState.wrappedHandler = wrappedHandler;
+    wrappedHandler.handler = handler;
+    wrappedHandler.event = name;
+    return wrappedHandler;
   }
 }

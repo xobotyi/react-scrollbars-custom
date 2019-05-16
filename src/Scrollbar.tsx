@@ -716,6 +716,7 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
       native,
       momentum,
       noDefaultStyles,
+      compensateScrollbarsWidth,
 
       noScrollX,
       noScrollY,
@@ -953,9 +954,9 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
 
           this.thumbYElement.style.transform = `translateY(${thumbOffset}px)`;
           this.thumbYElement.style.height = thumbSize + "px";
-          this.thumbYElement.style.display = null;
+          this.thumbYElement.style.display = "";
         } else {
-          this.thumbYElement.style.transform = null;
+          this.thumbYElement.style.transform = "";
           this.thumbYElement.style.height = "0px";
           this.thumbYElement.style.display = "none";
         }
@@ -995,9 +996,9 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
 
           this.thumbXElement.style.transform = `translateX(${thumbOffset}px)`;
           this.thumbXElement.style.width = thumbSize + "px";
-          this.thumbXElement.style.display = null;
+          this.thumbXElement.style.display = "";
         } else {
-          this.thumbXElement.style.transform = null;
+          this.thumbXElement.style.transform = "";
           this.thumbXElement.style.width = "0px";
           this.thumbXElement.style.display = "none";
         }

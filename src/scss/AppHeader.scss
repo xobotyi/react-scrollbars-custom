@@ -1,0 +1,54 @@
+#App-Header {
+  display:     flex;
+  align-items: center;
+  margin:      3rem 4rem;
+
+  & > .left {
+    display:     flex;
+    align-items: center;
+    flex-grow:   1;
+    flex-shrink: 0;
+  }
+
+  & > .right {
+    display:     flex;
+    align-items: center;
+    flex-shrink: 0;
+  }
+
+  .App-PackageName {
+    display:     inline-block;
+    font-family: "Fira Mono", sans-serif;
+    font-size:   3.125rem;
+    line-height: 5rem;
+    color:       rgba(255, 255, 255, .87);
+    font-weight: 500;
+  }
+
+  .App-PackageVersion {
+    font-family:   "Fira Mono", sans-serif;
+    font-size:     1.375rem;
+    font-weight:   500;
+    line-height:   2.125rem;
+    padding:       .125rem .5rem;
+    background:    rgba(255, 255, 255, .08);
+    border-radius: .25rem;
+    margin-left:   1rem;
+    position:      relative;
+    top:           .125rem;
+  }
+
+  .App-PackageRepoLink {
+    color:           rgba(255, 255, 255, .45);
+    text-decoration: none;
+
+    svg {
+      width:  5rem;
+      height: 5rem;
+    }
+
+    &:hover {
+      color: rgba(255, 255, 255, .87);
+    }
+  }
+}

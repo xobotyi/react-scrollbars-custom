@@ -1,7 +1,3 @@
 node_modules/
-coverage/
-examples/
-src/
-tests/
-.idea/
 package-lock.json
+.idea

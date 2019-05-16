@@ -1,0 +1,44 @@
+#AppRoot {
+  & > .ScrollbarsCustom {
+    position:  relative;
+    width:     100%;
+    height:    100%;
+    flex-grow: 1;
+
+    & > .ScrollbarsCustom-Wrapper {
+      top:    0;
+      left:   0;
+      right:  0;
+      bottom: 0;
+
+      & > .ScrollbarsCustom-Scroller {
+        display:        flex;
+        flex-direction: column;
+
+        & > .ScrollbarsCustom-Content {
+          display:        inline-flex;
+          flex-direction: column;
+          flex-grow:      1;
+          width:          100%;
+        }
+      }
+    }
+  }
+}
+
+#App {
+  width:      100%;
+  max-width:  1200px;
+  align-self: center;
+
+  a.link {
+    color: #3996da;
+
+    &:hover {
+      color: #9ed6ff;
+    }
+  }
+}
+
+@import "AppHeader";
+@import "AppPromo";

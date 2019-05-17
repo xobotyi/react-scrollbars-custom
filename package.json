@@ -10,7 +10,11 @@
     "url": "https://github.com/xobotyi/react-scrollbars-custom/issues"
   },
   "homepage": "https://github.com/xobotyi/react-scrollbars-custom",
-  "author": "Anton Zinovyev",
+  "author": {
+    "name": "Anton Zinovyev",
+    "url": "https://github.com/xobotyi",
+    "email": "xog3@yandex.ru"
+  },
   "license": "MIT",
   "keywords": [
     "customizable",

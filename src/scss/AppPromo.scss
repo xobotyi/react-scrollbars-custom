@@ -1,18 +1,18 @@
 #App-Promo {
-  display:     flex;
+  display: flex;
   align-items: flex-start;
-  padding:     0 4rem;
+  padding: 0 4rem;
 
   .App-Description {
-    flex-grow:   0;
-    width:       50%;
+    flex-grow: 0;
+    width: 46%;
 
     font-family: "Fira Mono", sans-serif;
-    font-size:   1.875rem;
+    font-size: 1.875rem;
     line-height: 2.25rem;
 
     p {
-      margin:      0 0 1.25rem;
+      margin: 0 0 1.25rem;
       text-indent: 1rem;
     }
 
@@ -22,35 +22,35 @@
   }
 
   .App-FeatureList {
-    flex-grow:   0;
-    width:       45%;
-    margin-left: 5%;
+    flex-grow: 0;
+    width: 50%;
+    margin-left: 4%;
   }
 
   .FeatureList-Title {
-    margin:      0 0 1.5rem;
-    color:       rgba(255, 255, 255, .87);
+    margin: 0 0 1.5rem;
+    color: rgba(255, 255, 255, 0.87);
     font-weight: 500;
     font-family: "Fira Mono", sans-serif;
-    font-size:   1.75rem;
+    font-size: 1.75rem;
   }
 
   .FeatureList-Item {
     margin-bottom: 1rem;
-    font-family:   "Fira Mono", sans-serif;
-    font-size:     1.625rem;
-    line-height:   2rem;
-    position:      relative;
+    font-family: "Fira Mono", sans-serif;
+    font-size: 1.5rem;
+    line-height: 2rem;
+    position: relative;
 
     &:before {
-      content:       "";
-      width:         .75rem;
-      height:        .75rem;
-      position:      absolute;
-      left:          -1.5rem;
-      top:           calc(50% - .5rem);
-      border-radius: .125rem;
-      background:    rgba(255, 255, 255, .25);
+      content: "";
+      width: 0.75rem;
+      height: 0.75rem;
+      position: absolute;
+      left: -1.5rem;
+      top: calc(50% - 0.5rem);
+      border-radius: 0.125rem;
+      background: rgba(255, 255, 255, 0.25);
     }
   }
 }

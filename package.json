@@ -14,12 +14,15 @@
     "babel-loader": "^8.0.6",
     "core-js": "^3.0.1",
     "css-loader": "^2.1.1",
+    "husky": "^2.3.0",
     "mini-css-extract-plugin": "^0.6.0",
     "node-sass": "^4.12.0",
+    "prettier": "^1.17.1",
+    "pretty-quick": "^1.10.0",
     "prop-types": "^15.7.2",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
-    "react-scrollbars-custom": "^4.0.0-alpha.17",
+    "react-scrollbars-custom": "^4.0.0-alpha.18",
     "rimraf": "^2.6.3",
     "sass-loader": "^7.1.0",
     "terser-webpack-plugin": "^1.2.4",
@@ -31,5 +34,10 @@
     "build": "rimraf ./dist && webpack -p --mode production --optimize-minimize --colors --progress --config webpack.config.js",
     "build:dev": "rimraf ./dist && webpack -d --mode development --colors --progress --config webpack.config.js",
     "devserver": "webpack-dev-server --open -d --mode development --hot --colors --progress --devtool source-map --config webpack.config.js "
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
   }
 }

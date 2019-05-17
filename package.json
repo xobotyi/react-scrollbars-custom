@@ -39,5 +39,8 @@
     "hooks": {
       "pre-commit": "pretty-quick --staged"
     }
+  },
+  "prettier": {
+    "printWidth": 120
   }
 }

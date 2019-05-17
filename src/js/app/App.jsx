@@ -3,7 +3,7 @@ import Scrollbar from "react-scrollbars-custom";
 import AppFooter from "./AppFooter";
 import AppHeader from "./AppHeader";
 import AppPromo from "./AppPromo";
-import CardsGrid from "./CardsGrid";
+import ExamplesGrid from "./ExamplesGrid";
 
 export default class App extends React.Component {
   render() {
@@ -14,7 +14,7 @@ export default class App extends React.Component {
 
           <AppPromo />
 
-          <CardsGrid />
+          <ExamplesGrid />
 
           <AppFooter />
         </div>

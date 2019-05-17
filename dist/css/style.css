@@ -32,7 +32,7 @@ body {
 html {
   background: #353535;
   color: rgba(255, 255, 255, 0.75);
-  font-family: "Open Sans", sans-serif;
+  font-family: "Fira Mono", sans-serif;
   font-size: 8px;
   -webkit-font-smoothing: subpixel-antialiased !important;
   font-weight: 400;
@@ -66,18 +66,11 @@ body {
   right: 0;
   bottom: 0;
 }
-#AppRoot
-  > .ScrollbarsCustom
-  > .ScrollbarsCustom-Wrapper
-  > .ScrollbarsCustom-Scroller {
+#AppRoot > .ScrollbarsCustom > .ScrollbarsCustom-Wrapper > .ScrollbarsCustom-Scroller {
   display: flex;
   flex-direction: column;
 }
-#AppRoot
-  > .ScrollbarsCustom
-  > .ScrollbarsCustom-Wrapper
-  > .ScrollbarsCustom-Scroller
-  > .ScrollbarsCustom-Content {
+#AppRoot > .ScrollbarsCustom > .ScrollbarsCustom-Wrapper > .ScrollbarsCustom-Scroller > .ScrollbarsCustom-Content {
   display: inline-flex;
   flex-direction: column;
   flex-grow: 1;
@@ -147,12 +140,11 @@ body {
 #App-Promo {
   display: flex;
   align-items: flex-start;
-  padding: 0 4rem;
+  padding: 2rem 4rem;
 }
 #App-Promo .App-Description {
   flex-grow: 0;
   width: 46%;
-  font-family: "Fira Mono", sans-serif;
   font-size: 1.875rem;
   line-height: 2.25rem;
 }
@@ -172,12 +164,10 @@ body {
   margin: 0 0 1.5rem;
   color: rgba(255, 255, 255, 0.87);
   font-weight: 500;
-  font-family: "Fira Mono", sans-serif;
   font-size: 1.75rem;
 }
 #App-Promo .FeatureList-Item {
   margin-bottom: 1rem;
-  font-family: "Fira Mono", sans-serif;
   font-size: 1.5rem;
   line-height: 2rem;
   position: relative;
@@ -217,9 +207,42 @@ body {
   text-decoration: underline;
   color: rgba(255, 255, 255, 0.87);
 }
-#CardsGrid {
+#ExamplesGrid {
   flex-grow: 1;
   display: flex;
   position: relative;
-  padding: 3rem 4rem;
+  padding: 3rem 3rem;
+  flex-wrap: wrap;
+}
+#ExamplesGrid > .ExampleCard {
+  display: block;
+  position: relative;
+  padding: 2rem;
+  width: calc(50% - 2rem);
+  margin: 1rem;
+}
+#ExamplesGrid > .ExampleCard > .ExampleCard-Title {
+  font-size: 1.875rem;
+  margin: 0 0 1rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.87);
+}
+#ExamplesGrid > .ExampleCard > .ExampleCard-Description {
+  font-size: 1.625rem;
+  margin: 0 0 1rem;
+}
+#ExamplesGrid > .ExampleCard > .ExampleCard-Description p {
+  margin-top: 0.5rem;
+}
+#ExamplesGrid > .ExampleCard .ExampleCard-Paragraph {
+  font-size: 1.5rem;
+  padding: 0.5rem 1rem 0.5rem 0.5rem;
+}
+#ExamplesGrid > .ExampleCard > .ExampleCard-Holder {
+  display: block;
+  position: relative;
+  width: 100%;
+  min-height: 30rem;
+  margin: 0.5rem 0 0;
 }

@@ -1,0 +1,45 @@
+#ExamplesGrid {
+  flex-grow: 1;
+  display: flex;
+  position: relative;
+  padding: 3rem 3rem;
+  flex-wrap: wrap;
+
+  & > .ExampleCard {
+    display: block;
+    position: relative;
+    padding: 2rem;
+    width: calc(50% - 2rem);
+    margin: 1rem;
+
+    & > .ExampleCard-Title {
+      font-size: 1.875rem;
+      margin: 0 0 1rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.87);
+    }
+
+    & > .ExampleCard-Description {
+      font-size: 1.625rem;
+      margin: 0 0 1rem;
+
+      p {
+        margin-top: 0.5rem;
+      }
+    }
+
+    .ExampleCard-Paragraph {
+      font-size: 1.5rem;
+      padding: 0.5rem 1rem 0.5rem 0.5rem;
+    }
+
+    & > .ExampleCard-Holder {
+      display: block;
+      position: relative;
+      width: 100%;
+      min-height: 30rem;
+      margin: 1rem 0 0;
+    }
+  }
+}

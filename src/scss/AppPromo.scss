@@ -1,13 +1,12 @@
 #App-Promo {
   display: flex;
   align-items: flex-start;
-  padding: 0 4rem;
+  padding: 2rem 4rem;
 
   .App-Description {
     flex-grow: 0;
     width: 46%;
 
-    font-family: "Fira Mono", sans-serif;
     font-size: 1.875rem;
     line-height: 2.25rem;
 
@@ -31,13 +30,11 @@
     margin: 0 0 1.5rem;
     color: rgba(255, 255, 255, 0.87);
     font-weight: 500;
-    font-family: "Fira Mono", sans-serif;
     font-size: 1.75rem;
   }
 
   .FeatureList-Item {
     margin-bottom: 1rem;
-    font-family: "Fira Mono", sans-serif;
     font-size: 1.5rem;
     line-height: 2rem;
     position: relative;

@@ -2,8 +2,20 @@
   display: flex;
   align-items: flex-start;
   padding: 2rem 4rem;
+  position: relative;
 
-  .App-Description {
+  &:after {
+    content: "";
+    display: block;
+    position: absolute;
+    bottom: -0.5rem;
+    right: 5rem;
+    height: 1px;
+    width: calc(100% - 10rem);
+    background: rgba(255, 255, 255, 0.12);
+  }
+
+  .App-About {
     flex-grow: 0;
     width: 46%;
 
@@ -18,6 +30,13 @@
     .links {
       margin-top: 3rem;
     }
+  }
+
+  .About-Title {
+    margin: 0 0 1.5rem;
+    color: rgba(255, 255, 255, 0.87);
+    font-weight: 500;
+    font-size: 1.75rem;
   }
 
   .App-FeatureList {

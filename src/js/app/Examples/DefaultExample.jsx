@@ -31,7 +31,11 @@ export default class DefaultExample extends React.Component {
   render() {
     return (
       <div className="ExampleCard">
-        <div className="ExampleCard-Title">Default styles</div>
+        <div className="ExampleCard-Head">
+          <div className="ExampleCard-Title">Default style</div>
+
+          <div className="ExampleCard-Links" />
+        </div>
 
         <div className="ExampleCard-Description">
           <p>
@@ -39,13 +43,15 @@ export default class DefaultExample extends React.Component {
             browser support strategy.
           </p>
           <p>
-            They're maid mostly for light style as most part of the web is light, but that's not a problem you can style
-            it however you want!
+            They're maid mostly for light style as most part of the web is light, but that's not a problem - you can
+            style it however you want!
           </p>
         </div>
 
+        <div className="ExampleCard-Separator">×</div>
+
         <div className="ExampleCard-Holder">
-          <Scrollbar>{renderAmountOfParagraphs()}</Scrollbar>
+          <Scrollbar>{renderAmountOfParagraphs(10)}</Scrollbar>
         </div>
       </div>
     );

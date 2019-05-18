@@ -45,7 +45,7 @@
     (n.o = function(e, t) {
       return Object.prototype.hasOwnProperty.call(e, t);
     }),
-    (n.p = "/"),
+    (n.p = "https://xobotyi.github.io/react-scrollbars-custom/"),
     n((n.s = 482));
 })([
   function(e, t, n) {

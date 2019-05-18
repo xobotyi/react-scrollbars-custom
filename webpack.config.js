@@ -2,18 +2,20 @@ const path = require("path");
 const webpack = require("webpack");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const HtmlWebpackExcludeAssetsPlugin = require("html-webpack-exclude-assets-plugin");
 
 const RSC_PACKAGE = require("react-scrollbars-custom/package");
 
 module.exports = {
   target: "web",
   entry: {
-    "dist/js/bundle.js": path.join(__dirname, "src", "js", "index.jsx"),
+    "dist/js/bundle": path.join(__dirname, "src", "js", "index.jsx"),
     "dist/css/style": path.join(__dirname, "src", "scss", "style.scss")
   },
   output: {
     path: __dirname,
-    filename: "[name]",
+    filename: "[name].[hash].js",
     publicPath: "/"
   },
   resolve: {
@@ -34,15 +36,20 @@ module.exports = {
   },
   plugins: [
     new MiniCssExtractPlugin({
-      filename: "[name].css",
-      chunkFilename: "[id].css"
+      filename: "[name].[contenthash].css"
     }),
     new webpack.DefinePlugin({
       RSC_VERSION: JSON.stringify(RSC_PACKAGE.version),
       RSC_NAME: JSON.stringify(RSC_PACKAGE.name),
       RSC_HOMEPAGE: JSON.stringify(RSC_PACKAGE.homepage),
       RSC_AUTHOR: JSON.stringify(RSC_PACKAGE.author)
-    })
+    }),
+    new HtmlWebpackPlugin({
+      title: `${RSC_PACKAGE.name} demo page`,
+      template: path.join(__dirname, "src", "index.html"),
+      excludeAssets: [/css.*.js/]
+    }),
+    new HtmlWebpackExcludeAssetsPlugin()
   ],
   module: {
     rules: [
@@ -82,7 +89,20 @@ module.exports = {
       },
       {
         test: /\.scss$/,
-        use: [MiniCssExtractPlugin.loader, "css-loader", "sass-loader"]
+        use: [
+          {
+            loader: MiniCssExtractPlugin.loader,
+            options: { sourceMap: false, hmr: process.env.NODE_ENV === "development" }
+          },
+          {
+            loader: "css-loader",
+            options: { sourceMap: false, url: false }
+          },
+          {
+            loader: "sass-loader",
+            options: { sourceMap: false, outputStyle: "compressed" }
+          }
+        ]
       }
     ]
   }

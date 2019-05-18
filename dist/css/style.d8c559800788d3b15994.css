@@ -30,7 +30,7 @@ body {
   width: 100%;
 }
 html {
-  background: #353535;
+  background: #2f2f2f;
   color: rgba(255, 255, 255, 0.75);
   font-family: "Fira Mono", sans-serif;
   font-size: 8px;
@@ -78,7 +78,7 @@ body {
 }
 #App {
   width: 100%;
-  max-width: 1200px;
+  max-width: 1280px;
   align-self: center;
   flex-grow: 1;
   display: flex;
@@ -122,9 +122,7 @@ body {
   padding: 0.125rem 0.5rem;
   background: rgba(255, 255, 255, 0.08);
   border-radius: 0.25rem;
-  margin-left: 1rem;
-  position: relative;
-  top: 0.125rem;
+  margin-left: 1.25rem;
 }
 #App-Header .App-PackageRepoLink {
   color: rgba(255, 255, 255, 0.45);
@@ -141,19 +139,36 @@ body {
   display: flex;
   align-items: flex-start;
   padding: 2rem 4rem;
+  position: relative;
 }
-#App-Promo .App-Description {
+#App-Promo:after {
+  content: "";
+  display: block;
+  position: absolute;
+  bottom: -0.5rem;
+  right: 5rem;
+  height: 1px;
+  width: calc(100% - 10rem);
+  background: rgba(255, 255, 255, 0.12);
+}
+#App-Promo .App-About {
   flex-grow: 0;
   width: 46%;
   font-size: 1.875rem;
   line-height: 2.25rem;
 }
-#App-Promo .App-Description p {
+#App-Promo .App-About p {
   margin: 0 0 1.25rem;
   text-indent: 1rem;
 }
-#App-Promo .App-Description .links {
+#App-Promo .App-About .links {
   margin-top: 3rem;
+}
+#App-Promo .About-Title {
+  margin: 0 0 1.5rem;
+  color: rgba(255, 255, 255, 0.87);
+  font-weight: 500;
+  font-size: 1.75rem;
 }
 #App-Promo .App-FeatureList {
   flex-grow: 0;
@@ -211,26 +226,42 @@ body {
   flex-grow: 1;
   display: flex;
   position: relative;
-  padding: 3rem 3rem;
+  padding: 1rem 2rem 3rem;
   flex-wrap: wrap;
 }
 #ExamplesGrid > .ExampleCard {
-  display: block;
+  display: flex;
   position: relative;
-  padding: 2rem;
-  width: calc(50% - 2rem);
-  margin: 1rem;
+  flex-direction: column;
+  padding: 3rem;
+  width: calc(50% - 4rem);
+  margin: 1rem 2rem;
 }
-#ExamplesGrid > .ExampleCard > .ExampleCard-Title {
+#ExamplesGrid > .ExampleCard:nth-child(2n + 1):after {
+  content: "";
+  display: block;
+  position: absolute;
+  top: 5rem;
+  right: -2rem;
+  width: 1px;
+  height: calc(100% - 10rem);
+  background: rgba(255, 255, 255, 0.08);
+}
+#ExamplesGrid > .ExampleCard > .ExampleCard-Head {
+  display: flex;
+  align-items: center;
+}
+#ExamplesGrid > .ExampleCard > .ExampleCard-Head > .ExampleCard-Title {
   font-size: 1.875rem;
   margin: 0 0 1rem;
   font-weight: 500;
   text-transform: uppercase;
   color: rgba(255, 255, 255, 0.87);
+  flex-grow: 1;
 }
 #ExamplesGrid > .ExampleCard > .ExampleCard-Description {
   font-size: 1.625rem;
-  margin: 0 0 1rem;
+  margin: 0 0 0.75rem;
 }
 #ExamplesGrid > .ExampleCard > .ExampleCard-Description p {
   margin-top: 0.5rem;
@@ -238,11 +269,111 @@ body {
 #ExamplesGrid > .ExampleCard .ExampleCard-Paragraph {
   font-size: 1.5rem;
   padding: 0.5rem 1rem 0.5rem 0.5rem;
+  min-width: 178%;
+}
+#ExamplesGrid > .ExampleCard > .ExampleCard-Separator {
+  display: flex;
+  align-items: center;
+  margin: 0 3rem;
+  color: rgba(255, 255, 255, 0.08);
+}
+#ExamplesGrid > .ExampleCard > .ExampleCard-Separator:before,
+#ExamplesGrid > .ExampleCard > .ExampleCard-Separator:after {
+  content: "";
+  display: inline-block;
+  width: 40%;
+  height: 1px;
+  background: currentColor;
+  margin: 0 5%;
 }
 #ExamplesGrid > .ExampleCard > .ExampleCard-Holder {
   display: block;
   position: relative;
-  width: 100%;
+  flex-grow: 1;
   min-height: 30rem;
-  margin: 0.5rem 0 0;
+  margin: 0.75rem 0 0;
+}
+#ExamplesGrid > .ExampleCard.CustomStyled .ExampleCard-Holder > .ScrollbarsCustom {
+  width: 100%;
+  height: 100%;
+}
+#ExamplesGrid > .ExampleCard.CustomStyled .ExampleCard-Holder > .ScrollbarsCustom > .ScrollbarsCustom-Wrapper {
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+#ExamplesGrid > .ExampleCard.CustomStyled .ExampleCard-Holder > .ScrollbarsCustom .ScrollbarsCustom-Track {
+  position: absolute;
+  border-radius: 0.25rem;
+}
+#ExamplesGrid > .ExampleCard.CustomStyled .ExampleCard-Holder > .ScrollbarsCustom .ScrollbarsCustom-Thumb {
+  background: rgba(255, 255, 255, 0.12);
+  cursor: pointer;
+  border-radius: 0.25rem;
+}
+#ExamplesGrid > .ExampleCard.CustomStyled .ExampleCard-Holder > .ScrollbarsCustom .ScrollbarsCustom-Thumb:hover,
+#ExamplesGrid > .ExampleCard.CustomStyled .ExampleCard-Holder > .ScrollbarsCustom .ScrollbarsCustom-Thumb.dragging {
+  background: #9ed6ff;
+}
+#ExamplesGrid > .ExampleCard.CustomStyled .ExampleCard-Holder > .ScrollbarsCustom .ScrollbarsCustom-ThumbY {
+  width: 100%;
+}
+#ExamplesGrid > .ExampleCard.CustomStyled .ExampleCard-Holder > .ScrollbarsCustom .ScrollbarsCustom-ThumbX {
+  height: 100%;
+}
+#ExamplesGrid > .ExampleCard.CustomStyled .ExampleCard-Holder > .ScrollbarsCustom .ScrollbarsCustom-TrackY {
+  width: 1rem;
+  height: calc(100% - 2rem);
+  top: 1rem;
+  right: 0;
+  background: rgba(255, 255, 255, 0.04);
+}
+#ExamplesGrid > .ExampleCard.CustomStyled .ExampleCard-Holder > .ScrollbarsCustom .ScrollbarsCustom-TrackX {
+  height: 1rem;
+  width: calc(100% - 3rem);
+  bottom: 0.5rem;
+  left: 1.5rem;
+  background: rgba(0, 0, 0, 0.2);
+}
+#ExamplesGrid
+  > .ExampleCard.CustomStyled
+  .ExampleCard-Holder
+  > .ScrollbarsCustom.trackYVisible
+  > .ScrollbarsCustom-Wrapper {
+  right: 1.5rem;
+}
+#ExamplesGrid
+  > .ExampleCard.CustomStyled
+  .ExampleCard-Holder
+  > .ScrollbarsCustom.trackYVisible
+  > .ScrollbarsCustom-TrackX {
+  width: calc(100% - 4rem);
+  left: 2rem;
+}
+#ExamplesGrid
+  > .ExampleCard.CustomStyled
+  .ExampleCard-Holder
+  > .ScrollbarsCustom.trackXVisible:hover
+  .ScrollbarsCustom-TrackX {
+  background: #373737;
+}
+#ExamplesGrid
+  > .ExampleCard.CustomStyled
+  .ExampleCard-Holder
+  > .ScrollbarsCustom.trackXVisible:hover
+  .ScrollbarsCustom-ThumbX {
+  background: #4f4f4f;
+}
+#ExamplesGrid
+  > .ExampleCard.CustomStyled
+  .ExampleCard-Holder
+  > .ScrollbarsCustom.trackXVisible:hover
+  .ScrollbarsCustom-ThumbX:hover,
+#ExamplesGrid
+  > .ExampleCard.CustomStyled
+  .ExampleCard-Holder
+  > .ScrollbarsCustom.trackXVisible:hover
+  .ScrollbarsCustom-ThumbX.dragging {
+  background: #9ed6ff;
 }

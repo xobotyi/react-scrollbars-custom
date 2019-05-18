@@ -1,14 +1,12 @@
 #ExamplesGrid {
-  flex-grow: 1;
-  display: flex;
-  position: relative;
   padding: 1rem 2rem 3rem;
-  flex-wrap: wrap;
 
-  & > .ExampleCard {
-    display: flex;
-    position: relative;
-    flex-direction: column;
+  .ExamplesGrid-Row {
+  }
+
+  .ExampleCard {
+    display: inline-block;
+    vertical-align: top;
     padding: 3rem;
     width: calc(50% - 4rem);
     margin: 1rem 2rem;
@@ -25,63 +23,73 @@
         background: rgba(255, 255, 255, 0.08);
       }
     }
+  }
 
-    & > .ExampleCard-Head {
-      display: flex;
-      align-items: center;
+  .ExampleCard-Head {
+    margin: 0 0 1rem;
 
-      & > .ExampleCard-Title {
-        font-size: 1.875rem;
-        margin: 0 0 1rem;
-        font-weight: 500;
-        text-transform: uppercase;
-        color: rgba(255, 255, 255, 0.87);
-        flex-grow: 1;
-      }
-    }
-
-    & > .ExampleCard-Description {
-      font-size: 1.625rem;
-      margin: 0 0 0.75rem;
-
-      p {
-        margin-top: 0.5rem;
-      }
-    }
-
-    .ExampleCard-Paragraph {
-      font-size: 1.5rem;
-      padding: 0.5rem 1rem 0.5rem 0.5rem;
-      min-width: 178%;
-    }
-
-    & > .ExampleCard-Separator {
-      display: flex;
-      align-items: center;
-      margin: 0 3rem;
-      color: rgba(255, 255, 255, 0.08);
-
-      &:before,
-      &:after {
-        content: "";
-        display: inline-block;
-        width: 40%;
-        height: 1px;
-        background: currentColor;
-        margin: 0 5%;
-      }
-    }
-
-    & > .ExampleCard-Holder {
-      display: block;
-      position: relative;
-      flex-grow: 1;
-      min-height: 30rem;
-      margin: 0.75rem 0 0;
+    & > .ExampleCard-Title {
+      font-size: 1.875rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.87);
+      display: inline-block;
+      vertical-align: middle;
     }
   }
 
-  & > .ExampleCard.CustomStyled {
+  .ExampleCard-Description {
+    font-size: 1.625rem;
+    margin: 0 0 0.75rem;
+
+    p {
+      margin-top: 0.5rem;
+    }
+  }
+
+  .ExampleCard-Separator {
+    position: relative;
+    margin: 0 3rem;
+    color: rgba(255, 255, 255, 0.08);
+    text-align: center;
+
+    &:before,
+    &:after {
+      content: "";
+      display: block;
+      position: absolute;
+      width: 40%;
+      top: calc(50% - 1px);
+      height: 1px;
+      background: currentColor;
+    }
+
+    &:before {
+      left: 5%;
+    }
+
+    &:after {
+      right: 5%;
+    }
+  }
+
+  .ExampleCard-Paragraph {
+    font-size: 1.5rem;
+    padding: 0.5rem 1rem 0.5rem 0.5rem;
+    min-width: 178%;
+
+    &:last-child {
+      margin: 0 0 2rem;
+    }
+  }
+
+  .ExampleCard-Holder {
+    position: relative;
+    min-height: 30rem;
+    margin: 0.75rem 0 0;
+  }
+
+  .ExampleCard.CustomStyled {
     .ExampleCard-Holder {
       & > .ScrollbarsCustom {
         width: 100%;

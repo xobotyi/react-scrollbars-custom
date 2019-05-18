@@ -6,9 +6,11 @@ export default class ExamplesGrid extends React.Component {
   render() {
     return (
       <div id="ExamplesGrid">
-        <DefaultExample />
+        <div className="ExamplesGrid-Row">
+          <DefaultExample />
 
-        <CustomStyledExample />
+          <CustomStyledExample />
+        </div>
       </div>
     );
   }

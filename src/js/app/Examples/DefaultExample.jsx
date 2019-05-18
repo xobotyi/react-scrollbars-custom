@@ -51,7 +51,7 @@ export default class DefaultExample extends React.Component {
         <div className="ExampleCard-Separator">×</div>
 
         <div className="ExampleCard-Holder">
-          <Scrollbar>{renderAmountOfParagraphs(10)}</Scrollbar>
+          <Scrollbar style={{ position: "" }}>{renderAmountOfParagraphs(10)}</Scrollbar>
         </div>
       </div>
     );

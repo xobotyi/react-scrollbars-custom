@@ -39,7 +39,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "pretty-quick --staged && npm run build"
+      "pre-commit": "pretty-quick --staged"
     }
   },
   "prettier": {

@@ -45,7 +45,6 @@ module.exports = {
       RSC_AUTHOR: JSON.stringify(RSC_PACKAGE.author)
     }),
     new HtmlWebpackPlugin({
-      title: `${RSC_PACKAGE.name} demo page`,
       template: path.join(__dirname, "src", "index.html"),
       excludeAssets: [/css.*.js/]
     }),

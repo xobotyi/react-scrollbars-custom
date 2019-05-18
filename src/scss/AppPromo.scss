@@ -1,6 +1,4 @@
 #App-Promo {
-  display: flex;
-  align-items: flex-start;
   padding: 2rem 4rem;
   position: relative;
 
@@ -16,19 +14,19 @@
   }
 
   .App-About {
-    flex-grow: 0;
-    width: 46%;
+    display: inline-block;
+    vertical-align: top;
+    width: 47%;
 
     font-size: 1.875rem;
     line-height: 2.25rem;
 
     p {
-      margin: 0 0 1.25rem;
-      text-indent: 1rem;
+      margin: 0 0 1.375rem;
     }
 
     .links {
-      margin-top: 3rem;
+      margin: 3rem 2rem;
     }
   }
 
@@ -36,12 +34,13 @@
     margin: 0 0 1.5rem;
     color: rgba(255, 255, 255, 0.87);
     font-weight: 500;
-    font-size: 1.75rem;
+    font-size: 1.875rem;
   }
 
   .App-FeatureList {
-    flex-grow: 0;
-    width: 50%;
+    display: inline-block;
+    vertical-align: top;
+    width: 49%;
     margin-left: 4%;
   }
 
@@ -49,7 +48,7 @@
     margin: 0 0 1.5rem;
     color: rgba(255, 255, 255, 0.87);
     font-weight: 500;
-    font-size: 1.75rem;
+    font-size: 1.875rem;
   }
 
   .FeatureList-Item {

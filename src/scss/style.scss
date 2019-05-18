@@ -36,8 +36,7 @@ html {
 }
 
 body {
-  display: flex;
-  flex-direction: column;
+  display: block;
   font-size: 1.75rem;
   height: 100%;
   line-height: 1.25;
@@ -46,9 +45,6 @@ body {
 }
 
 #AppRoot {
-  position: relative;
-  width: 100%;
-  flex-grow: 1;
 }
 
 @import "App";

@@ -16,8 +16,8 @@ export const style = {
   } as React.CSSProperties,
 
   content: {
-    display: "inline-block",
-    verticalAlign: "bottom"
+    padding: 0.05, // needed to disable margin collapsing without flexboxes, other possible solutions here: https://stackoverflow.com/questions/19718634/how-to-disable-margin-collapsing
+    boxSizing: "border-box"
   } as React.CSSProperties,
 
   track: {

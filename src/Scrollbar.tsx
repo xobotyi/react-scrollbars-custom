@@ -316,6 +316,15 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
       } as React.CSSProperties,
       content: {
         ...(useDefaultStyles && defaultStyle.content),
+        ...(useDefaultStyles &&
+          !(
+            props.translateContentSizesToHolder ||
+            props.translateContentSizeYToHolder ||
+            props.translateContentSizeXToHolder
+          ) && {
+            minHeight: "100%",
+            minWidth: "100%"
+          }),
         ...props.contentProps!.style
       } as React.CSSProperties,
       scroller: {
@@ -355,7 +364,7 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
       trackY: {
         ...(useDefaultStyles && defaultStyle.track.common),
         ...(useDefaultStyles && defaultStyle.track.y),
-        [state.isRTL ? "left" : "right"]: 0,
+        ...(useDefaultStyles && { [state.isRTL ? "left" : "right"]: 0 }),
         ...props.trackYProps!.style,
         ...(!state.trackYVisible && { display: "none" })
       } as React.CSSProperties,

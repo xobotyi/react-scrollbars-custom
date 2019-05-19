@@ -1,3 +1,5 @@
+import { faCode } from "@fortawesome/free-solid-svg-icons/faCode";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import * as React from "react";
 import Scrollbar from "react-scrollbars-custom";
 
@@ -34,7 +36,16 @@ export default class DefaultExample extends React.Component {
         <div className="ExampleCard-Head">
           <div className="ExampleCard-Title">Default style</div>
 
-          <div className="ExampleCard-Links" />
+          <div className="ExampleCard-Links">
+            <a
+              href="https://github.com/xobotyi/react-scrollbars-custom/blob/gh-pages/src/js/app/Examples/DefaultExample.jsx"
+              className="ExampleCard-SourceLink"
+              target="_blank"
+            >
+              <FontAwesomeIcon icon={faCode} />
+              <span>View source</span>
+            </a>
+          </div>
         </div>
 
         <div className="ExampleCard-Description">

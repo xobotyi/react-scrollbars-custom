@@ -30,24 +30,17 @@ html {
   user-select: none;
 }
 body {
-  display: flex;
-  flex-direction: column;
+  display: block;
   font-size: 1.75rem;
   height: 100%;
   line-height: 1.25;
   position: relative;
   width: 100vw;
 }
-#AppRoot {
-  position: relative;
-  width: 100%;
-  flex-grow: 1;
-}
 #AppRoot > .ScrollbarsCustom {
   position: relative;
-  width: 100%;
-  height: 100%;
-  flex-grow: 1;
+  width: 100vw;
+  height: 100vh;
 }
 #AppRoot > .ScrollbarsCustom > .ScrollbarsCustom-Wrapper {
   top: 0;
@@ -56,22 +49,43 @@ body {
   bottom: 0;
 }
 #AppRoot > .ScrollbarsCustom > .ScrollbarsCustom-Wrapper > .ScrollbarsCustom-Scroller {
-  display: flex;
-  flex-direction: column;
+  display: block;
 }
 #AppRoot > .ScrollbarsCustom > .ScrollbarsCustom-Wrapper > .ScrollbarsCustom-Scroller > .ScrollbarsCustom-Content {
-  display: inline-flex;
-  flex-direction: column;
-  flex-grow: 1;
+  display: block;
   width: 100%;
+  height: 100%;
+}
+#AppRoot > .ScrollbarsCustom .ScrollbarsCustom-Track {
+  position: absolute;
+  border-radius: 0.25rem;
+}
+#AppRoot > .ScrollbarsCustom .ScrollbarsCustom-Thumb {
+  background: rgba(255, 255, 255, 0.12);
+  cursor: pointer;
+  border-radius: 0.25rem;
+}
+#AppRoot > .ScrollbarsCustom .ScrollbarsCustom-Thumb:hover,
+#AppRoot > .ScrollbarsCustom .ScrollbarsCustom-Thumb.dragging {
+  background: #9ed6ff;
+}
+#AppRoot > .ScrollbarsCustom .ScrollbarsCustom-ThumbY {
+  width: 100%;
+}
+#AppRoot > .ScrollbarsCustom .ScrollbarsCustom-TrackY {
+  width: 1rem;
+  height: calc(100% - 2rem);
+  top: 1rem;
+  right: 0.5rem;
+  background: rgba(255, 255, 255, 0.04);
+}
+#AppRoot > .ScrollbarsCustom.trackYVisible > .ScrollbarsCustom-Wrapper {
+  right: 1.5rem;
 }
 #App {
   width: 100%;
   max-width: 1280px;
-  align-self: center;
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
+  margin: auto;
 }
 #App a.link {
   color: #3996da;
@@ -80,30 +94,29 @@ body {
   color: #9ed6ff;
 }
 #App-Header {
-  display: flex;
-  align-items: center;
-  margin: 3rem 4rem;
+  padding: 3rem 4rem;
+  position: relative;
 }
-#App-Header > .left {
-  display: flex;
-  align-items: center;
-  flex-grow: 1;
-  flex-shrink: 0;
+#App-Header > .left,
+#App-Header > .right {
+  display: inline-block;
+  width: 50%;
+  vertical-align: middle;
 }
 #App-Header > .right {
-  display: flex;
-  align-items: center;
-  flex-shrink: 0;
+  text-align: right;
 }
 #App-Header .App-PackageName {
   display: inline-block;
   font-family: "Fira Mono", sans-serif;
-  font-size: 3.125rem;
+  font-size: 4.125rem;
   line-height: 5rem;
   color: rgba(255, 255, 255, 0.87);
-  font-weight: 500;
+  font-weight: 700;
+  float: left;
 }
 #App-Header .App-PackageVersion {
+  display: inline-block;
   font-family: "Fira Mono", sans-serif;
   font-size: 1.375rem;
   font-weight: 500;
@@ -111,13 +124,17 @@ body {
   padding: 0.125rem 0.5rem;
   background: rgba(255, 255, 255, 0.08);
   border-radius: 0.25rem;
-  margin-left: 1.25rem;
+  margin: 1.625rem 0 0 1.25rem;
 }
 #App-Header .App-PackageRepoLink {
   color: rgba(255, 255, 255, 0.45);
   text-decoration: none;
+  display: inline-block;
+  line-height: 5rem;
+  vertical-align: middle;
 }
 #App-Header .App-PackageRepoLink svg {
+  display: block;
   width: 5rem;
   height: 5rem;
 }
@@ -125,8 +142,6 @@ body {
   color: rgba(255, 255, 255, 0.87);
 }
 #App-Promo {
-  display: flex;
-  align-items: flex-start;
   padding: 2rem 4rem;
   position: relative;
 }
@@ -141,34 +156,35 @@ body {
   background: rgba(255, 255, 255, 0.12);
 }
 #App-Promo .App-About {
-  flex-grow: 0;
-  width: 46%;
+  display: inline-block;
+  vertical-align: top;
+  width: 47%;
   font-size: 1.875rem;
   line-height: 2.25rem;
 }
 #App-Promo .App-About p {
-  margin: 0 0 1.25rem;
-  text-indent: 1rem;
+  margin: 0 0 1.375rem;
 }
 #App-Promo .App-About .links {
-  margin-top: 3rem;
+  margin: 3rem 2rem;
 }
 #App-Promo .About-Title {
   margin: 0 0 1.5rem;
   color: rgba(255, 255, 255, 0.87);
   font-weight: 500;
-  font-size: 1.75rem;
+  font-size: 1.875rem;
 }
 #App-Promo .App-FeatureList {
-  flex-grow: 0;
-  width: 50%;
+  display: inline-block;
+  vertical-align: top;
+  width: 49%;
   margin-left: 4%;
 }
 #App-Promo .FeatureList-Title {
   margin: 0 0 1.5rem;
   color: rgba(255, 255, 255, 0.87);
   font-weight: 500;
-  font-size: 1.75rem;
+  font-size: 1.875rem;
 }
 #App-Promo .FeatureList-Item {
   margin-bottom: 1rem;
@@ -187,18 +203,13 @@ body {
   background: rgba(255, 255, 255, 0.25);
 }
 #App-Footer {
-  display: flex;
   padding: 3rem 4rem;
   box-shadow: 0 -1px 0 rgba(255, 255, 255, 0.08);
-  justify-content: center;
-  align-items: center;
 }
 #App-Footer .links {
-  display: flex;
-  justify-items: center;
-  align-items: center;
   font-family: "Fira Mono", sans-serif;
   color: rgba(255, 255, 255, 0.45);
+  text-align: center;
 }
 #App-Footer .links a {
   text-decoration: none;
@@ -212,113 +223,152 @@ body {
   color: rgba(255, 255, 255, 0.87);
 }
 #ExamplesGrid {
-  flex-grow: 1;
-  display: flex;
-  position: relative;
   padding: 1rem 2rem 3rem;
-  flex-wrap: wrap;
 }
-#ExamplesGrid > .ExampleCard {
-  display: flex;
+#ExamplesGrid .ExampleCard {
+  display: table-cell;
   position: relative;
-  flex-direction: column;
-  padding: 3rem;
+  vertical-align: top;
+  padding: 4rem;
   width: calc(50% - 4rem);
   margin: 1rem 2rem;
 }
-#ExamplesGrid > .ExampleCard:nth-child(2n + 1):after {
+#ExamplesGrid .ExampleCard:nth-child(2n + 1):after {
   content: "";
   display: block;
   position: absolute;
   top: 5rem;
-  right: -2rem;
+  right: 0;
   width: 1px;
   height: calc(100% - 10rem);
   background: rgba(255, 255, 255, 0.08);
 }
-#ExamplesGrid > .ExampleCard > .ExampleCard-Head {
-  display: flex;
-  align-items: center;
+#ExamplesGrid .ExampleCard-Head {
+  margin: 0 0 1.5rem;
 }
-#ExamplesGrid > .ExampleCard > .ExampleCard-Head > .ExampleCard-Title {
-  font-size: 1.875rem;
-  margin: 0 0 1rem;
+#ExamplesGrid .ExampleCard-Title {
+  font-size: 2rem;
   font-weight: 500;
   text-transform: uppercase;
   color: rgba(255, 255, 255, 0.87);
-  flex-grow: 1;
+  display: inline-block;
+  vertical-align: middle;
 }
-#ExamplesGrid > .ExampleCard > .ExampleCard-Description {
+#ExamplesGrid .ExampleCard-Links {
+  display: inline-block;
+  vertical-align: middle;
+  text-align: right;
+  float: right;
+  margin-right: 1rem;
+}
+#ExamplesGrid .ExampleCard-SourceLink {
+  color: rgba(255, 255, 255, 0.54);
+  text-decoration: none;
+  display: inline-block;
+  vertical-align: middle;
+  cursor: pointer;
+  height: 2.5rem;
+  white-space: nowrap;
+  overflow: hidden;
+}
+#ExamplesGrid .ExampleCard-SourceLink svg {
+  display: inline-block;
+  vertical-align: middle;
+  width: 2.5rem;
+  height: 2.5rem;
+}
+#ExamplesGrid .ExampleCard-SourceLink span {
+  display: inline-block;
+  vertical-align: middle;
+  white-space: nowrap;
+  font-size: 1.5rem;
+  line-height: 2.5rem;
+  margin-left: 1rem;
+  top: 1px;
+  position: relative;
+}
+#ExamplesGrid .ExampleCard-SourceLink:hover {
+  color: #9ed6ff;
+}
+#ExamplesGrid .ExampleCard-Description {
   font-size: 1.625rem;
   margin: 0 0 0.75rem;
 }
-#ExamplesGrid > .ExampleCard > .ExampleCard-Description p {
+#ExamplesGrid .ExampleCard-Description p {
   margin-top: 0.5rem;
 }
-#ExamplesGrid > .ExampleCard .ExampleCard-Paragraph {
+#ExamplesGrid .ExampleCard-Separator {
+  position: relative;
+  margin: 1rem 3rem 0;
+  color: rgba(255, 255, 255, 0.08);
+  text-align: center;
+}
+#ExamplesGrid .ExampleCard-Separator:before,
+#ExamplesGrid .ExampleCard-Separator:after {
+  content: "";
+  display: block;
+  position: absolute;
+  width: 40%;
+  top: calc(50% - 1px);
+  height: 1px;
+  background: currentColor;
+}
+#ExamplesGrid .ExampleCard-Separator:before {
+  left: 5%;
+}
+#ExamplesGrid .ExampleCard-Separator:after {
+  right: 5%;
+}
+#ExamplesGrid .ExampleCard-Paragraph {
   font-size: 1.5rem;
   padding: 0.5rem 1rem 0.5rem 0.5rem;
   min-width: 178%;
 }
-#ExamplesGrid > .ExampleCard > .ExampleCard-Separator {
-  display: flex;
-  align-items: center;
-  margin: 0 3rem;
-  color: rgba(255, 255, 255, 0.08);
+#ExamplesGrid .ExampleCard-Paragraph:last-child {
+  margin: 0 0 2rem;
 }
-#ExamplesGrid > .ExampleCard > .ExampleCard-Separator:before,
-#ExamplesGrid > .ExampleCard > .ExampleCard-Separator:after {
-  content: "";
-  display: inline-block;
-  width: 40%;
-  height: 1px;
-  background: currentColor;
-  margin: 0 5%;
-}
-#ExamplesGrid > .ExampleCard > .ExampleCard-Holder {
-  display: block;
+#ExamplesGrid .ExampleCard-Holder {
   position: relative;
-  flex-grow: 1;
-  min-height: 30rem;
+  min-height: 35rem;
   margin: 0.75rem 0 0;
 }
-#ExamplesGrid > .ExampleCard.CustomStyled .ExampleCard-Holder > .ScrollbarsCustom {
+#ExamplesGrid .ExampleCard.CustomStyled .ExampleCard-Holder > .ScrollbarsCustom {
   width: 100%;
   height: 100%;
 }
-#ExamplesGrid > .ExampleCard.CustomStyled .ExampleCard-Holder > .ScrollbarsCustom > .ScrollbarsCustom-Wrapper {
+#ExamplesGrid .ExampleCard.CustomStyled .ExampleCard-Holder > .ScrollbarsCustom > .ScrollbarsCustom-Wrapper {
   top: 0;
   right: 0;
   bottom: 0;
   left: 0;
 }
-#ExamplesGrid > .ExampleCard.CustomStyled .ExampleCard-Holder > .ScrollbarsCustom .ScrollbarsCustom-Track {
+#ExamplesGrid .ExampleCard.CustomStyled .ExampleCard-Holder > .ScrollbarsCustom .ScrollbarsCustom-Track {
   position: absolute;
   border-radius: 0.25rem;
 }
-#ExamplesGrid > .ExampleCard.CustomStyled .ExampleCard-Holder > .ScrollbarsCustom .ScrollbarsCustom-Thumb {
+#ExamplesGrid .ExampleCard.CustomStyled .ExampleCard-Holder > .ScrollbarsCustom .ScrollbarsCustom-Thumb {
   background: rgba(255, 255, 255, 0.12);
   cursor: pointer;
   border-radius: 0.25rem;
 }
-#ExamplesGrid > .ExampleCard.CustomStyled .ExampleCard-Holder > .ScrollbarsCustom .ScrollbarsCustom-Thumb:hover,
-#ExamplesGrid > .ExampleCard.CustomStyled .ExampleCard-Holder > .ScrollbarsCustom .ScrollbarsCustom-Thumb.dragging {
+#ExamplesGrid .ExampleCard.CustomStyled .ExampleCard-Holder > .ScrollbarsCustom .ScrollbarsCustom-Thumb:hover,
+#ExamplesGrid .ExampleCard.CustomStyled .ExampleCard-Holder > .ScrollbarsCustom .ScrollbarsCustom-Thumb.dragging {
   background: #9ed6ff;
 }
-#ExamplesGrid > .ExampleCard.CustomStyled .ExampleCard-Holder > .ScrollbarsCustom .ScrollbarsCustom-ThumbY {
+#ExamplesGrid .ExampleCard.CustomStyled .ExampleCard-Holder > .ScrollbarsCustom .ScrollbarsCustom-ThumbY {
   width: 100%;
 }
-#ExamplesGrid > .ExampleCard.CustomStyled .ExampleCard-Holder > .ScrollbarsCustom .ScrollbarsCustom-ThumbX {
+#ExamplesGrid .ExampleCard.CustomStyled .ExampleCard-Holder > .ScrollbarsCustom .ScrollbarsCustom-ThumbX {
   height: 100%;
 }
-#ExamplesGrid > .ExampleCard.CustomStyled .ExampleCard-Holder > .ScrollbarsCustom .ScrollbarsCustom-TrackY {
+#ExamplesGrid .ExampleCard.CustomStyled .ExampleCard-Holder > .ScrollbarsCustom .ScrollbarsCustom-TrackY {
   width: 1rem;
   height: calc(100% - 2rem);
   top: 1rem;
   right: 0;
   background: rgba(255, 255, 255, 0.04);
 }
-#ExamplesGrid > .ExampleCard.CustomStyled .ExampleCard-Holder > .ScrollbarsCustom .ScrollbarsCustom-TrackX {
+#ExamplesGrid .ExampleCard.CustomStyled .ExampleCard-Holder > .ScrollbarsCustom .ScrollbarsCustom-TrackX {
   height: 1rem;
   width: calc(100% - 3rem);
   bottom: 0.5rem;
@@ -326,14 +376,14 @@ body {
   background: rgba(0, 0, 0, 0.2);
 }
 #ExamplesGrid
-  > .ExampleCard.CustomStyled
+  .ExampleCard.CustomStyled
   .ExampleCard-Holder
   > .ScrollbarsCustom.trackYVisible
   > .ScrollbarsCustom-Wrapper {
   right: 1.5rem;
 }
 #ExamplesGrid
-  > .ExampleCard.CustomStyled
+  .ExampleCard.CustomStyled
   .ExampleCard-Holder
   > .ScrollbarsCustom.trackYVisible
   > .ScrollbarsCustom-TrackX {
@@ -341,26 +391,26 @@ body {
   left: 2rem;
 }
 #ExamplesGrid
-  > .ExampleCard.CustomStyled
+  .ExampleCard.CustomStyled
   .ExampleCard-Holder
   > .ScrollbarsCustom.trackXVisible:hover
   .ScrollbarsCustom-TrackX {
   background: #373737;
 }
 #ExamplesGrid
-  > .ExampleCard.CustomStyled
+  .ExampleCard.CustomStyled
   .ExampleCard-Holder
   > .ScrollbarsCustom.trackXVisible:hover
   .ScrollbarsCustom-ThumbX {
   background: #4f4f4f;
 }
 #ExamplesGrid
-  > .ExampleCard.CustomStyled
+  .ExampleCard.CustomStyled
   .ExampleCard-Holder
   > .ScrollbarsCustom.trackXVisible:hover
   .ScrollbarsCustom-ThumbX:hover,
 #ExamplesGrid
-  > .ExampleCard.CustomStyled
+  .ExampleCard.CustomStyled
   .ExampleCard-Holder
   > .ScrollbarsCustom.trackXVisible:hover
   .ScrollbarsCustom-ThumbX.dragging {

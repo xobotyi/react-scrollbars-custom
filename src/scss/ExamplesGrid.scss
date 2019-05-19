@@ -5,9 +5,10 @@
   }
 
   .ExampleCard {
-    display: inline-block;
+    display: table-cell;
+    position: relative;
     vertical-align: top;
-    padding: 3rem;
+    padding: 4rem;
     width: calc(50% - 4rem);
     margin: 1rem 2rem;
 
@@ -17,7 +18,7 @@
         display: block;
         position: absolute;
         top: 5rem;
-        right: -2rem;
+        right: 0;
         width: 1px;
         height: calc(100% - 10rem);
         background: rgba(255, 255, 255, 0.08);
@@ -26,15 +27,56 @@
   }
 
   .ExampleCard-Head {
-    margin: 0 0 1rem;
+    margin: 0 0 1.5rem;
+  }
 
-    & > .ExampleCard-Title {
-      font-size: 1.875rem;
-      font-weight: 500;
-      text-transform: uppercase;
-      color: rgba(255, 255, 255, 0.87);
+  .ExampleCard-Title {
+    font-size: 2rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.87);
+    display: inline-block;
+    vertical-align: middle;
+  }
+
+  .ExampleCard-Links {
+    display: inline-block;
+    vertical-align: middle;
+    text-align: right;
+    float: right;
+    margin-right: 1rem;
+  }
+
+  .ExampleCard-SourceLink {
+    color: rgba(255, 255, 255, 0.54);
+    text-decoration: none;
+    display: inline-block;
+    vertical-align: middle;
+    cursor: pointer;
+    height: 2.5rem;
+    white-space: nowrap;
+    overflow: hidden;
+
+    svg {
       display: inline-block;
       vertical-align: middle;
+      width: 2.5rem;
+      height: 2.5rem;
+    }
+
+    span {
+      display: inline-block;
+      vertical-align: middle;
+      white-space: nowrap;
+      font-size: 1.5rem;
+      line-height: 2.5rem;
+      margin-left: 1rem;
+      top: 1px;
+      position: relative;
+    }
+
+    &:hover {
+      color: #9ed6ff;
     }
   }
 
@@ -49,7 +91,7 @@
 
   .ExampleCard-Separator {
     position: relative;
-    margin: 0 3rem;
+    margin: 1rem 3rem 0;
     color: rgba(255, 255, 255, 0.08);
     text-align: center;
 
@@ -85,7 +127,7 @@
 
   .ExampleCard-Holder {
     position: relative;
-    min-height: 30rem;
+    min-height: 35rem;
     margin: 0.75rem 0 0;
   }
 

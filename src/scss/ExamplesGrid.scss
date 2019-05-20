@@ -1,27 +1,54 @@
 #ExamplesGrid {
-  padding: 1rem 2rem 3rem;
+  padding: 1rem 0 3rem;
+
+  @media (min-width: 620px) {
+    padding: 1rem 2rem 3rem;
+  }
 
   .ExamplesGrid-Row {
   }
 
   .ExampleCard {
-    display: table-cell;
+    display: block;
     position: relative;
-    vertical-align: top;
-    padding: 4rem;
-    width: calc(50% - 4rem);
-    margin: 1rem 2rem;
+    width: 100%;
+    padding: 2rem;
+    margin: 2rem 0 3rem;
 
-    &:nth-child(2n + 1) {
+    &:after {
+      content: "";
+      display: block;
+      position: absolute;
+      bottom: -2rem;
+      right: 5rem;
+      height: 1px;
+      width: calc(100% - 10rem);
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    @media (min-width: 620px) {
+      display: table-cell;
+      position: relative;
+      vertical-align: top;
+      padding: 4rem;
+      width: calc(50% - 4rem);
+      margin: 1rem 2rem;
+
       &:after {
-        content: "";
-        display: block;
-        position: absolute;
-        top: 5rem;
-        right: 0;
-        width: 1px;
-        height: calc(100% - 10rem);
-        background: rgba(255, 255, 255, 0.08);
+        content: none;
+      }
+
+      &:nth-child(2n + 1) {
+        &:after {
+          content: "";
+          display: block;
+          position: absolute;
+          top: 5rem;
+          right: 0;
+          bottom: initial;
+          width: 1px;
+          height: calc(100% - 10rem);
+        }
       }
     }
   }
@@ -32,6 +59,7 @@
 
   .ExampleCard-Title {
     font-size: 2rem;
+    line-height: 2.5rem;
     font-weight: 500;
     text-transform: uppercase;
     color: rgba(255, 255, 255, 0.87);

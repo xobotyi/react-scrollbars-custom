@@ -19461,18 +19461,18 @@ object-assign
                   { id: "App-Header" },
                   r.createElement(
                     "div",
-                    { className: "left" },
-                    r.createElement("div", { className: "App-PackageName" }, "react-scrollbars-custom"),
-                    r.createElement("div", { className: "App-PackageVersion" }, "v", "4.0.0-alpha.19")
-                  ),
-                  r.createElement(
-                    "div",
                     { className: "right" },
                     r.createElement(
                       "a",
                       { className: "App-PackageRepoLink", href: "https://github.com/xobotyi/react-scrollbars-custom" },
                       r.createElement(y.a, { icon: g.faGithub })
                     )
+                  ),
+                  r.createElement(
+                    "div",
+                    { className: "left" },
+                    r.createElement("div", { className: "App-PackageName" }, "react-scrollbars-custom"),
+                    r.createElement("div", { className: "App-PackageVersion" }, "v", "4.0.0-alpha.19")
                   )
                 );
               }

@@ -1,18 +1,36 @@
 #App-Footer {
-  padding: 3rem 4rem;
-  box-shadow: 0 -1px 0 rgba(255, 255, 255, 0.08);
+  padding: 0 1rem 4rem 2rem;
+
+  @media (min-width: 620px) {
+    padding: 3rem 4rem;
+    box-shadow: 0 -1px 0 rgba(255, 255, 255, 0.08);
+  }
 
   .links {
     font-family: "Fira Mono", sans-serif;
-    color: rgba(255, 255, 255, 0.45);
+    color: transparent;
     text-align: center;
+    text-shadow: none;
+    font-size: 0;
+
+    @media (min-width: 620px) {
+      color: rgba(255, 255, 255, 0.45);
+    }
 
     a {
+      display: block;
+      @media (min-width: 620px) {
+        display: inline;
+      }
+
+      font-size: 1.75rem;
+
       text-decoration: none;
       cursor: pointer;
-      color: currentColor;
       margin: 0 2rem;
       text-transform: uppercase;
+      white-space: nowrap;
+      color: rgba(255, 255, 255, 0.45);
 
       &:hover {
         text-decoration: underline;

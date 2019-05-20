@@ -59,15 +59,19 @@
 
 #App {
   width: 100%;
-  max-width: 1280px;
-  margin: auto;
 
   a.link {
     color: #3996da;
+    text-shadow: none;
 
     &:hover {
       color: #9ed6ff;
     }
+  }
+
+  @media (min-width: 620px) {
+    max-width: 1280px;
+    margin: auto;
   }
 }
 

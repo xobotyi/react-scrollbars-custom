@@ -1,26 +1,41 @@
 #App-Header {
-  padding: 3rem 4rem;
-  position: relative;
+  padding: 2rem 1rem 2rem 2rem;
+
+  @media (min-width: 620px) {
+    padding: 3rem 4rem 2rem;
+  }
 
   & > .left,
   & > .right {
-    display: inline-block;
-    width: 50%;
-    vertical-align: middle;
+    display: block;
+    height: 5.875rem;
   }
 
   & > .right {
+    float: right;
     text-align: right;
   }
 
+  @media (min-width: 620px) {
+    & > .left,
+    & > .right {
+      height: 5rem;
+    }
+  }
+
   .App-PackageName {
-    display: inline-block;
     font-family: "Fira Mono", sans-serif;
-    font-size: 4.125rem;
-    line-height: 5rem;
     color: rgba(255, 255, 255, 0.87);
     font-weight: 700;
-    float: left;
+    font-size: 2.5rem;
+    line-height: 3.5rem;
+
+    @media (min-width: 620px) {
+      display: inline-block;
+      font-size: 4.125rem;
+      line-height: 5rem;
+      float: left;
+    }
   }
 
   .App-PackageVersion {
@@ -32,15 +47,18 @@
     padding: 0.125rem 0.5rem;
     background: rgba(255, 255, 255, 0.08);
     border-radius: 0.25rem;
-    margin: 1.625rem 0 0 1.25rem;
+
+    @media (min-width: 620px) {
+      margin: 1.625rem 0 0 1.25rem;
+    }
   }
 
   .App-PackageRepoLink {
     color: rgba(255, 255, 255, 0.45);
     text-decoration: none;
-    display: inline-block;
-    line-height: 5rem;
-    vertical-align: middle;
+    display: block;
+    width: 5rem;
+    height: 5rem;
 
     svg {
       display: block;
@@ -50,6 +68,11 @@
 
     &:hover {
       color: rgba(255, 255, 255, 0.87);
+    }
+
+    @media (max-width: 620px) {
+      position: relative;
+      top: 0.75rem;
     }
   }
 }

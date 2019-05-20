@@ -1,6 +1,10 @@
 #App-Promo {
-  padding: 2rem 4rem;
+  padding: 1rem 1rem 2rem 2rem;
   position: relative;
+
+  @media (min-width: 620px) {
+    padding: 2rem 4rem;
+  }
 
   &:after {
     content: "";
@@ -14,12 +18,8 @@
   }
 
   .App-About {
-    display: inline-block;
-    vertical-align: top;
-    width: 47%;
-
-    font-size: 1.875rem;
-    line-height: 2.25rem;
+    font-size: 1.75rem;
+    line-height: 2.125rem;
 
     p {
       margin: 0 0 1.375rem;
@@ -27,6 +27,14 @@
 
     .links {
       margin: 3rem 2rem;
+    }
+
+    @media (min-width: 620px) {
+      display: inline-block;
+      vertical-align: top;
+      width: 47%;
+      font-size: 1.875rem;
+      line-height: 2.25rem;
     }
   }
 
@@ -38,10 +46,14 @@
   }
 
   .App-FeatureList {
-    display: inline-block;
-    vertical-align: top;
-    width: 49%;
-    margin-left: 4%;
+    margin: 5rem 0 0;
+
+    @media (min-width: 620px) {
+      display: inline-block;
+      vertical-align: top;
+      width: 49%;
+      margin: 0 0 0 4%;
+    }
   }
 
   .FeatureList-Title {
@@ -52,10 +64,14 @@
   }
 
   .FeatureList-Item {
-    margin-bottom: 1rem;
     font-size: 1.5rem;
     line-height: 2rem;
     position: relative;
+    margin: 0 0 1rem 1.5rem;
+
+    @media (min-width: 620px) {
+      margin: 0 0 1rem;
+    }
 
     &:before {
       content: "";

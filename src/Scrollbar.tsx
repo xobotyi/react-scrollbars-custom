@@ -317,12 +317,11 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
       content: {
         ...(useDefaultStyles && defaultStyle.content),
         ...(useDefaultStyles &&
-          !(
-            props.translateContentSizesToHolder ||
-            props.translateContentSizeYToHolder ||
-            props.translateContentSizeXToHolder
-          ) && {
-            minHeight: "100%",
+          !(props.translateContentSizesToHolder || props.translateContentSizeYToHolder) && {
+            minHeight: "100%"
+          }),
+        ...(useDefaultStyles &&
+          !(props.translateContentSizesToHolder || props.translateContentSizeXToHolder) && {
             minWidth: "100%"
           }),
         ...props.contentProps!.style

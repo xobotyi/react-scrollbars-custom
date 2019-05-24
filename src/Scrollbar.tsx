@@ -747,6 +747,10 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
       maximalThumbYSize,
 
       fallbackScrollbarWidth,
+      scrollbarWidth,
+
+      scrollTop,
+      scrollLeft,
 
       trackClickBehavior,
 

@@ -201,6 +201,9 @@ body {
 #App-Promo .App-About .links {
   margin: 3rem 2rem;
 }
+#App-Promo .App-About .links .link {
+  margin: 0 1.5rem;
+}
 @media (min-width: 620px) {
   #App-Promo .App-About {
     display: inline-block;

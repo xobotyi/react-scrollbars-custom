@@ -21,10 +21,14 @@ export default class AppPromo extends React.Component {
           </p>
 
           <div className="links">
-            ×{" "}
+            ×
             <a className="link" href="https://github.com/xobotyi/react-scrollbars-custom#usage">
               DOCS
-            </a>{" "}
+            </a>
+            ×
+            <a className="link" href="https://codesandbox.io/s/rsc-live-example-i1zlx?module=%2Fsrc%2FRSCExample.jsx">
+              LIVE EXAMPLE
+            </a>
             ×
           </div>
         </div>

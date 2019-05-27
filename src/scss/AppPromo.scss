@@ -27,6 +27,10 @@
 
     .links {
       margin: 3rem 2rem;
+
+      .link {
+        margin: 0 1.5rem;
+      }
     }
 
     @media (min-width: 620px) {

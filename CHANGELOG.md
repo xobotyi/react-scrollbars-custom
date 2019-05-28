@@ -1,8 +1,16 @@
 # CHANGELOG
 
+### v4.0.0-alpha.21
+
+- Fix: [#71](https://github.com/xobotyi/react-scrollbars-custom/issues/71);
+- Fixed and improved sizes translation;
+- Added `disableTrack*MousewheelScrolling` props;
+- Prop `compensateScrollbarsWidth` inverted and renamed to `disableTracksWidthCompensation`;
+- Added `disableTrackXWidthCompensation` and `disableTrackYWidthCompensation` props;
+
 ### v4.0.0-alpha.20
 
-- Fix: #68;
+- Fix: [#68](https://github.com/xobotyi/react-scrollbars-custom/issues/68);
 - Sizes loosing optimisation;
 
 ### v4.0.0-alpha.19

@@ -1408,8 +1408,7 @@ describe("Scrollbar", () => {
         trackYProps: {},
         trackXProps: {},
         thumbXProps: {},
-        thumbYProps: {},
-        compensateScrollbarsWidth: true
+        thumbYProps: {}
       };
       const state: ScrollbarState = {
         trackYVisible: true,

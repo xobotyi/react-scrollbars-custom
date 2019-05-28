@@ -204,8 +204,25 @@ Whether to use momentum scrolling, suitable for iOS (will add `-webkit-overflow-
 Whether to use default visual styles.  
 _Note:_ Styles needed to proper component work will be passed regardless of this option.
 
-**compensateScrollbarsWidth** _`:boolean`_ = true  
-Whether to add indents to wrapper element in order to not let content flow under the tracks.
+**disableTracksMousewheelScrolling** _`:boolean`_ = undefined  
+Disable content scrolling while preforming a wheel event over the track.
+
+**disableTrackXMousewheelScrolling** _`:boolean`_ = undefined  
+Disable content scrolling while preforming a wheel event over the track.
+
+**disableTrackYMousewheelScrolling** _`:boolean`_ = undefined  
+Disable content scrolling while preforming a wheel event over the track.
+
+**disableTracksWidthCompensation** _`:boolean`_ = undefined  
+Disable both vertical and horizontal wrapper indents that added in order to not let tracks overlay content.
+_Note:_ Works only with default styles enabled.
+
+**disableTrackXWidthCompensation** _`:boolean`_ = undefined  
+Disable horizontal wrapper indents that added in order to not let horizontal track overlay content.
+_Note:_ Works only with default styles enabled.
+
+**disableTrackYWidthCompensation** _`:boolean`_ = undefined  
+Disable vertical wrapper indents that added in order to not let vertical track overlay content.
 _Note:_ Works only with default styles enabled.
 
 **minimalThumbSize** _`:number`_ = 30  

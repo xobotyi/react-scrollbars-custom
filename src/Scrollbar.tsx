@@ -62,7 +62,14 @@ export type ScrollbarProps = ElementPropsWithElementRefAndRenderer & {
   translateContentSizeXToHolder?: boolean;
 
   noDefaultStyles?: boolean;
-  compensateScrollbarsWidth?: boolean;
+
+  disableTracksMousewheelScrolling?: boolean;
+  disableTrackXMousewheelScrolling?: boolean;
+  disableTrackYMousewheelScrolling?: boolean;
+
+  disableTracksWidthCompensation?: boolean;
+  disableTrackXWidthCompensation?: boolean;
+  disableTrackYWidthCompensation?: boolean;
 
   trackClickBehavior?: TRACK_CLICK_BEHAVIOR;
 
@@ -100,7 +107,14 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
     native: PropTypes.bool,
     momentum: PropTypes.bool,
     noDefaultStyles: PropTypes.bool,
-    compensateScrollbarsWidth: PropTypes.bool,
+
+    disableTracksMousewheelScrolling: PropTypes.bool,
+    disableTrackXMousewheelScrolling: PropTypes.bool,
+    disableTrackYMousewheelScrolling: PropTypes.bool,
+
+    disableTracksWidthCompensation: PropTypes.bool,
+    disableTrackXWidthCompensation: PropTypes.bool,
+    disableTrackYWidthCompensation: PropTypes.bool,
 
     minimalThumbSize: PropTypes.number,
     maximalThumbSize: PropTypes.number,
@@ -149,8 +163,6 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
   };
   static defaultProps = {
     momentum: true,
-
-    compensateScrollbarsWidth: true,
 
     minimalThumbSize: 30,
 
@@ -305,10 +317,14 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
       wrapper: {
         ...(useDefaultStyles && {
           ...defaultStyle.wrapper,
-          ...(props.compensateScrollbarsWidth && {
-            [state.isRTL ? "left" : "right"]: state.trackYVisible ? 10 : 0,
-            bottom: state.trackXVisible ? 10 : 0
-          })
+          ...(!props.disableTracksWidthCompensation &&
+            !props.disableTrackYWidthCompensation && {
+              [state.isRTL ? "left" : "right"]: state.trackYVisible ? 10 : 0
+            }),
+          ...(!props.disableTracksWidthCompensation &&
+            !props.disableTrackXWidthCompensation && {
+              bottom: state.trackXVisible ? 10 : 0
+            })
         }),
         ...props.wrapperProps!.style,
         position: "absolute",
@@ -724,7 +740,14 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
       native,
       momentum,
       noDefaultStyles,
-      compensateScrollbarsWidth,
+
+      disableTracksMousewheelScrolling,
+      disableTrackXMousewheelScrolling,
+      disableTrackYMousewheelScrolling,
+
+      disableTracksWidthCompensation,
+      disableTrackXWidthCompensation,
+      disableTrackYWidthCompensation,
 
       noScrollX,
       noScrollY,
@@ -881,7 +904,9 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
         style: styles.trackY,
         elementRef: this.elementRefTrackY,
         onClick: this.handleTrackYClick,
-        onWheel: this.handleTrackYMouseWheel,
+        ...((disableTracksMousewheelScrolling || disableTrackYMousewheelScrolling) && {
+          onWheel: this.handleTrackYMouseWheel
+        }),
         axis: AXIS_DIRECTION.Y
       } as ScrollbarTrackProps;
 
@@ -909,7 +934,9 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
         style: styles.trackX,
         elementRef: this.elementRefTrackX,
         onClick: this.handleTrackXClick,
-        onWheel: this.handleTrackXMouseWheel,
+        ...((disableTracksMousewheelScrolling || disableTrackXMousewheelScrolling) && {
+          onWheel: this.handleTrackXMouseWheel
+        }),
         axis: AXIS_DIRECTION.X
       } as ScrollbarTrackProps;
 
@@ -1143,6 +1170,10 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
   private handleTrackYMouseWheel = (ev: React.WheelEvent<HTMLDivElement>) => {
     this.props.trackYProps && this.props.trackYProps.onWheel && this.props.trackYProps.onWheel(ev);
 
+    if (this.props.disableTracksMousewheelScrolling || this.props.disableTrackYMousewheelScrolling) {
+      return;
+    }
+
     this._scrollDetection();
 
     if (!this.scrollerElement || this.scrollValues.scrollYBlocked) {
@@ -1154,6 +1185,10 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
 
   private handleTrackXMouseWheel = (ev: React.WheelEvent<HTMLDivElement>) => {
     this.props.trackXProps && this.props.trackXProps.onWheel && this.props.trackXProps.onWheel(ev);
+
+    if (this.props.disableTracksMousewheelScrolling || this.props.disableTrackXMousewheelScrolling) {
+      return;
+    }
 
     this._scrollDetection();
 

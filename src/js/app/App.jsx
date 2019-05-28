@@ -8,7 +8,7 @@ import ExamplesGrid from "./ExamplesGrid";
 export default class App extends React.Component {
   render() {
     return (
-      <Scrollbar noDefaultStyles noScrollX compensateScrollbarsWidth={false}>
+      <Scrollbar noDefaultStyles noScrollX disableTracksWidthCompensation>
         <div id="App">
           <AppHeader />
 

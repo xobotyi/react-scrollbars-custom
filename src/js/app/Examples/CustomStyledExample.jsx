@@ -34,7 +34,7 @@ export default class CustomStyledExample extends React.Component {
         <div className="ExampleCard-Separator">×</div>
 
         <div className="ExampleCard-Holder">
-          <Scrollbar noDefaultStyles compensateScrollbarsWidth={false} style={{ position: "" }}>
+          <Scrollbar noDefaultStyles disableTracksWidthCompensation style={{ position: "" }}>
             {renderAmountOfParagraphs(20)}
           </Scrollbar>
         </div>

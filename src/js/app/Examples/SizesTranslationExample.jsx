@@ -48,7 +48,7 @@ export default class SizesTranslationExample extends React.Component {
             paragraphProps: { style: { minWidth: "70rem", width: "210rem" } }
           });
       }
-    }, 1500);
+    }, 2500);
   }
 
   render() {
@@ -84,7 +84,7 @@ export default class SizesTranslationExample extends React.Component {
         <div className="ExampleCard-Separator">×</div>
 
         <div className="ExampleCard-Holder">
-          <Scrollbar noDefaultStyles translateContentSizesToHolder compensateScrollbarsWidth={false}>
+          <Scrollbar noDefaultStyles translateContentSizesToHolder disableTracksWidthCompensation>
             {renderAmountOfParagraphs(this.state.paragraphsCount, this.state.paragraphProps)}
           </Scrollbar>
         </div>

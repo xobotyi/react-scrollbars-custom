@@ -17,12 +17,6 @@ div {
   box-sizing: border-box;
 }
 
-html,
-body {
-  height: 100%;
-  width: 100%;
-}
-
 html {
   background: #2f2f2f;
   color: rgba(255, 255, 255, 0.75);
@@ -38,7 +32,6 @@ html {
 body {
   display: block;
   font-size: 1.75rem;
-  height: 100%;
   line-height: 1.125;
   position: relative;
   width: 100vw;

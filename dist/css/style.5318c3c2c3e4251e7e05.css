@@ -13,11 +13,6 @@
 div {
   box-sizing: border-box;
 }
-html,
-body {
-  height: 100%;
-  width: 100%;
-}
 html {
   background: #2f2f2f;
   color: rgba(255, 255, 255, 0.75);
@@ -32,7 +27,6 @@ html {
 body {
   display: block;
   font-size: 1.75rem;
-  height: 100%;
   line-height: 1.125;
   position: relative;
   width: 100vw;
@@ -52,32 +46,32 @@ body {
   display: block;
 }
 #AppRoot > .ScrollbarsCustom > .ScrollbarsCustom-Wrapper > .ScrollbarsCustom-Scroller > .ScrollbarsCustom-Content {
-  display: block;
+  padding: 0.05px;
   width: 100%;
   height: 100%;
 }
-#AppRoot > .ScrollbarsCustom .ScrollbarsCustom-Track {
+#AppRoot > .ScrollbarsCustom > .ScrollbarsCustom-Track {
   position: absolute;
   border-radius: 0.25rem;
 }
-#AppRoot > .ScrollbarsCustom .ScrollbarsCustom-Thumb {
+#AppRoot > .ScrollbarsCustom > .ScrollbarsCustom-Track > .ScrollbarsCustom-Thumb {
   background: rgba(255, 255, 255, 0.12);
   cursor: pointer;
   border-radius: 0.25rem;
 }
-#AppRoot > .ScrollbarsCustom .ScrollbarsCustom-Thumb:hover,
-#AppRoot > .ScrollbarsCustom .ScrollbarsCustom-Thumb.dragging {
+#AppRoot > .ScrollbarsCustom > .ScrollbarsCustom-Track > .ScrollbarsCustom-Thumb:hover,
+#AppRoot > .ScrollbarsCustom > .ScrollbarsCustom-Track > .ScrollbarsCustom-Thumb.dragging {
   background: #9ed6ff;
 }
-#AppRoot > .ScrollbarsCustom .ScrollbarsCustom-ThumbY {
-  width: 100%;
-}
-#AppRoot > .ScrollbarsCustom .ScrollbarsCustom-TrackY {
+#AppRoot > .ScrollbarsCustom > .ScrollbarsCustom-TrackY {
   width: 1rem;
   height: calc(100% - 2rem);
   top: 1rem;
   right: 0.5rem;
   background: rgba(255, 255, 255, 0.04);
+}
+#AppRoot > .ScrollbarsCustom > .ScrollbarsCustom-TrackY > .ScrollbarsCustom-ThumbY {
+  width: 100%;
 }
 #AppRoot > .ScrollbarsCustom.trackYVisible > .ScrollbarsCustom-Wrapper {
   right: 1.5rem;
@@ -400,6 +394,12 @@ body {
 #ExamplesGrid .ExampleCard-Description p {
   margin-top: 0.5rem;
 }
+#ExamplesGrid .ExampleCard-Description code {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 0.25rem;
+}
 #ExamplesGrid .ExampleCard-Separator {
   position: relative;
   margin: 1rem 3rem 0;
@@ -518,4 +518,75 @@ body {
   > .ScrollbarsCustom.trackXVisible:hover
   .ScrollbarsCustom-ThumbX.dragging {
   background: #9ed6ff;
+}
+#ExamplesGrid .ExampleCard.SizesTranslation {
+  display: block;
+  max-width: 100%;
+  width: 100%;
+  margin: 4rem 0;
+}
+#ExamplesGrid .ExampleCard.SizesTranslation:before {
+  content: "";
+  display: block;
+  position: absolute;
+  top: -2rem;
+  right: 5rem;
+  height: 1px;
+  width: calc(100% - 10rem);
+  background: rgba(255, 255, 255, 0.08);
+}
+#ExamplesGrid .ExampleCard.SizesTranslation .ExampleCard-Holder > .ScrollbarsCustom {
+  max-width: calc(100% - 2rem);
+  max-height: calc(45rem - 2rem);
+  margin-right: 2rem;
+  margin-bottom: 2rem;
+}
+#ExamplesGrid .ExampleCard.SizesTranslation .ExampleCard-Holder > .ScrollbarsCustom > .ScrollbarsCustom-Wrapper {
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+#ExamplesGrid
+  .ExampleCard.SizesTranslation
+  .ExampleCard-Holder
+  > .ScrollbarsCustom
+  > .ScrollbarsCustom-Wrapper
+  > .ScrollbarsCustom-Scroller
+  > .ScrollbarsCustom-Content {
+  display: table-cell;
+  padding: 0.05px;
+}
+#ExamplesGrid .ExampleCard.SizesTranslation .ExampleCard-Holder > .ScrollbarsCustom .ScrollbarsCustom-Track {
+  position: absolute;
+  border-radius: 0.25rem;
+}
+#ExamplesGrid .ExampleCard.SizesTranslation .ExampleCard-Holder > .ScrollbarsCustom .ScrollbarsCustom-Thumb {
+  background: rgba(255, 255, 255, 0.12);
+  cursor: pointer;
+  border-radius: 0.25rem;
+}
+#ExamplesGrid .ExampleCard.SizesTranslation .ExampleCard-Holder > .ScrollbarsCustom .ScrollbarsCustom-Thumb:hover,
+#ExamplesGrid .ExampleCard.SizesTranslation .ExampleCard-Holder > .ScrollbarsCustom .ScrollbarsCustom-Thumb.dragging {
+  background: #9ed6ff;
+}
+#ExamplesGrid .ExampleCard.SizesTranslation .ExampleCard-Holder > .ScrollbarsCustom .ScrollbarsCustom-ThumbY {
+  width: 100%;
+}
+#ExamplesGrid .ExampleCard.SizesTranslation .ExampleCard-Holder > .ScrollbarsCustom .ScrollbarsCustom-ThumbX {
+  height: 100%;
+}
+#ExamplesGrid .ExampleCard.SizesTranslation .ExampleCard-Holder > .ScrollbarsCustom .ScrollbarsCustom-TrackY {
+  width: 1rem;
+  height: calc(100% - 2rem);
+  top: 1rem;
+  right: -2rem;
+  background: rgba(255, 255, 255, 0.04);
+}
+#ExamplesGrid .ExampleCard.SizesTranslation .ExampleCard-Holder > .ScrollbarsCustom .ScrollbarsCustom-TrackX {
+  height: 1rem;
+  width: calc(100% - 2rem);
+  bottom: -2rem;
+  left: 1rem;
+  background: rgba(255, 255, 255, 0.04);
 }

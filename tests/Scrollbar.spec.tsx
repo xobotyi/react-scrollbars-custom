@@ -1001,6 +1001,55 @@ describe("Scrollbar", () => {
   });
 
   describe("props", () => {
+    describe("should not compensate respective track's width", () => {
+      it("if disableTracksWidthCompensation passed", done => {
+        ReactDOM.render(
+          <Scrollbar style={{ width: 100, height: 110 }} disableTracksWidthCompensation>
+            <div style={{ width: 200, height: 210 }} />
+          </Scrollbar>,
+          node,
+          function() {
+            setTimeout(() => {
+              expect(this.wrapperElement.clientWidth).toBe(this.holderElement.clientWidth);
+              expect(this.wrapperElement.clientHeight).toBe(this.holderElement.clientHeight);
+              done();
+            }, 50);
+          }
+        );
+      });
+      it("if disableTrackYWidthCompensation passed", done => {
+        ReactDOM.render(
+          <Scrollbar style={{ width: 100, height: 110 }} disableTrackYWidthCompensation>
+            <div style={{ width: 200, height: 210 }} />
+          </Scrollbar>,
+          node,
+          function() {
+            setTimeout(() => {
+              expect(this.wrapperElement.clientWidth).toBe(this.holderElement.clientWidth);
+              expect(this.wrapperElement.clientHeight).not.toBe(this.holderElement.clientHeight);
+              done();
+            }, 50);
+          }
+        );
+      });
+
+      it("if disableTrackXWidthCompensation passed", done => {
+        ReactDOM.render(
+          <Scrollbar style={{ width: 100, height: 110 }} disableTrackXWidthCompensation>
+            <div style={{ width: 200, height: 210 }} />
+          </Scrollbar>,
+          node,
+          function() {
+            setTimeout(() => {
+              expect(this.wrapperElement.clientWidth).not.toBe(this.holderElement.clientWidth);
+              expect(this.wrapperElement.clientHeight).toBe(this.holderElement.clientHeight);
+              done();
+            }, 50);
+          }
+        );
+      });
+    });
+
     it("should translate content's size to the holder element if translateContentSizesToHolder is passed", done => {
       ReactDOM.render(
         <Scrollbar style={{ width: 0, height: 0 }} translateContentSizesToHolder>
@@ -1747,6 +1796,105 @@ describe("Scrollbar", () => {
           setTimeout(() => {
             expect(this.scrollerElement.scrollTop).toBe(120);
             expect(this.scrollerElement.scrollLeft).toBe(100);
+
+            done();
+          }, 20);
+        }
+      );
+    });
+
+    it("should not perform a scroll while mousewheel over tracks and `disableTracksMousewheelScrolling` passed", done => {
+      ReactDOM.render(
+        <Scrollbar
+          trackClickBehavior={TRACK_CLICK_BEHAVIOR.JUMP}
+          style={{ width: 100, height: 100, position: "relative" }}
+          disableTracksMousewheelScrolling
+        >
+          <div style={{ width: 1000, height: 1000 }} />
+        </Scrollbar>,
+        node,
+        function() {
+          // due to inability to emulate scroll event
+          this.handleTrackYMouseWheel({
+            deltaX: 100,
+            deltaY: 120,
+            deltaMode: 0
+          });
+          this.handleTrackXMouseWheel({
+            deltaX: 100,
+            deltaY: 120,
+            deltaMode: 0
+          });
+
+          setTimeout(() => {
+            expect(this.scrollerElement.scrollTop).toBe(0);
+            expect(this.scrollerElement.scrollLeft).toBe(0);
+
+            done();
+          }, 20);
+        }
+      );
+    });
+
+    it("should not perform vertical scroll while mousewheel over tracks and `disableTrackYMousewheelScrolling` passed", done => {
+      ReactDOM.render(
+        <Scrollbar
+          trackClickBehavior={TRACK_CLICK_BEHAVIOR.JUMP}
+          style={{ width: 100, height: 100, position: "relative" }}
+          disableTrackYMousewheelScrolling
+        >
+          <div style={{ width: 1000, height: 1000 }} />
+        </Scrollbar>,
+        node,
+        function() {
+          // due to inability to emulate scroll event
+          this.handleTrackYMouseWheel({
+            deltaX: 100,
+            deltaY: 120,
+            deltaMode: 0
+          });
+          this.handleTrackXMouseWheel({
+            deltaX: 100,
+            deltaY: 120,
+            deltaMode: 0
+          });
+
+          setTimeout(() => {
+            expect(this.scrollerElement.scrollTop).toBe(0);
+            expect(this.scrollerElement.scrollLeft).toBe(100);
+
+            done();
+          }, 20);
+        }
+      );
+    });
+
+    it("should not perform vertical scroll while mousewheel over tracks and `disableTrackXMousewheelScrolling` passed", done => {
+      ReactDOM.render(
+        <Scrollbar
+          trackClickBehavior={TRACK_CLICK_BEHAVIOR.JUMP}
+          style={{ width: 100, height: 100, position: "relative" }}
+          disableTrackXMousewheelScrolling
+        >
+          <div style={{ width: 1000, height: 1000 }} />
+        </Scrollbar>,
+        node,
+        function() {
+          // due to inability to emulate scroll event
+          this.handleTrackYMouseWheel({
+            deltaX: 100,
+            deltaY: 120,
+            deltaMode: 0
+          });
+          this.handleTrackXMouseWheel({
+            deltaX: 100,
+            deltaY: 120,
+            deltaMode: 0
+          });
+
+          setTimeout(() => {
+            expect(this.scrollerElement.scrollTop).toBe(120);
+            expect(this.scrollerElement.scrollLeft).toBe(0);
 
             done();
           }, 20);

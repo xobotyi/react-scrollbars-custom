@@ -1170,6 +1170,10 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
   private handleTrackYMouseWheel = (ev: React.WheelEvent<HTMLDivElement>) => {
     this.props.trackYProps && this.props.trackYProps.onWheel && this.props.trackYProps.onWheel(ev);
 
+    if (this.props.disableTracksMousewheelScrolling || this.props.disableTrackYMousewheelScrolling) {
+      return;
+    }
+
     this._scrollDetection();
 
     if (!this.scrollerElement || this.scrollValues.scrollYBlocked) {
@@ -1181,6 +1185,10 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
 
   private handleTrackXMouseWheel = (ev: React.WheelEvent<HTMLDivElement>) => {
     this.props.trackXProps && this.props.trackXProps.onWheel && this.props.trackXProps.onWheel(ev);
+
+    if (this.props.disableTracksMousewheelScrolling || this.props.disableTrackXMousewheelScrolling) {
+      return;
+    }
 
     this._scrollDetection();
 

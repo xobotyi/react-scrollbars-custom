@@ -115,6 +115,13 @@
     p {
       margin-top: 0.5rem;
     }
+
+    code {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 0.25rem;
+    }
   }
 
   .ExampleCard-Separator {
@@ -243,6 +250,87 @@
               }
             }
           }
+        }
+      }
+    }
+  }
+
+  .ExampleCard.SizesTranslation {
+    display: block;
+    max-width: 100%;
+    width: 100%;
+    margin: 4rem 0;
+
+    &:before {
+      content: "";
+      display: block;
+      position: absolute;
+      top: -2rem;
+      right: 5rem;
+      height: 1px;
+      width: calc(100% - 10rem);
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .ExampleCard-Holder {
+      & > .ScrollbarsCustom {
+        max-width: calc(100% - 2rem);
+        max-height: calc(45rem - 2rem);
+        margin-right: 2rem;
+        margin-bottom: 2rem;
+
+        & > .ScrollbarsCustom-Wrapper {
+          top: 0;
+          right: 0;
+          bottom: 0;
+          left: 0;
+
+          & > .ScrollbarsCustom-Scroller {
+            & > .ScrollbarsCustom-Content {
+              display: table-cell;
+              padding: 0.05px;
+            }
+          }
+        }
+
+        .ScrollbarsCustom-Track {
+          position: absolute;
+          border-radius: 0.25rem;
+        }
+
+        .ScrollbarsCustom-Thumb {
+          background: rgba(255, 255, 255, 0.12);
+          cursor: pointer;
+          border-radius: 0.25rem;
+
+          &:hover,
+          &.dragging {
+            background: #9ed6ff;
+          }
+        }
+
+        .ScrollbarsCustom-ThumbY {
+          width: 100%;
+        }
+
+        .ScrollbarsCustom-ThumbX {
+          height: 100%;
+        }
+
+        .ScrollbarsCustom-TrackY {
+          width: 1rem;
+          height: calc(100% - 2rem);
+          top: 1rem;
+          right: -2rem;
+          background: rgba(255, 255, 255, 0.04);
+        }
+
+        .ScrollbarsCustom-TrackX {
+          height: 1rem;
+          width: calc(100% - 2rem);
+          bottom: -2rem;
+          left: 1rem;
+          background: rgba(255, 255, 255, 0.04);
         }
       }
     }

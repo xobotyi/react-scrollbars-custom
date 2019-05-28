@@ -21,32 +21,32 @@
       }
     }
 
-    .ScrollbarsCustom-Track {
+    & > .ScrollbarsCustom-Track {
       position: absolute;
       border-radius: 0.25rem;
-    }
 
-    .ScrollbarsCustom-Thumb {
-      background: rgba(255, 255, 255, 0.12);
-      cursor: pointer;
-      border-radius: 0.25rem;
+      & > .ScrollbarsCustom-Thumb {
+        background: rgba(255, 255, 255, 0.12);
+        cursor: pointer;
+        border-radius: 0.25rem;
 
-      &:hover,
-      &.dragging {
-        background: #9ed6ff;
+        &:hover,
+        &.dragging {
+          background: #9ed6ff;
+        }
       }
     }
 
-    .ScrollbarsCustom-ThumbY {
-      width: 100%;
-    }
-
-    .ScrollbarsCustom-TrackY {
+    & > .ScrollbarsCustom-TrackY {
       width: 1rem;
       height: calc(100% - 2rem);
       top: 1rem;
       right: 0.5rem;
       background: rgba(255, 255, 255, 0.04);
+
+      & > .ScrollbarsCustom-ThumbY {
+        width: 100%;
+      }
     }
 
     &.trackYVisible {

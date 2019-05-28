@@ -1,6 +1,7 @@
 import * as React from "react";
 import CustomStyledExample from "./Examples/CustomStyledExample";
 import DefaultExample from "./Examples/DefaultExample";
+import SizesTranslationExample from "./Examples/SizesTranslationExample";
 
 export default class ExamplesGrid extends React.Component {
   render() {
@@ -11,6 +12,8 @@ export default class ExamplesGrid extends React.Component {
 
           <CustomStyledExample />
         </div>
+
+        <SizesTranslationExample />
       </div>
     );
   }

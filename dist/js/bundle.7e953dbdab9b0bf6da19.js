@@ -1608,7 +1608,7 @@
       var F = {
           holder: { position: "relative", width: "100%", height: "100%" },
           wrapper: { position: "absolute", top: 0, left: 0, bottom: 0, right: 0 },
-          content: { display: "table-cell", boxSizing: "border-box" },
+          content: { boxSizing: "border-box" },
           track: {
             common: {
               position: "absolute",
@@ -2370,6 +2370,11 @@
                       content: d(
                         {},
                         o && F.content,
+                        e.translateContentSizesToHolder ||
+                          e.translateContentSizeYToHolder ||
+                          e.translateContentSizeXToHolder
+                          ? { display: "table-cell" }
+                          : { padding: 0.05 },
                         o &&
                           !(e.translateContentSizesToHolder || e.translateContentSizeYToHolder) && {
                             minHeight: "100%"
@@ -19931,7 +19936,7 @@ object-assign
                     "div",
                     { className: "left" },
                     r.createElement("div", { className: "App-PackageName" }, "react-scrollbars-custom"),
-                    r.createElement("div", { className: "App-PackageVersion" }, "v", "4.0.0-alpha.21")
+                    r.createElement("div", { className: "App-PackageVersion" }, "v", "4.0.0-alpha.22")
                   )
                 );
               }

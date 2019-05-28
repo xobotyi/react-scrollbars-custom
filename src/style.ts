@@ -16,7 +16,6 @@ export const style = {
   } as React.CSSProperties,
 
   content: {
-    display: "table-cell", // needed to proper horizontal and vertical downscale
     boxSizing: "border-box"
   } as React.CSSProperties,
 

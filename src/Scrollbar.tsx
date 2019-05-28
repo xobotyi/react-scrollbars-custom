@@ -332,6 +332,15 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
       } as React.CSSProperties,
       content: {
         ...(useDefaultStyles && defaultStyle.content),
+        ...(props.translateContentSizesToHolder ||
+        props.translateContentSizeYToHolder ||
+        props.translateContentSizeXToHolder
+          ? {
+              display: "table-cell"
+            }
+          : {
+              padding: 0.05 // needed to disable margin collapsing without flexboxes, other possible solutions here: https://stackoverflow.com/questions/19718634/how-to-disable-margin-collapsing
+            }),
         ...(useDefaultStyles &&
           !(props.translateContentSizesToHolder || props.translateContentSizeYToHolder) && {
             minHeight: "100%"

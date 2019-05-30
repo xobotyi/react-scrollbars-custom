@@ -1,5 +1,9 @@
 # CHANGELOG
 
+### v4.0.0-alpha.23
+
+- Added `mobileNative` prop
+
 ### v4.0.0-alpha.21
 
 - Fix: [#71](https://github.com/xobotyi/react-scrollbars-custom/issues/71);

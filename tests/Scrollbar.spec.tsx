@@ -565,6 +565,22 @@ describe("Scrollbar", () => {
       );
     });
 
+    it("should render native when `mobileNative` passed and `scrollbarWidth` is 0", done => {
+      ReactDOM.render(
+        <Scrollbar style={{ width: 100, height: 70 }} mobileNative scrollbarWidth={0}>
+          <div style={{ width: 200, height: 210 }} />
+        </Scrollbar>,
+        node,
+        function() {
+          setTimeout(() => {
+            expect(this.scrollerElement.classList.contains("native")).toBeTruthy();
+            expect(this.contentElement.classList.contains("ScrollbarsCustom-Content")).toBeTruthy();
+            done();
+          }, 30);
+        }
+      );
+    });
+
     it("should apply props scroll values", done => {
       ReactDOM.render(
         <Scrollbar style={{ width: 100, height: 70 }} native scrollLeft={20} scrollTop={40}>

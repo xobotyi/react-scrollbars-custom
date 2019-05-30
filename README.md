@@ -195,7 +195,10 @@ Whether to create context that will contain scrollbar instance reference.
 `true` - set content's direction RTL, `false` - LTR, `undefined` - autodetect according content's style.
 
 **native** _`:boolean`_ = undefined  
-Do not use custom scrollbars, and render the content in a single div.
+Do not use custom scrollbars, use native ones instead.
+
+**mobileNative** _`:boolean`_ = undefined  
+As `native` but enables only on mobile devices (actually when the `scrollbarWidth` is 0).
 
 **momentum** _`:boolean`_ = true  
 Whether to use momentum scrolling, suitable for iOS (will add `-webkit-overflow-scrolling: touch` to the content element).

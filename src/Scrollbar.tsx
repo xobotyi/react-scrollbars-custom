@@ -30,6 +30,7 @@ export type ScrollbarProps = ElementPropsWithElementRefAndRenderer & {
 
   momentum?: boolean;
   native?: boolean;
+  mobileNative?: boolean;
 
   noScrollX?: boolean;
   noScrollY?: boolean;
@@ -97,7 +98,9 @@ export type ScrollbarState = {
 
 export type ScrollbarContextValue = { parentScrollbar: Scrollbar | null };
 
-export const ScrollbarContext: React.Context<ScrollbarContextValue> = React.createContext({ parentScrollbar: null });
+export const ScrollbarContext: React.Context<ScrollbarContextValue> = React.createContext({
+  parentScrollbar: null
+} as ScrollbarContextValue);
 
 export default class Scrollbar extends React.Component<ScrollbarProps, ScrollbarState> {
   static contextType = ScrollbarContext;
@@ -105,6 +108,7 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
     createContext: PropTypes.bool,
     rtl: PropTypes.bool,
     native: PropTypes.bool,
+    mobileNative: PropTypes.bool,
     momentum: PropTypes.bool,
     noDefaultStyles: PropTypes.bool,
 
@@ -424,7 +428,8 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
       return;
     }
 
-    if (!this.props.native) {
+    if (!this.props.native && !this.props.mobileNative) {
+      //ToDo: move native state to the state so it can be synchronized
       if (!this.holderElement) {
         this.setState(() => {
           throw new Error(
@@ -747,6 +752,7 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
       createContext,
       rtl,
       native,
+      mobileNative,
       momentum,
       noDefaultStyles,
 
@@ -778,7 +784,6 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
       maximalThumbYSize,
 
       fallbackScrollbarWidth,
-      scrollbarWidth,
 
       scrollTop,
       scrollLeft,
@@ -813,7 +818,10 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
       ...propsHolderProps
     } = this.props;
 
-    if (native) {
+    const scrollbarWidth =
+      typeof propsScrollbarWidth !== "undefined" ? propsScrollbarWidth : util.getScrollbarWidth() || 0;
+
+    if (native || (!scrollbarWidth && mobileNative)) {
       this.elementRefHolder(null);
       this.elementRefWrapper(null);
       this.elementRefTrackX(null);
@@ -856,12 +864,7 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
       return renderDivWithRenderer(scrollerProps, this.elementRefScroller);
     }
 
-    const styles = Scrollbar.calculateStyles(
-      this.props,
-      this.state,
-      this.scrollValues,
-      typeof propsScrollbarWidth !== "undefined" ? propsScrollbarWidth : util.getScrollbarWidth()
-    );
+    const styles = Scrollbar.calculateStyles(this.props, this.state, this.scrollValues, scrollbarWidth);
 
     const holderChildren = [] as Array<React.ReactNode>;
 

@@ -2009,7 +2009,7 @@
                   value: function() {
                     if (this.scrollerElement)
                       if (this.contentElement) {
-                        if (!this.props.native) {
+                        if (!this.props.native && !this.props.mobileNative) {
                           if (!this.holderElement)
                             return void this.setState(function() {
                               throw new Error(
@@ -2082,43 +2082,43 @@
                       t = e.createContext,
                       i = e.rtl,
                       l = e.native,
-                      u = e.momentum,
-                      s = (e.noDefaultStyles, e.disableTracksMousewheelScrolling),
-                      c = e.disableTrackXMousewheelScrolling,
-                      f = e.disableTrackYMousewheelScrolling,
-                      p = (e.disableTracksWidthCompensation,
+                      u = e.mobileNative,
+                      s = e.momentum,
+                      c = (e.noDefaultStyles, e.disableTracksMousewheelScrolling),
+                      f = e.disableTrackXMousewheelScrolling,
+                      p = e.disableTrackYMousewheelScrolling,
+                      h = (e.disableTracksWidthCompensation,
                       e.disableTrackXWidthCompensation,
                       e.disableTrackYWidthCompensation,
                       e.noScrollX),
-                      h = e.noScrollY,
-                      m = e.noScroll,
-                      v = e.permanentTrackX,
-                      y = e.permanentTrackY,
-                      b = e.permanentTracks,
-                      x = e.removeTracksWhenNotUsed,
-                      S = e.removeTrackYWhenNotUsed,
-                      k = e.removeTrackXWhenNotUsed,
-                      E = (e.minimalThumbSize,
+                      m = e.noScrollY,
+                      v = e.noScroll,
+                      y = e.permanentTrackX,
+                      b = e.permanentTrackY,
+                      x = e.permanentTracks,
+                      S = e.removeTracksWhenNotUsed,
+                      k = e.removeTrackYWhenNotUsed,
+                      E = e.removeTrackXWhenNotUsed,
+                      T = (e.minimalThumbSize,
                       e.maximalThumbSize,
                       e.minimalThumbXSize,
                       e.maximalThumbXSize,
                       e.minimalThumbYSize,
                       e.maximalThumbYSize,
                       e.fallbackScrollbarWidth,
-                      e.scrollbarWidth,
                       e.scrollTop,
                       e.scrollLeft,
                       e.trackClickBehavior,
                       e.scrollDetectionThreshold,
                       e.wrapperProps),
-                      T = e.scrollerProps,
-                      P = e.contentProps,
-                      C = e.trackXProps,
-                      N = e.trackYProps,
-                      R = e.thumbXProps,
-                      A = e.thumbYProps,
-                      j = e.scrollbarWidth,
-                      M = (e.elementRef,
+                      P = e.scrollerProps,
+                      C = e.contentProps,
+                      N = e.trackXProps,
+                      R = e.trackYProps,
+                      A = e.thumbXProps,
+                      j = e.thumbYProps,
+                      M = e.scrollbarWidth,
+                      I = (e.elementRef,
                       e.onUpdate,
                       e.onScroll,
                       e.onScrollStart,
@@ -2127,10 +2127,11 @@
                       e.translateContentSizeYToHolder,
                       e.translateContentSizeXToHolder,
                       e.children),
-                      I = g(e, [
+                      D = g(e, [
                         "createContext",
                         "rtl",
                         "native",
+                        "mobileNative",
                         "momentum",
                         "noDefaultStyles",
                         "disableTracksMousewheelScrolling",
@@ -2155,7 +2156,6 @@
                         "minimalThumbYSize",
                         "maximalThumbYSize",
                         "fallbackScrollbarWidth",
-                        "scrollbarWidth",
                         "scrollTop",
                         "scrollLeft",
                         "trackClickBehavior",
@@ -2177,126 +2177,127 @@
                         "translateContentSizeYToHolder",
                         "translateContentSizeXToHolder",
                         "children"
-                      ]);
-                    if (l) {
+                      ]),
+                      z = void 0 !== M ? M : L() || 0;
+                    if (l || (!z && u)) {
                       this.elementRefHolder(null),
                         this.elementRefWrapper(null),
                         this.elementRefTrackX(null),
                         this.elementRefTrackY(null),
                         this.elementRefThumbX(null),
                         this.elementRefThumbY(null);
-                      var D = d({}, this.props.contentProps, {
+                      var F = d({}, this.props.contentProps, {
                           key: "ScrollbarsCustom-Content",
-                          className: Object(a.a)("ScrollbarsCustom-Content", P.className),
+                          className: Object(a.a)("ScrollbarsCustom-Content", C.className),
                           children: this.props.children
                         }),
-                        z = d({}, I, {
+                        U = d({}, D, {
                           className: Object(a.a)(
                             "ScrollbarsCustom native",
                             this.state.trackYVisible && "trackYVisible",
                             this.state.trackXVisible && "trackXVisible",
                             this.state.isRTL && "rtl",
-                            I.className
+                            D.className
                           ),
                           style: d(
                             {},
-                            I.style,
+                            D.style,
                             void 0 !== i && { direction: i ? "rtl" : "ltr" },
-                            u && { WebkitOverflowScrolling: "touch" },
+                            s && { WebkitOverflowScrolling: "touch" },
                             {
-                              overflowX: m || p ? "hidden" : b || v ? "scroll" : "auto",
-                              overflowY: m || h ? "hidden" : b || y ? "scroll" : "auto"
+                              overflowX: v || h ? "hidden" : x || y ? "scroll" : "auto",
+                              overflowY: v || m ? "hidden" : x || b ? "scroll" : "auto"
                             }
                           ),
                           onScroll: this.handleScrollerScroll,
-                          children: w(D, this.elementRefContent),
-                          renderer: T.renderer,
-                          elementRef: T.elementRef
+                          children: w(F, this.elementRefContent),
+                          renderer: P.renderer,
+                          elementRef: P.elementRef
                         });
-                      return w(z, this.elementRefScroller);
+                      return w(U, this.elementRefScroller);
                     }
-                    var F = n.calculateStyles(this.props, this.state, this.scrollValues, void 0 !== j ? j : L()),
-                      U = [],
-                      Y = d({}, P, {
+                    var Y = n.calculateStyles(this.props, this.state, this.scrollValues, z),
+                      X = [],
+                      V = d({}, C, {
                         key: "ScrollbarsCustom-Content",
-                        className: Object(a.a)("ScrollbarsCustom-Content", P.className),
-                        style: F.content,
+                        className: Object(a.a)("ScrollbarsCustom-Content", C.className),
+                        style: Y.content,
                         children: t
-                          ? Object(o.createElement)(W.Provider, { value: { parentScrollbar: this }, children: M })
-                          : M
+                          ? Object(o.createElement)(W.Provider, { value: { parentScrollbar: this }, children: I })
+                          : I
                       }),
-                      X = d({}, T, {
+                      H = d({}, P, {
                         key: "ScrollbarsCustom-Scroller",
-                        className: Object(a.a)("ScrollbarsCustom-Scroller", T.className),
-                        style: F.scroller,
-                        children: w(Y, this.elementRefContent),
+                        className: Object(a.a)("ScrollbarsCustom-Scroller", P.className),
+                        style: Y.scroller,
+                        children: w(V, this.elementRefContent),
                         onScroll: this.handleScrollerScroll
                       }),
-                      V = d({}, E, {
+                      q = d({}, T, {
                         key: "ScrollbarsCustom-Wrapper",
-                        className: Object(a.a)("ScrollbarsCustom-Wrapper", E.className),
-                        style: F.wrapper,
-                        children: w(X, this.elementRefScroller)
+                        className: Object(a.a)("ScrollbarsCustom-Wrapper", T.className),
+                        style: Y.wrapper,
+                        children: w(H, this.elementRefScroller)
                       });
-                    if ((U.push(w(V, this.elementRefWrapper)), this.state.trackYVisible || (!x && !S))) {
-                      var H = d({}, A, {
+                    if ((X.push(w(q, this.elementRefWrapper)), this.state.trackYVisible || (!S && !k))) {
+                      var B = d({}, j, {
                           key: "ScrollbarsCustom-ThumbY",
-                          style: F.thumbY,
+                          style: Y.thumbY,
                           elementRef: this.elementRefThumbY,
                           onDrag: this.handleThumbYDrag,
                           onDragEnd: this.handleThumbYDrag,
                           axis: r.Y
                         }),
-                        q = d(
+                        $ = d(
                           {},
-                          N,
+                          R,
                           {
                             key: "ScrollbarsCustom-TrackY",
-                            style: F.trackY,
+                            style: Y.trackY,
                             elementRef: this.elementRefTrackY,
                             onClick: this.handleTrackYClick
                           },
-                          (s || f) && { onWheel: this.handleTrackYMouseWheel },
+                          (c || p) && { onWheel: this.handleTrackYMouseWheel },
                           { axis: r.Y }
                         );
-                      (q.children = Object(o.createElement)(O, Object.assign({}, H))),
-                        U.push(Object(o.createElement)(_, Object.assign({}, q)));
+                      ($.children = Object(o.createElement)(O, Object.assign({}, B))),
+                        X.push(Object(o.createElement)(_, Object.assign({}, $)));
                     } else this.elementRefTrackY(null), this.elementRefThumbY(null);
-                    if (this.state.trackXVisible || (!x && !k)) {
-                      var B = d({}, R, {
+                    if (this.state.trackXVisible || (!S && !E)) {
+                      var G = d({}, A, {
                           key: "ScrollbarsCustom-ThumbX",
-                          style: F.thumbX,
+                          style: Y.thumbX,
                           elementRef: this.elementRefThumbX,
                           onDrag: this.handleThumbXDrag,
                           onDragEnd: this.handleThumbXDrag,
                           axis: r.X
                         }),
-                        $ = d(
+                        Q = d(
                           {},
-                          C,
+                          N,
                           {
                             key: "ScrollbarsCustom-TrackX",
-                            style: F.trackX,
+                            style: Y.trackX,
                             elementRef: this.elementRefTrackX,
                             onClick: this.handleTrackXClick
                           },
-                          (s || c) && { onWheel: this.handleTrackXMouseWheel },
+                          (c || f) && { onWheel: this.handleTrackXMouseWheel },
                           { axis: r.X }
                         );
-                      ($.children = Object(o.createElement)(O, Object.assign({}, B))),
-                        U.push(Object(o.createElement)(_, Object.assign({}, $)));
+                      (Q.children = Object(o.createElement)(O, Object.assign({}, G))),
+                        X.push(Object(o.createElement)(_, Object.assign({}, Q)));
                     } else this.elementRefTrackX(null), this.elementRefThumbX(null);
                     return w(
-                      d({}, I, {
+                      d({}, D, {
                         className: Object(a.a)(
                           "ScrollbarsCustom",
                           this.state.trackYVisible && "trackYVisible",
                           this.state.trackXVisible && "trackXVisible",
                           this.state.isRTL && "rtl",
-                          I.className
+                          D.className
                         ),
-                        style: F.holder,
-                        children: U
+                        style: Y.holder,
+                        children: X
                       }),
                       this.elementRefHolder
                     );
@@ -2439,6 +2440,7 @@
           createContext: i.bool,
           rtl: i.bool,
           native: i.bool,
+          mobileNative: i.bool,
           momentum: i.bool,
           noDefaultStyles: i.bool,
           disableTracksMousewheelScrolling: i.bool,
@@ -19936,7 +19938,7 @@ object-assign
                     "div",
                     { className: "left" },
                     r.createElement("div", { className: "App-PackageName" }, "react-scrollbars-custom"),
-                    r.createElement("div", { className: "App-PackageVersion" }, "v", "4.0.0-alpha.22")
+                    r.createElement("div", { className: "App-PackageVersion" }, "v", "4.0.0-alpha.23")
                   )
                 );
               }
@@ -20371,7 +20373,7 @@ object-assign
               value: function() {
                 return r.createElement(
                   m.a,
-                  { noDefaultStyles: !0, noScrollX: !0, disableTracksWidthCompensation: !0 },
+                  { noDefaultStyles: !0, noScrollX: !0, disableTracksWidthCompensation: !0, mobileNative: !0 },
                   r.createElement(
                     "div",
                     { id: "App" },

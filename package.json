@@ -28,6 +28,9 @@
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
   "types": "dist/types/index.d.ts",
+  "files": [
+    "dist"
+  ],
   "peerDependencies": {
     "prop-types": "^15.0.0",
     "react": "^16.0.0"

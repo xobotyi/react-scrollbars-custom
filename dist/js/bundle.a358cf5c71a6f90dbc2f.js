@@ -19938,7 +19938,7 @@ object-assign
                     "div",
                     { className: "left" },
                     r.createElement("div", { className: "App-PackageName" }, "react-scrollbars-custom"),
-                    r.createElement("div", { className: "App-PackageVersion" }, "v", "4.0.0-alpha.23")
+                    r.createElement("div", { className: "App-PackageVersion" }, "v", "4.0.1")
                   )
                 );
               }

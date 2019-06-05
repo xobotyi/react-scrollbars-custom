@@ -1496,7 +1496,9 @@ describe("Scrollbar", () => {
         scrollXPossible: true,
         trackYVisible: true,
         trackXVisible: true,
-        isRTL: undefined
+        isRTL: undefined,
+
+        zoomLevel: 1
       };
 
       it("should return proper rtl styles", () => {

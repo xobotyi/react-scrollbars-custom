@@ -447,6 +447,11 @@ type ScrollState = {
    * @description Indicates whether display direction is right-to-left
    */
   isRTL?: boolean;
+
+  /**
+   * @description Pages zoom level - it affects scrollbars
+   */
+  zoomLevel: number;
 };
 ```
 

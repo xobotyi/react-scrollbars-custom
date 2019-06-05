@@ -79,6 +79,8 @@ export default class AppPromo extends React.Component {
             </a>
             ]
           </div>
+
+          <div className="FeatureList-Item">Proper page zoom handling (native scrollbars does not show up)</div>
         </div>
       </div>
     );

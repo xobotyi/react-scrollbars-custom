@@ -24,6 +24,7 @@
 - Momentum scrolling for iOS
 - RTL support ([read more](#rtl-support))
 - Content sizes translation ([read more](#content-sizes-translation))
+- Proper page zoom handling (native scrollbars does not show up)
 
 ## INSTALLATION
 

@@ -19,7 +19,7 @@ export default {
     }
   ],
 
-  external: ["react", "prop-types", "cnbuilder", "react-draggable"],
+  external: ["react", "prop-types", "cnbuilder", "react-draggable", "zoom-level"],
 
   plugins: [
     ts({

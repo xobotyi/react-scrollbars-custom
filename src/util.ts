@@ -262,9 +262,9 @@ export const shouldReverseRTLScroll = (force: boolean = false): boolean => {
     "display:block;position:absolute;width:100px;height:100px;top:-9999px;overflow:scroll;direction:rtl;"
   );
   child.setAttribute("style", "display:block;position:relative;width:1000px;height:1000px;direction:rtl;");
-  el.appendChild(child);
+  el.insertBefore(child, null);
 
-  doc.body.appendChild(el);
+  doc.body.insertBefore(el, null);
   el.scrollLeft;
   el.scrollLeft = 45;
   isReverseRTLScrollNeeded = el.scrollLeft === 0;

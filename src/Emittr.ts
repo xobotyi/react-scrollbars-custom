@@ -1,5 +1,5 @@
 import isNum from "is-number";
-import isCallable from "is-callable";
+import { isFun } from "is-fun";
 import { isUndef } from "./util";
 
 type EventHandler = (...args: any[]) => void;
@@ -44,7 +44,7 @@ export default class Emittr {
     handler: EventHandler,
     prepend: boolean = false
   ): Emittr => {
-    if (!isCallable(handler)) {
+    if (!isFun(handler)) {
       throw new TypeError("Expected event handler to be a function, got " + typeof handler);
     }
     emitter._handlers[name] = emitter._handlers[name] || [];
@@ -62,7 +62,7 @@ export default class Emittr {
   };
 
   private static _removeHandler = (emitter: Emittr, name: string, handler: EventHandler): Emittr => {
-    if (!isCallable(handler)) {
+    if (!isFun(handler)) {
       throw new TypeError("Expected event handler to be a function, got " + typeof handler);
     }
     if (isUndef(emitter._handlers[name]) || !emitter._handlers[name].length) {
@@ -124,7 +124,7 @@ export default class Emittr {
   }
 
   public once(name: string, handler: EventHandler): this {
-    if (!isCallable(handler)) {
+    if (!isFun(handler)) {
       throw new TypeError("Expected event handler to be a function, got " + typeof handler);
     }
     Emittr._addHandler(this, name, this._wrapOnceHandler(name, handler));
@@ -132,7 +132,7 @@ export default class Emittr {
   }
 
   public prependOnce(name: string, handler: EventHandler): this {
-    if (!isCallable(handler)) {
+    if (!isFun(handler)) {
       throw new TypeError("Expected event handler to be a function, got " + typeof handler);
     }
     Emittr._addHandler(this, name, this._wrapOnceHandler(name, handler), true);

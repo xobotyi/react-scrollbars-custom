@@ -8,7 +8,7 @@ import {
   ElementPropsWithElementRefAndRenderer,
   renderDivWithRenderer
 } from "./common";
-import isCallable from "is-callable";
+import { isFun } from "is-fun";
 import { isUndef } from "./util";
 
 declare var global: {
@@ -209,7 +209,7 @@ export default class ScrollbarThumb extends React.Component<ScrollbarThumbProps,
   }
 
   private elementRef = (ref: HTMLDivElement | null): void => {
-    isCallable(this.props.elementRef) && this.props.elementRef!(ref);
+    isFun(this.props.elementRef) && this.props.elementRef!(ref);
     this.element = ref;
   };
 }

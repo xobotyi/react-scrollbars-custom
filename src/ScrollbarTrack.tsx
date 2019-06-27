@@ -7,7 +7,7 @@ import {
   ElementPropsWithElementRefAndRenderer,
   renderDivWithRenderer
 } from "./common";
-import isCallable from "is-callable";
+import { isFun } from "is-fun";
 import { isUndef } from "./util";
 
 export interface ScrollbarTrackClickParameters {
@@ -80,7 +80,7 @@ export default class ScrollbarTrack extends React.Component<ScrollbarTrackProps,
   }
 
   private elementRef = (ref: HTMLDivElement | null): void => {
-    isCallable(this.props.elementRef) && this.props.elementRef!(ref);
+    isFun(this.props.elementRef) && this.props.elementRef!(ref);
     this.element = ref;
   };
 
@@ -89,7 +89,7 @@ export default class ScrollbarTrack extends React.Component<ScrollbarTrackProps,
       return;
     }
 
-    if (isCallable(this.props.onClick) && ev.target === this.element) {
+    if (isFun(this.props.onClick) && ev.target === this.element) {
       if (!isUndef(ev.offsetX)) {
         this.props.onClick!(ev, {
           axis: this.props.axis,

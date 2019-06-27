@@ -19,7 +19,7 @@ import Emittr from "./Emittr";
 import defaultStyle from "./style";
 import { zoomLevel } from "zoom-level";
 import isNum from "is-number";
-import isCallable from "is-callable";
+import { isFun } from "is-fun";
 
 declare var global: {
   window?: Window;
@@ -1075,42 +1075,42 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
 
   private elementRefHolder = (ref: HTMLDivElement | null) => {
     this.holderElement = ref;
-    isCallable(this.props.elementRef) && this.props.elementRef!(ref);
+    isFun(this.props.elementRef) && this.props.elementRef!(ref);
   };
 
   private elementRefWrapper = (ref: HTMLDivElement | null) => {
     this.wrapperElement = ref;
-    isCallable(this.props.wrapperProps!.elementRef) && this.props.wrapperProps!.elementRef!(ref);
+    isFun(this.props.wrapperProps!.elementRef) && this.props.wrapperProps!.elementRef!(ref);
   };
 
   private elementRefScroller = (ref: HTMLDivElement | null) => {
     this.scrollerElement = ref;
-    isCallable(this.props.scrollerProps!.elementRef) && this.props.scrollerProps!.elementRef!(ref);
+    isFun(this.props.scrollerProps!.elementRef) && this.props.scrollerProps!.elementRef!(ref);
   };
 
   private elementRefContent = (ref: HTMLDivElement | null) => {
     this.contentElement = ref;
-    isCallable(this.props.contentProps!.elementRef) && this.props.contentProps!.elementRef!(ref);
+    isFun(this.props.contentProps!.elementRef) && this.props.contentProps!.elementRef!(ref);
   };
 
   private elementRefTrackX = (ref: HTMLDivElement | null) => {
     this.trackXElement = ref;
-    isCallable(this.props.trackXProps!.elementRef) && this.props.trackXProps!.elementRef!(ref);
+    isFun(this.props.trackXProps!.elementRef) && this.props.trackXProps!.elementRef!(ref);
   };
 
   private elementRefTrackY = (ref: HTMLDivElement | null) => {
     this.trackYElement = ref;
-    isCallable(this.props.trackYProps!.elementRef) && this.props.trackYProps!.elementRef!(ref);
+    isFun(this.props.trackYProps!.elementRef) && this.props.trackYProps!.elementRef!(ref);
   };
 
   private elementRefThumbX = (ref: HTMLDivElement | null) => {
     this.thumbXElement = ref;
-    isCallable(this.props.thumbXProps!.elementRef) && this.props.thumbXProps!.elementRef!(ref);
+    isFun(this.props.thumbXProps!.elementRef) && this.props.thumbXProps!.elementRef!(ref);
   };
 
   private elementRefThumbY = (ref: HTMLDivElement | null) => {
     this.thumbYElement = ref;
-    isCallable(this.props.thumbYProps!.elementRef) && this.props.thumbYProps!.elementRef!(ref);
+    isFun(this.props.thumbYProps!.elementRef) && this.props.thumbYProps!.elementRef!(ref);
   };
 
   private handleTrackXClick = (ev: MouseEvent, values: ScrollbarTrackClickParameters): void => {

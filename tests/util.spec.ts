@@ -612,25 +612,20 @@ describe("util", () => {
       it("should set the value returned by getScrollbarWidth()", () => {
         _dbgSetIsReverseRTLScrollNeeded(false);
         expect(shouldReverseRTLScroll()).toBeFalsy();
+        // @ts-ignore
+        _dbgSetIsReverseRTLScrollNeeded(undefined);
+        expect(shouldReverseRTLScroll()).toBeFalsy();
 
         _dbgSetIsReverseRTLScrollNeeded(true);
+        expect(shouldReverseRTLScroll()).toBeTruthy();
+        // @ts-ignore
+        _dbgSetIsReverseRTLScrollNeeded(321);
         expect(shouldReverseRTLScroll()).toBeTruthy();
       });
 
       it("null should force getScrollbarWidth() to recalculate val", () => {
         _dbgSetIsReverseRTLScrollNeeded(null);
         expect(typeof shouldReverseRTLScroll()).toBe("boolean");
-      });
-
-      it("should throw if value not null or boolean", () => {
-        // @ts-ignore
-        expect(() => _dbgSetIsReverseRTLScrollNeeded(321)).toThrow(
-          new TypeError("override value expected to be a boolean or null, got number")
-        );
-        // @ts-ignore
-        expect(() => _dbgSetIsReverseRTLScrollNeeded(undefined)).toThrow(
-          new TypeError("override value expected to be a boolean or null, got undefined")
-        );
       });
     });
 

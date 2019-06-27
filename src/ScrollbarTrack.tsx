@@ -7,6 +7,8 @@ import {
   ElementPropsWithElementRefAndRenderer,
   renderDivWithRenderer
 } from "./common";
+import isCallable from "is-callable";
+import { isUndef } from "./util";
 
 export interface ScrollbarTrackClickParameters {
   axis: AXIS_DIRECTION;
@@ -78,7 +80,7 @@ export default class ScrollbarTrack extends React.Component<ScrollbarTrackProps,
   }
 
   private elementRef = (ref: HTMLDivElement | null): void => {
-    typeof this.props.elementRef === "function" && this.props.elementRef(ref);
+    isCallable(this.props.elementRef) && this.props.elementRef!(ref);
     this.element = ref;
   };
 
@@ -87,16 +89,16 @@ export default class ScrollbarTrack extends React.Component<ScrollbarTrackProps,
       return;
     }
 
-    if (typeof this.props.onClick === "function" && ev.target === this.element) {
-      if (typeof ev.offsetX !== "undefined") {
-        this.props.onClick(ev, {
+    if (isCallable(this.props.onClick) && ev.target === this.element) {
+      if (!isUndef(ev.offsetX)) {
+        this.props.onClick!(ev, {
           axis: this.props.axis,
           offset: this.props.axis === AXIS_DIRECTION.X ? ev.offsetX : ev.offsetY
         });
       } else {
         // support for old browsers
         const rect: ClientRect = this.element.getBoundingClientRect();
-        this.props.onClick(ev, {
+        this.props.onClick!(ev, {
           axis: this.props.axis,
           offset: this.props.axis === AXIS_DIRECTION.X ? ev.clientX - rect.left : ev.clientY - rect.top
         });

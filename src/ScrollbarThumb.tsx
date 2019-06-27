@@ -8,6 +8,8 @@ import {
   ElementPropsWithElementRefAndRenderer,
   renderDivWithRenderer
 } from "./common";
+import isCallable from "is-callable";
+import { isUndef } from "./util";
 
 declare var global: {
   document?: Document;
@@ -160,7 +162,7 @@ export default class ScrollbarThumb extends React.Component<ScrollbarThumbProps,
 
     ev.stopPropagation();
 
-    if (typeof ev.offsetX !== "undefined") {
+    if (!isUndef(ev.offsetX)) {
       this.initialOffsetX = ev.offsetX;
       this.initialOffsetY = ev.offsetY;
     } else {
@@ -207,7 +209,7 @@ export default class ScrollbarThumb extends React.Component<ScrollbarThumbProps,
   }
 
   private elementRef = (ref: HTMLDivElement | null): void => {
-    typeof this.props.elementRef === "function" && this.props.elementRef(ref);
+    isCallable(this.props.elementRef) && this.props.elementRef!(ref);
     this.element = ref;
   };
 }

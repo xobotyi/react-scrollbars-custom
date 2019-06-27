@@ -1,7 +1,13 @@
+import isNum from "is-number";
+
 declare var global: {
   document?: Document;
 };
 let doc: Document | null = global.document || null;
+
+export function isUndef(v: any): boolean {
+  return typeof v === "undefined";
+}
 
 /**
  * @description Return element's height without padding
@@ -132,12 +138,8 @@ export function calcThumbSize(
 
   let thumbSize = (viewportSize / contentSize) * trackSize;
 
-  if (typeof maximalSize === "number") {
-    thumbSize = Math.min(maximalSize, thumbSize);
-  }
-  if (typeof minimalSize === "number") {
-    thumbSize = Math.max(minimalSize, thumbSize);
-  }
+  isNum(maximalSize) && (thumbSize = Math.min(maximalSize!, thumbSize));
+  isNum(minimalSize) && (thumbSize = Math.max(minimalSize!, thumbSize));
 
   return thumbSize;
 }
@@ -217,7 +219,7 @@ export function getScrollbarWidth(force = false) {
  *              <i>null</i> will force to recalculate value on next get.
  */
 export const _dbgSetScrollbarWidth = (v: number | null): number | null => {
-  if (typeof v === "number" || v === null) {
+  if (v === null || isNum(v)) {
     return (scrollbarWidth = v);
   }
 
@@ -278,9 +280,5 @@ export const shouldReverseRTLScroll = (force: boolean = false): boolean => {
  *              <i>null</i> will force to recalculate value on next get.
  */
 export const _dbgSetIsReverseRTLScrollNeeded = (v: boolean | null): boolean | null => {
-  if (typeof v === "boolean" || v === null) {
-    return (isReverseRTLScrollNeeded = v);
-  }
-
-  throw new TypeError("override value expected to be a boolean or null, got " + typeof v);
+  return (isReverseRTLScrollNeeded = v === null ? null : Boolean(v));
 };

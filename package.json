@@ -37,8 +37,6 @@
   },
   "dependencies": {
     "cnbuilder": "^1.1.1",
-    "is-fun": "^1.0.4",
-    "is-number": "^7.0.0",
     "react-draggable": "^3.3.0",
     "zoom-level": "^1.2.1"
   },

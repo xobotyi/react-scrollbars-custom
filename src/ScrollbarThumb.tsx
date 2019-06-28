@@ -8,8 +8,7 @@ import {
   ElementPropsWithElementRefAndRenderer,
   renderDivWithRenderer
 } from "./common";
-import isFun from "is-fun";
-import { isUndef } from "./util";
+import { isFun, isUndef } from "./util";
 
 declare var global: {
   document?: Document;

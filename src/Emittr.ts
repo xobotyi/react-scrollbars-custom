@@ -1,6 +1,4 @@
-import isNum from "is-number";
-import isFun from "is-fun";
-import { isUndef } from "./util";
+import { isFun, isNum, isUndef } from "./util";
 
 type EventHandler = (...args: any[]) => void;
 type OnceHandlerState = {

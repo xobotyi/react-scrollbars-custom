@@ -13,13 +13,11 @@ import cnb from "cnbuilder";
 import ScrollbarTrack, { ScrollbarTrackClickParameters, ScrollbarTrackProps } from "./ScrollbarTrack";
 import ScrollbarThumb, { ScrollbarThumbProps } from "./ScrollbarThumb";
 import * as util from "./util";
-import { getScrollbarWidth, isUndef } from "./util";
+import { getScrollbarWidth, isFun, isNum, isUndef } from "./util";
 import { DraggableData } from "react-draggable";
 import Emittr from "./Emittr";
 import defaultStyle from "./style";
 import { zoomLevel } from "zoom-level";
-import isNum from "is-number";
-import isFun from "is-fun";
 
 declare var global: {
   window?: Window;

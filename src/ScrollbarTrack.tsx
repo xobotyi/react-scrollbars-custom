@@ -7,8 +7,7 @@ import {
   ElementPropsWithElementRefAndRenderer,
   renderDivWithRenderer
 } from "./common";
-import isFun from "is-fun";
-import { isUndef } from "./util";
+import { isFun, isUndef } from "./util";
 
 export interface ScrollbarTrackClickParameters {
   axis: AXIS_DIRECTION;

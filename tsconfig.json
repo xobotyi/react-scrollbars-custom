@@ -5,7 +5,7 @@
     "noImplicitReturns": true,
     "strictNullChecks": true,
     "alwaysStrict": true,
-    "declaration": true,
+    "declaration": false,
     "target": "esnext",
     "module": "commonjs",
     "jsx": "react",

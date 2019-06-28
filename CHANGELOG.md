@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v4.0.9
+
+- ESM version now has ESNext lang level;
+- CJS version now has ES3 lang level;
+- Now using [is-fun](https://github.com/xobotyi/is-fun) to detect callable props;
+
 ### v4.0.0-alpha.23
 
 - Added `mobileNative` prop

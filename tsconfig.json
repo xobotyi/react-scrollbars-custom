@@ -2,21 +2,15 @@
   "compilerOptions": {
     "sourceMap": false,
     "removeComments": false,
-
     "noImplicitReturns": true,
-    "noUnusedLocals": true,
     "strictNullChecks": true,
     "alwaysStrict": true,
-
-    "jsx": "react",
-    "module": "commonjs",
+    "declaration": true,
     "target": "esnext",
-    "lib": ["esnext", "dom"],
-
-    "outDir": "dist/esm"
+    "module": "commonjs",
+    "jsx": "react",
+    "lib": ["esnext", "dom"]
   },
-
   "include": ["./src/**/*.ts"],
-
   "exclude": ["node_modules"]
 }

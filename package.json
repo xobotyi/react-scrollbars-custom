@@ -25,8 +25,8 @@
     "component",
     "custom"
   ],
-  "main": "dist/cjs/index.js",
-  "module": "dist/esm/index.js",
+  "main": "dist/index.js",
+  "module": "dist/index.esm.js",
   "types": "dist/types/index.d.ts",
   "files": [
     "dist"
@@ -36,11 +36,11 @@
     "react": "^16.0.0"
   },
   "dependencies": {
-    "cnbuilder": "^1.0.0",
-    "is-fun": "^1.0.1",
+    "cnbuilder": "^1.1.1",
+    "is-fun": "^1.0.4",
     "is-number": "^7.0.0",
     "react-draggable": "^3.3.0",
-    "zoom-level": "^1.1.13"
+    "zoom-level": "^1.2.1"
   },
   "devDependencies": {
     "@babel/core": "^7.4.4",

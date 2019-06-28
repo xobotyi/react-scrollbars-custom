@@ -1,5 +1,5 @@
 import isNum from "is-number";
-import { isFun } from "is-fun";
+import isFun from "is-fun";
 import { isUndef } from "./util";
 
 type EventHandler = (...args: any[]) => void;

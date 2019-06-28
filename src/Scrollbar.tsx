@@ -19,7 +19,7 @@ import Emittr from "./Emittr";
 import defaultStyle from "./style";
 import { zoomLevel } from "zoom-level";
 import isNum from "is-number";
-import { isFun } from "is-fun";
+import isFun from "is-fun";
 
 declare var global: {
   window?: Window;

@@ -1,5 +1,6 @@
 import babel from "rollup-plugin-babel";
 import ts from "rollup-plugin-typescript2";
+import pkg from "./package.json";
 
 export default {
   input: "./src/index.ts",
@@ -19,7 +20,7 @@ export default {
     }
   ],
 
-  external: ["react", "prop-types", "cnbuilder", "react-draggable", "zoom-level", "is-number", "is-callable"],
+  external: ["react", "prop-types", "cnbuilder", "react-draggable", "zoom-level", "is-number", "is-fun"],
 
   plugins: [
     ts({

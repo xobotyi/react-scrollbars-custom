@@ -1,5 +1,3 @@
-import isNum from "is-number";
-
 declare var global: {
   document?: Document;
 };
@@ -7,6 +5,14 @@ let doc: Document | null = global.document || null;
 
 export function isUndef(v: any): boolean {
   return typeof v === "undefined";
+}
+
+export function isFun(v: any): boolean {
+  return typeof v === "function";
+}
+
+export function isNum(v: any): boolean {
+  return typeof v === "number";
 }
 
 /**

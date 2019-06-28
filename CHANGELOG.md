@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## v4.0.10
+
+- Refusing `is-fun` due to too big performance impact - no sense to use it with hte prop-types =\
+- Refusing `is-number` for almost the same reasons;
+
 ## v4.0.9
 
 - ESM version now has ESNext lang level;

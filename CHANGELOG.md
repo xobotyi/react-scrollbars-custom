@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## v4.0.11
+
+- A bit tweaked distribution strategy:
+  - `main` field of `package.json` is pointing to transpiled ES3-compatible version with CJS modules resolution;
+  - `module` field is pointing to transpiled ES3-compatible version with ES modules resolution;
+  - `esnext` field is pointing to the ES6+ version with ES modules resolution;
+
 ## v4.0.10
 
 - Refusing `is-fun` due to too big performance impact - no sense to use it with hte prop-types =\

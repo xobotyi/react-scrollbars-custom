@@ -8,14 +8,47 @@ const externalDependencies = Array.from(new Set(ownKeys(pkg.peerDependencies).co
 export default [
   {
     input: "./src/index.ts",
+    external: externalDependencies,
+
+    output: [
+      {
+        file: pkg.esnext,
+        format: "es"
+      }
+    ],
+
+    plugins: [
+      ts({
+        clean: true,
+        useTsconfigDeclarationDir: true,
+        tsconfigOverride: {
+          compilerOptions: {
+            module: "esnext",
+            target: "esnext",
+            declaration: true,
+            declarationDir: __dirname + "/dist/types"
+          }
+        }
+      })
+    ]
+  },
+  {
+    input: "./src/index.ts",
+    external: externalDependencies,
+
     output: [
       {
         file: pkg.main,
         format: "cjs",
+        sourcemap: true,
         exports: "named"
+      },
+      {
+        file: pkg.module,
+        format: "esm"
       }
     ],
-    external: externalDependencies,
+
     plugins: [
       ts({
         clean: true,
@@ -41,30 +74,6 @@ export default [
             }
           ]
         ]
-      })
-    ]
-  },
-  {
-    input: "./src/index.ts",
-    output: [
-      {
-        file: pkg.module,
-        format: "esm"
-      }
-    ],
-    external: externalDependencies,
-    plugins: [
-      ts({
-        clean: true,
-        useTsconfigDeclarationDir: true,
-        tsconfigOverride: {
-          compilerOptions: {
-            module: "esnext",
-            target: "esnext",
-            declaration: true,
-            declarationDir: __dirname + "/dist/types"
-          }
-        }
       })
     ]
   }

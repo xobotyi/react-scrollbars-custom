@@ -25,8 +25,9 @@
     "component",
     "custom"
   ],
-  "main": "dist/index.js",
-  "module": "dist/index.esm.js",
+  "main": "dist/rsc.js",
+  "module": "dist/rsc.mjs",
+  "esnext": "dist/rsc.next.mjs",
   "types": "dist/types/index.d.ts",
   "files": [
     "dist"
@@ -36,9 +37,9 @@
     "react": "^16.0.0"
   },
   "dependencies": {
-    "cnbuilder": "^1.1.1",
+    "cnbuilder": "^1.1.4",
     "react-draggable": "^3.3.0",
-    "zoom-level": "^1.2.1"
+    "zoom-level": "^1.2.3"
   },
   "devDependencies": {
     "@babel/core": "^7.4.4",

@@ -13,7 +13,8 @@ export default [
     output: [
       {
         file: pkg.esnext,
-        format: "es"
+        format: "es",
+        exports: "named"
       }
     ],
 
@@ -45,7 +46,8 @@ export default [
       },
       {
         file: pkg.module,
-        format: "esm"
+        format: "esm",
+        exports: "named"
       }
     ],
 

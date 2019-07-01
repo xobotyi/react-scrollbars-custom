@@ -1,13 +1,12 @@
 <div align="center">
     <h1>react-scrollbars-custom</h1>
     <p>
-        <a href="https://www.npmjs.com/package/react-scrollbars-custom"><img src="https://img.shields.io/badge/npm-react--scrollbars--custom-brightgreen.svg" /></a>
-        <a href="https://www.npmjs.com/package/react-scrollbars-custom"><img src="https://img.shields.io/npm/v/react-scrollbars-custom.svg" /></a>
-        <a href="https://www.npmjs.com/package/react-scrollbars-custom"><img src="https://img.shields.io/npm/dt/react-scrollbars-custom.svg" /></a>
-        <a href="https://www.npmjs.com/package/react-scrollbars-custom"><img src="https://img.shields.io/travis/xobotyi/react-scrollbars-custom.svg" /></a>
-        <a href="https://www.codacy.com/app/xobotyi/react-scrollbars-custom"><img src="https://api.codacy.com/project/badge/Grade/f0875490cea1497a9eca9c25f3f7774e"/></a>
-        <a href="https://www.codacy.com/app/xobotyi/react-scrollbars-custom"><img src="https://api.codacy.com/project/badge/Coverage/f0875490cea1497a9eca9c25f3f7774e"/></a>
-        <a href="https://www.npmjs.com/package/react-scrollbars-custom"><img src="https://img.shields.io/npm/l/react-scrollbars-custom.svg" /></a>
+        <a href="https://www.npmjs.com/package/react-scrollbars-custom"><img src="https://badgen.net/npm/v/react-scrollbars-custom" /></a>
+        <a href="https://www.npmjs.com/package/react-scrollbars-custom"><img src="https://badgen.net/npm/dw/react-scrollbars-custom" /></a>
+        <a href="https://www.npmjs.com/package/react-scrollbars-custom"><img src="https://badgen.net/travis/xobotyi/react-scrollbars-custom" /></a>
+        <a href="https://www.codacy.com/app/xobotyi/react-scrollbars-custom"><img src="https://badgen.net/codacy/grade/f0875490cea1497a9eca9c25f3f7774e"/></a>
+        <a href="https://www.codacy.com/app/xobotyi/react-scrollbars-custom"><img src="https://badgen.net/codacy/coverage/f0875490cea1497a9eca9c25f3f7774e"/></a>
+        <a href="https://www.npmjs.com/package/react-scrollbars-custom"><img src="https://badgen.net/npm/license/react-scrollbars-custom" /></a>
     </p>
     × <strong><a href="https://xobotyi.github.io/react-scrollbars-custom/">DEMO</a></strong> × <strong><a href="https://codesandbox.io/s/rsc-live-example-i1zlx?module=%2Fsrc%2FRSCExample.jsx">LIVE EXAMPLE</a></strong> × <strong><a href="https://github.com/xobotyi/react-scrollbars-custom/blob/master/CHANGELOG.md">CHANGELOG</a></strong> ×
 </div>

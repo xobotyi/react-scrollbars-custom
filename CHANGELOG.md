@@ -3,7 +3,8 @@
 ## v4.0.16
 
 - Small code refactoring;
-- Fix of #89;
+- Possible fix of #89;
+- Fix of #57;
 
 ## v4.0.15
 

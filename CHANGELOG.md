@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v4.0.14
+
+- Improved typings of getInner\* functions (no more @ts-ignore);
+- The proper scrollbar width detection now it is float number so no more 1px scrollbar showing off (Complete fix: #57);
+- Improved testbench;
+
 ## v4.0.13
 
 - Fix: #98;

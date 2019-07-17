@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v4.0.15
+
+- Fixed cjs and esm builds;
+
 ## v4.0.14
 
 - Improved typings of getInner\* functions (no more @ts-ignore);

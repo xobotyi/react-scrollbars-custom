@@ -2,7 +2,7 @@ import ScrollbarTrack from "../src/ScrollbarTrack";
 import * as ReactDOM from "react-dom";
 import * as React from "react";
 import * as simulant from "simulant";
-import { AXIS_DIRECTION } from "../src/common";
+import { AXIS_DIRECTION } from "../src/types";
 
 describe("ScrollbarTrack", () => {
   let node: HTMLDivElement;

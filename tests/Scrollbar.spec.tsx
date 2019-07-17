@@ -5,7 +5,7 @@ import * as simulant from "simulant";
 import { _dbgSetIsReverseRTLScrollNeeded, _dbgSetScrollbarWidth } from "../src/util";
 import Scrollbar, { ScrollbarContext, ScrollbarProps, ScrollbarState } from "../src";
 import { ScrollbarContextValue } from "../src/Scrollbar";
-import { ScrollState, TRACK_CLICK_BEHAVIOR } from "../src/common";
+import { ScrollState, TRACK_CLICK_BEHAVIOR } from "../src/types";
 
 class ScrollbarPropsUpdater extends React.Component<
   { scrollbarProps: ScrollbarProps },

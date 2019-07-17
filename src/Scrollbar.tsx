@@ -743,7 +743,6 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
     }
 
     if (!props.native && bitmask & (1 << 15)) {
-      console.log(getScrollbarWidth(true));
       this.forceUpdate();
     }
 

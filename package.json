@@ -1,7 +1,7 @@
 {
   "name": "react-scrollbars-custom",
   "description": "The best React custom scrollbars component",
-  "version": "4.0.13",
+  "version": "4.0.14",
   "repository": {
     "type": "git",
     "url": "https://github.com/xobotyi/react-scrollbars-custom.git"
@@ -37,13 +37,13 @@
     "react": "^16.0.0"
   },
   "dependencies": {
-    "cnbuilder": "^1.1.6",
+    "cnbuilder": "^1.1.7",
     "react-draggable": "^3.3.0",
     "zoom-level": "^1.2.4"
   },
   "devDependencies": {
-    "@babel/core": "^7.4.4",
-    "@babel/preset-env": "^7.4.4",
+    "@babel/core": "^7.5.4",
+    "@babel/preset-env": "^7.5.4",
     "@types/jasmine": "^3.3.13",
     "@types/karma": "^3.0.2",
     "@types/prop-types": "^15.7.1",
@@ -52,7 +52,7 @@
     "cross-env": "^5.2.0",
     "husky": "^1.3.1",
     "jasmine-core": "^3.3.0",
-    "karma": "^4.1.0",
+    "karma": "^4.2.0",
     "karma-chrome-launcher": "^2.2.0",
     "karma-jasmine": "^2.0.1",
     "karma-typescript": "^4.0.0",
@@ -62,7 +62,7 @@
     "react": "^16.8.5",
     "react-dom": "^16.8.5",
     "rimraf": "^2.6.3",
-    "rollup": "^1.16.2",
+    "rollup": "^1.17.0",
     "rollup-plugin-babel": "^4.3.3",
     "rollup-plugin-typescript2": "^0.19.3",
     "simulant": "^0.2.2",
@@ -74,7 +74,7 @@
     }
   },
   "scripts": {
-    "format": "prettier --write src/**/*.ts tests/**/*.ts src/**/*.js tests/**/*.js *.js *.ts",
+    "format": "prettier --write \"src/**/*.[tj]s?(x)\" \"tests/**/*.[tj]s?(x)\" \"*.[tj]s?(x)\"",
     "devserver": "cd ./testbench && npm i && npm run devserver",
     "build": "rimraf ./dist && rollup --config",
     "test": "cross-env NODE_ENV=production karma start",

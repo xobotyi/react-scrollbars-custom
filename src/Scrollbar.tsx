@@ -13,7 +13,6 @@ import cnb from "cnbuilder";
 import ScrollbarTrack, { ScrollbarTrackClickParameters, ScrollbarTrackProps } from "./ScrollbarTrack";
 import ScrollbarThumb, { ScrollbarThumbProps } from "./ScrollbarThumb";
 import * as util from "./util";
-import { getScrollbarWidth, isFun, isNum, isUndef } from "./util";
 import { DraggableData } from "react-draggable";
 import Emittr from "./Emittr";
 import defaultStyle from "./style";
@@ -373,7 +372,7 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
 
         ...props.scrollerProps!.style,
 
-        ...(!isUndef(props.rtl) && {
+        ...(!util.isUndef(props.rtl) && {
           direction: props.rtl ? "rtl" : "ltr"
         }),
 
@@ -457,11 +456,11 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
 
     Loop.addTarget(this);
 
-    if (!isUndef(props.scrollTop)) {
+    if (!util.isUndef(props.scrollTop)) {
       this.scrollerElement.scrollTop = props.scrollTop!;
     }
 
-    if (!isUndef(props.scrollLeft)) {
+    if (!util.isUndef(props.scrollLeft)) {
       this.scrollerElement.scrollLeft = props.scrollLeft!;
     }
 
@@ -487,11 +486,11 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
       this.update();
     }
 
-    if (!isUndef(props.scrollTop) && props.scrollTop !== this.scrollerElement.scrollTop) {
+    if (!util.isUndef(props.scrollTop) && props.scrollTop !== this.scrollerElement.scrollTop) {
       this.scrollerElement.scrollTop = props.scrollTop!;
     }
 
-    if (!isUndef(props.scrollLeft) && props.scrollLeft !== this.scrollerElement.scrollLeft) {
+    if (!util.isUndef(props.scrollLeft) && props.scrollLeft !== this.scrollerElement.scrollLeft) {
       this.scrollerElement.scrollLeft = props.scrollLeft!;
     }
 
@@ -627,8 +626,8 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
    */
   public scrollTo = (x?: number, y?: number): this => {
     if (this.scrollerElement) {
-      isNum(x) && (this.scrollerElement.scrollLeft = x!);
-      isNum(y) && (this.scrollerElement.scrollTop = y!);
+      util.isNum(x) && (this.scrollerElement.scrollLeft = x!);
+      util.isNum(y) && (this.scrollerElement.scrollTop = y!);
     }
 
     return this;
@@ -640,8 +639,8 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
    */
   public centerAt = (x?: number, y?: number): this => {
     if (this.scrollerElement) {
-      isNum(x) && (this.scrollerElement.scrollLeft = x! - this.scrollerElement.clientWidth / 2);
-      isNum(y) && (this.scrollerElement.scrollTop = y! - this.scrollerElement.clientHeight / 2);
+      util.isNum(x) && (this.scrollerElement.scrollLeft = x! - this.scrollerElement.clientWidth / 2);
+      util.isNum(y) && (this.scrollerElement.scrollTop = y! - this.scrollerElement.clientHeight / 2);
     }
 
     return this;
@@ -653,7 +652,7 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
     }
 
     // autodetect direction if not defined
-    if (isUndef(this.state.isRTL)) {
+    if (util.isUndef(this.state.isRTL)) {
       this.setState({
         isRTL: getComputedStyle(this.scrollerElement).direction === "rtl"
       });
@@ -743,6 +742,7 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
     }
 
     if (!props.native && bitmask & (1 << 15)) {
+      util.getScrollbarWidth(true);
       this.forceUpdate();
     }
 
@@ -828,7 +828,7 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
       ...propsHolderProps
     } = this.props as ScrollbarProps;
 
-    const scrollbarWidth = !isUndef(propsScrollbarWidth) ? propsScrollbarWidth! : util.getScrollbarWidth() || 0;
+    const scrollbarWidth = !util.isUndef(propsScrollbarWidth) ? propsScrollbarWidth! : util.getScrollbarWidth() || 0;
 
     if (native || (!scrollbarWidth && mobileNative)) {
       this.elementRefHolder(null);
@@ -856,7 +856,7 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
         ),
         style: {
           ...propsHolderProps.style,
-          ...(!isUndef(rtl) && {
+          ...(!util.isUndef(rtl) && {
             direction: rtl ? "rtl" : "ltr"
           }),
 
@@ -1072,42 +1072,42 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
 
   private elementRefHolder = (ref: HTMLDivElement | null) => {
     this.holderElement = ref;
-    isFun(this.props.elementRef) && this.props.elementRef!(ref);
+    util.isFun(this.props.elementRef) && this.props.elementRef!(ref);
   };
 
   private elementRefWrapper = (ref: HTMLDivElement | null) => {
     this.wrapperElement = ref;
-    isFun(this.props.wrapperProps!.elementRef) && this.props.wrapperProps!.elementRef!(ref);
+    util.isFun(this.props.wrapperProps!.elementRef) && this.props.wrapperProps!.elementRef!(ref);
   };
 
   private elementRefScroller = (ref: HTMLDivElement | null) => {
     this.scrollerElement = ref;
-    isFun(this.props.scrollerProps!.elementRef) && this.props.scrollerProps!.elementRef!(ref);
+    util.isFun(this.props.scrollerProps!.elementRef) && this.props.scrollerProps!.elementRef!(ref);
   };
 
   private elementRefContent = (ref: HTMLDivElement | null) => {
     this.contentElement = ref;
-    isFun(this.props.contentProps!.elementRef) && this.props.contentProps!.elementRef!(ref);
+    util.isFun(this.props.contentProps!.elementRef) && this.props.contentProps!.elementRef!(ref);
   };
 
   private elementRefTrackX = (ref: HTMLDivElement | null) => {
     this.trackXElement = ref;
-    isFun(this.props.trackXProps!.elementRef) && this.props.trackXProps!.elementRef!(ref);
+    util.isFun(this.props.trackXProps!.elementRef) && this.props.trackXProps!.elementRef!(ref);
   };
 
   private elementRefTrackY = (ref: HTMLDivElement | null) => {
     this.trackYElement = ref;
-    isFun(this.props.trackYProps!.elementRef) && this.props.trackYProps!.elementRef!(ref);
+    util.isFun(this.props.trackYProps!.elementRef) && this.props.trackYProps!.elementRef!(ref);
   };
 
   private elementRefThumbX = (ref: HTMLDivElement | null) => {
     this.thumbXElement = ref;
-    isFun(this.props.thumbXProps!.elementRef) && this.props.thumbXProps!.elementRef!(ref);
+    util.isFun(this.props.thumbXProps!.elementRef) && this.props.thumbXProps!.elementRef!(ref);
   };
 
   private elementRefThumbY = (ref: HTMLDivElement | null) => {
     this.thumbYElement = ref;
-    isFun(this.props.thumbYProps!.elementRef) && this.props.thumbYProps!.elementRef!(ref);
+    util.isFun(this.props.thumbYProps!.elementRef) && this.props.thumbYProps!.elementRef!(ref);
   };
 
   private handleTrackXClick = (ev: MouseEvent, values: ScrollbarTrackClickParameters): void => {

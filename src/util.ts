@@ -25,12 +25,9 @@ export const getInnerHeight = (el: HTMLDivElement): number => {
 
   if (styles.boxSizing === "border-box") {
     return Math.max(
-      // @ts-ignore
-      (parseFloat(styles.height) || 0) -
-        // @ts-ignore
-        (parseFloat(styles.paddingTop) || 0) -
-        // @ts-ignore
-        (parseFloat(styles.paddingBottom) || 0),
+      (parseFloat(styles.height as string) || 0) -
+        (parseFloat(styles.paddingTop as string) || 0) -
+        (parseFloat(styles.paddingBottom as string) || 0),
       0
     );
   }
@@ -49,12 +46,9 @@ export const getInnerWidth = (el: HTMLDivElement): number => {
 
   if (styles.boxSizing === "border-box") {
     return Math.max(
-      // @ts-ignore
-      (parseFloat(styles.width) || 0) -
-        // @ts-ignore
-        (parseFloat(styles.paddingLeft) || 0) -
-        // @ts-ignore
-        (parseFloat(styles.paddingRight) || 0),
+      (parseFloat(styles.width as string) || 0) -
+        (parseFloat(styles.paddingLeft as string) || 0) -
+        (parseFloat(styles.paddingRight as string) || 0),
       0
     );
   }
@@ -74,30 +68,23 @@ export const getInnerDimensions = (el: HTMLDivElement): { width: number; height:
   if (styles.boxSizing === "border-box") {
     return {
       height: Math.max(
-        // @ts-ignore
-        (parseFloat(styles.height) || 0) -
-          // @ts-ignore
-          (parseFloat(styles.paddingTop) || 0) -
-          // @ts-ignore
-          (parseFloat(styles.paddingBottom) || 0),
+        (parseFloat(styles.height as string) || 0) -
+          (parseFloat(styles.paddingTop as string) || 0) -
+          (parseFloat(styles.paddingBottom as string) || 0),
         0
       ),
       width: Math.max(
         // @ts-ignore
-        (parseFloat(styles.width) || 0) -
-          // @ts-ignore
-          (parseFloat(styles.paddingLeft) || 0) -
-          // @ts-ignore
-          (parseFloat(styles.paddingRight) || 0),
+        (parseFloat(styles.width as string) || 0) -
+          (parseFloat(styles.paddingLeft as string) || 0) -
+          (parseFloat(styles.paddingRight as string) || 0),
         0
       )
     };
   }
   return {
-    // @ts-ignore
-    height: parseFloat(styles.height) || 0,
-    // @ts-ignore
-    width: parseFloat(styles.width) || 0
+    height: parseFloat(styles.height as string) || 0,
+    width: parseFloat(styles.width as string) || 0
   };
 };
 
@@ -214,7 +201,8 @@ export function getScrollbarWidth(force = false) {
   el.setAttribute("style", "display:block;position:absolute;width:100px;height:100px;top:-9999px;overflow:scroll;");
 
   doc.body.appendChild(el);
-  scrollbarWidth = Math.ceil(el.offsetWidth - el.clientWidth);
+  const styles = getComputedStyle(el);
+  scrollbarWidth = Math.ceil(el.offsetWidth - parseFloat(styles.width as string) || 0);
   doc.body.removeChild(el);
 
   return scrollbarWidth;

@@ -1,26 +1,6 @@
 import * as React from "react";
 import * as PropTypes from "prop-types";
-
-/**
- * @description Will return renderer result if presented, div element otherwise.
- * If renderer is presented it'll receive `elementRef` function which should be used as HTMLElement's ref.
- *
- * @param props {ElementPropsWithElementRefAndRenderer}
- * @param elementRef {ElementRef}
- */
-export function renderDivWithRenderer(props: ElementPropsWithElementRefAndRenderer, elementRef: ElementRef) {
-  if (props.renderer) {
-    props.elementRef = elementRef;
-
-    const renderer = props.renderer;
-
-    delete props.renderer;
-
-    return renderer(props);
-  }
-
-  return <div {...props} ref={elementRef} />;
-}
+import { isFun } from "./util";
 
 export enum AXIS_DIRECTION {
   X = "x",

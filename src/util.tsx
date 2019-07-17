@@ -1,3 +1,6 @@
+import * as React from "react";
+import { ElementPropsWithElementRefAndRenderer, ElementRef } from "./types";
+
 declare var global: {
   document?: Document;
 };
@@ -13,6 +16,29 @@ export function isFun(v: any): boolean {
 
 export function isNum(v: any): boolean {
   return typeof v === "number";
+}
+
+/**
+ * @description Will return renderer result if presented, div element otherwise.
+ * If renderer is presented it'll receive `elementRef` function which should be used as HTMLElement's ref.
+ *
+ * @param props {ElementPropsWithElementRefAndRenderer}
+ * @param elementRef {ElementRef}
+ */
+export function renderDivWithRenderer(props: ElementPropsWithElementRefAndRenderer, elementRef: ElementRef) {
+  if (isFun(props.renderer)) {
+    props.elementRef = elementRef;
+
+    const renderer = props.renderer!;
+
+    delete props.renderer;
+
+    return renderer(props);
+  }
+
+  props.elementRef && delete props.elementRef;
+
+  return <div {...props} ref={elementRef} />;
 }
 
 /**

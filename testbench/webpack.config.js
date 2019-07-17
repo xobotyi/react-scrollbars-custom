@@ -22,13 +22,12 @@ module.exports = {
   optimization: {
     minimize: false,
     noEmitOnErrors: true,
-    nodeEnv: "production"
+    nodeEnv: "development"
   },
   devServer: {
     contentBase: dist,
     port: 3000,
-    compress: true,
-    //open:        true,
+    compress: false,
     progress: true
   },
   plugins: [
@@ -64,23 +63,14 @@ module.exports = {
                 "@babel/preset-env",
                 {
                   targets: {
-                    browsers: [
-                      "Chrome >= 52",
-                      "FireFox >= 44",
-                      "Safari >= 7",
-                      "Explorer 11",
-                      "last 4 Edge versions"
-                    ]
+                    browsers: ["Chrome >= 52", "FireFox >= 44", "Safari >= 7", "Explorer 11", "last 4 Edge versions"]
                   }
                 }
               ],
               "@babel/preset-typescript",
               "@babel/preset-react"
             ],
-            plugins: [
-              "@babel/plugin-proposal-class-properties",
-              "@babel/plugin-proposal-object-rest-spread"
-            ]
+            plugins: ["@babel/plugin-proposal-class-properties", "@babel/plugin-proposal-object-rest-spread"]
           }
         }
       }

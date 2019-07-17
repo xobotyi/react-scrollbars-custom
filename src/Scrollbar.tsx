@@ -1,11 +1,10 @@
 import {
   AXIS_DIRECTION,
   ElementPropsWithElementRefAndRenderer,
-  renderDivWithRenderer,
   ScrollState,
   TRACK_CLICK_BEHAVIOR,
   TRACK_CLICK_BEHAVIOR_PROP_TYPE
-} from "./common";
+} from "./types";
 import * as React from "react";
 import * as PropTypes from "prop-types";
 import Loop from "./Loop";
@@ -17,6 +16,7 @@ import { DraggableData } from "react-draggable";
 import Emittr from "./Emittr";
 import defaultStyle from "./style";
 import { zoomLevel } from "zoom-level";
+import { renderDivWithRenderer } from "./util";
 
 declare var global: {
   window?: Window;

@@ -1,8 +1,13 @@
 # CHANGELOG
 
+## v4.0.13
+
+- Fix: #98;
+- Improved props typings;
+
 ## v4.0.12
 
-Reverted the dist ESM filenames from `.mjs` to `.esm.js` due to lack of functionality of node modules system.
+- Reverted the dist ESM filenames from `.mjs` to `.esm.js` due to lack of functionality of node modules system.
 
 ## v4.0.11
 

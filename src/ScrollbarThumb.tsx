@@ -182,7 +182,7 @@ export default class ScrollbarThumb extends React.Component<ScrollbarThumbProps,
       onDragStart,
 
       ...props
-    } = this.props;
+    } = this.props as ScrollbarThumbProps;
 
     props.className = cnb(
       "ScrollbarsCustom-Thumb",

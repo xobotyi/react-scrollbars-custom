@@ -63,7 +63,7 @@ export default class ScrollbarTrack extends React.Component<ScrollbarTrackProps,
       onClick,
 
       ...props
-    } = this.props;
+    } = this.props as ScrollbarTrackProps;
 
     props.className = cnb(
       "ScrollbarsCustom-Track",

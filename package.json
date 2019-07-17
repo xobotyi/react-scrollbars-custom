@@ -1,7 +1,7 @@
 {
   "name": "react-scrollbars-custom",
   "description": "The best React custom scrollbars component",
-  "version": "4.0.14",
+  "version": "4.0.15",
   "repository": {
     "type": "git",
     "url": "https://github.com/xobotyi/react-scrollbars-custom.git"
@@ -66,6 +66,7 @@
     "rollup-plugin-babel": "^4.3.3",
     "rollup-plugin-typescript2": "^0.19.3",
     "simulant": "^0.2.2",
+    "tslib": "^1.10.0",
     "typescript": "^3.5.2"
   },
   "husky": {

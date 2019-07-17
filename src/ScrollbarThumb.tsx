@@ -2,13 +2,8 @@ import * as React from "react";
 import * as PropTypes from "prop-types";
 import cnb from "cnbuilder";
 import { DraggableCore, DraggableData, DraggableEvent } from "react-draggable";
-import {
-  AXIS_DIRECTION,
-  AXIS_DIRECTION_PROP_TYPE,
-  ElementPropsWithElementRefAndRenderer,
-  renderDivWithRenderer
-} from "./common";
-import { isFun, isUndef } from "./util";
+import { AXIS_DIRECTION, AXIS_DIRECTION_PROP_TYPE, ElementPropsWithElementRefAndRenderer } from "./types";
+import { renderDivWithRenderer, isFun, isUndef } from "./util";
 
 declare var global: {
   document?: Document;

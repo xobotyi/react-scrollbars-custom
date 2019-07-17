@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v4.0.16
+
+- Small code refactoring;
+- Possible fix of #89;
+- Fix of #57;
+
 ## v4.0.15
 
 - Fixed cjs and esm builds;

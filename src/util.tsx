@@ -227,8 +227,7 @@ export function getScrollbarWidth(force = false) {
   el.setAttribute("style", "display:block;position:absolute;width:100px;height:100px;top:-9999px;overflow:scroll;");
 
   doc.body.appendChild(el);
-  const styles = getComputedStyle(el);
-  scrollbarWidth = Math.ceil(el.offsetWidth - parseFloat(styles.width as string) || 0);
+  scrollbarWidth = el.offsetWidth - el.clientWidth;
   doc.body.removeChild(el);
 
   return scrollbarWidth;

@@ -381,9 +381,11 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
         overflowY: scrollValues.scrollYPossible ? "scroll" : "hidden",
         overflowX: scrollValues.scrollXPossible ? "scroll" : "hidden",
 
-        marginBottom: scrollValues.scrollXPossible ? -(scrollbarWidth || props.fallbackScrollbarWidth!) : undefined,
+        marginBottom: scrollValues.scrollXPossible
+          ? -(scrollbarWidth || props.fallbackScrollbarWidth!) - Number(scrollValues.zoomLevel !== 1)
+          : undefined,
         [state.isRTL ? "marginLeft" : "marginRight"]: scrollValues.scrollYPossible
-          ? -(scrollbarWidth || props.fallbackScrollbarWidth!)
+          ? -(scrollbarWidth || props.fallbackScrollbarWidth!) - Number(scrollValues.zoomLevel !== 1)
           : undefined
       } as React.CSSProperties,
       trackX: {
@@ -741,14 +743,14 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
       return;
     }
 
+    (props.native ? this.updaterNative : this.updaterCustom)(bitmask, scrollState);
+
+    this.scrollValues = scrollState;
+
     if (!props.native && bitmask & (1 << 15)) {
       util.getScrollbarWidth(true);
       this.forceUpdate();
     }
-
-    (props.native ? this.updaterNative : this.updaterCustom)(bitmask, scrollState);
-
-    this.scrollValues = scrollState;
 
     this.eventEmitter.emit("update", { ...scrollState }, prevScrollState);
 

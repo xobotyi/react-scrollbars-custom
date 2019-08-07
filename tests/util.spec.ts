@@ -10,6 +10,7 @@ import {
   getInnerHeight,
   getInnerWidth,
   getScrollbarWidth,
+  renderDivWithRenderer,
   shouldReverseRTLScroll,
   uuid
 } from "../src/util";
@@ -576,6 +577,14 @@ describe("util", () => {
         expect(() => _dbgSetScrollbarWidth(undefined)).toThrow(
           new TypeError("override value expected to be a number or null, got undefined")
         );
+      });
+    });
+
+    describe("renderDivWithRenderer()", () => {
+      it("does not add elementRef prop", () => {
+        let result = renderDivWithRenderer({ elementRef: null, tabIndex: -1 }, null);
+        expect(result.props.elementRef).toBeUndefined();
+        expect(result.props.tabIndex).toBeDefined();
       });
     });
 

@@ -2,6 +2,11 @@
 
 ## v4.0.16
 
+- Fixed focus loss on thumbnail click (#113);
+- Fixed React error on native mode (#107)
+
+## v4.0.16
+
 - Small code refactoring;
 - Possible fix of #89;
 - Fix of #57;

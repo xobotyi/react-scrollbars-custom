@@ -154,6 +154,7 @@ export default class ScrollbarThumb extends React.Component<ScrollbarThumbProps,
       return;
     }
 
+    ev.preventDefault();
     ev.stopPropagation();
 
     if (!isUndef(ev.offsetX)) {

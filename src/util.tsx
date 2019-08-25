@@ -36,7 +36,7 @@ export function renderDivWithRenderer(props: ElementPropsWithElementRefAndRender
     return renderer(props);
   }
 
-  props.elementRef && delete props.elementRef;
+  delete props.elementRef;
 
   return <div {...props} ref={elementRef} />;
 }

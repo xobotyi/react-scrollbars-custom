@@ -1,6 +1,11 @@
 # CHANGELOG
 
-## v4.0.16
+## v4.0.17
+
+- Fixed focus loss on thumbnail click (#113);
+- Fixed React error on native mode (#107)
+
+## v4.0.17
 
 - Fixed focus loss on thumbnail click (#113);
 - Fixed React error on native mode (#107)

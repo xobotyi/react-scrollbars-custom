@@ -1,10 +1,7 @@
 import * as React from "react";
 import { ElementPropsWithElementRefAndRenderer, ElementRef } from "./types";
 
-declare var global: {
-  document?: Document;
-};
-let doc: Document | null = global.document || null;
+let doc: Document | null = typeof document === "object" ? document : null;
 
 export function isUndef(v: any): boolean {
   return typeof v === "undefined";
@@ -283,9 +280,9 @@ export const shouldReverseRTLScroll = (force: boolean = false): boolean => {
     "display:block;position:absolute;width:100px;height:100px;top:-9999px;overflow:scroll;direction:rtl;"
   );
   child.setAttribute("style", "display:block;position:relative;width:1000px;height:1000px;direction:rtl;");
-  el.insertBefore(child, null);
+  el.appendChild(child);
 
-  doc.body.insertBefore(el, null);
+  doc.body.appendChild(el);
   el.scrollLeft;
   el.scrollLeft = 45;
   isReverseRTLScrollNeeded = el.scrollLeft === 0;

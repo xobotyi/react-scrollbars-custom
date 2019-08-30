@@ -3,17 +3,17 @@ import { ElementPropsWithElementRefAndRenderer, ElementRef } from "./types";
 
 let doc: Document | null = typeof document === "object" ? document : null;
 
-export function isUndef(v: any): boolean {
+export const isUndef = (v: any): boolean => {
   return typeof v === "undefined";
-}
+};
 
-export function isFun(v: any): boolean {
+export const isFun = (v: any): boolean => {
   return typeof v === "function";
-}
+};
 
-export function isNum(v: any): boolean {
+export const isNum = (v: any): boolean => {
   return typeof v === "number";
-}
+};
 
 /**
  * @description Will return renderer result if presented, div element otherwise.
@@ -22,7 +22,7 @@ export function isNum(v: any): boolean {
  * @param props {ElementPropsWithElementRefAndRenderer}
  * @param elementRef {ElementRef}
  */
-export function renderDivWithRenderer(props: ElementPropsWithElementRefAndRenderer, elementRef: ElementRef) {
+export const renderDivWithRenderer = (props: ElementPropsWithElementRefAndRenderer, elementRef: ElementRef) => {
   if (isFun(props.renderer)) {
     props.elementRef = elementRef;
 
@@ -36,9 +36,9 @@ export function renderDivWithRenderer(props: ElementPropsWithElementRefAndRender
   delete props.elementRef;
 
   return <div {...props} ref={elementRef} />;
-}
+};
 
-function getInnerSize(el: HTMLElement, dimension: string, padding1: string, padding2: string): number {
+const getInnerSize = (el: HTMLElement, dimension: string, padding1: string, padding2: string): number => {
   const styles = getComputedStyle(el);
 
   if (styles.boxSizing === "border-box") {
@@ -51,21 +51,21 @@ function getInnerSize(el: HTMLElement, dimension: string, padding1: string, padd
   }
 
   return parseFloat(styles[dimension] as string) || 0;
-}
+};
 
 /**
  * @description Return element's height without padding
  */
-export function getInnerHeight(el: HTMLElement): number {
+export const getInnerHeight = (el: HTMLElement): number => {
   return getInnerSize(el, "height", "paddingTop", "paddingBottom");
-}
+};
 
 /**
  * @description Return element's width without padding
  */
-export function getInnerWidth(el: HTMLElement): number {
+export const getInnerWidth = (el: HTMLElement): number => {
   return getInnerSize(el, "width", "paddingLeft", "paddingRight");
-}
+};
 
 /**
  * @description Return unique UUID v4
@@ -97,13 +97,13 @@ export const uuid = () => {
  * @param {number} minimalSize - Minimal thumb's size
  * @param {number} maximalSize - Maximal thumb's size
  */
-export function calcThumbSize(
+export const calcThumbSize = (
   contentSize: number,
   viewportSize: number,
   trackSize: number,
   minimalSize?: number,
   maximalSize?: number
-): number {
+): number => {
   if (viewportSize >= contentSize) {
     return 0;
   }
@@ -114,7 +114,7 @@ export function calcThumbSize(
   isNum(minimalSize) && (thumbSize = Math.max(minimalSize!, thumbSize));
 
   return thumbSize;
-}
+};
 
 /**
  * @description Calculate thumb offset for given viewport, track and thumb parameters
@@ -125,19 +125,19 @@ export function calcThumbSize(
  * @param {number} thumbSize - Thumb size
  * @param {number} scroll - Scroll value to represent
  */
-export function calcThumbOffset(
+export const calcThumbOffset = (
   contentSize: number,
   viewportSize: number,
   trackSize: number,
   thumbSize: number,
   scroll: number
-): number {
+): number => {
   if (!scroll || !thumbSize || viewportSize >= contentSize) {
     return 0;
   }
 
   return ((trackSize - thumbSize) * scroll) / (contentSize - viewportSize);
-}
+};
 
 /**
  * @description Calculate scroll for given viewport, track and thumb parameters
@@ -148,19 +148,19 @@ export function calcThumbOffset(
  * @param {number} thumbSize - Thumb size
  * @param {number} thumbOffset - Thumb's offset representing the scroll
  */
-export function calcScrollForThumbOffset(
+export const calcScrollForThumbOffset = (
   contentSize: number,
   viewportSize: number,
   trackSize: number,
   thumbSize: number,
   thumbOffset: number
-): number {
+): number => {
   if (!thumbOffset || !thumbSize || viewportSize >= contentSize) {
     return 0;
   }
 
   return (thumbOffset * (contentSize - viewportSize)) / (trackSize - thumbSize);
-}
+};
 
 /**
  * @description Set the document node to calculate the scrollbar width.<br/>
@@ -179,16 +179,22 @@ export const _dbgSetDocument = (v: Document | null): Document | null => {
  */
 export const _dbgGetDocument = (): Document | null => doc;
 
+interface GetScrollbarWidthFN {
+  (force?: boolean): number;
+
+  _cache?: number;
+}
+
 /**
  * @description Returns scrollbar width specific for current environment
  */
-export function getScrollbarWidth(force: boolean = false) {
-  if (!force && !isUndef(getScrollbarWidth._cache)) {
-    return getScrollbarWidth._cache;
-  }
-
+export const getScrollbarWidth: GetScrollbarWidthFN = (force: boolean = false): number => {
   if (!doc) {
     return (getScrollbarWidth._cache = 0);
+  }
+
+  if (!force && !isUndef(getScrollbarWidth._cache)) {
+    return getScrollbarWidth._cache as number;
   }
 
   let el = doc.createElement("div");
@@ -201,18 +207,20 @@ export function getScrollbarWidth(force: boolean = false) {
   doc.body.removeChild(el);
 
   return getScrollbarWidth._cache;
-}
+};
 
-export namespace getScrollbarWidth {
-  export let _cache: number;
+interface ShouldReverseRtlScroll {
+  (force?: boolean): boolean;
+
+  _cache?: boolean;
 }
 
 /**
  * @description Detect need of horizontal scroll reverse while RTL
  */
-export function shouldReverseRtlScroll(force: boolean = false): boolean {
+export const shouldReverseRtlScroll: ShouldReverseRtlScroll = (force: boolean = false): boolean => {
   if (!force && !isUndef(shouldReverseRtlScroll._cache)) {
-    return shouldReverseRtlScroll._cache;
+    return shouldReverseRtlScroll._cache as boolean;
   }
 
   if (!doc) {
@@ -238,8 +246,4 @@ export function shouldReverseRtlScroll(force: boolean = false): boolean {
   doc.body.removeChild(el);
 
   return shouldReverseRtlScroll._cache;
-}
-
-export namespace shouldReverseRtlScroll {
-  export let _cache: boolean;
-}
+};

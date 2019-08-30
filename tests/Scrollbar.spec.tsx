@@ -1,11 +1,11 @@
-import * as ReactDOM from "react-dom";
-import * as React from "react";
 import cnb from "cnbuilder";
+import * as React from "react";
+import * as ReactDOM from "react-dom";
 import * as simulant from "simulant";
-import { _dbgSetIsReverseRTLScrollNeeded, _dbgSetScrollbarWidth } from "../src/util";
 import Scrollbar, { ScrollbarContext, ScrollbarProps, ScrollbarState } from "../src";
 import { ScrollbarContextValue } from "../src/Scrollbar";
 import { ScrollState, TRACK_CLICK_BEHAVIOR } from "../src/types";
+import { getScrollbarWidth, shouldReverseRtlScroll } from "../src/util";
 
 class ScrollbarPropsUpdater extends React.Component<
   { scrollbarProps: ScrollbarProps },
@@ -39,8 +39,8 @@ describe("Scrollbar", () => {
     document.body.appendChild(node);
   });
   beforeEach(() => {
-    _dbgSetScrollbarWidth(null);
-    _dbgSetIsReverseRTLScrollNeeded(null);
+    delete getScrollbarWidth._cache;
+    delete shouldReverseRtlScroll._cache;
   });
   afterEach(() => {
     ReactDOM.unmountComponentAtNode(node);

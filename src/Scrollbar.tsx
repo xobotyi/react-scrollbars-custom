@@ -1,3 +1,13 @@
+import cnb from "cnbuilder";
+import * as PropTypes from "prop-types";
+import * as React from "react";
+import { DraggableData } from "react-draggable";
+import { zoomLevel } from "zoom-level";
+import Emittr from "./Emittr";
+import Loop from "./Loop";
+import ScrollbarThumb, { ScrollbarThumbProps } from "./ScrollbarThumb";
+import ScrollbarTrack, { ScrollbarTrackClickParameters, ScrollbarTrackProps } from "./ScrollbarTrack";
+import defaultStyle from "./style";
 import {
   AXIS_DIRECTION,
   ElementPropsWithElementRefAndRenderer,
@@ -5,24 +15,13 @@ import {
   TRACK_CLICK_BEHAVIOR,
   TRACK_CLICK_BEHAVIOR_PROP_TYPE
 } from "./types";
-import * as React from "react";
-import * as PropTypes from "prop-types";
-import Loop from "./Loop";
-import cnb from "cnbuilder";
-import ScrollbarTrack, { ScrollbarTrackClickParameters, ScrollbarTrackProps } from "./ScrollbarTrack";
-import ScrollbarThumb, { ScrollbarThumbProps } from "./ScrollbarThumb";
 import * as util from "./util";
-import { DraggableData } from "react-draggable";
-import Emittr from "./Emittr";
-import defaultStyle from "./style";
-import { zoomLevel } from "zoom-level";
 import { renderDivWithRenderer } from "./util";
 
 declare var global: {
   window?: Window;
 };
 
-const reverseRTL: boolean = util.shouldReverseRTLScroll();
 let pageZoomLevel: number = global.window ? zoomLevel() : 1;
 global.window && global.window.addEventListener("resize", () => (pageZoomLevel = zoomLevel()), { passive: true });
 
@@ -1054,7 +1053,7 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
             scrollValues.scrollLeft
           );
 
-          if (this.state.isRTL && reverseRTL) {
+          if (this.state.isRTL && util.shouldReverseRtlScroll()) {
             thumbOffset += trackInnerSize - thumbSize;
           }
 
@@ -1130,7 +1129,7 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
     const thumbSize = this.thumbXElement.clientWidth;
     const trackInnerSize = util.getInnerWidth(this.trackXElement);
     const thumbOffset =
-      (this.scrollValues.isRTL && reverseRTL
+      (this.scrollValues.isRTL && util.shouldReverseRtlScroll()
         ? values.offset + thumbSize / 2 - trackInnerSize
         : values.offset - thumbSize / 2) -
       //@ts-ignore
@@ -1249,7 +1248,7 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
     const trackInnerSize = trackRect.width - paddingLeft - paddingRight;
     const thumbSize = this.thumbXElement.clientWidth;
     const offset =
-      this.scrollValues.isRTL && reverseRTL
+      this.scrollValues.isRTL && util.shouldReverseRtlScroll()
         ? data.x + thumbSize - trackInnerSize + paddingLeft
         : data.lastX - paddingLeft;
 

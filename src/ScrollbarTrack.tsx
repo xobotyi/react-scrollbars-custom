@@ -1,6 +1,6 @@
-import * as React from "react";
-import * as PropTypes from "prop-types";
 import cnb from "cnbuilder";
+import * as PropTypes from "prop-types";
+import * as React from "react";
 import { AXIS_DIRECTION, AXIS_DIRECTION_PROP_TYPE, ElementPropsWithElementRefAndRenderer } from "./types";
 import { isFun, isUndef, renderDivWithRenderer } from "./util";
 

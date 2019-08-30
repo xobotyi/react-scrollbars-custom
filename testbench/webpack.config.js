@@ -51,7 +51,11 @@ module.exports = {
         use: [MiniCssExtractPlugin.loader, "css-loader", "sass-loader"]
       },
       {
-        test: /\.[tj]sx?$/,
+        test: /\.tsx?$/,
+        loader: "ts-loader"
+      },
+      {
+        test: /\.jsx?$/,
         exclude: /node_modules/,
         use: {
           loader: "babel-loader",
@@ -67,7 +71,6 @@ module.exports = {
                   }
                 }
               ],
-              "@babel/preset-typescript",
               "@babel/preset-react"
             ],
             plugins: ["@babel/plugin-proposal-class-properties", "@babel/plugin-proposal-object-rest-spread"]

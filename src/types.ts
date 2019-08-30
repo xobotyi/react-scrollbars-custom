@@ -1,6 +1,5 @@
-import * as React from "react";
 import * as PropTypes from "prop-types";
-import { isFun } from "./util";
+import * as React from "react";
 
 export enum AXIS_DIRECTION {
   X = "x",

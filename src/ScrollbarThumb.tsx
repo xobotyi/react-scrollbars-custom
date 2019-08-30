@@ -1,9 +1,9 @@
-import * as React from "react";
-import * as PropTypes from "prop-types";
 import cnb from "cnbuilder";
+import * as PropTypes from "prop-types";
+import * as React from "react";
 import { DraggableCore, DraggableData, DraggableEvent } from "react-draggable";
 import { AXIS_DIRECTION, AXIS_DIRECTION_PROP_TYPE, ElementPropsWithElementRefAndRenderer } from "./types";
-import { renderDivWithRenderer, isFun, isUndef } from "./util";
+import { isFun, isUndef, renderDivWithRenderer } from "./util";
 
 declare var global: {
   document?: Document;
@@ -43,7 +43,7 @@ export default class ScrollbarThumb extends React.Component<ScrollbarThumbProps,
     lastY: 0
   };
   public element: HTMLDivElement | null = null;
-  private prevUserSelect: string | null;
+  private prevUserSelect: string;
   private prevOnSelectStart: ((ev: Event) => boolean) | null;
 
   private static selectStartReplacer = () => false;
@@ -131,7 +131,6 @@ export default class ScrollbarThumb extends React.Component<ScrollbarThumbProps,
 
     if (global.document) {
       global.document.body.style.userSelect = this.prevUserSelect;
-      this.prevUserSelect = null;
 
       global.document.onselectstart = this.prevOnSelectStart;
       this.prevOnSelectStart = null;

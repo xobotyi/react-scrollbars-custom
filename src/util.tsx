@@ -38,78 +38,34 @@ export function renderDivWithRenderer(props: ElementPropsWithElementRefAndRender
   return <div {...props} ref={elementRef} />;
 }
 
-/**
- * @description Return element's height without padding
- *
- * ts-ignore here is okay here, because it brigs around 40% of performance
- */
-export const getInnerHeight = (el: HTMLDivElement): number => {
+function getInnerSize(el: HTMLElement, dimension: string, padding1: string, padding2: string): number {
   const styles = getComputedStyle(el);
 
   if (styles.boxSizing === "border-box") {
     return Math.max(
-      (parseFloat(styles.height as string) || 0) -
-        (parseFloat(styles.paddingTop as string) || 0) -
-        (parseFloat(styles.paddingBottom as string) || 0),
-      0
+      0,
+      (parseFloat(styles[dimension] as string) || 0) -
+        (parseFloat(styles[padding1] as string) || 0) -
+        (parseFloat(styles[padding2] as string) || 0)
     );
   }
 
-  // @ts-ignore
-  return parseFloat(styles.height) || 0;
-};
+  return parseFloat(styles[dimension] as string) || 0;
+}
+
+/**
+ * @description Return element's height without padding
+ */
+export function getInnerHeight(el: HTMLElement): number {
+  return getInnerSize(el, "height", "paddingTop", "paddingBottom");
+}
 
 /**
  * @description Return element's width without padding
- *
- * ts-ignore here is okay here, because it brigs around 40% of performance
  */
-export const getInnerWidth = (el: HTMLDivElement): number => {
-  const styles = getComputedStyle(el);
-
-  if (styles.boxSizing === "border-box") {
-    return Math.max(
-      (parseFloat(styles.width as string) || 0) -
-        (parseFloat(styles.paddingLeft as string) || 0) -
-        (parseFloat(styles.paddingRight as string) || 0),
-      0
-    );
-  }
-
-  // @ts-ignore
-  return parseFloat(styles.width) || 0;
-};
-
-/**
- * @description Return element's dimensions without padding
- *
- * ts-ignore here is okay here, because it brigs around 40% of performance
- */
-export const getInnerDimensions = (el: HTMLDivElement): { width: number; height: number } => {
-  let styles = getComputedStyle(el);
-
-  if (styles.boxSizing === "border-box") {
-    return {
-      height: Math.max(
-        (parseFloat(styles.height as string) || 0) -
-          (parseFloat(styles.paddingTop as string) || 0) -
-          (parseFloat(styles.paddingBottom as string) || 0),
-        0
-      ),
-      width: Math.max(
-        // @ts-ignore
-        (parseFloat(styles.width as string) || 0) -
-          (parseFloat(styles.paddingLeft as string) || 0) -
-          (parseFloat(styles.paddingRight as string) || 0),
-        0
-      )
-    };
-  }
-  return {
-    height: parseFloat(styles.height as string) || 0,
-    width: parseFloat(styles.width as string) || 0
-  };
-};
+export function getInnerWidth(el: HTMLElement): number {
+  return getInnerSize(el, "width", "paddingLeft", "paddingRight");
+}
 
 /**
  * @description Return unique UUID v4
@@ -206,42 +162,6 @@ export function calcScrollForThumbOffset(
   return (thumbOffset * (contentSize - viewportSize)) / (trackSize - thumbSize);
 }
 
-let scrollbarWidth: number | null = null;
-
-/**
- * @description Returns scrollbar width specific for current environment
- */
-export function getScrollbarWidth(force = false) {
-  if (!force && scrollbarWidth !== null) {
-    return scrollbarWidth;
-  }
-
-  if (!doc) {
-    return (scrollbarWidth = 0);
-  }
-
-  let el = doc.createElement("div");
-  el.setAttribute("style", "display:block;position:absolute;width:100px;height:100px;top:-9999px;overflow:scroll;");
-
-  doc.body.appendChild(el);
-  scrollbarWidth = el.offsetWidth - el.clientWidth;
-  doc.body.removeChild(el);
-
-  return scrollbarWidth;
-}
-
-/**
- * @description Set the cached width to given value.<br/>
- *              <i>null</i> will force to recalculate value on next get.
- */
-export const _dbgSetScrollbarWidth = (v: number | null): number | null => {
-  if (v === null || isNum(v)) {
-    return (scrollbarWidth = v);
-  }
-
-  throw new TypeError("override value expected to be a number or null, got " + typeof v);
-};
-
 /**
  * @description Set the document node to calculate the scrollbar width.<br/>
  *              <i>null</i> will force getter to return 0 (it'll imitate SSR).
@@ -259,42 +179,67 @@ export const _dbgSetDocument = (v: Document | null): Document | null => {
  */
 export const _dbgGetDocument = (): Document | null => doc;
 
-let isReverseRTLScrollNeeded: boolean | null = null;
+/**
+ * @description Returns scrollbar width specific for current environment
+ */
+export function getScrollbarWidth(force: boolean = false) {
+  if (!force && !isUndef(getScrollbarWidth._cache)) {
+    return getScrollbarWidth._cache;
+  }
+
+  if (!doc) {
+    return (getScrollbarWidth._cache = 0);
+  }
+
+  let el = doc.createElement("div");
+  el.setAttribute("style", "position:absolute;width:100px;height:100px;top:-999px;left:-999px;overflow:scroll;");
+
+  doc.body.appendChild(el);
+
+  getScrollbarWidth._cache = 100 - el.clientWidth;
+
+  doc.body.removeChild(el);
+
+  return getScrollbarWidth._cache;
+}
+
+export namespace getScrollbarWidth {
+  export let _cache: number;
+}
 
 /**
  * @description Detect need of horizontal scroll reverse while RTL
  */
-export const shouldReverseRTLScroll = (force: boolean = false): boolean => {
-  if (!force && isReverseRTLScrollNeeded !== null) {
-    return isReverseRTLScrollNeeded;
+export function shouldReverseRtlScroll(force: boolean = false): boolean {
+  if (!force && !isUndef(shouldReverseRtlScroll._cache)) {
+    return shouldReverseRtlScroll._cache;
   }
 
   if (!doc) {
-    return (isReverseRTLScrollNeeded = false);
+    return (shouldReverseRtlScroll._cache = false);
   }
 
-  let el = doc.createElement("div");
-  let child = doc.createElement("div");
-  el.setAttribute(
-    "style",
-    "display:block;position:absolute;width:100px;height:100px;top:-9999px;overflow:scroll;direction:rtl;"
-  );
-  child.setAttribute("style", "display:block;position:relative;width:1000px;height:1000px;direction:rtl;");
+  const el = doc.createElement("div");
+  const child = doc.createElement("div");
+
   el.appendChild(child);
 
+  el.setAttribute(
+    "style",
+    "position:absolute;width:100px;height:100px;top:-999px;left:-999px;overflow:scroll;direction:rtl"
+  );
+  child.setAttribute("style", "width:1000px;height:1000px");
+
   doc.body.appendChild(el);
-  el.scrollLeft;
-  el.scrollLeft = 45;
-  isReverseRTLScrollNeeded = el.scrollLeft === 0;
+
+  el.scrollLeft = -50;
+  shouldReverseRtlScroll._cache = el.scrollLeft === -50;
+
   doc.body.removeChild(el);
 
-  return isReverseRTLScrollNeeded;
-};
+  return shouldReverseRtlScroll._cache;
+}
 
-/**
- * @description Set the cached value to given value.<br/>
- *              <i>null</i> will force to recalculate value on next get.
- */
-export const _dbgSetIsReverseRTLScrollNeeded = (v: boolean | null): boolean | null => {
-  return (isReverseRTLScrollNeeded = v === null ? null : Boolean(v));
-};
+export namespace shouldReverseRtlScroll {
+  export let _cache: boolean;
+}

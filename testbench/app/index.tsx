@@ -36,14 +36,7 @@ export function renderAmountOfParagraphs(amount = 5, paragraphsProps: React.HTML
 }
 
 ReactDom.render(
-  <Scrollbar
-    style={{ width: 528, height: 200 }}
-    scrollerProps={{
-      elementRef: ref => {
-        console.log(ref);
-      }
-    }}
-  >
+  <Scrollbar style={{ width: 528, height: 200 }}>
     {renderAmountOfParagraphs(10, { style: { width: "150%" } })}
   </Scrollbar>,
   document.getElementById("AppRoot")

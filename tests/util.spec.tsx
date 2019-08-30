@@ -1,29 +1,29 @@
+import * as React from "react";
+import * as ReactDOM from "react-dom";
+import { ElementPropsWithElementRef } from "../src/types";
 import {
   _dbgGetDocument,
   _dbgSetDocument,
-  _dbgSetIsReverseRTLScrollNeeded,
-  _dbgSetScrollbarWidth,
   calcScrollForThumbOffset,
   calcThumbOffset,
   calcThumbSize,
-  getInnerDimensions,
   getInnerHeight,
   getInnerWidth,
   getScrollbarWidth,
   renderDivWithRenderer,
-  shouldReverseRTLScroll,
+  shouldReverseRtlScroll,
   uuid
 } from "../src/util";
 
 describe("util", () => {
   afterAll(() => {
-    _dbgSetDocument(null);
-    _dbgSetScrollbarWidth(null);
+    delete shouldReverseRtlScroll._cache;
+    delete getScrollbarWidth._cache;
   });
 
   describe("calcThumbSize", () => {
     it("should return number", () => {
-      expect(typeof calcThumbSize(400, 200, 200, 30, 0) === "number").toBeTruthy();
+      expect(typeof calcThumbSize(400, 200, 200, 30, 0)).toBe("number");
     });
 
     it("should return 0 if viewport size >= contentSize", () => {
@@ -46,7 +46,7 @@ describe("util", () => {
 
   describe("calcThumbOffset", () => {
     it("should return number", () => {
-      expect(typeof calcThumbOffset(0, 0, 0, 0, 0) === "number").toBeTruthy();
+      expect(typeof calcThumbOffset(0, 0, 0, 0, 0)).toBe("number");
     });
 
     it("should return 0 if viewport size >= contentSize", () => {
@@ -70,7 +70,7 @@ describe("util", () => {
 
   describe("calcScrollForThumbOffset", () => {
     it("should return number", () => {
-      expect(typeof calcScrollForThumbOffset(0, 0, 0, 0, 0) === "number").toBeTruthy();
+      expect(typeof calcScrollForThumbOffset(0, 0, 0, 0, 0)).toBe("number");
     });
 
     it("should return 0 if viewport size >= contentSize", () => {
@@ -94,7 +94,7 @@ describe("util", () => {
 
   describe("uuid", () => {
     it("should generate valid UUID v4", () => {
-      expect(/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[0-9a-f]{4}-[0-9a-f]{12}$/.test(uuid())).toBeTruthy();
+      expect(/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[0-9a-f]{4}-[0-9a-f]{12}$/.test(uuid())).toBe(true);
     });
 
     it("should generate unique UUID", () => {
@@ -127,7 +127,7 @@ describe("util", () => {
       });
 
       it("should return float for values with floating point height", () => {
-        expect(getInnerHeight(div) % 1 !== 0).toBeTruthy();
+        expect(getInnerHeight(div) % 1 !== 0).toBe(true);
       });
 
       it("should return proper height", () => {
@@ -182,7 +182,7 @@ describe("util", () => {
       });
 
       it("should return float for values with floating point height", () => {
-        expect(getInnerWidth(div) % 1 !== 0).toBeTruthy();
+        expect(getInnerWidth(div) % 1 !== 0).toBe(true);
       });
 
       it("should return proper width", () => {
@@ -230,84 +230,6 @@ describe("util", () => {
         expect(getInnerWidth(div)).toBe(90.125);
       });
     });
-
-    describe("getInnerDimensions()", () => {
-      it("should return number", () => {
-        const sizes = getInnerDimensions(div);
-        expect(typeof sizes).toBe("object");
-        expect(typeof sizes.width).toBe("number");
-        expect(typeof sizes.height).toBe("number");
-      });
-
-      it("should return float for values with floating point height", () => {
-        const sizes = getInnerDimensions(div);
-        expect(sizes.width % 1 !== 0).toBeTruthy();
-        expect(sizes.height % 1 !== 0).toBeTruthy();
-      });
-
-      it("should return proper sizes", () => {
-        const sizes = getInnerDimensions(div);
-
-        expect(sizes.height).toBe(150.25);
-        expect(sizes.width).toBe(50.25);
-      });
-
-      it("should return 0 for unattached element", () => {
-        const div = document.createElement("div");
-        div.style.width = "100.25px";
-        div.style.height = "200.25px";
-
-        const sizes = getInnerDimensions(div);
-
-        expect(sizes.height).toBe(0);
-        expect(sizes.width).toBe(0);
-      });
-
-      it("should return 0 for blocks with display=none||inline", () => {
-        div.style.padding = "";
-        div.style.width = "";
-        div.style.height = "";
-
-        div.style.display = "none";
-        expect(getInnerDimensions(div)).toEqual({ width: 0, height: 0 });
-
-        div.style.display = "inline";
-        expect(getInnerDimensions(div)).toEqual({ width: 0, height: 0 });
-      });
-
-      it("should return 0 for blocks width 0 size and padding", () => {
-        const div = document.createElement("div");
-        div.style.width = "0";
-        div.style.height = "0";
-        div.style.padding = "25.375px";
-        div.style.boxSizing = "border-box";
-
-        const sizes = getInnerDimensions(div);
-
-        expect(sizes.height).toBe(0);
-        expect(sizes.width).toBe(0);
-      });
-
-      it("should return proper sizes if padding has not been set", () => {
-        div.style.padding = "";
-
-        const sizes = getInnerDimensions(div);
-
-        expect(sizes.height).toBe(200.5);
-        expect(sizes.width).toBe(100.5);
-      });
-
-      it("should return proper width if padding has been set partially", () => {
-        div.style.padding = "";
-        div.style.paddingLeft = "10.375px";
-        div.style.paddingTop = "10.375px";
-
-        const sizes = getInnerDimensions(div);
-
-        expect(sizes.height).toBe(190.125);
-        expect(sizes.width).toBe(90.125);
-      });
-    });
   });
 
   describe("in case box-sizing: content-box", () => {
@@ -333,7 +255,7 @@ describe("util", () => {
       });
 
       it("should return float for values with floating point height", () => {
-        expect(getInnerHeight(div) % 1 !== 0).toBeTruthy();
+        expect(getInnerHeight(div) % 1 !== 0).toBe(true);
       });
 
       it("should return proper height", () => {
@@ -388,7 +310,7 @@ describe("util", () => {
       });
 
       it("should return float for values with floating point height", () => {
-        expect(getInnerWidth(div) % 1 !== 0).toBeTruthy();
+        expect(getInnerWidth(div) % 1 !== 0).toBe(true);
       });
 
       it("should return proper width", () => {
@@ -436,225 +358,132 @@ describe("util", () => {
         expect(getInnerWidth(div)).toBe(100.5);
       });
     });
+  });
 
-    describe("getInnerDimensions()", () => {
-      it("should return number", () => {
-        const sizes = getInnerDimensions(div);
-        expect(typeof sizes).toBe("object");
-        expect(typeof sizes.width).toBe("number");
-        expect(typeof sizes.height).toBe("number");
+  describe("_dbgGetDocument()", () => {
+    it("should return document or null", () => {
+      expect(_dbgGetDocument()).toBe(document);
+    });
+
+    it("should return overrided value", () => {
+      _dbgSetDocument(null);
+      expect(_dbgGetDocument()).toBe(null);
+    });
+  });
+
+  describe("_dbgSetDocument()", () => {
+    it("should set the document or null", () => {
+      _dbgSetDocument(null);
+      expect(_dbgGetDocument()).toBe(null);
+
+      _dbgSetDocument(document);
+      expect(_dbgGetDocument()).toBe(document);
+    });
+
+    it("should throw if value not null or document", () => {
+      // @ts-ignore
+      expect(() => _dbgSetDocument(123)).toThrow(
+        new TypeError("override value expected to be an instance of HTMLDocument or null, got number")
+      );
+      // @ts-ignore
+      expect(() => _dbgSetDocument(false)).toThrow(
+        new TypeError("override value expected to be an instance of HTMLDocument or null, got boolean")
+      );
+    });
+  });
+
+  describe("renderDivWithRenderer()", () => {
+    let node: HTMLDivElement;
+    beforeAll(() => {
+      node = document.createElement("div");
+      document.body.appendChild(node);
+    });
+    afterEach(() => {
+      ReactDOM.unmountComponentAtNode(node);
+    });
+    afterAll(() => {
+      ReactDOM.unmountComponentAtNode(node);
+      document.body.removeChild(node);
+    });
+
+    it("should not leak `elementRef` if renderer not presented", () => {
+      const res = renderDivWithRenderer({ elementRef: undefined, className: "tests" }, () => {});
+      expect(res!.props.hasOwnProperty("elementRef")).toBe(false);
+      expect(res!.props.className).toBe("tests");
+    });
+
+    it("should pass elementRef as ref if renderer not presented", done => {
+      const ref = jasmine.createSpy();
+      ReactDOM.render(renderDivWithRenderer({ elementRef: undefined, className: "tests" }, ref), node, function() {
+        expect(ref).toHaveBeenCalled();
+        done();
       });
+    });
 
-      it("should return float for values with floating point height", () => {
-        const sizes = getInnerDimensions(div);
-        expect(sizes.width % 1 !== 0).toBeTruthy();
-        expect(sizes.height % 1 !== 0).toBeTruthy();
-      });
+    it("should not leak renderer prop if it's passed", () => {
+      const renderer = jasmine.createSpy();
+      const ref = () => {};
+      renderDivWithRenderer({ className: "tests", renderer }, ref);
 
-      it("should return proper sizes", () => {
-        const sizes = getInnerDimensions(div);
-
-        expect(sizes.height).toBe(200.5);
-        expect(sizes.width).toBe(100.5);
-      });
-
-      it("should return 0 for unattached element", () => {
-        const div = document.createElement("div");
-        div.style.width = "100.25px";
-        div.style.height = "200.25px";
-
-        const sizes = getInnerDimensions(div);
-
-        expect(sizes.height).toBe(0);
-        expect(sizes.width).toBe(0);
-      });
-
-      it("should return 0 for blocks with display=none||inline", () => {
-        div.style.padding = "";
-        div.style.width = "";
-        div.style.height = "";
-        div.style.boxSizing = "";
-
-        div.style.display = "none";
-        expect(getInnerDimensions(div)).toEqual({ width: 0, height: 0 });
-
-        div.style.display = "inline";
-        expect(getInnerDimensions(div)).toEqual({ width: 0, height: 0 });
-      });
-
-      it("should return 0 for blocks width 0 size and padding", () => {
-        const div = document.createElement("div");
-        div.style.width = "0";
-        div.style.height = "0";
-        div.style.padding = "25.375px";
-
-        const sizes = getInnerDimensions(div);
-
-        expect(sizes.height).toBe(0);
-        expect(sizes.width).toBe(0);
-      });
-
-      it("should return proper sizes if padding has not been set", () => {
-        div.style.padding = "";
-
-        const sizes = getInnerDimensions(div);
-
-        expect(sizes.height).toBe(200.5);
-        expect(sizes.width).toBe(100.5);
-      });
-
-      it("should return proper width if padding has been set partially", () => {
-        div.style.padding = "";
-        div.style.paddingLeft = "10.375px";
-        div.style.paddingTop = "10.375px";
-
-        const sizes = getInnerDimensions(div);
-
-        expect(sizes.height).toBe(200.5);
-        expect(sizes.width).toBe(100.5);
-      });
+      expect(renderer).toHaveBeenCalled();
+      const res = renderer.calls.argsFor(0) as ElementPropsWithElementRef;
+      expect(res[0].hasOwnProperty("ref")).toBe(false);
+      expect(res[0].hasOwnProperty("renderer")).toBe(false);
+      expect(res[0].elementRef).toBe(ref);
+      expect(res[0].className).toBe("tests");
     });
   });
 
   describe("getScrollbarWidth", () => {
     beforeEach(() => {
-      _dbgSetScrollbarWidth(null);
+      delete getScrollbarWidth._cache;
       _dbgSetDocument(document);
     });
 
-    describe("_dbgGetDocument()", () => {
-      it("should return document or null", () => {
-        expect(_dbgGetDocument()).toBe(document);
-      });
-
-      it("should return overrided value", () => {
-        _dbgSetDocument(null);
-        expect(_dbgGetDocument()).toBe(null);
-      });
+    it("should return number", () => {
+      expect(typeof getScrollbarWidth()).toBe("number");
     });
 
-    describe("_dbgSetDocument()", () => {
-      it("should set the document or null", () => {
-        _dbgSetDocument(null);
-        expect(_dbgGetDocument()).toBe(null);
-
-        _dbgSetDocument(document);
-        expect(_dbgGetDocument()).toBe(document);
-      });
-
-      it("should throw if value not null or document", () => {
-        // @ts-ignore
-        expect(() => _dbgSetDocument(123)).toThrow(
-          new TypeError("override value expected to be an instance of HTMLDocument or null, got number")
-        );
-        // @ts-ignore
-        expect(() => _dbgSetDocument(false)).toThrow(
-          new TypeError("override value expected to be an instance of HTMLDocument or null, got boolean")
-        );
-      });
+    it("should return proper number", () => {
+      expect([17, 15].includes(getScrollbarWidth())).toBe(true);
     });
 
-    describe("_dbgSetScrollbarWidth ()", () => {
-      it("should set the value returned by getScrollbarWidth()", () => {
-        _dbgSetScrollbarWidth(2);
-        expect(getScrollbarWidth()).toBe(2);
-      });
-
-      it("null value should force getScrollbarWidth() to recalculate sbw", () => {
-        _dbgSetScrollbarWidth(2);
-        expect(getScrollbarWidth()).toBe(2);
-
-        _dbgSetScrollbarWidth(null);
-        expect([17, 15].includes(getScrollbarWidth())).toBeTruthy();
-      });
-
-      it("should throw if value not null or number", () => {
-        // @ts-ignore
-        expect(() => _dbgSetScrollbarWidth(false)).toThrow(
-          new TypeError("override value expected to be a number or null, got boolean")
-        );
-        // @ts-ignore
-        expect(() => _dbgSetScrollbarWidth(undefined)).toThrow(
-          new TypeError("override value expected to be a number or null, got undefined")
-        );
-      });
+    it("should forced recalculate sbw if true passed as 1st parameter", () => {
+      getScrollbarWidth._cache = 2;
+      expect(getScrollbarWidth()).toBe(2);
+      _dbgSetDocument(document);
+      expect([17, 15].includes(getScrollbarWidth(true))).toBe(true);
     });
 
-    describe("renderDivWithRenderer()", () => {
-      it("does not add elementRef prop", () => {
-        let result = renderDivWithRenderer({ elementRef: null, tabIndex: -1 }, null);
-        expect(result.props.elementRef).toBeUndefined();
-        expect(result.props.tabIndex).toBeDefined();
-      });
-    });
-
-    describe("getScrollbarWidth()", () => {
-      it("should return number", () => {
-        expect(typeof getScrollbarWidth()).toBe("number");
-      });
-
-      it("should return proper number", () => {
-        expect([17, 15].includes(getScrollbarWidth())).toBeTruthy();
-      });
-
-      it("should forced recalculate sbw if true passed as 1st parameter", () => {
-        _dbgSetScrollbarWidth(2);
-        expect(getScrollbarWidth()).toBe(2);
-        _dbgSetDocument(document);
-        expect([17, 15].includes(getScrollbarWidth(true))).toBeTruthy();
-      });
-
-      it("should return 0 if document is not presented", () => {
-        _dbgSetDocument(null);
-        expect(getScrollbarWidth()).toBe(0);
-      });
+    it("should return 0 if document is not presented", () => {
+      _dbgSetDocument(null);
+      expect(getScrollbarWidth()).toBe(0);
     });
   });
 
   describe("shouldReverseRTLScroll", () => {
     beforeEach(() => {
-      _dbgSetScrollbarWidth(null);
       _dbgSetDocument(document);
+      delete shouldReverseRtlScroll._cache;
     });
 
-    describe("_dbgSetIsReverseRTLScrollNeeded()", () => {
-      it("should set the value returned by getScrollbarWidth()", () => {
-        _dbgSetIsReverseRTLScrollNeeded(false);
-        expect(shouldReverseRTLScroll()).toBeFalsy();
-        // @ts-ignore
-        _dbgSetIsReverseRTLScrollNeeded(undefined);
-        expect(shouldReverseRTLScroll()).toBeFalsy();
-
-        _dbgSetIsReverseRTLScrollNeeded(true);
-        expect(shouldReverseRTLScroll()).toBeTruthy();
-        // @ts-ignore
-        _dbgSetIsReverseRTLScrollNeeded(321);
-        expect(shouldReverseRTLScroll()).toBeTruthy();
-      });
-
-      it("null should force getScrollbarWidth() to recalculate val", () => {
-        _dbgSetIsReverseRTLScrollNeeded(null);
-        expect(typeof shouldReverseRTLScroll()).toBe("boolean");
-      });
+    it("should return boolean", () => {
+      expect(typeof shouldReverseRtlScroll()).toBe("boolean");
     });
 
-    describe("shouldReverseRTLScroll()", () => {
-      it("should return boolean", () => {
-        expect(typeof shouldReverseRTLScroll()).toBe("boolean");
-      });
+    it("should return proper value", () => {
+      expect(shouldReverseRtlScroll()).toBe(false);
+    });
 
-      it("should forced recalculate sbw if true passed as 1st parameter", () => {
-        _dbgSetIsReverseRTLScrollNeeded(false);
-        expect(shouldReverseRTLScroll()).toBeFalsy();
+    it("should forced perform check if true passed as 1st parameter", () => {
+      shouldReverseRtlScroll._cache = true;
+      expect(shouldReverseRtlScroll()).toBe(true);
+      expect(shouldReverseRtlScroll(true)).toBe(false);
+    });
 
-        expect(typeof shouldReverseRTLScroll()).toBe("boolean");
-      });
-
-      it("should return false if document is not presented", () => {
-        _dbgSetIsReverseRTLScrollNeeded(null);
-        _dbgSetDocument(null);
-        expect(shouldReverseRTLScroll()).toBeFalsy();
-      });
+    it("should return false if document is not presented", () => {
+      _dbgSetDocument(null);
+      expect(shouldReverseRtlScroll()).toBe(false);
     });
   });
 });

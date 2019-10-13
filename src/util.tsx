@@ -180,15 +180,15 @@ export const _dbgSetDocument = (v: Document | null): Document | null => {
 export const _dbgGetDocument = (): Document | null => doc;
 
 interface GetScrollbarWidthFN {
-  (force?: boolean): number;
+  (force?: boolean): number | undefined;
 
   _cache?: number;
 }
 
 /**
- * @description Returns scrollbar width specific for current environment
+ * @description Returns scrollbar width specific for current environment. Can return undefined if DOM is not ready yet.
  */
-export const getScrollbarWidth: GetScrollbarWidthFN = (force: boolean = false): number => {
+export const getScrollbarWidth: GetScrollbarWidthFN = (force: boolean = false): number | undefined => {
   if (!doc) {
     return (getScrollbarWidth._cache = 0);
   }
@@ -202,8 +202,12 @@ export const getScrollbarWidth: GetScrollbarWidthFN = (force: boolean = false): 
 
   doc.body.appendChild(el);
 
+  /* istanbul ignore next */
+  if (el.clientWidth === 0) {
+    doc.body.removeChild(el);
+    return;
+  }
   getScrollbarWidth._cache = 100 - el.clientWidth;
-
   doc.body.removeChild(el);
 
   return getScrollbarWidth._cache;
@@ -216,7 +220,7 @@ interface ShouldReverseRtlScroll {
 }
 
 /**
- * @description Detect need of horizontal scroll reverse while RTL
+ * @description Detect need of horizontal scroll reverse while RTL.
  */
 export const shouldReverseRtlScroll: ShouldReverseRtlScroll = (force: boolean = false): boolean => {
   if (!force && !isUndef(shouldReverseRtlScroll._cache)) {

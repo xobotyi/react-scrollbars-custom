@@ -204,6 +204,7 @@ export const getScrollbarWidth: GetScrollbarWidthFN = (force: boolean = false): 
 
   /* istanbul ignore next */
   if (el.clientWidth === 0) {
+    // Do not even cache this value because there is no calculations. Issue https://github.com/xobotyi/react-scrollbars-custom/issues/123
     doc.body.removeChild(el);
     return;
   }

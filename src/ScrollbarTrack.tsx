@@ -91,10 +91,15 @@ export default class ScrollbarTrack extends React.Component<ScrollbarTrackProps,
         });
       } else {
         // support for old browsers
+        /* istanbul ignore next */
         const rect: ClientRect = this.element.getBoundingClientRect();
+        /* istanbul ignore next */
         this.props.onClick!(ev, {
           axis: this.props.axis,
-          offset: this.props.axis === AXIS_DIRECTION.X ? ev.clientX - rect.left : ev.clientY - rect.top
+          offset:
+            this.props.axis === AXIS_DIRECTION.X
+              ? (ev.clientX || ((ev as unknown) as TouchEvent).touches[0].clientX) - rect.left
+              : (ev.clientY || ((ev as unknown) as TouchEvent).touches[0].clientY) - rect.top
         });
       }
     }

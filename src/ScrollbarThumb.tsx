@@ -11,12 +11,15 @@ declare var global: {
 
 export type DragCallbackData = Pick<DraggableData, Exclude<keyof DraggableData, "node">>;
 
-export type ScrollbarThumbProps = ElementPropsWithElementRefAndRenderer & {
+export type ScrollbarThumbProps = Pick<
+  ElementPropsWithElementRefAndRenderer,
+  Exclude<keyof ElementPropsWithElementRefAndRenderer, "onDragEnd">
+> & {
   axis: AXIS_DIRECTION;
 
-  onDrag?: (data: DragCallbackData) => void;
+  onDrag?: (data: DragCallbackData, isEnd: boolean) => void;
   onDragStart?: (data: DragCallbackData) => void;
-  onDragEnd?: (data: DragCallbackData) => void;
+  onDragEnd?: (data: DragCallbackData, isEnd: boolean) => void;
 
   ref?: (ref: ScrollbarThumb | null) => void;
 };
@@ -109,7 +112,8 @@ export default class ScrollbarThumb extends React.Component<ScrollbarThumbProps,
           lastY: data.lastY - this.initialOffsetY,
           deltaX: data.deltaX,
           deltaY: data.deltaY
-        })
+        }),
+        false
       );
   };
 
@@ -125,7 +129,7 @@ export default class ScrollbarThumb extends React.Component<ScrollbarThumbProps,
         }
       : this.lastDragData;
 
-    this.props.onDragEnd && this.props.onDragEnd(resultData);
+    this.props.onDragEnd && this.props.onDragEnd(resultData, true);
 
     this.element && this.element.classList.remove("dragging");
 

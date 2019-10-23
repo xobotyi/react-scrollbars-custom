@@ -1227,7 +1227,7 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
     this.scrollLeft += ev.deltaX;
   };
 
-  private handleThumbXDrag = (data: DraggableData): void => {
+  private handleThumbXDrag = (data: DraggableData, isEnd: boolean = false): void => {
     if (
       !this.trackXElement ||
       !this.thumbXElement ||
@@ -1259,9 +1259,13 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
       thumbSize,
       offset
     );
+
+    if (isEnd && this.props.thumbXProps && this.props.thumbXProps.onDragEnd) {
+      this.props.thumbXProps.onDragEnd(data, true);
+    }
   };
 
-  private handleThumbYDrag = (data: DraggableData): void => {
+  private handleThumbYDrag = (data: DraggableData, isEnd: boolean = false): void => {
     if (
       !this.scrollerElement ||
       !this.trackYElement ||
@@ -1290,6 +1294,9 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
       thumbSize,
       offset
     );
+    if (isEnd && this.props.thumbYProps && this.props.thumbYProps.onDragEnd) {
+      this.props.thumbYProps.onDragEnd(data, true);
+    }
   };
 
   private handleScrollerScroll = () => {

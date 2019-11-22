@@ -916,7 +916,7 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
         style: styles.thumbY,
         elementRef: this.elementRefThumbY,
         onDrag: this.handleThumbYDrag,
-        onDragEnd: this.handleThumbYDrag,
+        onDragEnd: this.handleThumbYDragEnd,
         axis: AXIS_DIRECTION.Y
       } as ScrollbarThumbProps;
 
@@ -946,7 +946,7 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
         style: styles.thumbX,
         elementRef: this.elementRefThumbX,
         onDrag: this.handleThumbXDrag,
-        onDragEnd: this.handleThumbXDrag,
+        onDragEnd: this.handleThumbXDragEnd,
         axis: AXIS_DIRECTION.X
       } as ScrollbarThumbProps;
 
@@ -1259,6 +1259,22 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
       thumbSize,
       offset
     );
+  };
+
+  private handleThumbYDragEnd = (data: DraggableData): void => {
+    const { thumbYProps } = this.props;
+    if (thumbYProps && thumbYProps.onDragEnd) {
+      thumbYProps.onDragEnd(data);
+    }
+    this.handleThumbYDrag(data);
+  };
+
+  private handleThumbXDragEnd = (data: DraggableData): void => {
+    const { thumbXProps } = this.props;
+    if (thumbXProps && thumbXProps.onDragEnd) {
+      thumbXProps.onDragEnd(data);
+    }
+    this.handleThumbXDrag(data);
   };
 
   private handleThumbYDrag = (data: DraggableData): void => {

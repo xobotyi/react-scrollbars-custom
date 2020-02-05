@@ -726,11 +726,11 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
       prevScrollState.scrollXPossible = scrollState.scrollXPossible;
 
       if (this.trackYElement && bitmask & (1 << 10)) {
-        this.trackYElement.style.display = scrollState.trackYVisible ? null : "none";
+        this.trackYElement.style.display = scrollState.trackYVisible ? "block" : "none";
       }
 
       if (this.trackXElement && bitmask & (1 << 11)) {
-        this.trackXElement.style.display = scrollState.trackXVisible ? null : "none";
+        this.trackXElement.style.display = scrollState.trackXVisible ? "block" : "none";
       }
 
       this.scrollValues = prevScrollState;

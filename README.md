@@ -276,13 +276,13 @@ Whether to display horizontal track regardless of scrolling ability.
 Whether to display vertical track regardless of scrolling ability.
 
 **removeTracksWhenNotUsed** _`:boolean`_ = undefined  
-Whether to remove both vertical and horizontal tracks if scrolling is not possible/bocked and tracks are not permanent.
+Whether to remove both vertical and horizontal tracks if scrolling is not possible/blocked and tracks are not permanent.
 
 **removeTrackYWhenNotUsed** _`:boolean`_ = undefined  
-Whether to remove horizontal track if scrolling is not possible/bocked and tracks are not permanent.
+Whether to remove horizontal track if scrolling is not possible/blocked and tracks are not permanent.
 
 **removeTrackXWhenNotUsed** _`:boolean`_ = undefined  
-Whether to remove vertical track if scrolling is not possible/bocked and tracks are not permanent.
+Whether to remove vertical track if scrolling is not possible/blocked and tracks are not permanent.
 
 **translateContentSizesToHolder** _`:boolean`_ = undefined  
 Pass content's `scrollHeight` and `scrollWidth` values to the holder's `height` and `width` styles. _Not working with `native` behavior._

@@ -38,7 +38,7 @@
   },
   "dependencies": {
     "cnbuilder": "^1.1.7",
-    "react-draggable": "^3.3.2",
+    "react-draggable": "^4.4.2",
     "zoom-level": "^1.2.4"
   },
   "devDependencies": {

@@ -1,4 +1,4 @@
-import cnb from "cnbuilder";
+import { cnb } from "cnbuilder";
 import * as PropTypes from "prop-types";
 import * as React from "react";
 import { DraggableCore, DraggableData, DraggableEvent } from "react-draggable";
@@ -30,7 +30,7 @@ export default class ScrollbarThumb extends React.Component<ScrollbarThumbProps,
     onDragEnd: PropTypes.func,
 
     elementRef: PropTypes.func,
-    renderer: PropTypes.func
+    renderer: PropTypes.func,
   };
   public initialOffsetX: number = 0;
   public initialOffsetY: number = 0;
@@ -40,7 +40,7 @@ export default class ScrollbarThumb extends React.Component<ScrollbarThumbProps,
     deltaX: 0,
     deltaY: 0,
     lastX: 0,
-    lastY: 0
+    lastY: 0,
   };
   public element: HTMLDivElement | null = null;
   private prevUserSelect: string;
@@ -87,7 +87,7 @@ export default class ScrollbarThumb extends React.Component<ScrollbarThumbProps,
           lastX: data.lastX - this.initialOffsetX,
           lastY: data.lastY - this.initialOffsetY,
           deltaX: data.deltaX,
-          deltaY: data.deltaY
+          deltaY: data.deltaY,
         })
       );
 
@@ -108,7 +108,7 @@ export default class ScrollbarThumb extends React.Component<ScrollbarThumbProps,
           lastX: data.lastX - this.initialOffsetX,
           lastY: data.lastY - this.initialOffsetY,
           deltaX: data.deltaX,
-          deltaY: data.deltaY
+          deltaY: data.deltaY,
         })
       );
   };
@@ -121,7 +121,7 @@ export default class ScrollbarThumb extends React.Component<ScrollbarThumbProps,
           lastX: data.lastX - this.initialOffsetX,
           lastY: data.lastY - this.initialOffsetY,
           deltaX: data.deltaX,
-          deltaY: data.deltaY
+          deltaY: data.deltaY,
         }
       : this.lastDragData;
 
@@ -144,7 +144,7 @@ export default class ScrollbarThumb extends React.Component<ScrollbarThumbProps,
       deltaX: 0,
       deltaY: 0,
       lastX: 0,
-      lastY: 0
+      lastY: 0,
     };
   };
 

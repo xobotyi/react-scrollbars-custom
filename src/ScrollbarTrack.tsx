@@ -1,4 +1,4 @@
-import cnb from "cnbuilder";
+import { cnb } from "cnbuilder";
 import * as PropTypes from "prop-types";
 import * as React from "react";
 import { AXIS_DIRECTION, AXIS_DIRECTION_PROP_TYPE, ElementPropsWithElementRefAndRenderer } from "./types";
@@ -24,7 +24,7 @@ export default class ScrollbarTrack extends React.Component<ScrollbarTrackProps,
     onClick: PropTypes.func,
 
     elementRef: PropTypes.func,
-    renderer: PropTypes.func
+    renderer: PropTypes.func,
   };
   public element: HTMLDivElement | null = null;
 
@@ -87,7 +87,7 @@ export default class ScrollbarTrack extends React.Component<ScrollbarTrackProps,
       if (!isUndef(ev.offsetX)) {
         this.props.onClick!(ev, {
           axis: this.props.axis,
-          offset: this.props.axis === AXIS_DIRECTION.X ? ev.offsetX : ev.offsetY
+          offset: this.props.axis === AXIS_DIRECTION.X ? ev.offsetX : ev.offsetY,
         });
       } else {
         // support for old browsers
@@ -99,7 +99,7 @@ export default class ScrollbarTrack extends React.Component<ScrollbarTrackProps,
           offset:
             this.props.axis === AXIS_DIRECTION.X
               ? (ev.clientX || ((ev as unknown) as TouchEvent).touches[0].clientX) - rect.left
-              : (ev.clientY || ((ev as unknown) as TouchEvent).touches[0].clientY) - rect.top
+              : (ev.clientY || ((ev as unknown) as TouchEvent).touches[0].clientY) - rect.top,
         });
       }
     }

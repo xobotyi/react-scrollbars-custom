@@ -37,9 +37,9 @@
     "react": "^16.0.0"
   },
   "dependencies": {
-    "cnbuilder": "^1.1.7",
+    "cnbuilder": "^2.4.0",
     "react-draggable": "^4.4.2",
-    "zoom-level": "^1.2.4"
+    "zoom-level": "^2.4.1"
   },
   "devDependencies": {
     "@babel/core": "^7.9.6",

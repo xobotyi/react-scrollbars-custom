@@ -1,4 +1,4 @@
-import cnb from "cnbuilder";
+import { cnb } from "cnbuilder";
 import * as PropTypes from "prop-types";
 import * as React from "react";
 import { DraggableData } from "react-draggable";

@@ -398,10 +398,7 @@ describe("Emittr", () => {
       let handler2 = jasmine.createSpy();
       let handler3 = jasmine.createSpy();
 
-      instance
-        .on("test1", handler1)
-        .on("test2", handler2)
-        .on("test3", handler3);
+      instance.on("test1", handler1).on("test2", handler2).on("test3", handler3);
 
       //@ts-ignore
       expect(instance._handlers["test1"].length).toBe(1);

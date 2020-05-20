@@ -14,8 +14,8 @@ export default [
       {
         file: pkg.esnext,
         format: "es",
-        exports: "named"
-      }
+        exports: "named",
+      },
     ],
 
     plugins: [
@@ -27,11 +27,11 @@ export default [
             module: "esnext",
             target: "esnext",
             declaration: true,
-            declarationDir: __dirname + "/dist/types"
-          }
-        }
-      })
-    ]
+            declarationDir: __dirname + "/dist/types",
+          },
+        },
+      }),
+    ],
   },
   {
     input: "./src/index.ts",
@@ -42,13 +42,13 @@ export default [
         file: pkg.main,
         format: "cjs",
         sourcemap: true,
-        exports: "named"
+        exports: "named",
       },
       {
         file: pkg.module,
         format: "esm",
-        exports: "named"
-      }
+        exports: "named",
+      },
     ],
 
     plugins: [
@@ -58,9 +58,9 @@ export default [
           compilerOptions: {
             module: "esnext",
             target: "es5",
-            declaration: false
-          }
-        }
+            declaration: false,
+          },
+        },
       }),
       babel({
         babelrc: false,
@@ -71,12 +71,12 @@ export default [
             "@babel/preset-env",
             {
               targets: {
-                ie: "9"
-              }
-            }
-          ]
-        ]
-      })
-    ]
-  }
+                ie: "9",
+              },
+            },
+          ],
+        ],
+      }),
+    ],
+  },
 ];

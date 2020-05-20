@@ -18,54 +18,58 @@ describe("ScrollbarThumb", () => {
     document.body.removeChild(node);
   });
 
-  it("should render a div by default", done => {
-    ReactDOM.render(<ScrollbarThumb axis={AXIS_DIRECTION.X} />, node, function() {
+  it("should render a div by default", (done) => {
+    ReactDOM.render(<ScrollbarThumb axis={AXIS_DIRECTION.X} />, node, function () {
       expect(this.element instanceof HTMLDivElement).toBeTruthy();
       done();
     });
   });
 
-  it("should pass rendered element ref to elementRef function", done => {
+  it("should pass rendered element ref to elementRef function", (done) => {
     let element: HTMLDivElement | null;
-    ReactDOM.render(<ScrollbarThumb axis={AXIS_DIRECTION.X} elementRef={ref => (element = ref)} />, node, function() {
-      expect(element instanceof HTMLDivElement).toBeTruthy();
-      done();
-    });
+    ReactDOM.render(
+      <ScrollbarThumb axis={AXIS_DIRECTION.X} elementRef={(ref) => (element = ref)} />,
+      node,
+      function () {
+        expect(element instanceof HTMLDivElement).toBeTruthy();
+        done();
+      }
+    );
   });
 
-  it("should render proper track with direction X axis", done => {
-    ReactDOM.render(<ScrollbarThumb axis={AXIS_DIRECTION.X} />, node, function() {
+  it("should render proper track with direction X axis", (done) => {
+    ReactDOM.render(<ScrollbarThumb axis={AXIS_DIRECTION.X} />, node, function () {
       expect(this.props.axis).toBe(AXIS_DIRECTION.X);
       expect(this.element.classList.contains("ScrollbarsCustom-ThumbX")).toBeTruthy();
       done();
     });
   });
 
-  it("should render proper track with direction Y axis", done => {
-    ReactDOM.render(<ScrollbarThumb axis={AXIS_DIRECTION.Y} />, node, function() {
+  it("should render proper track with direction Y axis", (done) => {
+    ReactDOM.render(<ScrollbarThumb axis={AXIS_DIRECTION.Y} />, node, function () {
       expect(this.props.axis).toBe(AXIS_DIRECTION.Y);
       expect(this.element.classList.contains("ScrollbarsCustom-ThumbY")).toBeTruthy();
       done();
     });
   });
 
-  it("should apply className", done => {
-    ReactDOM.render(<ScrollbarThumb axis={AXIS_DIRECTION.Y} className="MyAwesomeClassName" />, node, function() {
+  it("should apply className", (done) => {
+    ReactDOM.render(<ScrollbarThumb axis={AXIS_DIRECTION.Y} className="MyAwesomeClassName" />, node, function () {
       expect(this.element.classList.contains("MyAwesomeClassName")).toBeTruthy();
       done();
     });
   });
 
-  it("should apply style", done => {
-    ReactDOM.render(<ScrollbarThumb axis={AXIS_DIRECTION.Y} style={{ width: 100, height: 200 }} />, node, function() {
+  it("should apply style", (done) => {
+    ReactDOM.render(<ScrollbarThumb axis={AXIS_DIRECTION.Y} style={{ width: 100, height: 200 }} />, node, function () {
       expect(this.element.style.width).toBe("100px");
       expect(this.element.style.height).toBe("200px");
       done();
     });
   });
 
-  it("should render if custom renderer passed", done => {
-    let renderer = function(props) {
+  it("should render if custom renderer passed", (done) => {
+    let renderer = function (props) {
       return (
         <div className="customTrack">
           <div ref={props.elementRef}>{props.children}</div>
@@ -73,15 +77,15 @@ describe("ScrollbarThumb", () => {
       );
     };
 
-    ReactDOM.render(<ScrollbarThumb axis={AXIS_DIRECTION.Y} renderer={renderer} />, node, function() {
+    ReactDOM.render(<ScrollbarThumb axis={AXIS_DIRECTION.Y} renderer={renderer} />, node, function () {
       expect(this.element.parentElement.classList.contains("customTrack")).toBeTruthy();
 
       done();
     });
   });
 
-  it("should throw if renderer did not passed the element link", done => {
-    let renderer = function(props) {
+  it("should throw if renderer did not passed the element link", (done) => {
+    let renderer = function (props) {
       return (
         <div className="customTrack">
           <div>{props.children}</div>
@@ -98,7 +102,7 @@ describe("ScrollbarThumb", () => {
       componentDidCatch(error, errorInfo) {
         this.setState({
           error: error,
-          errorInfo: errorInfo
+          errorInfo: errorInfo,
         });
       }
 
@@ -116,7 +120,7 @@ describe("ScrollbarThumb", () => {
         <ScrollbarThumb axis={AXIS_DIRECTION.Y} renderer={renderer} />
       </ErrorBoundary>,
       node,
-      function() {
+      function () {
         setTimeout(() => {
           expect(this.state.error instanceof Error).toBeTruthy();
           expect(this.state.error.message).toBe(
@@ -129,19 +133,19 @@ describe("ScrollbarThumb", () => {
     );
   });
 
-  it("should emit onDragStart on mousedown LMB", done => {
+  it("should emit onDragStart on mousedown LMB", (done) => {
     let spy = jasmine.createSpy();
 
     ReactDOM.render(
       <ScrollbarThumb axis={AXIS_DIRECTION.Y} style={{ width: 80, height: 100 }} onDragStart={spy} />,
       node,
-      function() {
+      function () {
         const { top, height, left, width } = this.element.getBoundingClientRect();
 
         simulant.fire(this.element, "mousedown", {
           button: 0,
           clientY: top + height / 2,
-          clientX: left + width / 2
+          clientX: left + width / 2,
         });
 
         setTimeout(() => {
@@ -153,19 +157,19 @@ describe("ScrollbarThumb", () => {
     );
   });
 
-  it("should NOT emit onDragStart on mousedown not LMB", done => {
+  it("should NOT emit onDragStart on mousedown not LMB", (done) => {
     let spy = jasmine.createSpy();
 
     ReactDOM.render(
       <ScrollbarThumb axis={AXIS_DIRECTION.Y} style={{ width: 80, height: 100 }} onDragStart={spy} />,
       node,
-      function() {
+      function () {
         const { top, height, left, width } = this.element.getBoundingClientRect();
 
         simulant.fire(this.element, "mousedown", {
           button: 1,
           clientY: top + height / 2,
-          clientX: left + width / 2
+          clientX: left + width / 2,
         });
 
         setTimeout(() => {
@@ -176,26 +180,26 @@ describe("ScrollbarThumb", () => {
     );
   });
 
-  it("should emit onDragEnd on mouseup", done => {
+  it("should emit onDragEnd on mouseup", (done) => {
     let start = jasmine.createSpy();
     let end = jasmine.createSpy();
 
     ReactDOM.render(
       <ScrollbarThumb axis={AXIS_DIRECTION.Y} style={{ width: 80, height: 100 }} onDragStart={start} onDragEnd={end} />,
       node,
-      function() {
+      function () {
         const { top, height, left, width } = this.element.getBoundingClientRect();
 
         simulant.fire(this.element, "mousedown", {
           button: 0,
           clientY: top + height / 2,
-          clientX: left + width / 2
+          clientX: left + width / 2,
         });
         setTimeout(() => {
           simulant.fire(document, "mouseup", {
             button: 0,
             clientY: top + height / 2,
-            clientX: left + width / 2
+            clientX: left + width / 2,
           });
 
           setTimeout(() => {
@@ -212,7 +216,7 @@ describe("ScrollbarThumb", () => {
     );
   });
 
-  it("should emit onDrag on mousemove", done => {
+  it("should emit onDrag on mousemove", (done) => {
     let start = jasmine.createSpy();
     let end = jasmine.createSpy();
     let drag = jasmine.createSpy();
@@ -226,25 +230,25 @@ describe("ScrollbarThumb", () => {
         onDragEnd={end}
       />,
       node,
-      function() {
+      function () {
         const { top, height, left, width } = this.element.getBoundingClientRect();
 
         simulant.fire(this.element, "mousedown", {
           button: 0,
           clientY: top + height / 2,
-          clientX: left + width / 2
+          clientX: left + width / 2,
         });
 
         setTimeout(() => {
           simulant.fire(document, "mousemove", {
             button: 0,
             clientY: top + height / 2,
-            clientX: left + width / 2
+            clientX: left + width / 2,
           });
           simulant.fire(document, "mouseup", {
             button: 0,
             clientY: top + height / 2,
-            clientX: left + width / 2
+            clientX: left + width / 2,
           });
 
           setTimeout(() => {
@@ -263,7 +267,7 @@ describe("ScrollbarThumb", () => {
     );
   });
 
-  it("should end the dragging if element was removed", done => {
+  it("should end the dragging if element was removed", (done) => {
     let start = jasmine.createSpy();
     let end = jasmine.createSpy();
     let drag = jasmine.createSpy();
@@ -277,20 +281,20 @@ describe("ScrollbarThumb", () => {
         onDragEnd={end}
       />,
       node,
-      function() {
+      function () {
         const { top, height, left, width } = this.element.getBoundingClientRect();
 
         simulant.fire(this.element, "mousedown", {
           button: 0,
           clientY: top + height / 2,
-          clientX: left + width / 2
+          clientX: left + width / 2,
         });
 
         this.element = null;
         simulant.fire(document, "mousemove", {
           button: 0,
           clientY: top + height / 2,
-          clientX: left + width / 2
+          clientX: left + width / 2,
         });
 
         setTimeout(() => {
@@ -305,7 +309,7 @@ describe("ScrollbarThumb", () => {
     );
   });
 
-  it("handleDragStart while element was removed should not emit callbacks", done => {
+  it("handleDragStart while element was removed should not emit callbacks", (done) => {
     let start = jasmine.createSpy();
     let end = jasmine.createSpy();
     let drag = jasmine.createSpy();
@@ -319,7 +323,7 @@ describe("ScrollbarThumb", () => {
         onDragEnd={end}
       />,
       node,
-      function() {
+      function () {
         const { top, height, left, width } = this.element.getBoundingClientRect();
 
         let elt = this.element;
@@ -327,7 +331,7 @@ describe("ScrollbarThumb", () => {
         simulant.fire(elt, "mousedown", {
           button: 0,
           clientY: top + height / 2,
-          clientX: left + width / 2
+          clientX: left + width / 2,
         });
 
         setTimeout(() => {
@@ -340,14 +344,14 @@ describe("ScrollbarThumb", () => {
     );
   });
 
-  it("while dragging element should have the `dragging` classname", done => {
-    ReactDOM.render(<ScrollbarThumb axis={AXIS_DIRECTION.Y} style={{ width: 80, height: 100 }} />, node, function() {
+  it("while dragging element should have the `dragging` classname", (done) => {
+    ReactDOM.render(<ScrollbarThumb axis={AXIS_DIRECTION.Y} style={{ width: 80, height: 100 }} />, node, function () {
       const { top, height, left, width } = this.element.getBoundingClientRect();
 
       simulant.fire(this.element, "mousedown", {
         button: 0,
         clientY: top + height / 2,
-        clientX: left + width / 2
+        clientX: left + width / 2,
       });
 
       setTimeout(() => {
@@ -357,25 +361,25 @@ describe("ScrollbarThumb", () => {
     });
   });
 
-  it("should end the dragging when component is unmounted", done => {
+  it("should end the dragging when component is unmounted", (done) => {
     let end = jasmine.createSpy();
 
     ReactDOM.render(
       <ScrollbarThumb axis={AXIS_DIRECTION.Y} style={{ width: 80, height: 100 }} onDragEnd={end} />,
       node,
-      function() {
+      function () {
         const { top, height, left, width } = this.element.getBoundingClientRect();
 
         simulant.fire(this.element, "mousedown", {
           button: 0,
           clientY: top + height / 2,
-          clientX: left + width / 2
+          clientX: left + width / 2,
         });
         setTimeout(() => {
           simulant.fire(document, "mousemove", {
             button: 0,
             clientY: top + height / 2,
-            clientX: left + width / 2
+            clientX: left + width / 2,
           });
 
           setTimeout(() => {
@@ -389,14 +393,14 @@ describe("ScrollbarThumb", () => {
     );
   });
 
-  it("should set document`s user-select to none and replace onselectstart callback", done => {
-    ReactDOM.render(<ScrollbarThumb axis={AXIS_DIRECTION.Y} style={{ width: 80, height: 100 }} />, node, function() {
+  it("should set document`s user-select to none and replace onselectstart callback", (done) => {
+    ReactDOM.render(<ScrollbarThumb axis={AXIS_DIRECTION.Y} style={{ width: 80, height: 100 }} />, node, function () {
       const { top, height, left, width } = this.element.getBoundingClientRect();
 
       simulant.fire(this.element, "mousedown", {
         button: 0,
         clientY: top + height / 2,
-        clientX: left + width / 2
+        clientX: left + width / 2,
       });
 
       setTimeout(() => {

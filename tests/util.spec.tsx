@@ -12,7 +12,7 @@ import {
   getScrollbarWidth,
   renderDivWithRenderer,
   shouldReverseRtlScroll,
-  uuid
+  uuid,
 } from "../src/util";
 
 describe("util", () => {
@@ -412,9 +412,9 @@ describe("util", () => {
       expect(res!.props.className).toBe("tests");
     });
 
-    it("should pass elementRef as ref if renderer not presented", done => {
+    it("should pass elementRef as ref if renderer not presented", (done) => {
       const ref = jasmine.createSpy();
-      ReactDOM.render(renderDivWithRenderer({ elementRef: undefined, className: "tests" }, ref), node, function() {
+      ReactDOM.render(renderDivWithRenderer({ elementRef: undefined, className: "tests" }, ref), node, function () {
         expect(ref).toHaveBeenCalled();
         done();
       });

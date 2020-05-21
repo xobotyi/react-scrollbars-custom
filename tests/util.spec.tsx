@@ -445,14 +445,14 @@ describe("util", () => {
     });
 
     it("should return proper number", () => {
-      expect([17, 15].includes(getScrollbarWidth())).toBe(true);
+      expect([17, 15].includes(getScrollbarWidth()!)).toBe(true);
     });
 
     it("should forced recalculate sbw if true passed as 1st parameter", () => {
       getScrollbarWidth._cache = 2;
       expect(getScrollbarWidth()).toBe(2);
       _dbgSetDocument(document);
-      expect([17, 15].includes(getScrollbarWidth(true))).toBe(true);
+      expect([17, 15].includes(getScrollbarWidth(true)!)).toBe(true);
     });
 
     it("should return 0 if document is not presented", () => {

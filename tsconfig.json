@@ -6,7 +6,7 @@
     "strictNullChecks": true,
     "alwaysStrict": true,
     "declaration": false,
-    "target": "es2017",
+    "target": "es2019",
     "module": "commonjs",
     "jsx": "react",
     "lib": ["esnext", "dom"]

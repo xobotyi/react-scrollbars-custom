@@ -52,7 +52,7 @@ export default class ScrollbarThumb extends React.Component<ScrollbarThumbProps,
     if (!this.element) {
       this.setState(() => {
         throw new Error(
-          "Element was not created. Possibly you haven't provided HTMLDivElement to renderer's `elementRef` function."
+          "<ScrollbarThumb> Element was not created. Possibly you haven't provided HTMLDivElement to renderer's `elementRef` function."
         );
       });
       return;
@@ -199,13 +199,23 @@ export default class ScrollbarThumb extends React.Component<ScrollbarThumbProps,
         onDrag={this.handleOnDrag}
         onStart={this.handleOnDragStart}
         onStop={this.handleOnDragStop}
-        children={renderDivWithRenderer(props, this.elementRef)}
-      />
+        // ToDo: Fixit!
+        // react-draggable developers did not update typings so there is no appropriate prop
+        // @ts-ignore
+        // nodeRef={this.elementRefHack}
+      >
+        {renderDivWithRenderer(props, this.elementRef)}
+      </DraggableCore>
     );
   }
 
+  private elementRefHack = React.createRef<HTMLElement>();
+
   private elementRef = (ref: HTMLDivElement | null): void => {
-    isFun(this.props.elementRef) && this.props.elementRef!(ref);
+    isFun(this.props.elementRef) && this.props.elementRef(ref);
     this.element = ref;
+
+    // @ts-ignore
+    this.elementRefHack["current"] = ref;
   };
 }

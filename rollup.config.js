@@ -25,7 +25,8 @@ export default [
         tsconfigOverride: {
           compilerOptions: {
             module: "esnext",
-            target: "esnext",
+            // ToDo: FIXME! sadly rollup do not handle optional chaining yet
+            target: "es2019",
             declaration: true,
             declarationDir: __dirname + "/dist/types",
           },

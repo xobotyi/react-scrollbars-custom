@@ -3,15 +3,15 @@ import { ElementPropsWithElementRefAndRenderer, ElementRef } from "./types";
 
 let doc: Document | null = typeof document === "object" ? document : null;
 
-export const isUndef = (v: any): boolean => {
+export const isUndef = (v: any): v is Exclude<typeof v, undefined> => {
   return typeof v === "undefined";
 };
 
-export const isFun = (v: any): boolean => {
+export const isFun = (v: any): v is Function => {
   return typeof v === "function";
 };
 
-export const isNum = (v: any): boolean => {
+export const isNum = (v: any): v is number => {
   return typeof v === "number";
 };
 

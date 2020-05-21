@@ -81,7 +81,6 @@
     "build": "rimraf ./dist && rollup --config",
     "test": "cross-env NODE_ENV=production karma start",
     "preversion": "npm run format && npm run build",
-    "postversion": "git push && git push --tags",
     "prepublishOnly": "npm run format && npm run test && npm run build",
     "push-codacy-coverage": "cat ./coverage/lcov.info | codacy-coverage"
   },

@@ -202,7 +202,7 @@ export default class ScrollbarThumb extends React.Component<ScrollbarThumbProps,
         // ToDo: Fixit!
         // react-draggable developers did not update typings so there is no appropriate prop
         // @ts-ignore
-        // nodeRef={this.elementRefHack}
+        nodeRef={this.elementRefHack}
       >
         {renderDivWithRenderer(props, this.elementRef)}
       </DraggableCore>

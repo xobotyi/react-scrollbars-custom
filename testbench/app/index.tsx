@@ -36,8 +36,10 @@ export function renderAmountOfParagraphs(amount = 5, paragraphsProps: React.HTML
 }
 
 ReactDom.render(
-  <Scrollbar style={{ width: 528, height: 200 }}>
-    {renderAmountOfParagraphs(10, { style: { width: "150%" } })}
-  </Scrollbar>,
+  <React.StrictMode>
+    <Scrollbar style={{ width: 528, height: 200 }}>
+      {renderAmountOfParagraphs(10, { style: { width: "150%" } })}
+    </Scrollbar>
+  </React.StrictMode>,
   document.getElementById("AppRoot")
 );

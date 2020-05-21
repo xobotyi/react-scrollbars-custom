@@ -33,21 +33,23 @@ class ScrollbarPropsUpdater extends React.Component<
 }
 
 describe("Scrollbar", () => {
-  let node: HTMLDivElement;
-  beforeAll(() => {
-    node = document.createElement("div");
+  const nodes: HTMLDivElement[] = [];
+
+  const getNode = () => {
+    const node = document.createElement("div");
     document.body.appendChild(node);
+    nodes.push(node);
+
+    return node;
+  };
+
+  afterAll(() => {
+    nodes.forEach((node) => document.body.removeChild(node));
   });
+
   beforeEach(() => {
     delete getScrollbarWidth._cache;
     delete shouldReverseRtlScroll._cache;
-  });
-  afterEach(() => {
-    ReactDOM.unmountComponentAtNode(node);
-  });
-  afterAll(() => {
-    ReactDOM.unmountComponentAtNode(node);
-    document.body.removeChild(node);
   });
 
   describe("render", () => {
@@ -56,7 +58,7 @@ describe("Scrollbar", () => {
         <Scrollbar style={{ width: 100, height: 100 }}>
           <div style={{ width: 200, height: 200 }} />
         </Scrollbar>,
-        node,
+        getNode(),
         function () {
           setTimeout(() => {
             expect(this.wrapperElement.parentNode === this.holderElement).toBeTruthy();
@@ -89,7 +91,7 @@ describe("Scrollbar", () => {
         >
           <div style={{ width: 200, height: 210 }} />
         </Scrollbar>,
-        node,
+        getNode(),
         function () {
           setTimeout(() => {
             expect(this.holderElement.classList.contains("ScrollbarsCustom")).toBeTruthy();
@@ -153,7 +155,7 @@ describe("Scrollbar", () => {
         >
           <div style={{ width: 200, height: 210 }} />
         </Scrollbar>,
-        node,
+        getNode(),
         function () {
           setTimeout(() => {
             expect(holderRef).toHaveBeenCalled();
@@ -272,7 +274,7 @@ describe("Scrollbar", () => {
         >
           <div style={{ width: 200, height: 210 }} />
         </Scrollbar>,
-        node,
+        getNode(),
         function () {
           setTimeout(() => {
             expect(this.holderElement.tagName).toBe("SPAN");
@@ -355,7 +357,7 @@ describe("Scrollbar", () => {
           <ErrorBoundary>
             <Scrollbar renderer={renderer} />
           </ErrorBoundary>,
-          node,
+          getNode(),
           function () {
             setTimeout(() => {
               expect(this.state.error instanceof Error).toBeTruthy();
@@ -374,7 +376,7 @@ describe("Scrollbar", () => {
           <ErrorBoundary>
             <Scrollbar wrapperProps={{ renderer }} />
           </ErrorBoundary>,
-          node,
+          getNode(),
           function () {
             setTimeout(() => {
               expect(this.state.error instanceof Error).toBeTruthy();
@@ -393,7 +395,7 @@ describe("Scrollbar", () => {
           <ErrorBoundary>
             <Scrollbar scrollerProps={{ renderer }} />
           </ErrorBoundary>,
-          node,
+          getNode(),
           function () {
             setTimeout(() => {
               expect(this.state.error instanceof Error).toBeTruthy();
@@ -412,7 +414,7 @@ describe("Scrollbar", () => {
           <ErrorBoundary>
             <Scrollbar contentProps={{ renderer }} />
           </ErrorBoundary>,
-          node,
+          getNode(),
           function () {
             setTimeout(() => {
               expect(this.state.error instanceof Error).toBeTruthy();
@@ -431,7 +433,7 @@ describe("Scrollbar", () => {
           <ErrorBoundary>
             <Scrollbar renderer={renderer} native />
           </ErrorBoundary>,
-          node,
+          getNode(),
           function () {
             setTimeout(() => {
               expect(this.state.error).toBeNull();
@@ -446,7 +448,7 @@ describe("Scrollbar", () => {
           <ErrorBoundary>
             <Scrollbar wrapperProps={{ renderer }} native />
           </ErrorBoundary>,
-          node,
+          getNode(),
           function () {
             setTimeout(() => {
               expect(this.state.error).toBeNull();
@@ -462,7 +464,7 @@ describe("Scrollbar", () => {
         <Scrollbar style={{ width: 100, height: 100 }}>
           <div style={{ width: 50, height: 50 }} />
         </Scrollbar>,
-        node,
+        getNode(),
         function () {
           setTimeout(() => {
             expect(this.trackXElement).not.toBeNull();
@@ -481,7 +483,7 @@ describe("Scrollbar", () => {
         <Scrollbar style={{ width: 100, height: 100 }} removeTracksWhenNotUsed>
           <div style={{ width: 50, height: 50 }} />
         </Scrollbar>,
-        node,
+        getNode(),
         function () {
           setTimeout(() => {
             expect(this.trackXElement).toBeNull();
@@ -500,7 +502,7 @@ describe("Scrollbar", () => {
         <Scrollbar style={{ width: 100, height: 100 }} removeTrackYWhenNotUsed>
           <div style={{ width: 50, height: 50 }} />
         </Scrollbar>,
-        node,
+        getNode(),
         function () {
           setTimeout(() => {
             expect(this.trackXElement).not.toBeNull();
@@ -519,7 +521,7 @@ describe("Scrollbar", () => {
         <Scrollbar style={{ width: 100, height: 100 }} removeTrackXWhenNotUsed>
           <div style={{ width: 50, height: 50 }} />
         </Scrollbar>,
-        node,
+        getNode(),
         function () {
           setTimeout(() => {
             expect(this.trackXElement).toBeNull();
@@ -540,7 +542,7 @@ describe("Scrollbar", () => {
         <Scrollbar style={{ width: 100, height: 70 }} native rtl className="customHolderClassname">
           <div style={{ width: 200, height: 210 }} />
         </Scrollbar>,
-        node,
+        getNode(),
         function () {
           setTimeout(() => {
             expect(this.holderElement).toBeNull();
@@ -570,7 +572,7 @@ describe("Scrollbar", () => {
         <Scrollbar style={{ width: 100, height: 70 }} mobileNative scrollbarWidth={0}>
           <div style={{ width: 200, height: 210 }} />
         </Scrollbar>,
-        node,
+        getNode(),
         function () {
           setTimeout(() => {
             expect(this.scrollerElement.classList.contains("native")).toBeTruthy();
@@ -586,7 +588,7 @@ describe("Scrollbar", () => {
         <Scrollbar style={{ width: 100, height: 70 }} native scrollLeft={20} scrollTop={40}>
           <div style={{ width: 200, height: 210 }} />
         </Scrollbar>,
-        node,
+        getNode(),
         function () {
           setTimeout(() => {
             expect(this.scrollerElement.scrollTop).toBe(40);
@@ -602,7 +604,7 @@ describe("Scrollbar", () => {
         <Scrollbar native noScroll style={{ width: 100, height: 70 }}>
           <div style={{ width: 200, height: 210 }} />
         </Scrollbar>,
-        node,
+        getNode(),
         function () {
           expect(this.scrollerElement.style.overflowX).toBe("hidden");
           expect(this.scrollerElement.style.overflowY).toBe("hidden");
@@ -615,7 +617,7 @@ describe("Scrollbar", () => {
         <Scrollbar native noScrollX style={{ width: 100, height: 70 }}>
           <div style={{ width: 200, height: 210 }} />
         </Scrollbar>,
-        node,
+        getNode(),
         function () {
           expect(this.scrollerElement.style.overflowX).toBe("hidden");
           expect(this.scrollerElement.style.overflowY).not.toBe("hidden");
@@ -628,7 +630,7 @@ describe("Scrollbar", () => {
         <Scrollbar native noScrollY style={{ width: 100, height: 70 }}>
           <div style={{ width: 200, height: 210 }} />
         </Scrollbar>,
-        node,
+        getNode(),
         function () {
           expect(this.scrollerElement.style.overflowX).not.toBe("hidden");
           expect(this.scrollerElement.style.overflowY).toBe("hidden");
@@ -642,7 +644,7 @@ describe("Scrollbar", () => {
         <Scrollbar native permanentTracks style={{ width: 100, height: 70 }}>
           <div style={{ width: 50, height: 50 }} />
         </Scrollbar>,
-        node,
+        getNode(),
         function () {
           expect(this.scrollerElement.style.overflowX).toBe("scroll");
           expect(this.scrollerElement.style.overflowY).toBe("scroll");
@@ -655,7 +657,7 @@ describe("Scrollbar", () => {
         <Scrollbar native permanentTrackX style={{ width: 100, height: 70 }}>
           <div style={{ width: 50, height: 50 }} />
         </Scrollbar>,
-        node,
+        getNode(),
         function () {
           expect(this.scrollerElement.style.overflowX).toBe("scroll");
           expect(this.scrollerElement.style.overflowY).not.toBe("scroll");
@@ -668,7 +670,7 @@ describe("Scrollbar", () => {
         <Scrollbar native permanentTrackY style={{ width: 100, height: 70 }}>
           <div style={{ width: 50, height: 50 }} />
         </Scrollbar>,
-        node,
+        getNode(),
         function () {
           expect(this.scrollerElement.style.overflowX).not.toBe("scroll");
           expect(this.scrollerElement.style.overflowY).toBe("scroll");
@@ -685,7 +687,7 @@ describe("Scrollbar", () => {
           <Scrollbar style={{ width: 100, height: 100 }}>
             <div style={{ width: 900, height: 1000 }} />
           </Scrollbar>,
-          node,
+          getNode(),
           function () {
             this.scrollToRight();
 
@@ -704,7 +706,7 @@ describe("Scrollbar", () => {
           <Scrollbar style={{ width: 100, height: 100 }}>
             <div style={{ width: 900, height: 1000 }} />
           </Scrollbar>,
-          node,
+          getNode(),
           function () {
             this.scrollToRight();
             this.scrollToLeft();
@@ -724,7 +726,7 @@ describe("Scrollbar", () => {
           <Scrollbar style={{ width: 100, height: 100 }}>
             <div style={{ width: 900, height: 1000 }} />
           </Scrollbar>,
-          node,
+          getNode(),
           function () {
             this.scrollToBottom();
 
@@ -743,7 +745,7 @@ describe("Scrollbar", () => {
           <Scrollbar style={{ width: 100, height: 100 }}>
             <div style={{ width: 900, height: 1000 }} />
           </Scrollbar>,
-          node,
+          getNode(),
           function () {
             this.scrollToBottom();
             this.scrollToTop();
@@ -763,7 +765,7 @@ describe("Scrollbar", () => {
           <Scrollbar style={{ width: 100, height: 100 }}>
             <div style={{ width: 900, height: 1000 }} />
           </Scrollbar>,
-          node,
+          getNode(),
           function () {
             this.scrollTo(400, 560);
 
@@ -783,7 +785,7 @@ describe("Scrollbar", () => {
           <Scrollbar style={{ width: 100, height: 100 }}>
             <div style={{ width: 900, height: 1000 }} />
           </Scrollbar>,
-          node,
+          getNode(),
           function () {
             this.centerAt(400, 560);
 
@@ -803,7 +805,7 @@ describe("Scrollbar", () => {
           <Scrollbar style={{ width: 100, height: 100 }}>
             <div style={{ width: 900, height: 1000 }} />
           </Scrollbar>,
-          node,
+          getNode(),
           function () {
             this.scrollTop = 450;
             expect(this.scrollerElement.scrollTop).toBe(450);
@@ -819,7 +821,7 @@ describe("Scrollbar", () => {
           <Scrollbar style={{ width: 100, height: 100 }}>
             <div style={{ width: 900, height: 1000 }} />
           </Scrollbar>,
-          node,
+          getNode(),
           function () {
             this.scrollLeft = 450;
             expect(this.scrollerElement.scrollLeft).toBe(450);
@@ -836,7 +838,7 @@ describe("Scrollbar", () => {
           <Scrollbar style={{ width: 100, height: 100 }}>
             <div style={{ width: 900, height: 1000 }} />
           </Scrollbar>,
-          node,
+          getNode(),
           function () {
             //simulate weird behaviour
             this.scrollerElement = null;
@@ -866,7 +868,7 @@ describe("Scrollbar", () => {
           <Scrollbar style={{ width: 100, height: 100 }} scrollTop={450} scrollLeft={400}>
             <div style={{ width: 900, height: 1000 }} />
           </Scrollbar>,
-          node,
+          getNode(),
           function () {
             setTimeout(() => {
               const scrollValues = this.getScrollState();
@@ -898,7 +900,7 @@ describe("Scrollbar", () => {
           <Scrollbar style={{ width: 100, height: 100 }}>
             <div style={{ width: 900, height: 1000 }} />
           </Scrollbar>,
-          node,
+          getNode(),
           function () {
             this.scrollerElement.scrollTop = 450;
 
@@ -916,7 +918,7 @@ describe("Scrollbar", () => {
           <Scrollbar style={{ width: 100, height: 100 }}>
             <div style={{ width: 900, height: 1000 }} />
           </Scrollbar>,
-          node,
+          getNode(),
           function () {
             this.scrollerElement.scrollLeft = 450;
             expect(this.scrollLeft).toBe(450);
@@ -933,7 +935,7 @@ describe("Scrollbar", () => {
           <Scrollbar style={{ width: 100, height: 100 }}>
             <div style={{ width: 900, height: 1000 }} />
           </Scrollbar>,
-          node,
+          getNode(),
           function () {
             expect(this.scrollHeight).toBe(1000);
 
@@ -949,7 +951,7 @@ describe("Scrollbar", () => {
           <Scrollbar style={{ width: 100, height: 100 }}>
             <div style={{ width: 900, height: 1000 }} />
           </Scrollbar>,
-          node,
+          getNode(),
           function () {
             expect(this.scrollWidth).toBe(900);
 
@@ -965,7 +967,7 @@ describe("Scrollbar", () => {
           <Scrollbar style={{ width: 100, height: 200 }}>
             <div style={{ width: 900, height: 1000 }} />
           </Scrollbar>,
-          node,
+          getNode(),
           function () {
             expect(this.clientHeight).toBe(200);
 
@@ -981,7 +983,7 @@ describe("Scrollbar", () => {
           <Scrollbar style={{ width: 100, height: 200 }}>
             <div style={{ width: 900, height: 1000 }} />
           </Scrollbar>,
-          node,
+          getNode(),
           function () {
             expect(this.clientWidth).toBe(100);
 
@@ -997,7 +999,7 @@ describe("Scrollbar", () => {
           <Scrollbar style={{ width: 100, height: 100 }}>
             <div style={{ width: 900, height: 1000 }} />
           </Scrollbar>,
-          node,
+          getNode(),
           function () {
             //simulate weird behaviour
             this.scrollerElement = null;
@@ -1023,7 +1025,7 @@ describe("Scrollbar", () => {
           <Scrollbar style={{ width: 100, height: 110 }} disableTracksWidthCompensation>
             <div style={{ width: 200, height: 210 }} />
           </Scrollbar>,
-          node,
+          getNode(),
           function () {
             setTimeout(() => {
               expect(this.wrapperElement.clientWidth).toBe(this.holderElement.clientWidth);
@@ -1038,7 +1040,7 @@ describe("Scrollbar", () => {
           <Scrollbar style={{ width: 100, height: 110 }} disableTrackYWidthCompensation>
             <div style={{ width: 200, height: 210 }} />
           </Scrollbar>,
-          node,
+          getNode(),
           function () {
             setTimeout(() => {
               expect(this.wrapperElement.clientWidth).toBe(this.holderElement.clientWidth);
@@ -1054,7 +1056,7 @@ describe("Scrollbar", () => {
           <Scrollbar style={{ width: 100, height: 110 }} disableTrackXWidthCompensation>
             <div style={{ width: 200, height: 210 }} />
           </Scrollbar>,
-          node,
+          getNode(),
           function () {
             setTimeout(() => {
               expect(this.wrapperElement.clientWidth).not.toBe(this.holderElement.clientWidth);
@@ -1071,7 +1073,7 @@ describe("Scrollbar", () => {
         <Scrollbar style={{ width: 0, height: 0 }} translateContentSizesToHolder>
           <div style={{ width: 200, height: 210 }} />
         </Scrollbar>,
-        node,
+        getNode(),
         function () {
           setTimeout(() => {
             expect(this.holderElement.clientWidth).toBe(this.contentElement.scrollWidth);
@@ -1087,7 +1089,7 @@ describe("Scrollbar", () => {
         <Scrollbar style={{ width: 0, height: 0 }} translateContentSizeXToHolder>
           <div style={{ width: 200, height: 210 }} />
         </Scrollbar>,
-        node,
+        getNode(),
         function () {
           setTimeout(() => {
             expect(this.holderElement.clientWidth).toBe(this.contentElement.scrollWidth);
@@ -1103,7 +1105,7 @@ describe("Scrollbar", () => {
         <Scrollbar style={{ width: 0, height: 0 }} translateContentSizeYToHolder>
           <div style={{ width: 200, height: 210 }} />
         </Scrollbar>,
-        node,
+        getNode(),
         function () {
           setTimeout(() => {
             expect(this.holderElement.clientWidth).not.toBe(this.contentElement.scrollWidth);
@@ -1133,7 +1135,7 @@ describe("Scrollbar", () => {
         <Scrollbar style={{ width: 100, height: 70 }} scrollLeft={20} scrollTop={40} createContext>
           <ScrollbarContextConsumer />
         </Scrollbar>,
-        node,
+        getNode(),
         function () {
           setTimeout(() => {
             expect(consumedContext).not.toBeUndefined();
@@ -1149,7 +1151,7 @@ describe("Scrollbar", () => {
         <Scrollbar style={{ width: 100, height: 70 }} scrollLeft={20} scrollTop={40}>
           <div style={{ width: 200, height: 210 }} />
         </Scrollbar>,
-        node,
+        getNode(),
         function () {
           setTimeout(() => {
             expect(this.scrollerElement.scrollTop).toBe(40);
@@ -1165,7 +1167,7 @@ describe("Scrollbar", () => {
         <Scrollbar style={{ width: 100, height: 70 }} scrollbarWidth={0} fallbackScrollbarWidth={11}>
           <div style={{ width: 200, height: 210 }} />
         </Scrollbar>,
-        node,
+        getNode(),
         function () {
           setTimeout(() => {
             expect(this.scrollerElement.style.marginRight).toBe("-11px");
@@ -1180,7 +1182,7 @@ describe("Scrollbar", () => {
         <Scrollbar style={{ width: 100, height: 70 }} scrollLeft={20} scrollTop={40}>
           <div style={{ width: 200, height: 210 }} />
         </Scrollbar>,
-        node,
+        getNode(),
         function () {
           setTimeout(() => {
             expect(this.scrollerElement.scrollTop).toBe(40);
@@ -1196,7 +1198,7 @@ describe("Scrollbar", () => {
         <Scrollbar noScroll style={{ width: 100, height: 70 }}>
           <div style={{ width: 200, height: 210 }} />
         </Scrollbar>,
-        node,
+        getNode(),
         function () {
           setTimeout(() => {
             expect(this.scrollerElement.style.overflowX).toBe("hidden");
@@ -1211,7 +1213,7 @@ describe("Scrollbar", () => {
         <Scrollbar noScrollX style={{ width: 100, height: 70 }}>
           <div style={{ width: 200, height: 210 }} />
         </Scrollbar>,
-        node,
+        getNode(),
         function () {
           setTimeout(() => {
             expect(this.scrollerElement.style.overflowX).toBe("hidden");
@@ -1226,7 +1228,7 @@ describe("Scrollbar", () => {
         <Scrollbar noScrollY style={{ width: 100, height: 70 }}>
           <div style={{ width: 200, height: 210 }} />
         </Scrollbar>,
-        node,
+        getNode(),
         function () {
           setTimeout(() => {
             expect(this.scrollerElement.style.overflowX).not.toBe("hidden");
@@ -1242,7 +1244,7 @@ describe("Scrollbar", () => {
         <Scrollbar permanentTracks style={{ width: 100, height: 70 }}>
           <div style={{ width: 50, height: 50 }} />
         </Scrollbar>,
-        node,
+        getNode(),
         function () {
           setTimeout(() => {
             expect(this.trackYElement.style.display).not.toBe("none");
@@ -1258,7 +1260,7 @@ describe("Scrollbar", () => {
         <Scrollbar permanentTrackX style={{ width: 100, height: 70 }}>
           <div style={{ width: 50, height: 50 }} />
         </Scrollbar>,
-        node,
+        getNode(),
         function () {
           setTimeout(() => {
             expect(this.trackYElement.style.display).toBe("none");
@@ -1274,7 +1276,7 @@ describe("Scrollbar", () => {
         <Scrollbar permanentTrackY style={{ width: 100, height: 70 }}>
           <div style={{ width: 50, height: 50 }} />
         </Scrollbar>,
-        node,
+        getNode(),
         function () {
           setTimeout(() => {
             expect(this.trackYElement.style.display).not.toBe("none");
@@ -1296,7 +1298,7 @@ describe("Scrollbar", () => {
           >
             <div style={{ width: 200, height: 200 }} />
           </ScrollbarPropsUpdater>,
-          node,
+          getNode(),
           function () {
             setScrollbarProps({ rtl: true });
             setTimeout(() => {
@@ -1322,7 +1324,7 @@ describe("Scrollbar", () => {
           >
             <div style={{ width: 200, height: 200 }} />
           </ScrollbarPropsUpdater>,
-          node,
+          getNode(),
           function () {
             setScrollbarProps({
               style: { width: 100, height: 70 },
@@ -1364,7 +1366,7 @@ describe("Scrollbar", () => {
           >
             <div style={{ width: 200, height: 200 }} />
           </ScrollbarPropsUpdater>,
-          node,
+          getNode(),
           function () {
             setScrollbarProps({
               style: { width: 100, height: 70 },
@@ -1416,7 +1418,7 @@ describe("Scrollbar", () => {
           >
             <div style={{ width: 200, height: 200 }} />
           </ScrollbarPropsUpdater>,
-          node,
+          getNode(),
           function () {
             setScrollbarProps({
               style: { width: 100, height: 70 },
@@ -1639,7 +1641,7 @@ describe("Scrollbar", () => {
         >
           <div style={{ width: 200, height: 200 }} />
         </ScrollbarPropsUpdater>,
-        node,
+        getNode(),
         function () {
           setScrollbarProps({
             onUpdate: onUpdateSpy2,
@@ -1672,7 +1674,7 @@ describe("Scrollbar", () => {
         >
           <div style={{ width: 200, height: 200 }} />
         </ScrollbarPropsUpdater>,
-        node,
+        getNode(),
         function () {
           expect(spy).not.toHaveBeenCalled();
           setScrollbarProps({
@@ -1712,7 +1714,7 @@ describe("Scrollbar", () => {
         >
           <div style={{ width: 1000, height: 1000 }} />
         </Scrollbar>,
-        node,
+        getNode(),
         function () {
           setTimeout(() => {
             const {
@@ -1763,7 +1765,7 @@ describe("Scrollbar", () => {
         >
           <div style={{ width: 1000, height: 1000 }} />
         </Scrollbar>,
-        node,
+        getNode(),
         function () {
           // due to inability to emulate scroll event
           this.handleTrackYMouseWheel({
@@ -1797,7 +1799,7 @@ describe("Scrollbar", () => {
         >
           <div style={{ width: 1000, height: 1000 }} />
         </Scrollbar>,
-        node,
+        getNode(),
         function () {
           // due to inability to emulate scroll event
           this.handleTrackYMouseWheel({
@@ -1830,7 +1832,7 @@ describe("Scrollbar", () => {
         >
           <div style={{ width: 1000, height: 1000 }} />
         </Scrollbar>,
-        node,
+        getNode(),
         function () {
           // due to inability to emulate scroll event
           this.handleTrackYMouseWheel({
@@ -1863,7 +1865,7 @@ describe("Scrollbar", () => {
         >
           <div style={{ width: 1000, height: 1000 }} />
         </Scrollbar>,
-        node,
+        getNode(),
         function () {
           // due to inability to emulate scroll event
           this.handleTrackYMouseWheel({
@@ -1896,7 +1898,7 @@ describe("Scrollbar", () => {
         >
           <div style={{ width: 1000, height: 1000 }} />
         </Scrollbar>,
-        node,
+        getNode(),
         function () {
           // due to inability to emulate scroll event
           this.handleTrackYMouseWheel({
@@ -1929,7 +1931,7 @@ describe("Scrollbar", () => {
         >
           <div style={{ width: 1000, height: 1000 }} />
         </Scrollbar>,
-        node,
+        getNode(),
         function () {
           // due to inability to emulate scroll event
           this.handleTrackYMouseWheel({
@@ -1962,7 +1964,7 @@ describe("Scrollbar", () => {
         >
           <div style={{ width: 1000, height: 1000 }} />
         </Scrollbar>,
-        node,
+        getNode(),
         function () {
           const { top: topX, height: heightX, left: leftX, width: widthX } = this.trackXElement.getBoundingClientRect();
           const { top: topY, height: heightY, left: leftY, width: widthY } = this.trackYElement.getBoundingClientRect();
@@ -1996,7 +1998,7 @@ describe("Scrollbar", () => {
         >
           <div style={{ width: 1000, height: 1000 }} />
         </Scrollbar>,
-        node,
+        getNode(),
         function () {
           setTimeout(() => {
             const {
@@ -2047,7 +2049,7 @@ describe("Scrollbar", () => {
         >
           <div style={{ width: 1000, height: 1000 }} />
         </Scrollbar>,
-        node,
+        getNode(),
         function () {
           setTimeout(() => {
             const {
@@ -2097,7 +2099,7 @@ describe("Scrollbar", () => {
         >
           <div style={{ width: 1000, height: 1000 }} />
         </Scrollbar>,
-        node,
+        getNode(),
         function () {
           setTimeout(() => {
             const {
@@ -2191,7 +2193,7 @@ describe("Scrollbar", () => {
         >
           <div style={{ width: 1000, height: 1000 }} />
         </Scrollbar>,
-        node,
+        getNode(),
         function () {
           setTimeout(() => {
             const {
@@ -2284,7 +2286,7 @@ describe("Scrollbar", () => {
         <Scrollbar style={{ width: 100, height: 100, position: "relative" }}>
           <div style={{ width: 1000, height: 1000 }} />
         </Scrollbar>,
-        node,
+        getNode(),
         function () {
           setTimeout(() => {
             const {
@@ -2335,7 +2337,7 @@ describe("Scrollbar", () => {
         <Scrollbar style={{ width: 100, height: 100, position: "relative" }}>
           <div style={{ width: 1000, height: 1000 }} />
         </Scrollbar>,
-        node,
+        getNode(),
         function () {
           setTimeout(() => {
             const {
@@ -2386,7 +2388,7 @@ describe("Scrollbar", () => {
         <Scrollbar style={{ width: 100, height: 100, position: "relative" }} rtl>
           <div style={{ width: 1000, height: 1000 }} />
         </Scrollbar>,
-        node,
+        getNode(),
         function () {
           setTimeout(() => {
             const {

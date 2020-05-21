@@ -5,21 +5,22 @@ import * as simulant from "simulant";
 import { AXIS_DIRECTION } from "../src/types";
 
 describe("ScrollbarTrack", () => {
-  let node: HTMLDivElement;
-  beforeAll(() => {
-    node = document.createElement("div");
+  const nodes: HTMLDivElement[] = [];
+
+  const getNode = () => {
+    const node = document.createElement("div");
     document.body.appendChild(node);
-  });
-  afterEach(() => {
-    ReactDOM.unmountComponentAtNode(node);
-  });
+    nodes.push(node);
+
+    return node;
+  };
+
   afterAll(() => {
-    ReactDOM.unmountComponentAtNode(node);
-    document.body.removeChild(node);
+    nodes.forEach((node) => document.body.removeChild(node));
   });
 
   it("should render a div by default", (done) => {
-    ReactDOM.render(<ScrollbarTrack axis={AXIS_DIRECTION.X} />, node, function () {
+    ReactDOM.render(<ScrollbarTrack axis={AXIS_DIRECTION.X} />, getNode(), function () {
       expect(this.element instanceof HTMLDivElement).toBeTruthy();
       done();
     });
@@ -29,7 +30,7 @@ describe("ScrollbarTrack", () => {
     let element: HTMLDivElement | null;
     ReactDOM.render(
       <ScrollbarTrack axis={AXIS_DIRECTION.X} elementRef={(ref) => (element = ref)} />,
-      node,
+      getNode(),
       function () {
         expect(element instanceof HTMLDivElement).toBeTruthy();
         done();
@@ -38,7 +39,7 @@ describe("ScrollbarTrack", () => {
   });
 
   it("should render proper track with direction X axis", (done) => {
-    ReactDOM.render(<ScrollbarTrack axis={AXIS_DIRECTION.X} />, node, function () {
+    ReactDOM.render(<ScrollbarTrack axis={AXIS_DIRECTION.X} />, getNode(), function () {
       expect(this.props.axis).toBe(AXIS_DIRECTION.X);
       expect(this.element.classList.contains("ScrollbarsCustom-TrackX")).toBeTruthy();
       done();
@@ -46,7 +47,7 @@ describe("ScrollbarTrack", () => {
   });
 
   it("should render proper track with direction Y axis", (done) => {
-    ReactDOM.render(<ScrollbarTrack axis={AXIS_DIRECTION.Y} />, node, function () {
+    ReactDOM.render(<ScrollbarTrack axis={AXIS_DIRECTION.Y} />, getNode(), function () {
       expect(this.props.axis).toBe(AXIS_DIRECTION.Y);
       expect(this.element.classList.contains("ScrollbarsCustom-TrackY")).toBeTruthy();
       done();
@@ -54,18 +55,22 @@ describe("ScrollbarTrack", () => {
   });
 
   it("should apply className", (done) => {
-    ReactDOM.render(<ScrollbarTrack axis={AXIS_DIRECTION.Y} className="MyAwesomeClassName" />, node, function () {
+    ReactDOM.render(<ScrollbarTrack axis={AXIS_DIRECTION.Y} className="MyAwesomeClassName" />, getNode(), function () {
       expect(this.element.classList.contains("MyAwesomeClassName")).toBeTruthy();
       done();
     });
   });
 
   it("should apply style", (done) => {
-    ReactDOM.render(<ScrollbarTrack axis={AXIS_DIRECTION.Y} style={{ width: 100, height: 200 }} />, node, function () {
-      expect(this.element.style.width).toBe("100px");
-      expect(this.element.style.height).toBe("200px");
-      done();
-    });
+    ReactDOM.render(
+      <ScrollbarTrack axis={AXIS_DIRECTION.Y} style={{ width: 100, height: 200 }} />,
+      getNode(),
+      function () {
+        expect(this.element.style.width).toBe("100px");
+        expect(this.element.style.height).toBe("200px");
+        done();
+      }
+    );
   });
 
   it("should render if custom renderer passed", (done) => {
@@ -77,7 +82,7 @@ describe("ScrollbarTrack", () => {
       );
     };
 
-    ReactDOM.render(<ScrollbarTrack axis={AXIS_DIRECTION.Y} renderer={renderer} />, node, function () {
+    ReactDOM.render(<ScrollbarTrack axis={AXIS_DIRECTION.Y} renderer={renderer} />, getNode(), function () {
       expect(this.element.parentElement.classList.contains("customTrack")).toBeTruthy();
 
       done();
@@ -119,7 +124,7 @@ describe("ScrollbarTrack", () => {
       <ErrorBoundary>
         <ScrollbarTrack axis={AXIS_DIRECTION.Y} renderer={renderer} />
       </ErrorBoundary>,
-      node,
+      getNode(),
       function () {
         setTimeout(() => {
           console.log(this.state.error);
@@ -139,7 +144,7 @@ describe("ScrollbarTrack", () => {
     let spy = jasmine.createSpy();
     ReactDOM.render(
       <ScrollbarTrack axis={AXIS_DIRECTION.Y} style={{ width: 100, height: 200 }} onClick={spy} />,
-      node,
+      getNode(),
       function () {
         const { top, height, left, width } = this.element.getBoundingClientRect();
 
@@ -160,7 +165,7 @@ describe("ScrollbarTrack", () => {
     let spy = jasmine.createSpy();
     ReactDOM.render(
       <ScrollbarTrack axis={AXIS_DIRECTION.X} style={{ width: 100, height: 200 }} onClick={spy} />,
-      node,
+      getNode(),
       function () {
         const { top, height, left, width } = this.element.getBoundingClientRect();
 
@@ -183,7 +188,7 @@ describe("ScrollbarTrack", () => {
     let spy = jasmine.createSpy();
     ReactDOM.render(
       <ScrollbarTrack axis={AXIS_DIRECTION.Y} style={{ width: 100, height: 200 }} onClick={spy} />,
-      node,
+      getNode(),
       function () {
         const { top, height, left, width } = this.element.getBoundingClientRect();
 
@@ -206,7 +211,7 @@ describe("ScrollbarTrack", () => {
     let spy = jasmine.createSpy();
     ReactDOM.render(
       <ScrollbarTrack axis={AXIS_DIRECTION.Y} style={{ width: 100, height: 200 }} onClick={spy} />,
-      node,
+      getNode(),
       function () {
         simulant.fire(this.element, "click", {
           button: 1,

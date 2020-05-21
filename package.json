@@ -41,9 +41,9 @@
     "react": "^16.0.0"
   },
   "dependencies": {
-    "cnbuilder": "^2.4.0",
+    "cnbuilder": "^2.5.0",
     "react-draggable": "^4.4.2",
-    "zoom-level": "^2.4.1"
+    "zoom-level": "^2.5.0"
   },
   "devDependencies": {
     "@babel/core": "^7.9.6",
@@ -60,7 +60,7 @@
     "karma-chrome-launcher": "^3.1.0",
     "karma-coverage": "^2.0.2",
     "karma-jasmine": "^3.1.1",
-    "karma-typescript": "^5.0.2",
+    "karma-typescript": "^5.0.3",
     "prettier": "^2.0.5",
     "pretty-quick": "^2.0.1",
     "prop-types": "^15.7.2",

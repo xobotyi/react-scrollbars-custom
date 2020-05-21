@@ -8,51 +8,46 @@ module.exports = {
   mode: "development",
   devtool: "source-map",
   target: "web",
-  entry: {
-    "dist/bundle.js": path.join(__dirname, "app/index.tsx")
-  },
+  entry: path.join(__dirname, "app/index.tsx"),
   output: {
-    path: dist,
-    filename: "[name]",
-    publicPath: "/"
+    filename: "bundle.js",
   },
   resolve: {
-    extensions: [".ts", ".tsx", ".js"]
+    extensions: [".ts", ".tsx", ".js"],
   },
   optimization: {
     minimize: false,
     noEmitOnErrors: true,
-    nodeEnv: "development"
+    nodeEnv: "development",
   },
   devServer: {
     contentBase: dist,
     port: 3000,
     compress: false,
-    progress: true
+    progress: true,
   },
   plugins: [
     new HtmlWebpackPlugin({
       template: path.join(__dirname, "/app/index.html"),
-      inject: false
     }),
     new MiniCssExtractPlugin({
       filename: "[name].css",
-      chunkFilename: "[id].css"
-    })
+      chunkFilename: "[id].css",
+    }),
   ],
   module: {
     rules: [
       {
         test: /\.html$/,
-        use: "html-loader"
+        use: "html-loader",
       },
       {
         test: /\.scss$/,
-        use: [MiniCssExtractPlugin.loader, "css-loader", "sass-loader"]
+        use: [MiniCssExtractPlugin.loader, "css-loader", "sass-loader"],
       },
       {
         test: /\.tsx?$/,
-        loader: "ts-loader"
+        loader: "ts-loader",
       },
       {
         test: /\.jsx?$/,
@@ -67,16 +62,16 @@ module.exports = {
                 "@babel/preset-env",
                 {
                   targets: {
-                    browsers: ["Chrome >= 52", "FireFox >= 44", "Safari >= 7", "Explorer 11", "last 4 Edge versions"]
-                  }
-                }
+                    browsers: ["Chrome >= 52", "FireFox >= 44", "Safari >= 7", "Explorer 11", "last 4 Edge versions"],
+                  },
+                },
               ],
-              "@babel/preset-react"
+              "@babel/preset-react",
             ],
-            plugins: ["@babel/plugin-proposal-class-properties", "@babel/plugin-proposal-object-rest-spread"]
-          }
-        }
-      }
-    ]
-  }
+            plugins: ["@babel/plugin-proposal-class-properties", "@babel/plugin-proposal-object-rest-spread"],
+          },
+        },
+      },
+    ],
+  },
 };

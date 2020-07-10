@@ -84,7 +84,7 @@ As you see here - now the root element has the `scrollerElement` ref, but otherw
 #### Content sizes translation
 
 In some situations you may want to make the scrollbars block of variable sizes - just pass `translateContentSize*ToHolder` prop and component will automatically translate corresponding `contentElement`'s sizes to the `holderElement`.  
-If you are using default styles - it'll be handy to pass `compensateScrollbarsWidth={false}` props, to avoid infinite shrinking when it's not supposed to.  
+If you are using default styles - it'll be handy to pass `disableTracksWidthCompensation={false}` props, to avoid infinite shrinking when it's not supposed to.  
 _Note:_ This wont work for native mode.
 
 #### RTL support
@@ -279,10 +279,10 @@ Whether to display vertical track regardless of scrolling ability.
 Whether to remove both vertical and horizontal tracks if scrolling is not possible/blocked and tracks are not permanent.
 
 **removeTrackYWhenNotUsed** _`:boolean`_ = undefined  
-Whether to remove horizontal track if scrolling is not possible/blocked and tracks are not permanent.
+Whether to remove vertical track if scrolling is not possible/blocked and tracks are not permanent.
 
 **removeTrackXWhenNotUsed** _`:boolean`_ = undefined  
-Whether to remove vertical track if scrolling is not possible/blocked and tracks are not permanent.
+Whether to remove horizontal track if scrolling is not possible/blocked and tracks are not permanent.
 
 **translateContentSizesToHolder** _`:boolean`_ = undefined  
 Pass content's `scrollHeight` and `scrollWidth` values to the holder's `height` and `width` styles. _Not working with `native` behavior._

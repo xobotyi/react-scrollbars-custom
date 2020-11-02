@@ -50,6 +50,8 @@ Underneath `react-scrollbars-custom` uses `requestAnimationFrame` loop, which ch
 The `<Scrollbar />` component works out of the box, with only need of `width` and `height` to be set, inline or via CSS;
 
 ```typescript jsx
+import { Scrollbar } from "react-scrollbars-custom";
+
 <Scrollbar style={{ width: 250, height: 250 }}>
   <p>Hello world!</p>
 </Scrollbar>
@@ -101,7 +103,7 @@ There are several things you have to know about:
 - If `rtl` prop is `true` - `direction: rtl;` style will be applied to hte content element;
 - If `rtl` prop is `false` - no style will be applied to holder;
 
-## Customisation
+## Customization
 
 In some cases you may want to change the default className or tagName of elements or add extra markup or whatever. For these purposes `react-scrollbars-custom` made fully customizable.
 You can do absolutely what ever you want y simply passing renderer SFC to the needed props.

@@ -341,16 +341,16 @@ Here you can pass any props for thumbX, which is usually HTMLDivElement plus `el
 **thumbYProps** _`:object`_ = {}  
 Here you can pass any props for thumbY, which is usually HTMLDivElement plus `elementRef` props which behaves as holder's `elementRef` prop.
 
-**onUpdate** _`:function(scrollValues: ScrollValues, prevScrollValues: ScrollValues)`_ = undefined  
+**onUpdate** _`:function(scrollValues: ScrollState, prevScrollValues: ScrollState)`_ = undefined  
 Function called each time any of scroll values changed and component performed an update. It is called after component's update.
 
-**onScroll** _`:function(scrollValues: ScrollValues, prevScrollValues: ScrollValues)`_ = undefined  
+**onScroll** _`:function(scrollValues: ScrollState, prevScrollValues: ScrollState)`_ = undefined  
 Function called each time scrollTop or scrollLeft has changed. It is called after component's update and even if scrollTop/scrollLeft has been changed through the code (not by user).
 
-**onScrollStart** _`:function(scrollValues: ScrollValues)`_ = undefined  
+**onScrollStart** _`:function(scrollValues: ScrollState)`_ = undefined  
 Callback that called immediately when user started scrolling (no matter how, thumb dragging, keyboard, mousewheel and etc.).
 
-**onScrollStop** _`:function(scrollValues: ScrollValues)`_ = undefined
+**onScrollStop** _`:function(scrollValues: ScrollState)`_ = undefined
 Callback that called after `props.scrollDetectionThreshold` milliseconds after last scroll event.
 
 ### INSTANCE PROPERTIES

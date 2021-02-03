@@ -565,8 +565,8 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
       scrollState.scrollYPossible = !scrollState.scrollYBlocked && scrollState.scrollHeight > scrollState.clientHeight;
       scrollState.scrollXPossible = !scrollState.scrollXBlocked && scrollState.scrollWidth > scrollState.clientWidth;
 
-      scrollState.trackYVisible = scrollState.scrollYPossible || props.permanentTracks! || props.permanentTrackY!;
-      scrollState.trackXVisible = scrollState.scrollXPossible || props.permanentTracks! || props.permanentTrackX!;
+      scrollState.trackYVisible = props.permanentTracks! || props.permanentTrackY! || scrollState.scrollYPossible;
+      scrollState.trackXVisible = props.permanentTracks! || props.permanentTrackX! || scrollState.scrollXPossible;
     }
 
     if (this.contentElement) {

@@ -86,7 +86,7 @@
     "test": "cross-env NODE_ENV=production karma start",
     "preversion": "npm run format && npm run build",
     "prepublishOnly": "npm run format && npm run test && npm run build",
-    "prepare": "npm run format && npm run test && npm run build",
+    "prepare": "npm run build",
     "push-codacy-coverage": "cat ./coverage/lcov.info | codacy-coverage"
   },
   "prettier": {

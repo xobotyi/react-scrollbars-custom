@@ -1,4 +1,3 @@
-import * as PropTypes from "prop-types";
 import * as React from "react";
 
 export enum AXIS_DIRECTION {
@@ -6,14 +5,10 @@ export enum AXIS_DIRECTION {
   Y = "y",
 }
 
-export const AXIS_DIRECTION_PROP_TYPE = PropTypes.oneOf([AXIS_DIRECTION.X, AXIS_DIRECTION.Y]);
-
 export enum TRACK_CLICK_BEHAVIOR {
   JUMP = "jump",
   STEP = "step",
 }
-
-export const TRACK_CLICK_BEHAVIOR_PROP_TYPE = PropTypes.oneOf([TRACK_CLICK_BEHAVIOR.JUMP, TRACK_CLICK_BEHAVIOR.STEP]);
 
 export type ElementRef<T = HTMLDivElement> = (element: T | null) => void;
 

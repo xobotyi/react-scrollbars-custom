@@ -45,8 +45,8 @@ const getInnerSize = (el: HTMLElement, dimension: string, padding1: string, padd
     return Math.max(
       0,
       (parseFloat(styles[dimension] as string) || 0) -
-        (parseFloat(styles[padding1] as string) || 0) -
-        (parseFloat(styles[padding2] as string) || 0)
+      (parseFloat(styles[padding1] as string) || 0) -
+      (parseFloat(styles[padding2] as string) || 0)
     );
   }
 
@@ -180,9 +180,9 @@ export const _dbgSetDocument = (v: Document | null): Document | null => {
 export const _dbgGetDocument = (): Document | null => doc;
 
 interface GetScrollbarWidthFN {
-  (force?: boolean): number | undefined;
-
   _cache?: number;
+
+  (force?: boolean): number | undefined;
 }
 
 /**
@@ -215,9 +215,9 @@ export const getScrollbarWidth: GetScrollbarWidthFN = (force: boolean = false): 
 };
 
 interface ShouldReverseRtlScroll {
-  (force?: boolean): boolean;
-
   _cache?: boolean;
+
+  (force?: boolean): boolean;
 }
 
 /**

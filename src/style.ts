@@ -4,7 +4,7 @@ export const style = {
   holder: {
     position: "relative",
     width: "100%",
-    height: "100%",
+    height: "100%"
   } as React.CSSProperties,
 
   wrapper: {
@@ -12,11 +12,11 @@ export const style = {
     top: 0,
     left: 0,
     bottom: 0,
-    right: 0,
+    right: 0
   } as React.CSSProperties,
 
   content: {
-    boxSizing: "border-box",
+    boxSizing: "border-box"
   } as React.CSSProperties,
 
   track: {
@@ -25,36 +25,36 @@ export const style = {
       overflow: "hidden",
       borderRadius: 4,
       background: "rgba(0,0,0,.1)",
-      userSelect: "none",
+      userSelect: "none"
     } as React.CSSProperties,
     x: {
       height: 10,
       width: "calc(100% - 20px)",
       bottom: 0,
-      left: 10,
+      left: 10
     } as React.CSSProperties,
     y: {
       width: 10,
       height: "calc(100% - 20px)",
-      top: 10,
-    } as React.CSSProperties,
+      top: 10
+    } as React.CSSProperties
   },
 
   thumb: {
     common: {
       cursor: "pointer",
       borderRadius: 4,
-      background: "rgba(0,0,0,.4)",
+      background: "rgba(0,0,0,.4)"
     } as React.CSSProperties,
     x: {
       height: "100%",
-      width: 0,
+      width: 0
     } as React.CSSProperties,
     y: {
       width: "100%",
-      height: 0,
-    } as React.CSSProperties,
-  },
+      height: 0
+    } as React.CSSProperties
+  }
 };
 
 export default style;

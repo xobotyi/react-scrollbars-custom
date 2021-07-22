@@ -152,7 +152,7 @@ export default class Emittr {
       for (idx = handlers[eventName].length - 1; idx >= 0; idx--) {
         Emittr._callEventHandlers(this, removeHandlers, [
           eventName,
-          (handlers[eventName][idx] as OnceHandler).handler || handlers[eventName][idx],
+          (handlers[eventName][idx] as OnceHandler).handler || handlers[eventName][idx]
         ]);
       }
     }
@@ -165,7 +165,7 @@ export default class Emittr {
       handler,
       wrappedHandler: undefined,
       emitter: this,
-      event: name,
+      event: name
     };
     const wrappedHandler: OnceHandler = Emittr._onceWrapper.bind(onceState);
     onceState.wrappedHandler = wrappedHandler;

@@ -1,8 +1,7 @@
 import { cnb } from "cnbuilder";
-import * as PropTypes from "prop-types";
 import * as React from "react";
 import { DraggableCore, DraggableData, DraggableEvent } from "react-draggable";
-import { AXIS_DIRECTION, AXIS_DIRECTION_PROP_TYPE, ElementPropsWithElementRefAndRenderer } from "./types";
+import { AXIS_DIRECTION, ElementPropsWithElementRefAndRenderer } from "./types";
 import { isFun, isUndef, renderDivWithRenderer } from "./util";
 
 declare var global: {
@@ -22,16 +21,6 @@ export type ScrollbarThumbProps = ElementPropsWithElementRefAndRenderer & {
 };
 
 export default class ScrollbarThumb extends React.Component<ScrollbarThumbProps, {}> {
-  static propTypes = {
-    axis: AXIS_DIRECTION_PROP_TYPE,
-
-    onDrag: PropTypes.func,
-    onDragStart: PropTypes.func,
-    onDragEnd: PropTypes.func,
-
-    elementRef: PropTypes.func,
-    renderer: PropTypes.func,
-  };
   public initialOffsetX: number = 0;
   public initialOffsetY: number = 0;
   public lastDragData: DragCallbackData = {
@@ -40,11 +29,12 @@ export default class ScrollbarThumb extends React.Component<ScrollbarThumbProps,
     deltaX: 0,
     deltaY: 0,
     lastX: 0,
-    lastY: 0,
+    lastY: 0
   };
   public element: HTMLDivElement | null = null;
   private prevUserSelect: string;
   private prevOnSelectStart: ((ev: Event) => boolean) | null;
+  private elementRefHack = React.createRef<HTMLElement>();
 
   private static selectStartReplacer = () => false;
 
@@ -80,16 +70,16 @@ export default class ScrollbarThumb extends React.Component<ScrollbarThumbProps,
     }
 
     this.props.onDragStart &&
-      this.props.onDragStart(
-        (this.lastDragData = {
-          x: data.x - this.initialOffsetX,
-          y: data.y - this.initialOffsetY,
-          lastX: data.lastX - this.initialOffsetX,
-          lastY: data.lastY - this.initialOffsetY,
-          deltaX: data.deltaX,
-          deltaY: data.deltaY,
-        })
-      );
+    this.props.onDragStart(
+      (this.lastDragData = {
+        x: data.x - this.initialOffsetX,
+        y: data.y - this.initialOffsetY,
+        lastX: data.lastX - this.initialOffsetX,
+        lastY: data.lastY - this.initialOffsetY,
+        deltaX: data.deltaX,
+        deltaY: data.deltaY
+      })
+    );
 
     this.element.classList.add("dragging");
   };
@@ -101,28 +91,28 @@ export default class ScrollbarThumb extends React.Component<ScrollbarThumbProps,
     }
 
     this.props.onDrag &&
-      this.props.onDrag(
-        (this.lastDragData = {
-          x: data.x - this.initialOffsetX,
-          y: data.y - this.initialOffsetY,
-          lastX: data.lastX - this.initialOffsetX,
-          lastY: data.lastY - this.initialOffsetY,
-          deltaX: data.deltaX,
-          deltaY: data.deltaY,
-        })
-      );
+    this.props.onDrag(
+      (this.lastDragData = {
+        x: data.x - this.initialOffsetX,
+        y: data.y - this.initialOffsetY,
+        lastX: data.lastX - this.initialOffsetX,
+        lastY: data.lastY - this.initialOffsetY,
+        deltaX: data.deltaX,
+        deltaY: data.deltaY
+      })
+    );
   };
 
   public handleOnDragStop = (ev?: DraggableEvent, data?: DraggableData) => {
     const resultData = data
       ? {
-          x: data.x - this.initialOffsetX,
-          y: data.y - this.initialOffsetY,
-          lastX: data.lastX - this.initialOffsetX,
-          lastY: data.lastY - this.initialOffsetY,
-          deltaX: data.deltaX,
-          deltaY: data.deltaY,
-        }
+        x: data.x - this.initialOffsetX,
+        y: data.y - this.initialOffsetY,
+        lastX: data.lastX - this.initialOffsetX,
+        lastY: data.lastY - this.initialOffsetY,
+        deltaX: data.deltaX,
+        deltaY: data.deltaY
+      }
       : this.lastDragData;
 
     this.props.onDragEnd && this.props.onDragEnd(resultData);
@@ -144,7 +134,7 @@ export default class ScrollbarThumb extends React.Component<ScrollbarThumbProps,
       deltaX: 0,
       deltaY: 0,
       lastX: 0,
-      lastY: 0,
+      lastY: 0
     };
   };
 
@@ -208,8 +198,6 @@ export default class ScrollbarThumb extends React.Component<ScrollbarThumbProps,
       </DraggableCore>
     );
   }
-
-  private elementRefHack = React.createRef<HTMLElement>();
 
   private elementRef = (ref: HTMLDivElement | null): void => {
     isFun(this.props.elementRef) && this.props.elementRef(ref);

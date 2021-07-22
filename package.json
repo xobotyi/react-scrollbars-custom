@@ -74,11 +74,6 @@
     "tslib": "^2.0.0",
     "typescript": "^3.9.3"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "pretty-quick --staged"
-    }
-  },
   "scripts": {
     "format": "prettier --write \"src/**/*.[tj]s?(x)\" \"tests/**/*.[tj]s?(x)\" \"*.[tj]s?(x)\"",
     "devserver": "cd ./testbench && npm i && npm run devserver",

@@ -40,7 +40,7 @@
     "react": ">=16.0.0"
   },
   "dependencies": {
-    "cnbuilder": "^2.5.0",
+    "cnbuilder": "^3.0.1",
     "react-draggable": "^4.4.2",
     "zoom-level": "^2.5.0"
   },

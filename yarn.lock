@@ -1401,10 +1401,10 @@ clone@^1.0.2:
   resolved "https://registry.yarnpkg.com/clone/-/clone-1.0.4.tgz#da309cc263df15994c688ca902179ca3c7cd7c7e"
   integrity sha1-2jCcwmPfFZlMaIypAheco8fNfH4=
 
-cnbuilder@^2.5.0:
-  version "2.7.1"
-  resolved "https://registry.yarnpkg.com/cnbuilder/-/cnbuilder-2.7.1.tgz#610fbff072ce03dc59a078cd068206016dd034f2"
-  integrity sha512-kJ/X8vJOSeY0usRPuTlm+rtsB8iwpTs4JFOvDQxkFX6M/0D5IbOKZBJf822T3UIVNWOIXiewXh7l/ux1Feh1Yg==
+cnbuilder@^3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/cnbuilder/-/cnbuilder-3.0.1.tgz#8ffd1b78efed2bfe7771b714128b53b557fb7712"
+  integrity sha512-ma2mzYcV71EUcChcXfSbyhiTFVdlZkLWnqahkNwytQfHXNj+685YR4ptmVJ2XfyNaFh5vlmQsxByg/iOOX8ySQ==
 
 codacy-coverage@^3.4.0:
   version "3.4.0"
@@ -3286,7 +3286,7 @@ process@^0.11.10:
   resolved "https://registry.yarnpkg.com/process/-/process-0.11.10.tgz#7332300e840161bda3e69a1d1d91a7d4bc16f182"
   integrity sha1-czIwDoQBYb2j5podHZGn1LwW8YI=
 
-prop-types@^15.6.0, prop-types@^15.6.2, prop-types@^15.7.2:
+prop-types@^15.6.0, prop-types@^15.6.2:
   version "15.7.2"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.7.2.tgz#52c41e75b8c87e72b9d9360e0206b99dcbffa6c5"
   integrity sha512-8QQikdH7//R2vurIJSutZ1smHYTcLpRWEOlHnzcWHmBYrOGUysKwSsrC89BCiFj3CbrfJ/nXFdJepOVrY1GCHQ==

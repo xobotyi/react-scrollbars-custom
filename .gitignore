@@ -1,6 +1,7 @@
-.idea
-.rpt2_cache
-package-lock.json
+/.idea
 node_modules
-coverage
-dist
+/coverage
+/storybook-build
+/cjs
+/esm
+/esnext

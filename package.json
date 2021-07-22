@@ -1,7 +1,11 @@
 {
   "name": "react-scrollbars-custom",
   "description": "The best React custom scrollbars component",
-  "version": "4.0.16",
+  "version": "4.0.25",
+  "funding": {
+    "type": "patreon",
+    "url": "https://www.patreon.com/xobotyi"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/xobotyi/react-scrollbars-custom.git"
@@ -25,66 +29,72 @@
     "component",
     "custom"
   ],
-  "main": "dist/rsc.js",
-  "module": "dist/rsc.esm.js",
-  "esnext": "dist/rsc.next.esm.js",
-  "types": "dist/types/index.d.ts",
-  "files": [
-    "dist"
-  ],
+  "scripts": {
+    "prepare": "husky install",
+    "build": "yarn build:cleanup && concurrently yarn:build:cjs yarn:build:esm yarn:build:esnext --kill-others-on-fail",
+    "build:cleanup": "rimraf ./cjs ./esm ./esnext ./types",
+    "build:cjs": "ttsc -p ./tsconfig.build.json --module CommonJS --target ES5 --outDir ./cjs",
+    "build:esm": "ttsc -p ./tsconfig.build.json --module ES6 --target ES5 --outDir ./esm",
+    "build:esnext": "ttsc -p ./tsconfig.build.json --module ESNext --target ESNext --outDir ./esnext",
+    "lint": "eslint ./ ./.storybook --ext ts,js,tsx,jsx,md,mdx",
+    "lint:fix": "yarn lint --fix"
+  },
   "peerDependencies": {
-    "prop-types": "^15.0.0",
-    "react": "^16.0.0"
+    "react": ">=16.8",
+    "react-dom": ">=16.8"
   },
   "dependencies": {
-    "cnbuilder": "^1.1.7",
-    "react-draggable": "^3.3.0",
-    "zoom-level": "^1.2.4"
   },
   "devDependencies": {
-    "@babel/core": "^7.5.4",
-    "@babel/preset-env": "^7.5.4",
-    "@types/jasmine": "^3.3.13",
-    "@types/karma": "^3.0.2",
-    "@types/prop-types": "^15.7.1",
-    "@types/react": "^16.8.22",
-    "codacy-coverage": "^3.4.0",
-    "cross-env": "^5.2.0",
-    "husky": "^1.3.1",
-    "jasmine-core": "^3.3.0",
-    "karma": "^4.2.0",
-    "karma-chrome-launcher": "^2.2.0",
-    "karma-jasmine": "^2.0.1",
-    "karma-typescript": "^4.0.0",
-    "prettier": "^1.18.2",
-    "pretty-quick": "^1.11.1",
-    "prop-types": "^15.0.0",
-    "react": "^16.8.5",
-    "react-dom": "^16.8.5",
-    "rimraf": "^2.6.3",
-    "rollup": "^1.17.0",
-    "rollup-plugin-babel": "^4.3.3",
-    "rollup-plugin-typescript2": "^0.19.3",
-    "simulant": "^0.2.2",
-    "tslib": "^1.10.0",
-    "typescript": "^3.5.2"
+    "@commitlint/config-conventional": "^12.1.4",
+    "@jamesacarr/eslint-formatter-github-actions": "^0.1.0",
+    "@jamesacarr/jest-reporter-github-actions": "^0.0.4",
+    "@semantic-release/changelog": "^5.0.1",
+    "@semantic-release/git": "^9.0.0",
+    "@semantic-release/github": "^7.2.3",
+    "@typescript-eslint/eslint-plugin": "^4.28.4",
+    "@typescript-eslint/parser": "^4.28.4",
+    "commitlint": "^12.1.4",
+    "concurrently": "^6.2.0",
+    "eslint": "^7.31.0",
+    "eslint-config-airbnb": "^18.2.1",
+    "eslint-config-airbnb-typescript": "^12.3.1",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-import": "^2.23.4",
+    "eslint-plugin-jsx-a11y": "^6.4.1",
+    "eslint-plugin-mdx": "^1.14.1",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-prettier": "^3.4.0",
+    "eslint-plugin-react": "^7.24.0",
+    "eslint-plugin-react-hooks": "^4.2.0",
+    "husky": "^7.0.1",
+    "lint-staged": "^11.0.1",
+    "prettier": "^2.3.2",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "rimraf": "^3.0.2",
+    "semantic-release": "^17.4.4",
+    "ts-node": "^10.1.0",
+    "ttypescript": "^1.5.12",
+    "typescript": "^4.3.5",
+    "yarn": "^1.22.10"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "pretty-quick --staged"
-    }
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx,md}": "eslint --fix"
   },
-  "scripts": {
-    "format": "prettier --write \"src/**/*.[tj]s?(x)\" \"tests/**/*.[tj]s?(x)\" \"*.[tj]s?(x)\"",
-    "devserver": "cd ./testbench && npm i && npm run devserver",
-    "build": "rimraf ./dist && rollup --config",
-    "test": "cross-env NODE_ENV=production karma start",
-    "preversion": "npm run format && npm run build",
-    "postversion": "git push && git push --tags",
-    "prepublishOnly": "npm run format && npm run test && npm run build",
-    "push-codacy-coverage": "cat ./coverage/lcov.info | codacy-coverage"
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
   },
-  "prettier": {
-    "printWidth": 120
+  "release": {
+    "plugins": [
+      "@semantic-release/commit-analyzer",
+      "@semantic-release/release-notes-generator",
+      "@semantic-release/changelog",
+      "@semantic-release/npm",
+      "@semantic-release/git",
+      "@semantic-release/github"
+    ]
   }
 }

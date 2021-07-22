@@ -1,16 +1,21 @@
 {
   "compilerOptions": {
-    "sourceMap": false,
-    "removeComments": false,
-    "noImplicitReturns": true,
-    "strictNullChecks": true,
+    "strict": true,
     "alwaysStrict": true,
-    "declaration": false,
-    "target": "esnext",
-    "module": "commonjs",
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "target": "ESNext",
+    "lib": [
+      "ESNext",
+      "DOM"
+    ],
+    "strictNullChecks": true,
+    "strictBindCallApply": true,
+    "noEmit": true,
     "jsx": "react",
-    "lib": ["esnext", "dom"]
+    "allowSyntheticDefaultImports": true
   },
-  "include": ["./src/**/*.ts"],
-  "exclude": ["node_modules"]
+  "exclude": [
+    "node_modules"
+  ]
 }

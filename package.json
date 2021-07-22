@@ -54,7 +54,7 @@
     "@types/react": "^16.9.35",
     "codacy-coverage": "^3.4.0",
     "cross-env": "^7.0.2",
-    "husky": "^4.2.5",
+    "husky": "^7.0.1",
     "jasmine-core": "^3.5.0",
     "karma": "^5.0.9",
     "karma-chrome-launcher": "^3.1.0",

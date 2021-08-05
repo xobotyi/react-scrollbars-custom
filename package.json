@@ -36,7 +36,7 @@
     "build:cjs": "ttsc -p ./tsconfig.build.json --module CommonJS --target ES5 --outDir ./cjs",
     "build:esm": "ttsc -p ./tsconfig.build.json --module ES6 --target ES5 --outDir ./esm",
     "build:esnext": "ttsc -p ./tsconfig.build.json --module ESNext --target ESNext --outDir ./esnext",
-    "lint": "eslint ./ ./.storybook --ext ts,js,tsx,jsx,md,mdx",
+    "lint": "eslint ./ --ext ts,js,tsx,jsx,md,mdx",
     "lint:fix": "yarn lint --fix"
   },
   "peerDependencies": {
@@ -44,6 +44,7 @@
     "react-dom": ">=16.8"
   },
   "dependencies": {
+    "@react-hookz/web": "^6.1.0"
   },
   "devDependencies": {
     "@commitlint/config-conventional": "^12.1.4",
@@ -52,6 +53,8 @@
     "@semantic-release/changelog": "^5.0.1",
     "@semantic-release/git": "^9.0.0",
     "@semantic-release/github": "^7.2.3",
+    "@types/react": "^17.0.15",
+    "@types/react-dom": "^17.0.9",
     "@typescript-eslint/eslint-plugin": "^4.28.4",
     "@typescript-eslint/parser": "^4.28.4",
     "commitlint": "^12.1.4",

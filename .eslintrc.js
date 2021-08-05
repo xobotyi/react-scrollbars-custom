@@ -4,127 +4,129 @@ module.exports = {
   root: true,
 
   ignorePatterns: [
-    "node_modules",
-    "coverage",
-    "storybook-build",
-    "cjs",
-    "esm",
-    "esnext",
-    ".github/workflows",
-    ".husky",
-    "CHANGELOG.md"
+    'node_modules',
+    'coverage',
+    'storybook-build',
+    'cjs',
+    'esm',
+    'esnext',
+    '.github/workflows',
+    '.husky',
+    'CHANGELOG.md',
   ],
 
-  plugins: ["prettier"],
+  plugins: ['prettier'],
 
   rules: {
-    "max-len": [
-      "error",
+    'max-len': [
+      'error',
       {
         code: PRINT_WIDTH,
         ignoreRegExpLiterals: true,
         ignoreStrings: true,
         ignoreTemplateLiterals: true,
-        ignoreComments: true
-      }
+        ignoreComments: true,
+      },
     ],
-    "prettier/prettier": [
-      "error",
+    'prettier/prettier': [
+      'error',
       {
         PRINT_WIDTH,
         singleQuote: true,
         jsxBracketSameLine: true,
-        trailingComma: "es5",
-        endOfLine: "lf"
-      }
-    ]
+        trailingComma: 'es5',
+        endOfLine: 'lf',
+      },
+    ],
   },
   overrides: [
     {
-      files: ["*.js", "*.ts", "*.jsx", "*.tsx"],
+      files: ['*.js', '*.ts', '*.jsx', '*.tsx'],
       extends: [
-        "airbnb",
-        "airbnb/hooks",
-        "airbnb-typescript",
-        "plugin:@typescript-eslint/recommended",
-        "plugin:import/errors",
-        "plugin:import/warnings",
-        "plugin:import/typescript",
-        "prettier"
+        'airbnb',
+        'airbnb/hooks',
+        'airbnb-typescript',
+        'plugin:@typescript-eslint/recommended',
+        'plugin:import/errors',
+        'plugin:import/warnings',
+        'plugin:import/typescript',
+        'prettier',
       ],
-      plugins: ["import"],
+      plugins: ['import'],
       parserOptions: {
-        project: "./tsconfig.eslint.json",
-        tsconfigRootDir: __dirname
+        project: './tsconfig.eslint.json',
+        tsconfigRootDir: __dirname,
       },
       rules: {
-        "no-underscore-dangle": "off",
-        "no-plusplus": "off",
-        "no-console": "off",
-        "no-param-reassign": "off",
+        'no-underscore-dangle': 'off',
+        'no-plusplus': 'off',
+        'no-console': 'off',
+        'no-param-reassign': 'off',
 
-        "import/prefer-default-export": "off",
-        "import/no-cycle": "off",
-        "import/no-default-export": "error",
+        'import/prefer-default-export': 'off',
+        'import/no-cycle': 'off',
+        'import/no-default-export': 'error',
 
-        "@typescript-eslint/naming-convention": [
-          "error",
+        '@typescript-eslint/naming-convention': [
+          'error',
           {
-            selector: ["interface", "typeAlias"],
-            format: ["PascalCase"]
+            selector: ['interface', 'typeAlias'],
+            format: ['PascalCase'],
           },
           {
-            selector: "function",
-            format: ["camelCase"]
+            selector: 'function',
+            format: ['camelCase'],
           },
           {
-            selector: "variable",
-            format: ["camelCase", "PascalCase", "UPPER_CASE"],
-            leadingUnderscore: "allow"
+            selector: 'variable',
+            format: ['camelCase', 'PascalCase', 'UPPER_CASE'],
+            leadingUnderscore: 'allow',
           },
           {
-            selector: "parameter",
-            format: ["camelCase"],
-            leadingUnderscore: "allow"
-          }
+            selector: 'parameter',
+            format: ['camelCase'],
+            leadingUnderscore: 'allow',
+          },
         ],
 
-        "react-hooks/exhaustive-deps": [
-          "warn",
+        'react-hooks/exhaustive-deps': [
+          'warn',
           {
-            additionalHooks: "(useSyncedRef)"
-          }
-        ]
-      }
+            additionalHooks: '(useSyncedRef)',
+          },
+        ],
+        'react/jsx-props-no-spreading': 'off',
+        'react/prop-types': 'off',
+      },
     },
     {
-      files: ["src/**/__docs__/*.tsx", ".storybook/*.js"],
+      files: ['src/**/__docs__/*.tsx', '.storybook/*.js'],
       rules: {
-        "import/no-extraneous-dependencies": "off",
-        "import/no-default-export": "off",
-        "react/button-has-type": "off",
-        "@typescript-eslint/explicit-module-boundary-types": "off",
-        "react/prop-types": "off"
-      }
+        'import/no-extraneous-dependencies': 'off',
+        'import/no-default-export': 'off',
+        'react/button-has-type': 'off',
+        '@typescript-eslint/explicit-module-boundary-types': 'off',
+        'react/prop-types': 'off',
+      },
     },
     {
-      files: ["src/**/__tests__/*.ts"],
+      files: ['src/**/__tests__/*.ts'],
       rules: {
-        "@typescript-eslint/no-unused-vars": "off",
-        "@typescript-eslint/no-explicit-any": "off"
-      }
+        '@typescript-eslint/no-unused-vars': 'off',
+        '@typescript-eslint/no-explicit-any': 'off',
+      },
     },
     {
-      files: ["*.md"],
-      extends: ["plugin:mdx/recommended", "prettier"],
+      files: ['*.md'],
+      extends: ['plugin:mdx/recommended', 'prettier'],
       rules: {
-        "prettier/prettier": [
+        'prettier/prettier': [
           2,
           {
-            parser: "markdown"
-          }
-        ]
-      }
-    }
-  ]
+            parser: 'markdown',
+          },
+        ],
+      },
+    },
+  ],
 };

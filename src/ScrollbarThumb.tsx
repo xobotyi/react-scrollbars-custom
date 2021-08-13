@@ -29,7 +29,7 @@ export default class ScrollbarThumb extends React.Component<ScrollbarThumbProps,
     deltaX: 0,
     deltaY: 0,
     lastX: 0,
-    lastY: 0
+    lastY: 0,
   };
   public element: HTMLDivElement | null = null;
   private prevUserSelect: string;
@@ -70,16 +70,16 @@ export default class ScrollbarThumb extends React.Component<ScrollbarThumbProps,
     }
 
     this.props.onDragStart &&
-    this.props.onDragStart(
-      (this.lastDragData = {
-        x: data.x - this.initialOffsetX,
-        y: data.y - this.initialOffsetY,
-        lastX: data.lastX - this.initialOffsetX,
-        lastY: data.lastY - this.initialOffsetY,
-        deltaX: data.deltaX,
-        deltaY: data.deltaY
-      })
-    );
+      this.props.onDragStart(
+        (this.lastDragData = {
+          x: data.x - this.initialOffsetX,
+          y: data.y - this.initialOffsetY,
+          lastX: data.lastX - this.initialOffsetX,
+          lastY: data.lastY - this.initialOffsetY,
+          deltaX: data.deltaX,
+          deltaY: data.deltaY,
+        })
+      );
 
     this.element.classList.add("dragging");
   };
@@ -91,28 +91,28 @@ export default class ScrollbarThumb extends React.Component<ScrollbarThumbProps,
     }
 
     this.props.onDrag &&
-    this.props.onDrag(
-      (this.lastDragData = {
-        x: data.x - this.initialOffsetX,
-        y: data.y - this.initialOffsetY,
-        lastX: data.lastX - this.initialOffsetX,
-        lastY: data.lastY - this.initialOffsetY,
-        deltaX: data.deltaX,
-        deltaY: data.deltaY
-      })
-    );
+      this.props.onDrag(
+        (this.lastDragData = {
+          x: data.x - this.initialOffsetX,
+          y: data.y - this.initialOffsetY,
+          lastX: data.lastX - this.initialOffsetX,
+          lastY: data.lastY - this.initialOffsetY,
+          deltaX: data.deltaX,
+          deltaY: data.deltaY,
+        })
+      );
   };
 
   public handleOnDragStop = (ev?: DraggableEvent, data?: DraggableData) => {
     const resultData = data
       ? {
-        x: data.x - this.initialOffsetX,
-        y: data.y - this.initialOffsetY,
-        lastX: data.lastX - this.initialOffsetX,
-        lastY: data.lastY - this.initialOffsetY,
-        deltaX: data.deltaX,
-        deltaY: data.deltaY
-      }
+          x: data.x - this.initialOffsetX,
+          y: data.y - this.initialOffsetY,
+          lastX: data.lastX - this.initialOffsetX,
+          lastY: data.lastY - this.initialOffsetY,
+          deltaX: data.deltaX,
+          deltaY: data.deltaY,
+        }
       : this.lastDragData;
 
     this.props.onDragEnd && this.props.onDragEnd(resultData);
@@ -134,7 +134,7 @@ export default class ScrollbarThumb extends React.Component<ScrollbarThumbProps,
       deltaX: 0,
       deltaY: 0,
       lastX: 0,
-      lastY: 0
+      lastY: 0,
     };
   };
 
@@ -153,8 +153,8 @@ export default class ScrollbarThumb extends React.Component<ScrollbarThumbProps,
       this.initialOffsetY = ev.offsetY;
     } else {
       const rect: ClientRect = this.element.getBoundingClientRect();
-      this.initialOffsetX = (ev.clientX || ((ev as unknown) as TouchEvent).touches[0].clientX) - rect.left;
-      this.initialOffsetY = (ev.clientY || ((ev as unknown) as TouchEvent).touches[0].clientY) - rect.top;
+      this.initialOffsetX = (ev.clientX || (ev as unknown as TouchEvent).touches[0].clientX) - rect.left;
+      this.initialOffsetY = (ev.clientY || (ev as unknown as TouchEvent).touches[0].clientY) - rect.top;
     }
   };
 

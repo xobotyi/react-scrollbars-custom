@@ -45,8 +45,8 @@ const getInnerSize = (el: HTMLElement, dimension: string, padding1: string, padd
     return Math.max(
       0,
       (parseFloat(styles[dimension] as string) || 0) -
-      (parseFloat(styles[padding1] as string) || 0) -
-      (parseFloat(styles[padding2] as string) || 0)
+        (parseFloat(styles[padding1] as string) || 0) -
+        (parseFloat(styles[padding2] as string) || 0)
     );
   }
 

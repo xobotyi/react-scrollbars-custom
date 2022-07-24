@@ -55,9 +55,9 @@ describe('Emittr', () => {
       const instance = new Emittr();
       instance.on('test', () => {});
 
-      // @ts-ignore
+      // @ts-expect-error for testing purposes
       expect(Array.isArray(instance._handlers.test)).toBeTruthy();
-      // @ts-ignore
+      // @ts-expect-error for testing purposes
       expect(instance._handlers.test.length).toBe(1);
     });
 
@@ -74,9 +74,9 @@ describe('Emittr', () => {
       instance.on('test', handler1);
       instance.on('test', handler2);
 
-      // @ts-ignore
+      // @ts-expect-error for testing purposes
       expect(instance._handlers.test[0]).toBe(handler1);
-      // @ts-ignore
+      // @ts-expect-error for testing purposes
       expect(instance._handlers.test[1]).toBe(handler2);
     });
 
@@ -103,7 +103,7 @@ describe('Emittr', () => {
       let err: any = null;
 
       try {
-        // @ts-ignore
+        // @ts-expect-error for testing purposes
         instance.on('test', {});
       } catch (error) {
         err = error;
@@ -117,9 +117,9 @@ describe('Emittr', () => {
       const instance = new Emittr();
       instance.prependOn('test', () => {});
 
-      // @ts-ignore
+      // @ts-expect-error for testing purposes
       expect(Array.isArray(instance._handlers.test)).toBeTruthy();
-      // @ts-ignore
+      // @ts-expect-error for testing purposes
       expect(instance._handlers.test.length).toBe(1);
     });
 
@@ -136,9 +136,9 @@ describe('Emittr', () => {
       instance.prependOn('test', handler1);
       instance.prependOn('test', handler2);
 
-      // @ts-ignore
+      // @ts-expect-error for testing purposes
       expect(instance._handlers.test[1]).toBe(handler1);
-      // @ts-ignore
+      // @ts-expect-error for testing purposes
       expect(instance._handlers.test[0]).toBe(handler2);
     });
 
@@ -165,7 +165,7 @@ describe('Emittr', () => {
       let err: any = null;
 
       try {
-        // @ts-ignore
+        // @ts-expect-error for testing purposes
         instance.prependOn('test', {});
       } catch (error) {
         err = error;
@@ -180,11 +180,11 @@ describe('Emittr', () => {
       const handler1 = jasmine.createSpy();
       instance.once('test', handler1);
 
-      // @ts-ignore
+      // @ts-expect-error for testing purposes
       expect(Array.isArray(instance._handlers.test)).toBeTruthy();
-      // @ts-ignore
+      // @ts-expect-error for testing purposes
       expect(instance._handlers.test.length).toBe(1);
-      // @ts-ignore
+      // @ts-expect-error for testing purposes
       expect(instance._handlers.test[0].handler).toBe(handler1);
     });
 
@@ -201,9 +201,9 @@ describe('Emittr', () => {
       instance.once('test', handler1);
       instance.once('test', handler2);
 
-      // @ts-ignore
+      // @ts-expect-error for testing purposes
       expect(instance._handlers.test[0].handler).toBe(handler1);
-      // @ts-ignore
+      // @ts-expect-error for testing purposes
       expect(instance._handlers.test[1].handler).toBe(handler2);
     });
 
@@ -230,7 +230,7 @@ describe('Emittr', () => {
       let err: any = null;
 
       try {
-        // @ts-ignore
+        // @ts-expect-error for testing purposes
         instance.once('test', {});
       } catch (error) {
         err = error;
@@ -244,9 +244,9 @@ describe('Emittr', () => {
       const instance = new Emittr();
       instance.prependOnce('test', () => {});
 
-      // @ts-ignore
+      // @ts-expect-error for testing purposes
       expect(Array.isArray(instance._handlers.test)).toBeTruthy();
-      // @ts-ignore
+      // @ts-expect-error for testing purposes
       expect(instance._handlers.test.length).toBe(1);
     });
 
@@ -263,9 +263,9 @@ describe('Emittr', () => {
       instance.prependOnce('test', handler1);
       instance.prependOnce('test', handler2);
 
-      // @ts-ignore
+      // @ts-expect-error for testing purposes
       expect(instance._handlers.test[1].handler).toBe(handler1);
-      // @ts-ignore
+      // @ts-expect-error for testing purposes
       expect(instance._handlers.test[0].handler).toBe(handler2);
     });
 
@@ -292,7 +292,7 @@ describe('Emittr', () => {
       let err: any = null;
 
       try {
-        // @ts-ignore
+        // @ts-expect-error for testing purposes
         instance.prependOnce('test', {});
       } catch (error) {
         err = error;
@@ -308,7 +308,7 @@ describe('Emittr', () => {
       let err: any = null;
 
       try {
-        // @ts-ignore
+        // @ts-expect-error for testing purposes
         instance.off('test', {});
       } catch (error) {
         err = error;
@@ -326,10 +326,10 @@ describe('Emittr', () => {
       const instance = new Emittr();
       const handler1 = jasmine.createSpy();
       instance.on('test', handler1);
-      // @ts-ignore
+      // @ts-expect-error for testing purposes
       expect(instance._handlers.test[0]).toBe(handler1);
       expect(instance.off('test', handler1)).toBe(instance);
-      // @ts-ignore
+      // @ts-expect-error for testing purposes
       expect(instance._handlers.test.length).toBe(0);
     });
 
@@ -337,10 +337,10 @@ describe('Emittr', () => {
       const instance = new Emittr();
       const handler1 = jasmine.createSpy();
       instance.once('test', handler1);
-      // @ts-ignore
+      // @ts-expect-error for testing purposes
       expect(instance._handlers.test[0].handler).toBe(handler1);
       expect(instance.off('test', handler1)).toBe(instance);
-      // @ts-ignore
+      // @ts-expect-error for testing purposes
       expect(instance._handlers.test.length).toBe(0);
     });
 
@@ -350,10 +350,10 @@ describe('Emittr', () => {
       const handler2 = jasmine.createSpy();
       instance.on('test', handler1);
       instance.on('test', handler2);
-      // @ts-ignore
+      // @ts-expect-error for testing purposes
       expect(instance._handlers.test[1]).toBe(handler2);
       expect(instance.off('test', handler1)).toBe(instance);
-      // @ts-ignore
+      // @ts-expect-error for testing purposes
       expect(instance._handlers.test[0]).toBe(handler2);
     });
 
@@ -363,10 +363,10 @@ describe('Emittr', () => {
       const handler2 = jasmine.createSpy();
       instance.once('test', handler1);
       instance.once('test', handler2);
-      // @ts-ignore
+      // @ts-expect-error for testing purposes
       expect(instance._handlers.test[1].handler).toBe(handler2);
       expect(instance.off('test', handler1)).toBe(instance);
-      // @ts-ignore
+      // @ts-expect-error for testing purposes
       expect(instance._handlers.test[0].handler).toBe(handler2);
     });
 
@@ -400,18 +400,18 @@ describe('Emittr', () => {
 
       instance.on('test1', handler1).on('test2', handler2).on('test3', handler3);
 
-      // @ts-ignore
+      // @ts-expect-error for testing purposes
       expect(instance._handlers.test1.length).toBe(1);
-      // @ts-ignore
+      // @ts-expect-error for testing purposes
       expect(instance._handlers.test2.length).toBe(1);
-      // @ts-ignore
+      // @ts-expect-error for testing purposes
       expect(instance._handlers.test3.length).toBe(1);
-      // @ts-ignore
+      // @ts-expect-error for testing purposes
       expect(Object.keys(instance._handlers).length).toBe(4);
 
       instance.removeAllHandlers();
 
-      // @ts-ignore
+      // @ts-expect-error for testing purposes
       expect(Object.keys(instance._handlers).length).toBe(0);
 
       expect(removeHandler).toHaveBeenCalledTimes(3);

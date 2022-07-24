@@ -16,7 +16,7 @@ export type ScrollbarTrackProps = ElementPropsWithElementRefAndRenderer & {
   ref?: (ref: ScrollbarTrack | null) => void;
 };
 
-export default class ScrollbarTrack extends React.Component<ScrollbarTrackProps, {}> {
+export default class ScrollbarTrack extends React.Component<ScrollbarTrackProps, unknown> {
   public element: HTMLDivElement | null = null;
 
   public componentDidMount(): void {
@@ -41,31 +41,8 @@ export default class ScrollbarTrack extends React.Component<ScrollbarTrackProps,
     }
   }
 
-  public render(): React.ReactElement<any> | null {
-    const {
-      elementRef,
-
-      axis,
-      onClick,
-
-      ...props
-    } = this.props as ScrollbarTrackProps;
-
-    props.className = cnb(
-      'ScrollbarsCustom-Track',
-      axis === AXIS_DIRECTION.X ? 'ScrollbarsCustom-TrackX' : 'ScrollbarsCustom-TrackY',
-      props.className
-    );
-
-    if (props.renderer) {
-      (props as ScrollbarTrackProps).axis = axis;
-    }
-
-    return renderDivWithRenderer(props, this.elementRef);
-  }
-
   private elementRef = (ref: HTMLDivElement | null): void => {
-    isFun(this.props.elementRef) && this.props.elementRef(ref);
+    if (isFun(this.props.elementRef)) this.props.elementRef(ref);
     this.element = ref;
   };
 
@@ -97,4 +74,29 @@ export default class ScrollbarTrack extends React.Component<ScrollbarTrackProps,
 
     return true;
   };
+
+  public render(): React.ReactElement<any> | null {
+    const {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      elementRef,
+
+      axis,
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      onClick,
+
+      ...props
+    } = this.props as ScrollbarTrackProps;
+
+    props.className = cnb(
+      'ScrollbarsCustom-Track',
+      axis === AXIS_DIRECTION.X ? 'ScrollbarsCustom-TrackX' : 'ScrollbarsCustom-TrackY',
+      props.className
+    );
+
+    if (props.renderer) {
+      (props as ScrollbarTrackProps).axis = axis;
+    }
+
+    return renderDivWithRenderer(props, this.elementRef);
+  }
 }

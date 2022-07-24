@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-shadow */
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { ElementPropsWithElementRef } from '../src/types';
@@ -381,13 +382,13 @@ describe('util', () => {
     });
 
     it('should throw if value not null or document', () => {
-      // @ts-ignore
+      // @ts-expect-error testing purposes
       expect(() => _dbgSetDocument(123)).toThrow(
         new TypeError(
           'override value expected to be an instance of HTMLDocument or null, got number'
         )
       );
-      // @ts-ignore
+      // @ts-expect-error testing purposes
       expect(() => _dbgSetDocument(false)).toThrow(
         new TypeError(
           'override value expected to be an instance of HTMLDocument or null, got boolean'
@@ -421,7 +422,7 @@ describe('util', () => {
       ReactDOM.render(
         renderDivWithRenderer({ elementRef: undefined, className: 'tests' }, ref),
         node,
-        function () {
+        () => {
           expect(ref).toHaveBeenCalled();
           done();
         }
@@ -430,6 +431,7 @@ describe('util', () => {
 
     it("should not leak renderer prop if it's passed", () => {
       const renderer = jasmine.createSpy();
+      // eslint-disable-next-line unicorn/consistent-function-scoping
       const ref = () => {};
       renderDivWithRenderer({ className: 'tests', renderer }, ref);
 

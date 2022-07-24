@@ -1,6 +1,9 @@
 import { isFun, isNum, isUndef } from './util';
 
 type EventHandler = (...args: any[]) => void;
+type OnceHandler = OnceHandlerState & { (...args: any[]): void };
+type EventHandlersList = (OnceHandler | EventHandler)[];
+type EmitterEventHandlers = { [key: string]: EventHandlersList };
 type OnceHandlerState = {
   fired: boolean;
   handler: EventHandler;
@@ -8,9 +11,6 @@ type OnceHandlerState = {
   emitter: Emittr;
   event: string;
 };
-type OnceHandler = OnceHandlerState & { (...args: any[]): void };
-type EventHandlersList = (OnceHandler | EventHandler)[];
-type EmitterEventHandlers = { [key: string]: EventHandlersList };
 
 export default class Emittr {
   private _handlers: EmitterEventHandlers;
@@ -48,7 +48,13 @@ export default class Emittr {
     }
     emitter._handlers[name] = emitter._handlers[name] || [];
     emitter.emit('addHandler', name, handler);
-    prepend ? emitter._handlers[name].unshift(handler) : emitter._handlers[name].push(handler);
+
+    if (prepend) {
+      emitter._handlers[name].unshift(handler);
+    } else {
+      emitter._handlers[name].push(handler);
+    }
+
     return emitter;
   };
 
@@ -95,7 +101,13 @@ export default class Emittr {
     if (idx === -1) {
       return emitter;
     }
-    idx === 0 ? emitter._handlers[name].shift() : emitter._handlers[name].splice(idx, 1);
+
+    if (idx === 0) {
+      emitter._handlers[name].shift();
+    } else {
+      emitter._handlers[name].splice(idx, 1);
+    }
+
     emitter.emit('removeHandler', name, handler);
     return emitter;
   };
@@ -160,6 +172,7 @@ export default class Emittr {
     delete handlers.removeHandler;
     let idx;
     let eventName;
+    // eslint-disable-next-line guard-for-in,no-restricted-syntax
     for (eventName in handlers) {
       for (idx = handlers[eventName].length - 1; idx >= 0; idx--) {
         Emittr._callEventHandlers(this, removeHandlers, [

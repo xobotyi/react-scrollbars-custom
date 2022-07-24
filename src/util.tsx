@@ -7,7 +7,7 @@ export const isUndef = (v: any): v is Exclude<typeof v, undefined> => {
   return typeof v === 'undefined';
 };
 
-export const isFun = (v: any): v is Function => {
+export const isFun = (v: any): v is CallableFunction => {
   return typeof v === 'function';
 };
 
@@ -25,7 +25,7 @@ export const isNum = (v: any): v is number => {
 export const renderDivWithRenderer = (
   props: ElementPropsWithElementRefAndRenderer,
   elementRef: ElementRef
-) => {
+): React.ReactElement | null => {
   if (isFun(props.renderer)) {
     props.elementRef = elementRef;
 
@@ -79,13 +79,14 @@ export const getInnerWidth = (el: HTMLElement): number => {
  * @description Return unique UUID v4
  */
 export const uuid = () => {
+  // eslint-disable-next-line @typescript-eslint/no-shadow
   let uuid = '';
 
   for (let i = 0; i < 32; i++) {
     switch (i) {
       case 8:
       case 20: {
-        uuid += `-${((Math.random() * 16) | 0).toString(16)}`;
+        uuid += `-${Math.trunc(Math.random() * 16).toString(16)}`;
 
         break;
       }
@@ -100,7 +101,7 @@ export const uuid = () => {
         break;
       }
       default: {
-        uuid += ((Math.random() * 16) | 0).toString(16);
+        uuid += Math.trunc(Math.random() * 16).toString(16);
       }
     }
   }
@@ -130,8 +131,12 @@ export const calcThumbSize = (
 
   let thumbSize = (viewportSize / contentSize) * trackSize;
 
-  isNum(maximalSize) && (thumbSize = Math.min(maximalSize, thumbSize));
-  isNum(minimalSize) && (thumbSize = Math.max(minimalSize, thumbSize));
+  if (isNum(maximalSize)) {
+    thumbSize = Math.min(maximalSize, thumbSize);
+  }
+  if (isNum(minimalSize)) {
+    thumbSize = Math.max(minimalSize, thumbSize);
+  }
 
   return thumbSize;
 };
@@ -188,7 +193,8 @@ export const calcScrollForThumbOffset = (
  */
 export const _dbgSetDocument = (v: Document | null): Document | null => {
   if (v === null || v instanceof HTMLDocument) {
-    return (doc = v);
+    doc = v;
+    return doc;
   }
 
   throw new TypeError(
@@ -212,7 +218,9 @@ interface GetScrollbarWidthFN {
  */
 export const getScrollbarWidth: GetScrollbarWidthFN = (force = false): number | undefined => {
   if (!doc) {
-    return (getScrollbarWidth._cache = 0);
+    getScrollbarWidth._cache = 0;
+
+    return getScrollbarWidth._cache;
   }
 
   if (!force && !isUndef(getScrollbarWidth._cache)) {
@@ -254,7 +262,9 @@ export const shouldReverseRtlScroll: ShouldReverseRtlScroll = (force = false): b
   }
 
   if (!doc) {
-    return (shouldReverseRtlScroll._cache = false);
+    shouldReverseRtlScroll._cache = false;
+
+    return shouldReverseRtlScroll._cache;
   }
 
   const el = doc.createElement('div');

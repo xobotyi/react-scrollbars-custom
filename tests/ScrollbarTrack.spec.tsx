@@ -1,5 +1,5 @@
-import * as ReactDOM from 'react-dom';
 import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 import * as simulant from 'simulant';
 import ScrollbarTrack from '../src/ScrollbarTrack';
 import { AXIS_DIRECTION } from '../src/types';
@@ -16,7 +16,7 @@ describe('ScrollbarTrack', () => {
   };
 
   afterAll(() => {
-    nodes.forEach((node) => document.body.removeChild(node));
+    nodes.forEach((node) => node.remove());
   });
 
   it('should render a div by default', (done) => {
@@ -29,7 +29,12 @@ describe('ScrollbarTrack', () => {
   it('should pass rendered element ref to elementRef function', (done) => {
     let element: HTMLDivElement | null;
     ReactDOM.render(
-      <ScrollbarTrack axis={AXIS_DIRECTION.X} elementRef={(ref) => (element = ref)} />,
+      <ScrollbarTrack
+        axis={AXIS_DIRECTION.X}
+        elementRef={(ref) => {
+          element = ref;
+        }}
+      />,
       getNode(),
       function () {
         expect(element instanceof HTMLDivElement).toBeTruthy();
@@ -106,7 +111,7 @@ describe('ScrollbarTrack', () => {
       );
     };
 
-    class ErrorBoundary extends React.Component<{}, { [key: string]: any }> {
+    class ErrorBoundary extends React.Component<unknown, { [key: string]: any }> {
       constructor(props) {
         super(props);
         this.state = { error: null, errorInfo: null };
@@ -135,8 +140,6 @@ describe('ScrollbarTrack', () => {
       getNode(),
       function () {
         setTimeout(() => {
-          console.log(this.state.error);
-
           expect(this.state.error instanceof Error).toBeTruthy();
           expect(this.state.error.message).toBe(
             "Element was not created. Possibly you haven't provided HTMLDivElement to renderer's `elementRef` function."

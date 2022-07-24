@@ -50,7 +50,7 @@ describe('Loop', function () {
       expect(Loop.isActive).toBeFalsy();
 
       const spy = jasmine.createSpy();
-      // @ts-ignore
+      // @ts-expect-error for testing purposes
       Loop.animationFrameID = requestAnimationFrame(spy);
 
       Loop.start();
@@ -100,9 +100,9 @@ describe('Loop', function () {
     it('should add the target to targets list', function () {
       const target = getTarget();
       Loop.addTarget(target);
-      // @ts-ignore
+      // @ts-expect-error for testing purposes
       expect(Loop.targets.length).toBe(1);
-      // @ts-ignore
+      // @ts-expect-error for testing purposes
       expect(Loop.targets[0]).toBe(target);
       Loop.removeTarget(target);
     });
@@ -110,9 +110,9 @@ describe('Loop', function () {
     it('should not add the target twice', function () {
       const target = getTarget();
       Loop.addTarget(target).addTarget(target).addTarget(target);
-      // @ts-ignore
+      // @ts-expect-error for testing purposes
       expect(Loop.targets.length).toBe(1);
-      // @ts-ignore
+      // @ts-expect-error for testing purposes
       expect(Loop.targets[0]).toBe(target);
       Loop.removeTarget(target);
     });
@@ -141,12 +141,12 @@ describe('Loop', function () {
     it('should remove the target from targets list', function () {
       const target = getTarget();
       Loop.addTarget(target);
-      // @ts-ignore
+      // @ts-expect-error for testing purposes
       expect(Loop.targets.length).toBe(1);
-      // @ts-ignore
+      // @ts-expect-error for testing purposes
       expect(Loop.targets[0]).toBe(target);
       Loop.removeTarget(target);
-      // @ts-ignore
+      // @ts-expect-error for testing purposes
       expect(Loop.targets.length).toBe(0);
     });
 
@@ -163,7 +163,7 @@ describe('Loop', function () {
     it('should not fire the targets if loop is not active', function () {
       const target = getTarget();
       Loop.addTarget(target, true);
-      // @ts-ignore
+      // @ts-expect-error for testing purposes
       expect(Loop.rafCallback()).toBe(0);
       expect(Loop.isActive).toBeFalsy();
       Loop.removeTarget(target);
@@ -174,9 +174,9 @@ describe('Loop', function () {
       let id;
 
       Loop.addTarget(target, true);
-      // @ts-ignore
+      // @ts-expect-error for testing purposes
       Loop._isActive = true;
-      // @ts-ignore
+      // @ts-expect-error for testing purposes
       expect((id = Loop.rafCallback())).not.toBe(0);
       expect(target.update).toHaveBeenCalled();
       cancelAnimationFrame(id);

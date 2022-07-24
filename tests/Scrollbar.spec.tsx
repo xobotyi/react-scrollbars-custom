@@ -1,8 +1,9 @@
+// eslint-disable-next-line max-classes-per-file
 import { cnb } from 'cnbuilder';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import * as simulant from 'simulant';
-import Scrollbar, { ScrollbarContext, ScrollbarProps, ScrollbarState } from '../src';
+import { Scrollbar, ScrollbarContext, ScrollbarProps, ScrollbarState } from '../src';
 import { ScrollbarContextValue } from '../src/Scrollbar';
 import { ScrollState, TRACK_CLICK_BEHAVIOR } from '../src/types';
 import { getScrollbarWidth, shouldReverseRtlScroll } from '../src/util';
@@ -194,9 +195,9 @@ describe('Scrollbar', () => {
             <span
               ref={props.elementRef}
               style={props.style}
-              children={props.children}
-              className={cnb('customHolderClassname', props.className)}
-            />
+              className={cnb('customHolderClassname', props.className)}>
+              {props.children}
+            </span>
           )}
           wrapperProps={{
             renderer: (props) => (
@@ -204,9 +205,9 @@ describe('Scrollbar', () => {
                 ref={props.elementRef}
                 key={props.key}
                 style={props.style}
-                children={props.children}
-                className={cnb('customWrapperClassName', props.className)}
-              />
+                className={cnb('customWrapperClassName', props.className)}>
+                {props.children}
+              </span>
             ),
           }}
           scrollerProps={{
@@ -215,9 +216,9 @@ describe('Scrollbar', () => {
                 ref={props.elementRef}
                 key={props.key}
                 style={props.style}
-                children={props.children}
-                className={cnb('customScrollerClassName', props.className)}
-              />
+                className={cnb('customScrollerClassName', props.className)}>
+                {props.children}
+              </span>
             ),
           }}
           contentProps={{
@@ -226,9 +227,9 @@ describe('Scrollbar', () => {
                 ref={props.elementRef}
                 key={props.key}
                 style={props.style}
-                children={props.children}
-                className={cnb('customContentClassName', props.className)}
-              />
+                className={cnb('customContentClassName', props.className)}>
+                {props.children}
+              </span>
             ),
           }}
           trackXProps={{
@@ -237,9 +238,9 @@ describe('Scrollbar', () => {
                 ref={props.elementRef}
                 key={props.key}
                 style={props.style}
-                children={props.children}
-                className={cnb('customTrackXClassName', props.className)}
-              />
+                className={cnb('customTrackXClassName', props.className)}>
+                {props.children}
+              </span>
             ),
           }}
           trackYProps={{
@@ -248,9 +249,9 @@ describe('Scrollbar', () => {
                 ref={props.elementRef}
                 key={props.key}
                 style={props.style}
-                children={props.children}
-                className={cnb('customTrackYClassName', props.className)}
-              />
+                className={cnb('customTrackYClassName', props.className)}>
+                {props.children}
+              </span>
             ),
           }}
           thumbXProps={{
@@ -259,9 +260,9 @@ describe('Scrollbar', () => {
                 ref={props.elementRef}
                 key={props.key}
                 style={props.style}
-                children={props.children}
-                className={cnb('customThumbXClassName', props.className)}
-              />
+                className={cnb('customThumbXClassName', props.className)}>
+                {props.children}
+              </span>
             ),
           }}
           thumbYProps={{
@@ -270,9 +271,9 @@ describe('Scrollbar', () => {
                 ref={props.elementRef}
                 key={props.key}
                 style={props.style}
-                children={props.children}
-                className={cnb('customThumbYClassName', props.className)}
-              />
+                className={cnb('customThumbYClassName', props.className)}>
+                {props.children}
+              </span>
             ),
           }}>
           <div style={{ width: 200, height: 210 }} />

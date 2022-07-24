@@ -1,5 +1,5 @@
-import * as ReactDOM from 'react-dom';
 import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 import * as simulant from 'simulant';
 import ScrollbarThumb from '../src/ScrollbarThumb';
 import { AXIS_DIRECTION } from '../src/types';
@@ -16,7 +16,7 @@ describe('ScrollbarThumb', () => {
   };
 
   afterAll(() => {
-    nodes.forEach((node) => document.body.removeChild(node));
+    nodes.forEach((node) => node.remove());
   });
 
   it('should render a div by default', (done) => {
@@ -33,7 +33,6 @@ describe('ScrollbarThumb', () => {
         axis={AXIS_DIRECTION.X}
         elementRef={(ref) => {
           element = ref;
-          console.log(ref);
         }}
       />,
       getNode(),
@@ -112,7 +111,7 @@ describe('ScrollbarThumb', () => {
       );
     };
 
-    class ErrorBoundary extends React.Component<{}, { [key: string]: any }> {
+    class ErrorBoundary extends React.Component<Record<string, unknown>, { [key: string]: any }> {
       constructor(props) {
         super(props);
         this.state = { error: null, errorInfo: null };
@@ -220,8 +219,6 @@ describe('ScrollbarThumb', () => {
       />,
       getNode(),
       function () {
-        console.log(this.element);
-
         const { top, height, left, width } = this.element.getBoundingClientRect();
 
         simulant.fire(this.element, 'mousedown', {
@@ -447,7 +444,7 @@ describe('ScrollbarThumb', () => {
 
         setTimeout(() => {
           expect(document.body.style.userSelect).toBe('none');
-          // @ts-ignore
+          // @ts-expect-error simplification duw to testing
           expect(document.onselectstart()).toBe(false);
 
           done();

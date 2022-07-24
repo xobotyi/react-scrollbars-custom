@@ -1,1 +1,7 @@
-export { default, default as Scrollbar, ScrollbarContext, ScrollbarProps, ScrollbarState } from "./Scrollbar";
+export {
+  default,
+  default as Scrollbar,
+  ScrollbarContext,
+  ScrollbarProps,
+  ScrollbarState,
+} from './Scrollbar';

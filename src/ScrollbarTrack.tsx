@@ -1,7 +1,7 @@
-import { cnb } from "cnbuilder";
-import * as React from "react";
-import { AXIS_DIRECTION, ElementPropsWithElementRefAndRenderer } from "./types";
-import { isFun, isUndef, renderDivWithRenderer } from "./util";
+import { cnb } from 'cnbuilder';
+import * as React from 'react';
+import { AXIS_DIRECTION, ElementPropsWithElementRefAndRenderer } from './types';
+import { isFun, isUndef, renderDivWithRenderer } from './util';
 
 export interface ScrollbarTrackClickParameters {
   axis: AXIS_DIRECTION;
@@ -29,12 +29,12 @@ export default class ScrollbarTrack extends React.Component<ScrollbarTrackProps,
       return;
     }
 
-    this.element.addEventListener("click", this.handleClick);
+    this.element.addEventListener('click', this.handleClick);
   }
 
   public componentWillUnmount(): void {
     if (this.element) {
-      this.element.removeEventListener("click", this.handleClick);
+      this.element.removeEventListener('click', this.handleClick);
       this.element = null;
 
       this.elementRef(null);
@@ -52,8 +52,8 @@ export default class ScrollbarTrack extends React.Component<ScrollbarTrackProps,
     } = this.props as ScrollbarTrackProps;
 
     props.className = cnb(
-      "ScrollbarsCustom-Track",
-      axis === AXIS_DIRECTION.X ? "ScrollbarsCustom-TrackX" : "ScrollbarsCustom-TrackY",
+      'ScrollbarsCustom-Track',
+      axis === AXIS_DIRECTION.X ? 'ScrollbarsCustom-TrackX' : 'ScrollbarsCustom-TrackY',
       props.className
     );
 
@@ -65,7 +65,7 @@ export default class ScrollbarTrack extends React.Component<ScrollbarTrackProps,
   }
 
   private elementRef = (ref: HTMLDivElement | null): void => {
-    isFun(this.props.elementRef) && this.props.elementRef!(ref);
+    isFun(this.props.elementRef) && this.props.elementRef(ref);
     this.element = ref;
   };
 
@@ -76,7 +76,7 @@ export default class ScrollbarTrack extends React.Component<ScrollbarTrackProps,
 
     if (isFun(this.props.onClick) && ev.target === this.element) {
       if (!isUndef(ev.offsetX)) {
-        this.props.onClick!(ev, {
+        this.props.onClick(ev, {
           axis: this.props.axis,
           offset: this.props.axis === AXIS_DIRECTION.X ? ev.offsetX : ev.offsetY,
         });
@@ -85,7 +85,7 @@ export default class ScrollbarTrack extends React.Component<ScrollbarTrackProps,
         /* istanbul ignore next */
         const rect: ClientRect = this.element.getBoundingClientRect();
         /* istanbul ignore next */
-        this.props.onClick!(ev, {
+        this.props.onClick(ev, {
           axis: this.props.axis,
           offset:
             this.props.axis === AXIS_DIRECTION.X

@@ -50,11 +50,11 @@ Underneath `react-scrollbars-custom` uses `requestAnimationFrame` loop, which ch
 The `<Scrollbar />` component works out of the box, with only need of `width` and `height` to be set, inline or via CSS;
 
 ```typescript jsx
-import { Scrollbar } from "react-scrollbars-custom";
+import { Scrollbar } from 'react-scrollbars-custom';
 
 <Scrollbar style={{ width: 250, height: 250 }}>
   <p>Hello world!</p>
-</Scrollbar>
+</Scrollbar>;
 ```
 
 ### Internet Explorer
@@ -75,9 +75,7 @@ It'll change the generated markup:
 // scrollbar.scrollerElement
 <div class="ScrollbarsCustom native trackYVisible trackXVisible">
   // scrollbar.contentElement - the one that holds tour content
-  <div class="ScrollbarsCustom-Content">
-    // YOUR CONTENT IS HERE
-  </div>
+  <div class="ScrollbarsCustom-Content">// YOUR CONTENT IS HERE</div>
 </div>
 ```
 
@@ -113,51 +111,51 @@ You can do absolutely what ever you want y simply passing renderer SFC to the ne
 
 ```typescript jsx
 <Scrollbar
-  renderer={props => {
+  renderer={(props) => {
     const { elementRef, ...restProps } = props;
     return <span {...restProps} ref={elementRef} className="MyAwesomeScrollbarsHolder" />;
   }}
   wrapperProps={{
-    renderer: props => {
+    renderer: (props) => {
       const { elementRef, ...restProps } = props;
       return <span {...restProps} ref={elementRef} className="MyAwesomeScrollbarsWrapper" />;
-    }
+    },
   }}
   scrollerProps={{
-    renderer: props => {
+    renderer: (props) => {
       const { elementRef, ...restProps } = props;
       return <span {...restProps} ref={elementRef} className="MyAwesomeScrollbarsScroller" />;
-    }
+    },
   }}
   contentProps={{
-    renderer: props => {
+    renderer: (props) => {
       const { elementRef, ...restProps } = props;
       return <span {...restProps} ref={elementRef} className="Content" />;
-    }
+    },
   }}
   trackXProps={{
-    renderer: props => {
+    renderer: (props) => {
       const { elementRef, ...restProps } = props;
       return <span {...restProps} ref={elementRef} className="TrackX" />;
-    }
+    },
   }}
   trackYProps={{
-    renderer: props => {
+    renderer: (props) => {
       const { elementRef, ...restProps } = props;
       return <span {...restProps} ref={elementRef} className="trackY" />;
-    }
+    },
   }}
   thumbXProps={{
-    renderer: props => {
+    renderer: (props) => {
       const { elementRef, ...restProps } = props;
       return <span {...restProps} ref={elementRef} className="ThUmBX" />;
-    }
+    },
   }}
   thumbYProps={{
-    renderer: props => {
+    renderer: (props) => {
       const { elementRef, ...restProps } = props;
       return <span {...restProps} ref={elementRef} className="tHuMbY" />;
-    }
+    },
   }}
 />
 ```
@@ -172,9 +170,7 @@ You can do absolutely what ever you want y simply passing renderer SFC to the ne
     // scrollbar.scrollerElement - the one that actually has browser's scrollbars
     <div class="ScrollbarsCustom-Scroller">
       // scrollbar.contentElement - the one that holds tour content
-      <div class="ScrollbarsCustom-Content">
-        // YOUR CONTENT IS HERE
-      </div>
+      <div class="ScrollbarsCustom-Content">// YOUR CONTENT IS HERE</div>
     </div>
   </div>
   // scrollbar.trackYElement

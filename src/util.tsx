@@ -1,18 +1,18 @@
-import * as React from "react";
-import { ElementPropsWithElementRefAndRenderer, ElementRef } from "./types";
+import * as React from 'react';
+import { ElementPropsWithElementRefAndRenderer, ElementRef } from './types';
 
-let doc: Document | null = typeof document === "object" ? document : null;
+let doc: Document | null = typeof document === 'object' ? document : null;
 
 export const isUndef = (v: any): v is Exclude<typeof v, undefined> => {
-  return typeof v === "undefined";
+  return typeof v === 'undefined';
 };
 
 export const isFun = (v: any): v is Function => {
-  return typeof v === "function";
+  return typeof v === 'function';
 };
 
 export const isNum = (v: any): v is number => {
-  return typeof v === "number";
+  return typeof v === 'number';
 };
 
 /**
@@ -22,11 +22,14 @@ export const isNum = (v: any): v is number => {
  * @param props {ElementPropsWithElementRefAndRenderer}
  * @param elementRef {ElementRef}
  */
-export const renderDivWithRenderer = (props: ElementPropsWithElementRefAndRenderer, elementRef: ElementRef) => {
+export const renderDivWithRenderer = (
+  props: ElementPropsWithElementRefAndRenderer,
+  elementRef: ElementRef
+) => {
   if (isFun(props.renderer)) {
     props.elementRef = elementRef;
 
-    const renderer = props.renderer!;
+    const { renderer } = props;
 
     delete props.renderer;
 
@@ -38,50 +41,67 @@ export const renderDivWithRenderer = (props: ElementPropsWithElementRefAndRender
   return <div {...props} ref={elementRef} />;
 };
 
-const getInnerSize = (el: HTMLElement, dimension: string, padding1: string, padding2: string): number => {
+const getInnerSize = (
+  el: HTMLElement,
+  dimension: string,
+  padding1: string,
+  padding2: string
+): number => {
   const styles = getComputedStyle(el);
 
-  if (styles.boxSizing === "border-box") {
+  if (styles.boxSizing === 'border-box') {
     return Math.max(
       0,
-      (parseFloat(styles[dimension] as string) || 0) -
-        (parseFloat(styles[padding1] as string) || 0) -
-        (parseFloat(styles[padding2] as string) || 0)
+      (Number.parseFloat(styles[dimension] as string) || 0) -
+        (Number.parseFloat(styles[padding1] as string) || 0) -
+        (Number.parseFloat(styles[padding2] as string) || 0)
     );
   }
 
-  return parseFloat(styles[dimension] as string) || 0;
+  return Number.parseFloat(styles[dimension] as string) || 0;
 };
 
 /**
  * @description Return element's height without padding
  */
 export const getInnerHeight = (el: HTMLElement): number => {
-  return getInnerSize(el, "height", "paddingTop", "paddingBottom");
+  return getInnerSize(el, 'height', 'paddingTop', 'paddingBottom');
 };
 
 /**
  * @description Return element's width without padding
  */
 export const getInnerWidth = (el: HTMLElement): number => {
-  return getInnerSize(el, "width", "paddingLeft", "paddingRight");
+  return getInnerSize(el, 'width', 'paddingLeft', 'paddingRight');
 };
 
 /**
  * @description Return unique UUID v4
  */
 export const uuid = () => {
-  let uuid = "";
+  let uuid = '';
 
   for (let i = 0; i < 32; i++) {
-    if (i === 8 || i === 20) {
-      uuid += "-" + ((Math.random() * 16) | 0).toString(16);
-    } else if (i === 12) {
-      uuid += "-4";
-    } else if (i === 16) {
-      uuid += "-" + ((Math.random() * 16) | (0 & 3) | 8).toString(16);
-    } else {
-      uuid += ((Math.random() * 16) | 0).toString(16);
+    switch (i) {
+      case 8:
+      case 20: {
+        uuid += `-${((Math.random() * 16) | 0).toString(16)}`;
+
+        break;
+      }
+      case 12: {
+        uuid += '-4';
+
+        break;
+      }
+      case 16: {
+        uuid += `-${((Math.random() * 16) | (0 & 3) | 8).toString(16)}`;
+
+        break;
+      }
+      default: {
+        uuid += ((Math.random() * 16) | 0).toString(16);
+      }
     }
   }
 
@@ -110,8 +130,8 @@ export const calcThumbSize = (
 
   let thumbSize = (viewportSize / contentSize) * trackSize;
 
-  isNum(maximalSize) && (thumbSize = Math.min(maximalSize!, thumbSize));
-  isNum(minimalSize) && (thumbSize = Math.max(minimalSize!, thumbSize));
+  isNum(maximalSize) && (thumbSize = Math.min(maximalSize, thumbSize));
+  isNum(minimalSize) && (thumbSize = Math.max(minimalSize, thumbSize));
 
   return thumbSize;
 };
@@ -171,7 +191,9 @@ export const _dbgSetDocument = (v: Document | null): Document | null => {
     return (doc = v);
   }
 
-  throw new TypeError("override value expected to be an instance of HTMLDocument or null, got " + typeof v);
+  throw new TypeError(
+    `override value expected to be an instance of HTMLDocument or null, got ${typeof v}`
+  );
 };
 
 /**
@@ -188,7 +210,7 @@ interface GetScrollbarWidthFN {
 /**
  * @description Returns scrollbar width specific for current environment. Can return undefined if DOM is not ready yet.
  */
-export const getScrollbarWidth: GetScrollbarWidthFN = (force: boolean = false): number | undefined => {
+export const getScrollbarWidth: GetScrollbarWidthFN = (force = false): number | undefined => {
   if (!doc) {
     return (getScrollbarWidth._cache = 0);
   }
@@ -197,19 +219,22 @@ export const getScrollbarWidth: GetScrollbarWidthFN = (force: boolean = false): 
     return getScrollbarWidth._cache as number;
   }
 
-  let el = doc.createElement("div");
-  el.setAttribute("style", "position:absolute;width:100px;height:100px;top:-999px;left:-999px;overflow:scroll;");
+  const el = doc.createElement('div');
+  el.setAttribute(
+    'style',
+    'position:absolute;width:100px;height:100px;top:-999px;left:-999px;overflow:scroll;'
+  );
 
-  doc.body.appendChild(el);
+  doc.body.append(el);
 
   /* istanbul ignore next */
   if (el.clientWidth === 0) {
     // Do not even cache this value because there is no calculations. Issue https://github.com/xobotyi/react-scrollbars-custom/issues/123
-    doc.body.removeChild(el);
+    el.remove();
     return;
   }
   getScrollbarWidth._cache = 100 - el.clientWidth;
-  doc.body.removeChild(el);
+  el.remove();
 
   return getScrollbarWidth._cache;
 };
@@ -223,7 +248,7 @@ interface ShouldReverseRtlScroll {
 /**
  * @description Detect need of horizontal scroll reverse while RTL.
  */
-export const shouldReverseRtlScroll: ShouldReverseRtlScroll = (force: boolean = false): boolean => {
+export const shouldReverseRtlScroll: ShouldReverseRtlScroll = (force = false): boolean => {
   if (!force && !isUndef(shouldReverseRtlScroll._cache)) {
     return shouldReverseRtlScroll._cache as boolean;
   }
@@ -232,23 +257,23 @@ export const shouldReverseRtlScroll: ShouldReverseRtlScroll = (force: boolean = 
     return (shouldReverseRtlScroll._cache = false);
   }
 
-  const el = doc.createElement("div");
-  const child = doc.createElement("div");
+  const el = doc.createElement('div');
+  const child = doc.createElement('div');
 
-  el.appendChild(child);
+  el.append(child);
 
   el.setAttribute(
-    "style",
-    "position:absolute;width:100px;height:100px;top:-999px;left:-999px;overflow:scroll;direction:rtl"
+    'style',
+    'position:absolute;width:100px;height:100px;top:-999px;left:-999px;overflow:scroll;direction:rtl'
   );
-  child.setAttribute("style", "width:1000px;height:1000px");
+  child.setAttribute('style', 'width:1000px;height:1000px');
 
-  doc.body.appendChild(el);
+  doc.body.append(el);
 
   el.scrollLeft = -50;
   shouldReverseRtlScroll._cache = el.scrollLeft === -50;
 
-  doc.body.removeChild(el);
+  el.remove();
 
   return shouldReverseRtlScroll._cache;
 };

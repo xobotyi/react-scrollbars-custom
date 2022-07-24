@@ -12,12 +12,12 @@ export class RAFLoop {
   /**
    * @description ID of requested animation frame. Valuable only if loop is active and has items to iterate.
    */
-  private animationFrameID: number = 0;
+  private animationFrameID = 0;
 
   /**
    * @description Loop's state.
    */
-  private _isActive: boolean = false;
+  private _isActive = false;
 
   /**
    * @description Loop's state.
@@ -57,8 +57,8 @@ export class RAFLoop {
   /**
    * @description Add target to the iteration list if it's not there.
    */
-  public addTarget = (target: UpdatableItem, silent: boolean = false): this => {
-    if (this.targets.indexOf(target) === -1) {
+  public addTarget = (target: UpdatableItem, silent = false): this => {
+    if (!this.targets.includes(target)) {
       this.targets.push(target);
 
       this.targets.length === 1 && !silent && this.start();

@@ -1,13 +1,13 @@
-import * as React from "react";
+import * as React from 'react';
 
 export enum AXIS_DIRECTION {
-  X = "x",
-  Y = "y",
+  X = 'x',
+  Y = 'y',
 }
 
 export enum TRACK_CLICK_BEHAVIOR {
-  JUMP = "jump",
-  STEP = "step",
+  JUMP = 'jump',
+  STEP = 'step',
 }
 
 export type ElementRef<T = HTMLDivElement> = (element: T | null) => void;
@@ -16,7 +16,9 @@ export type ElementPropsWithElementRef<T = HTMLDivElement> = React.HTMLProps<T> 
   elementRef?: ElementRef<T>;
 };
 
-export type ElementRenderer<T = HTMLDivElement> = React.FunctionComponent<ElementPropsWithElementRef<T>>;
+export type ElementRenderer<T = HTMLDivElement> = React.FunctionComponent<
+  ElementPropsWithElementRef<T>
+>;
 
 export type ElementPropsWithElementRefAndRenderer<T = HTMLDivElement> = React.HTMLProps<T> & {
   elementRef?: ElementRef<T>;

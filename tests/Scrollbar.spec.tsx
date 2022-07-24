@@ -1,11 +1,11 @@
-import { cnb } from "cnbuilder";
-import * as React from "react";
-import * as ReactDOM from "react-dom";
-import * as simulant from "simulant";
-import Scrollbar, { ScrollbarContext, ScrollbarProps, ScrollbarState } from "../src";
-import { ScrollbarContextValue } from "../src/Scrollbar";
-import { ScrollState, TRACK_CLICK_BEHAVIOR } from "../src/types";
-import { getScrollbarWidth, shouldReverseRtlScroll } from "../src/util";
+import { cnb } from 'cnbuilder';
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
+import * as simulant from 'simulant';
+import Scrollbar, { ScrollbarContext, ScrollbarProps, ScrollbarState } from '../src';
+import { ScrollbarContextValue } from '../src/Scrollbar';
+import { ScrollState, TRACK_CLICK_BEHAVIOR } from '../src/types';
+import { getScrollbarWidth, shouldReverseRtlScroll } from '../src/util';
 
 class ScrollbarPropsUpdater extends React.Component<
   { scrollbarProps: ScrollbarProps },
@@ -27,17 +27,21 @@ class ScrollbarPropsUpdater extends React.Component<
 
   public render(): React.ReactElement<any> | null {
     return (
-      <Scrollbar {...this.state.scrollbarProps} children={this.props.children} ref={(ref) => (this.scrollbar = ref)} />
+      <Scrollbar
+        {...this.state.scrollbarProps}
+        children={this.props.children}
+        ref={(ref) => (this.scrollbar = ref)}
+      />
     );
   }
 }
 
-describe("Scrollbar", () => {
+describe('Scrollbar', () => {
   const nodes: HTMLDivElement[] = [];
 
   const getNode = () => {
-    const node = document.createElement("div");
-    document.body.appendChild(node);
+    const node = document.createElement('div');
+    document.body.append(node);
     nodes.push(node);
 
     return node;
@@ -52,8 +56,8 @@ describe("Scrollbar", () => {
     delete shouldReverseRtlScroll._cache;
   });
 
-  describe("render", () => {
-    it("should render proper DOM structure", (done) => {
+  describe('render', () => {
+    it('should render proper DOM structure', (done) => {
       ReactDOM.render(
         <Scrollbar style={{ width: 100, height: 100 }}>
           <div style={{ width: 200, height: 200 }} />
@@ -75,55 +79,56 @@ describe("Scrollbar", () => {
       );
     });
 
-    it("should apply classnames", (done) => {
+    it('should apply classnames', (done) => {
       ReactDOM.render(
         <Scrollbar
           style={{ width: 100, height: 70 }}
           rtl
           className="customHolderClassname"
-          wrapperProps={{ className: "customWrapperClassName" }}
-          scrollerProps={{ className: "customScrollerClassName" }}
-          contentProps={{ className: "customContentClassName" }}
-          trackXProps={{ className: "customTrackXClassName" }}
-          trackYProps={{ className: "customTrackYClassName" }}
-          thumbXProps={{ className: "customThumbXClassName" }}
-          thumbYProps={{ className: "customThumbYClassName" }}
-        >
+          wrapperProps={{ className: 'customWrapperClassName' }}
+          scrollerProps={{ className: 'customScrollerClassName' }}
+          contentProps={{ className: 'customContentClassName' }}
+          trackXProps={{ className: 'customTrackXClassName' }}
+          trackYProps={{ className: 'customTrackYClassName' }}
+          thumbXProps={{ className: 'customThumbXClassName' }}
+          thumbYProps={{ className: 'customThumbYClassName' }}>
           <div style={{ width: 200, height: 210 }} />
         </Scrollbar>,
         getNode(),
         function () {
           setTimeout(() => {
-            expect(this.holderElement.classList.contains("ScrollbarsCustom")).toBeTruthy();
-            expect(this.holderElement.classList.contains("trackYVisible")).toBeTruthy();
-            expect(this.holderElement.classList.contains("trackXVisible")).toBeTruthy();
-            expect(this.holderElement.classList.contains("rtl")).toBeTruthy();
-            expect(this.holderElement.classList.contains("customHolderClassname")).toBeTruthy();
+            expect(this.holderElement.classList.contains('ScrollbarsCustom')).toBeTruthy();
+            expect(this.holderElement.classList.contains('trackYVisible')).toBeTruthy();
+            expect(this.holderElement.classList.contains('trackXVisible')).toBeTruthy();
+            expect(this.holderElement.classList.contains('rtl')).toBeTruthy();
+            expect(this.holderElement.classList.contains('customHolderClassname')).toBeTruthy();
 
-            expect(this.wrapperElement.classList.contains("ScrollbarsCustom-Wrapper")).toBeTruthy();
-            expect(this.wrapperElement.classList.contains("customWrapperClassName")).toBeTruthy();
+            expect(this.wrapperElement.classList.contains('ScrollbarsCustom-Wrapper')).toBeTruthy();
+            expect(this.wrapperElement.classList.contains('customWrapperClassName')).toBeTruthy();
 
-            expect(this.scrollerElement.classList.contains("ScrollbarsCustom-Scroller")).toBeTruthy();
-            expect(this.scrollerElement.classList.contains("customScrollerClassName")).toBeTruthy();
+            expect(
+              this.scrollerElement.classList.contains('ScrollbarsCustom-Scroller')
+            ).toBeTruthy();
+            expect(this.scrollerElement.classList.contains('customScrollerClassName')).toBeTruthy();
 
-            expect(this.contentElement.classList.contains("ScrollbarsCustom-Content")).toBeTruthy();
-            expect(this.contentElement.classList.contains("customContentClassName")).toBeTruthy();
+            expect(this.contentElement.classList.contains('ScrollbarsCustom-Content')).toBeTruthy();
+            expect(this.contentElement.classList.contains('customContentClassName')).toBeTruthy();
 
-            expect(this.trackXElement.classList.contains("ScrollbarsCustom-Track")).toBeTruthy();
-            expect(this.trackXElement.classList.contains("ScrollbarsCustom-TrackX")).toBeTruthy();
-            expect(this.trackXElement.classList.contains("customTrackXClassName")).toBeTruthy();
+            expect(this.trackXElement.classList.contains('ScrollbarsCustom-Track')).toBeTruthy();
+            expect(this.trackXElement.classList.contains('ScrollbarsCustom-TrackX')).toBeTruthy();
+            expect(this.trackXElement.classList.contains('customTrackXClassName')).toBeTruthy();
 
-            expect(this.trackYElement.classList.contains("ScrollbarsCustom-Track")).toBeTruthy();
-            expect(this.trackYElement.classList.contains("ScrollbarsCustom-TrackY")).toBeTruthy();
-            expect(this.trackYElement.classList.contains("customTrackYClassName")).toBeTruthy();
+            expect(this.trackYElement.classList.contains('ScrollbarsCustom-Track')).toBeTruthy();
+            expect(this.trackYElement.classList.contains('ScrollbarsCustom-TrackY')).toBeTruthy();
+            expect(this.trackYElement.classList.contains('customTrackYClassName')).toBeTruthy();
 
-            expect(this.thumbXElement.classList.contains("ScrollbarsCustom-Thumb")).toBeTruthy();
-            expect(this.thumbXElement.classList.contains("ScrollbarsCustom-ThumbX")).toBeTruthy();
-            expect(this.thumbXElement.classList.contains("customThumbXClassName")).toBeTruthy();
+            expect(this.thumbXElement.classList.contains('ScrollbarsCustom-Thumb')).toBeTruthy();
+            expect(this.thumbXElement.classList.contains('ScrollbarsCustom-ThumbX')).toBeTruthy();
+            expect(this.thumbXElement.classList.contains('customThumbXClassName')).toBeTruthy();
 
-            expect(this.thumbYElement.classList.contains("ScrollbarsCustom-Thumb")).toBeTruthy();
-            expect(this.thumbYElement.classList.contains("ScrollbarsCustom-ThumbY")).toBeTruthy();
-            expect(this.thumbYElement.classList.contains("customThumbYClassName")).toBeTruthy();
+            expect(this.thumbYElement.classList.contains('ScrollbarsCustom-Thumb')).toBeTruthy();
+            expect(this.thumbYElement.classList.contains('ScrollbarsCustom-ThumbY')).toBeTruthy();
+            expect(this.thumbYElement.classList.contains('customThumbYClassName')).toBeTruthy();
 
             done();
           }, 20);
@@ -131,7 +136,7 @@ describe("Scrollbar", () => {
       );
     });
 
-    it("should pass element references to elementRef props", (done) => {
+    it('should pass element references to elementRef props', (done) => {
       const holderRef = jasmine.createSpy();
       const wrapperRef = jasmine.createSpy();
       const scrollerRef = jasmine.createSpy();
@@ -151,8 +156,7 @@ describe("Scrollbar", () => {
           trackXProps={{ elementRef: trackXRef }}
           trackYProps={{ elementRef: trackYRef }}
           thumbXProps={{ elementRef: thumbXRef }}
-          thumbYProps={{ elementRef: thumbYRef }}
-        >
+          thumbYProps={{ elementRef: thumbYRef }}>
           <div style={{ width: 200, height: 210 }} />
         </Scrollbar>,
         getNode(),
@@ -182,7 +186,7 @@ describe("Scrollbar", () => {
       );
     });
 
-    it("should use renderer functions", (done) => {
+    it('should use renderer functions', (done) => {
       ReactDOM.render(
         <Scrollbar
           style={{ width: 100, height: 70 }}
@@ -191,7 +195,7 @@ describe("Scrollbar", () => {
               ref={props.elementRef}
               style={props.style}
               children={props.children}
-              className={cnb("customHolderClassname", props.className)}
+              className={cnb('customHolderClassname', props.className)}
             />
           )}
           wrapperProps={{
@@ -201,7 +205,7 @@ describe("Scrollbar", () => {
                 key={props.key}
                 style={props.style}
                 children={props.children}
-                className={cnb("customWrapperClassName", props.className)}
+                className={cnb('customWrapperClassName', props.className)}
               />
             ),
           }}
@@ -212,7 +216,7 @@ describe("Scrollbar", () => {
                 key={props.key}
                 style={props.style}
                 children={props.children}
-                className={cnb("customScrollerClassName", props.className)}
+                className={cnb('customScrollerClassName', props.className)}
               />
             ),
           }}
@@ -223,7 +227,7 @@ describe("Scrollbar", () => {
                 key={props.key}
                 style={props.style}
                 children={props.children}
-                className={cnb("customContentClassName", props.className)}
+                className={cnb('customContentClassName', props.className)}
               />
             ),
           }}
@@ -234,7 +238,7 @@ describe("Scrollbar", () => {
                 key={props.key}
                 style={props.style}
                 children={props.children}
-                className={cnb("customTrackXClassName", props.className)}
+                className={cnb('customTrackXClassName', props.className)}
               />
             ),
           }}
@@ -245,7 +249,7 @@ describe("Scrollbar", () => {
                 key={props.key}
                 style={props.style}
                 children={props.children}
-                className={cnb("customTrackYClassName", props.className)}
+                className={cnb('customTrackYClassName', props.className)}
               />
             ),
           }}
@@ -256,7 +260,7 @@ describe("Scrollbar", () => {
                 key={props.key}
                 style={props.style}
                 children={props.children}
-                className={cnb("customThumbXClassName", props.className)}
+                className={cnb('customThumbXClassName', props.className)}
               />
             ),
           }}
@@ -267,53 +271,54 @@ describe("Scrollbar", () => {
                 key={props.key}
                 style={props.style}
                 children={props.children}
-                className={cnb("customThumbYClassName", props.className)}
+                className={cnb('customThumbYClassName', props.className)}
               />
             ),
-          }}
-        >
+          }}>
           <div style={{ width: 200, height: 210 }} />
         </Scrollbar>,
         getNode(),
         function () {
           setTimeout(() => {
-            expect(this.holderElement.tagName).toBe("SPAN");
-            expect(this.holderElement.classList.contains("ScrollbarsCustom")).toBeTruthy();
-            expect(this.holderElement.classList.contains("trackYVisible")).toBeTruthy();
-            expect(this.holderElement.classList.contains("trackXVisible")).toBeTruthy();
-            expect(this.holderElement.classList.contains("customHolderClassname")).toBeTruthy();
+            expect(this.holderElement.tagName).toBe('SPAN');
+            expect(this.holderElement.classList.contains('ScrollbarsCustom')).toBeTruthy();
+            expect(this.holderElement.classList.contains('trackYVisible')).toBeTruthy();
+            expect(this.holderElement.classList.contains('trackXVisible')).toBeTruthy();
+            expect(this.holderElement.classList.contains('customHolderClassname')).toBeTruthy();
 
-            expect(this.wrapperElement.tagName).toBe("SPAN");
-            expect(this.wrapperElement.classList.contains("ScrollbarsCustom-Wrapper")).toBeTruthy();
-            expect(this.wrapperElement.classList.contains("customWrapperClassName")).toBeTruthy();
+            expect(this.wrapperElement.tagName).toBe('SPAN');
+            expect(this.wrapperElement.classList.contains('ScrollbarsCustom-Wrapper')).toBeTruthy();
+            expect(this.wrapperElement.classList.contains('customWrapperClassName')).toBeTruthy();
 
-            expect(this.scrollerElement.tagName).toBe("SPAN");
-            expect(this.scrollerElement.classList.contains("ScrollbarsCustom-Scroller")).toBeTruthy();
-            expect(this.scrollerElement.classList.contains("customScrollerClassName")).toBeTruthy();
+            expect(this.scrollerElement.tagName).toBe('SPAN');
+            expect(
+              this.scrollerElement.classList.contains('ScrollbarsCustom-Scroller')
+            ).toBeTruthy();
+            expect(this.scrollerElement.classList.contains('customScrollerClassName')).toBeTruthy();
 
-            expect(this.contentElement.tagName).toBe("SPAN");
-            expect(this.contentElement.classList.contains("ScrollbarsCustom-Content")).toBeTruthy();
-            expect(this.contentElement.classList.contains("customContentClassName")).toBeTruthy();
+            expect(this.contentElement.tagName).toBe('SPAN');
+            expect(this.contentElement.classList.contains('ScrollbarsCustom-Content')).toBeTruthy();
+            expect(this.contentElement.classList.contains('customContentClassName')).toBeTruthy();
 
-            expect(this.trackXElement.tagName).toBe("SPAN");
-            expect(this.trackXElement.classList.contains("ScrollbarsCustom-Track")).toBeTruthy();
-            expect(this.trackXElement.classList.contains("ScrollbarsCustom-TrackX")).toBeTruthy();
-            expect(this.trackXElement.classList.contains("customTrackXClassName")).toBeTruthy();
+            expect(this.trackXElement.tagName).toBe('SPAN');
+            expect(this.trackXElement.classList.contains('ScrollbarsCustom-Track')).toBeTruthy();
+            expect(this.trackXElement.classList.contains('ScrollbarsCustom-TrackX')).toBeTruthy();
+            expect(this.trackXElement.classList.contains('customTrackXClassName')).toBeTruthy();
 
-            expect(this.trackYElement.tagName).toBe("SPAN");
-            expect(this.trackYElement.classList.contains("ScrollbarsCustom-Track")).toBeTruthy();
-            expect(this.trackYElement.classList.contains("ScrollbarsCustom-TrackY")).toBeTruthy();
-            expect(this.trackYElement.classList.contains("customTrackYClassName")).toBeTruthy();
+            expect(this.trackYElement.tagName).toBe('SPAN');
+            expect(this.trackYElement.classList.contains('ScrollbarsCustom-Track')).toBeTruthy();
+            expect(this.trackYElement.classList.contains('ScrollbarsCustom-TrackY')).toBeTruthy();
+            expect(this.trackYElement.classList.contains('customTrackYClassName')).toBeTruthy();
 
-            expect(this.thumbXElement.tagName).toBe("SPAN");
-            expect(this.thumbXElement.classList.contains("ScrollbarsCustom-Thumb")).toBeTruthy();
-            expect(this.thumbXElement.classList.contains("ScrollbarsCustom-ThumbX")).toBeTruthy();
-            expect(this.thumbXElement.classList.contains("customThumbXClassName")).toBeTruthy();
+            expect(this.thumbXElement.tagName).toBe('SPAN');
+            expect(this.thumbXElement.classList.contains('ScrollbarsCustom-Thumb')).toBeTruthy();
+            expect(this.thumbXElement.classList.contains('ScrollbarsCustom-ThumbX')).toBeTruthy();
+            expect(this.thumbXElement.classList.contains('customThumbXClassName')).toBeTruthy();
 
-            expect(this.thumbYElement.tagName).toBe("SPAN");
-            expect(this.thumbYElement.classList.contains("ScrollbarsCustom-Thumb")).toBeTruthy();
-            expect(this.thumbYElement.classList.contains("ScrollbarsCustom-ThumbY")).toBeTruthy();
-            expect(this.thumbYElement.classList.contains("customThumbYClassName")).toBeTruthy();
+            expect(this.thumbYElement.tagName).toBe('SPAN');
+            expect(this.thumbYElement.classList.contains('ScrollbarsCustom-Thumb')).toBeTruthy();
+            expect(this.thumbYElement.classList.contains('ScrollbarsCustom-ThumbY')).toBeTruthy();
+            expect(this.thumbYElement.classList.contains('customThumbYClassName')).toBeTruthy();
 
             done();
           }, 60);
@@ -321,8 +326,8 @@ describe("Scrollbar", () => {
       );
     });
 
-    describe("in case of element absence", () => {
-      let renderer = function (props) {
+    describe('in case of element absence', () => {
+      const renderer = function (props) {
         return (
           <div className="custom stuff">
             <div>{props.children}</div>
@@ -338,8 +343,8 @@ describe("Scrollbar", () => {
 
         componentDidCatch(error, errorInfo) {
           this.setState({
-            error: error,
-            errorInfo: errorInfo,
+            error,
+            errorInfo,
           });
         }
 
@@ -352,7 +357,7 @@ describe("Scrollbar", () => {
         }
       }
 
-      it("should throw if holder element ref was not passed", (done) => {
+      it('should throw if holder element ref was not passed', (done) => {
         ReactDOM.render(
           <ErrorBoundary>
             <Scrollbar renderer={renderer} />
@@ -371,7 +376,7 @@ describe("Scrollbar", () => {
         );
       });
 
-      it("should throw if wrapper element ref was not passed", (done) => {
+      it('should throw if wrapper element ref was not passed', (done) => {
         ReactDOM.render(
           <ErrorBoundary>
             <Scrollbar wrapperProps={{ renderer }} />
@@ -390,7 +395,7 @@ describe("Scrollbar", () => {
         );
       });
 
-      it("should throw if scroller element ref was not passed", (done) => {
+      it('should throw if scroller element ref was not passed', (done) => {
         ReactDOM.render(
           <ErrorBoundary>
             <Scrollbar scrollerProps={{ renderer }} />
@@ -409,7 +414,7 @@ describe("Scrollbar", () => {
         );
       });
 
-      it("should throw if content element ref was not passed", (done) => {
+      it('should throw if content element ref was not passed', (done) => {
         ReactDOM.render(
           <ErrorBoundary>
             <Scrollbar contentProps={{ renderer }} />
@@ -428,7 +433,7 @@ describe("Scrollbar", () => {
         );
       });
 
-      it("should NOT throw if holder element ref was not passed and native=true", (done) => {
+      it('should NOT throw if holder element ref was not passed and native=true', (done) => {
         ReactDOM.render(
           <ErrorBoundary>
             <Scrollbar renderer={renderer} native />
@@ -443,7 +448,7 @@ describe("Scrollbar", () => {
         );
       });
 
-      it("should NOT throw if wrapper element ref was not passed and native=true", (done) => {
+      it('should NOT throw if wrapper element ref was not passed and native=true', (done) => {
         ReactDOM.render(
           <ErrorBoundary>
             <Scrollbar wrapperProps={{ renderer }} native />
@@ -459,7 +464,7 @@ describe("Scrollbar", () => {
       });
     });
 
-    it("should render tracks if no scroll needed (by default)", (done) => {
+    it('should render tracks if no scroll needed (by default)', (done) => {
       ReactDOM.render(
         <Scrollbar style={{ width: 100, height: 100 }}>
           <div style={{ width: 50, height: 50 }} />
@@ -478,7 +483,7 @@ describe("Scrollbar", () => {
       );
     });
 
-    it("should not render tracks if removeTracksWhenNotUsed passed", (done) => {
+    it('should not render tracks if removeTracksWhenNotUsed passed', (done) => {
       ReactDOM.render(
         <Scrollbar style={{ width: 100, height: 100 }} removeTracksWhenNotUsed>
           <div style={{ width: 50, height: 50 }} />
@@ -497,7 +502,7 @@ describe("Scrollbar", () => {
       );
     });
 
-    it("should not render Y track if removeTrackYWhenNotUsed passed", (done) => {
+    it('should not render Y track if removeTrackYWhenNotUsed passed', (done) => {
       ReactDOM.render(
         <Scrollbar style={{ width: 100, height: 100 }} removeTrackYWhenNotUsed>
           <div style={{ width: 50, height: 50 }} />
@@ -516,7 +521,7 @@ describe("Scrollbar", () => {
       );
     });
 
-    it("should not render X track if removeTrackYWhenNotUsed passed", (done) => {
+    it('should not render X track if removeTrackYWhenNotUsed passed', (done) => {
       ReactDOM.render(
         <Scrollbar style={{ width: 100, height: 100 }} removeTrackXWhenNotUsed>
           <div style={{ width: 50, height: 50 }} />
@@ -536,8 +541,8 @@ describe("Scrollbar", () => {
     });
   });
 
-  describe("native", () => {
-    it("should render scroller content element with given classnames", (done) => {
+  describe('native', () => {
+    it('should render scroller content element with given classnames', (done) => {
       ReactDOM.render(
         <Scrollbar style={{ width: 100, height: 70 }} native rtl className="customHolderClassname">
           <div style={{ width: 200, height: 210 }} />
@@ -552,22 +557,22 @@ describe("Scrollbar", () => {
             expect(this.trackXElement).toBeNull();
             expect(this.thumbXElement).toBeNull();
 
-            expect(this.scrollerElement.__proto__.toString()).toBe("[object HTMLDivElement]");
-            expect(this.contentElement.__proto__.toString()).toBe("[object HTMLDivElement]");
-            expect(this.scrollerElement.classList.contains("native")).toBeTruthy();
-            expect(this.scrollerElement.classList.contains("rtl")).toBeTruthy();
-            expect(this.scrollerElement.classList.contains("trackYVisible")).toBeTruthy();
-            expect(this.scrollerElement.classList.contains("trackXVisible")).toBeTruthy();
-            expect(this.scrollerElement.classList.contains("ScrollbarsCustom")).toBeTruthy();
+            expect(this.scrollerElement.__proto__.toString()).toBe('[object HTMLDivElement]');
+            expect(this.contentElement.__proto__.toString()).toBe('[object HTMLDivElement]');
+            expect(this.scrollerElement.classList.contains('native')).toBeTruthy();
+            expect(this.scrollerElement.classList.contains('rtl')).toBeTruthy();
+            expect(this.scrollerElement.classList.contains('trackYVisible')).toBeTruthy();
+            expect(this.scrollerElement.classList.contains('trackXVisible')).toBeTruthy();
+            expect(this.scrollerElement.classList.contains('ScrollbarsCustom')).toBeTruthy();
 
-            expect(this.contentElement.classList.contains("ScrollbarsCustom-Content")).toBeTruthy();
+            expect(this.contentElement.classList.contains('ScrollbarsCustom-Content')).toBeTruthy();
             done();
           }, 30);
         }
       );
     });
 
-    it("should render native when `mobileNative` passed and `scrollbarWidth` is 0", (done) => {
+    it('should render native when `mobileNative` passed and `scrollbarWidth` is 0', (done) => {
       ReactDOM.render(
         <Scrollbar style={{ width: 100, height: 70 }} mobileNative scrollbarWidth={0}>
           <div style={{ width: 200, height: 210 }} />
@@ -575,15 +580,15 @@ describe("Scrollbar", () => {
         getNode(),
         function () {
           setTimeout(() => {
-            expect(this.scrollerElement.classList.contains("native")).toBeTruthy();
-            expect(this.contentElement.classList.contains("ScrollbarsCustom-Content")).toBeTruthy();
+            expect(this.scrollerElement.classList.contains('native')).toBeTruthy();
+            expect(this.contentElement.classList.contains('ScrollbarsCustom-Content')).toBeTruthy();
             done();
           }, 30);
         }
       );
     });
 
-    it("should apply props scroll values", (done) => {
+    it('should apply props scroll values', (done) => {
       ReactDOM.render(
         <Scrollbar style={{ width: 100, height: 70 }} native scrollLeft={20} scrollTop={40}>
           <div style={{ width: 200, height: 210 }} />
@@ -599,89 +604,89 @@ describe("Scrollbar", () => {
       );
     });
 
-    it("should apply noScroll parameter", (done) => {
+    it('should apply noScroll parameter', (done) => {
       ReactDOM.render(
         <Scrollbar native noScroll style={{ width: 100, height: 70 }}>
           <div style={{ width: 200, height: 210 }} />
         </Scrollbar>,
         getNode(),
         function () {
-          expect(this.scrollerElement.style.overflowX).toBe("hidden");
-          expect(this.scrollerElement.style.overflowY).toBe("hidden");
+          expect(this.scrollerElement.style.overflowX).toBe('hidden');
+          expect(this.scrollerElement.style.overflowY).toBe('hidden');
           done();
         }
       );
     });
-    it("should apply noScrollX parameter", (done) => {
+    it('should apply noScrollX parameter', (done) => {
       ReactDOM.render(
         <Scrollbar native noScrollX style={{ width: 100, height: 70 }}>
           <div style={{ width: 200, height: 210 }} />
         </Scrollbar>,
         getNode(),
         function () {
-          expect(this.scrollerElement.style.overflowX).toBe("hidden");
-          expect(this.scrollerElement.style.overflowY).not.toBe("hidden");
+          expect(this.scrollerElement.style.overflowX).toBe('hidden');
+          expect(this.scrollerElement.style.overflowY).not.toBe('hidden');
           done();
         }
       );
     });
-    it("should apply noScrollY parameter", (done) => {
+    it('should apply noScrollY parameter', (done) => {
       ReactDOM.render(
         <Scrollbar native noScrollY style={{ width: 100, height: 70 }}>
           <div style={{ width: 200, height: 210 }} />
         </Scrollbar>,
         getNode(),
         function () {
-          expect(this.scrollerElement.style.overflowX).not.toBe("hidden");
-          expect(this.scrollerElement.style.overflowY).toBe("hidden");
+          expect(this.scrollerElement.style.overflowX).not.toBe('hidden');
+          expect(this.scrollerElement.style.overflowY).toBe('hidden');
           done();
         }
       );
     });
 
-    it("should apply permanentTracks parameter", (done) => {
+    it('should apply permanentTracks parameter', (done) => {
       ReactDOM.render(
         <Scrollbar native permanentTracks style={{ width: 100, height: 70 }}>
           <div style={{ width: 50, height: 50 }} />
         </Scrollbar>,
         getNode(),
         function () {
-          expect(this.scrollerElement.style.overflowX).toBe("scroll");
-          expect(this.scrollerElement.style.overflowY).toBe("scroll");
+          expect(this.scrollerElement.style.overflowX).toBe('scroll');
+          expect(this.scrollerElement.style.overflowY).toBe('scroll');
           done();
         }
       );
     });
-    it("should apply permanentTrackX parameter", (done) => {
+    it('should apply permanentTrackX parameter', (done) => {
       ReactDOM.render(
         <Scrollbar native permanentTrackX style={{ width: 100, height: 70 }}>
           <div style={{ width: 50, height: 50 }} />
         </Scrollbar>,
         getNode(),
         function () {
-          expect(this.scrollerElement.style.overflowX).toBe("scroll");
-          expect(this.scrollerElement.style.overflowY).not.toBe("scroll");
+          expect(this.scrollerElement.style.overflowX).toBe('scroll');
+          expect(this.scrollerElement.style.overflowY).not.toBe('scroll');
           done();
         }
       );
     });
-    it("should apply permanentTrackY parameter", (done) => {
+    it('should apply permanentTrackY parameter', (done) => {
       ReactDOM.render(
         <Scrollbar native permanentTrackY style={{ width: 100, height: 70 }}>
           <div style={{ width: 50, height: 50 }} />
         </Scrollbar>,
         getNode(),
         function () {
-          expect(this.scrollerElement.style.overflowX).not.toBe("scroll");
-          expect(this.scrollerElement.style.overflowY).toBe("scroll");
+          expect(this.scrollerElement.style.overflowX).not.toBe('scroll');
+          expect(this.scrollerElement.style.overflowY).toBe('scroll');
           done();
         }
       );
     });
   });
 
-  describe("scroll setters", () => {
-    describe(".scrollToRight()", () => {
+  describe('scroll setters', () => {
+    describe('.scrollToRight()', () => {
       it("should scroll to the right content's border", (done) => {
         ReactDOM.render(
           <Scrollbar style={{ width: 100, height: 100 }}>
@@ -700,7 +705,7 @@ describe("Scrollbar", () => {
         );
       });
     });
-    describe(".scrollToLeft()", () => {
+    describe('.scrollToLeft()', () => {
       it("should scroll to the left content's border", (done) => {
         ReactDOM.render(
           <Scrollbar style={{ width: 100, height: 100 }}>
@@ -720,7 +725,7 @@ describe("Scrollbar", () => {
         );
       });
     });
-    describe(".scrollToBottom()", () => {
+    describe('.scrollToBottom()', () => {
       it("should scroll to the bottom content's border", (done) => {
         ReactDOM.render(
           <Scrollbar style={{ width: 100, height: 100 }}>
@@ -739,7 +744,7 @@ describe("Scrollbar", () => {
         );
       });
     });
-    describe(".scrollToTop()", () => {
+    describe('.scrollToTop()', () => {
       it("should scroll to the top content's border", (done) => {
         ReactDOM.render(
           <Scrollbar style={{ width: 100, height: 100 }}>
@@ -759,7 +764,7 @@ describe("Scrollbar", () => {
         );
       });
     });
-    describe(".scrollTo(x,y)", () => {
+    describe('.scrollTo(x,y)', () => {
       it("should set left top viewport's corner at given coordinates ", (done) => {
         ReactDOM.render(
           <Scrollbar style={{ width: 100, height: 100 }}>
@@ -779,8 +784,8 @@ describe("Scrollbar", () => {
         );
       });
     });
-    describe(".centerAt(x,y)", () => {
-      it("should center the viewport at given coordinates ", (done) => {
+    describe('.centerAt(x,y)', () => {
+      it('should center the viewport at given coordinates ', (done) => {
         ReactDOM.render(
           <Scrollbar style={{ width: 100, height: 100 }}>
             <div style={{ width: 900, height: 1000 }} />
@@ -799,7 +804,7 @@ describe("Scrollbar", () => {
         );
       });
     });
-    describe(".scrollTop", () => {
+    describe('.scrollTop', () => {
       it("should set the content's scrollTop position", (done) => {
         ReactDOM.render(
           <Scrollbar style={{ width: 100, height: 100 }}>
@@ -815,7 +820,7 @@ describe("Scrollbar", () => {
         );
       });
     });
-    describe(".scrollLeft", () => {
+    describe('.scrollLeft', () => {
       it("should set the content's scrollTop position", (done) => {
         ReactDOM.render(
           <Scrollbar style={{ width: 100, height: 100 }}>
@@ -832,15 +837,15 @@ describe("Scrollbar", () => {
       });
     });
 
-    describe("in case of scroller element absence *just for LOC coverage*", () => {
-      it("do nothing", (done) => {
+    describe('in case of scroller element absence *just for LOC coverage*', () => {
+      it('do nothing', (done) => {
         ReactDOM.render(
           <Scrollbar style={{ width: 100, height: 100 }}>
             <div style={{ width: 900, height: 1000 }} />
           </Scrollbar>,
           getNode(),
           function () {
-            //simulate weird behaviour
+            // simulate weird behaviour
             this.scrollerElement = null;
 
             this.scrollLeft = 100;
@@ -861,9 +866,9 @@ describe("Scrollbar", () => {
     });
   });
 
-  describe("scroll getters", () => {
-    describe(".getScrollValues", () => {
-      it("should return proper values", (done) => {
+  describe('scroll getters', () => {
+    describe('.getScrollValues', () => {
+      it('should return proper values', (done) => {
         ReactDOM.render(
           <Scrollbar style={{ width: 100, height: 100 }} scrollTop={450} scrollLeft={400}>
             <div style={{ width: 900, height: 1000 }} />
@@ -894,8 +899,8 @@ describe("Scrollbar", () => {
       });
     });
 
-    describe(".scrollTop", () => {
-      it("should return proper value", (done) => {
+    describe('.scrollTop', () => {
+      it('should return proper value', (done) => {
         ReactDOM.render(
           <Scrollbar style={{ width: 100, height: 100 }}>
             <div style={{ width: 900, height: 1000 }} />
@@ -912,8 +917,8 @@ describe("Scrollbar", () => {
       });
     });
 
-    describe(".scrollLeft", () => {
-      it("should return proper value", (done) => {
+    describe('.scrollLeft', () => {
+      it('should return proper value', (done) => {
         ReactDOM.render(
           <Scrollbar style={{ width: 100, height: 100 }}>
             <div style={{ width: 900, height: 1000 }} />
@@ -929,8 +934,8 @@ describe("Scrollbar", () => {
       });
     });
 
-    describe(".scrollHeight", () => {
-      it("should return proper value", (done) => {
+    describe('.scrollHeight', () => {
+      it('should return proper value', (done) => {
         ReactDOM.render(
           <Scrollbar style={{ width: 100, height: 100 }}>
             <div style={{ width: 900, height: 1000 }} />
@@ -945,8 +950,8 @@ describe("Scrollbar", () => {
       });
     });
 
-    describe(".scrollWidth", () => {
-      it("should return proper value", (done) => {
+    describe('.scrollWidth', () => {
+      it('should return proper value', (done) => {
         ReactDOM.render(
           <Scrollbar style={{ width: 100, height: 100 }}>
             <div style={{ width: 900, height: 1000 }} />
@@ -961,8 +966,8 @@ describe("Scrollbar", () => {
       });
     });
 
-    describe(".clientHeight", () => {
-      it("should return proper value", (done) => {
+    describe('.clientHeight', () => {
+      it('should return proper value', (done) => {
         ReactDOM.render(
           <Scrollbar style={{ width: 100, height: 200 }}>
             <div style={{ width: 900, height: 1000 }} />
@@ -977,8 +982,8 @@ describe("Scrollbar", () => {
       });
     });
 
-    describe(".clientWidth", () => {
-      it("should return proper value", (done) => {
+    describe('.clientWidth', () => {
+      it('should return proper value', (done) => {
         ReactDOM.render(
           <Scrollbar style={{ width: 100, height: 200 }}>
             <div style={{ width: 900, height: 1000 }} />
@@ -993,15 +998,15 @@ describe("Scrollbar", () => {
       });
     });
 
-    describe("in case of scroller element absence *just for LOC coverage*", () => {
-      it("return 0", (done) => {
+    describe('in case of scroller element absence *just for LOC coverage*', () => {
+      it('return 0', (done) => {
         ReactDOM.render(
           <Scrollbar style={{ width: 100, height: 100 }}>
             <div style={{ width: 900, height: 1000 }} />
           </Scrollbar>,
           getNode(),
           function () {
-            //simulate weird behaviour
+            // simulate weird behaviour
             this.scrollerElement = null;
 
             expect(this.scrollLeft).toBe(0);
@@ -1018,9 +1023,9 @@ describe("Scrollbar", () => {
     });
   });
 
-  describe("props", () => {
+  describe('props', () => {
     describe("should not compensate respective track's width", () => {
-      it("if disableTracksWidthCompensation passed", (done) => {
+      it('if disableTracksWidthCompensation passed', (done) => {
         ReactDOM.render(
           <Scrollbar style={{ width: 100, height: 110 }} disableTracksWidthCompensation>
             <div style={{ width: 200, height: 210 }} />
@@ -1035,7 +1040,7 @@ describe("Scrollbar", () => {
           }
         );
       });
-      it("if disableTrackYWidthCompensation passed", (done) => {
+      it('if disableTrackYWidthCompensation passed', (done) => {
         ReactDOM.render(
           <Scrollbar style={{ width: 100, height: 110 }} disableTrackYWidthCompensation>
             <div style={{ width: 200, height: 210 }} />
@@ -1051,7 +1056,7 @@ describe("Scrollbar", () => {
         );
       });
 
-      it("if disableTrackXWidthCompensation passed", (done) => {
+      it('if disableTrackXWidthCompensation passed', (done) => {
         ReactDOM.render(
           <Scrollbar style={{ width: 100, height: 110 }} disableTrackXWidthCompensation>
             <div style={{ width: 200, height: 210 }} />
@@ -1116,7 +1121,7 @@ describe("Scrollbar", () => {
       );
     });
 
-    it("should create context if createContext is passed", (done) => {
+    it('should create context if createContext is passed', (done) => {
       let consumedContext: ScrollbarContextValue;
 
       class ScrollbarContextConsumer extends React.Component<{}, {}> {
@@ -1146,7 +1151,7 @@ describe("Scrollbar", () => {
       );
     });
 
-    it("should apply props scroll values", (done) => {
+    it('should apply props scroll values', (done) => {
       ReactDOM.render(
         <Scrollbar style={{ width: 100, height: 70 }} scrollLeft={20} scrollTop={40}>
           <div style={{ width: 200, height: 210 }} />
@@ -1162,22 +1167,25 @@ describe("Scrollbar", () => {
       );
     });
 
-    it("should apply fallback scrollbar width if scrollbarWidth is 0", (done) => {
+    it('should apply fallback scrollbar width if scrollbarWidth is 0', (done) => {
       ReactDOM.render(
-        <Scrollbar style={{ width: 100, height: 70 }} scrollbarWidth={0} fallbackScrollbarWidth={11}>
+        <Scrollbar
+          style={{ width: 100, height: 70 }}
+          scrollbarWidth={0}
+          fallbackScrollbarWidth={11}>
           <div style={{ width: 200, height: 210 }} />
         </Scrollbar>,
         getNode(),
         function () {
           setTimeout(() => {
-            expect(this.scrollerElement.style.marginRight).toBe("-11px");
+            expect(this.scrollerElement.style.marginRight).toBe('-11px');
             done();
           }, 30);
         }
       );
     });
 
-    it("should apply props scroll values", (done) => {
+    it('should apply props scroll values', (done) => {
       ReactDOM.render(
         <Scrollbar style={{ width: 100, height: 70 }} scrollLeft={20} scrollTop={40}>
           <div style={{ width: 200, height: 210 }} />
@@ -1193,7 +1201,7 @@ describe("Scrollbar", () => {
       );
     });
 
-    it("should apply noScroll parameter", (done) => {
+    it('should apply noScroll parameter', (done) => {
       ReactDOM.render(
         <Scrollbar noScroll style={{ width: 100, height: 70 }}>
           <div style={{ width: 200, height: 210 }} />
@@ -1201,14 +1209,14 @@ describe("Scrollbar", () => {
         getNode(),
         function () {
           setTimeout(() => {
-            expect(this.scrollerElement.style.overflowX).toBe("hidden");
-            expect(this.scrollerElement.style.overflowY).toBe("hidden");
+            expect(this.scrollerElement.style.overflowX).toBe('hidden');
+            expect(this.scrollerElement.style.overflowY).toBe('hidden');
             done();
           }, 50);
         }
       );
     });
-    it("should apply noScrollX parameter", (done) => {
+    it('should apply noScrollX parameter', (done) => {
       ReactDOM.render(
         <Scrollbar noScrollX style={{ width: 100, height: 70 }}>
           <div style={{ width: 200, height: 210 }} />
@@ -1216,14 +1224,14 @@ describe("Scrollbar", () => {
         getNode(),
         function () {
           setTimeout(() => {
-            expect(this.scrollerElement.style.overflowX).toBe("hidden");
-            expect(this.scrollerElement.style.overflowY).not.toBe("hidden");
+            expect(this.scrollerElement.style.overflowX).toBe('hidden');
+            expect(this.scrollerElement.style.overflowY).not.toBe('hidden');
             done();
           }, 30);
         }
       );
     });
-    it("should apply noScrollY parameter", (done) => {
+    it('should apply noScrollY parameter', (done) => {
       ReactDOM.render(
         <Scrollbar noScrollY style={{ width: 100, height: 70 }}>
           <div style={{ width: 200, height: 210 }} />
@@ -1231,15 +1239,15 @@ describe("Scrollbar", () => {
         getNode(),
         function () {
           setTimeout(() => {
-            expect(this.scrollerElement.style.overflowX).not.toBe("hidden");
-            expect(this.scrollerElement.style.overflowY).toBe("hidden");
+            expect(this.scrollerElement.style.overflowX).not.toBe('hidden');
+            expect(this.scrollerElement.style.overflowY).toBe('hidden');
             done();
           }, 30);
         }
       );
     });
 
-    it("should apply permanentTracks parameter", (done) => {
+    it('should apply permanentTracks parameter', (done) => {
       ReactDOM.render(
         <Scrollbar permanentTracks style={{ width: 100, height: 70 }}>
           <div style={{ width: 50, height: 50 }} />
@@ -1247,15 +1255,15 @@ describe("Scrollbar", () => {
         getNode(),
         function () {
           setTimeout(() => {
-            expect(this.trackYElement.style.display).not.toBe("none");
-            expect(this.trackXElement.style.display).not.toBe("none");
+            expect(this.trackYElement.style.display).not.toBe('none');
+            expect(this.trackXElement.style.display).not.toBe('none');
 
             done();
           }, 30);
         }
       );
     });
-    it("should apply permanentTrackX parameter", (done) => {
+    it('should apply permanentTrackX parameter', (done) => {
       ReactDOM.render(
         <Scrollbar permanentTrackX style={{ width: 100, height: 70 }}>
           <div style={{ width: 50, height: 50 }} />
@@ -1263,15 +1271,15 @@ describe("Scrollbar", () => {
         getNode(),
         function () {
           setTimeout(() => {
-            expect(this.trackYElement.style.display).toBe("none");
-            expect(this.trackXElement.style.display).not.toBe("none");
+            expect(this.trackYElement.style.display).toBe('none');
+            expect(this.trackXElement.style.display).not.toBe('none');
 
             done();
           }, 30);
         }
       );
     });
-    it("should apply permanentTrackY parameter", (done) => {
+    it('should apply permanentTrackY parameter', (done) => {
       ReactDOM.render(
         <Scrollbar permanentTrackY style={{ width: 100, height: 70 }}>
           <div style={{ width: 50, height: 50 }} />
@@ -1279,8 +1287,8 @@ describe("Scrollbar", () => {
         getNode(),
         function () {
           setTimeout(() => {
-            expect(this.trackYElement.style.display).not.toBe("none");
-            expect(this.trackXElement.style.display).toBe("none");
+            expect(this.trackYElement.style.display).not.toBe('none');
+            expect(this.trackXElement.style.display).toBe('none');
 
             done();
           }, 30);
@@ -1288,14 +1296,13 @@ describe("Scrollbar", () => {
       );
     });
 
-    describe("should update state state when respective props changed", () => {
-      it("should update rtl state", (done) => {
+    describe('should update state state when respective props changed', () => {
+      it('should update rtl state', (done) => {
         let setScrollbarProps;
         ReactDOM.render(
           <ScrollbarPropsUpdater
             ref={(ref) => (setScrollbarProps = ref && ref.setScrollbarProps)}
-            scrollbarProps={{ style: { width: 100, height: 70 } }}
-          >
+            scrollbarProps={{ style: { width: 100, height: 70 } }}>
             <div style={{ width: 200, height: 200 }} />
           </ScrollbarPropsUpdater>,
           getNode(),
@@ -1315,13 +1322,12 @@ describe("Scrollbar", () => {
         );
       });
 
-      it("should update scrollTop and scrollLeft", (done) => {
+      it('should update scrollTop and scrollLeft', (done) => {
         let setScrollbarProps;
         ReactDOM.render(
           <ScrollbarPropsUpdater
             ref={(ref) => (setScrollbarProps = ref && ref.setScrollbarProps)}
-            scrollbarProps={{ style: { width: 100, height: 70 } }}
-          >
+            scrollbarProps={{ style: { width: 100, height: 70 } }}>
             <div style={{ width: 200, height: 200 }} />
           </ScrollbarPropsUpdater>,
           getNode(),
@@ -1357,13 +1363,12 @@ describe("Scrollbar", () => {
         );
       });
 
-      it("should update noScroll* props", (done) => {
+      it('should update noScroll* props', (done) => {
         let setScrollbarProps;
         ReactDOM.render(
           <ScrollbarPropsUpdater
             ref={(ref) => (setScrollbarProps = ref && ref.setScrollbarProps)}
-            scrollbarProps={{ style: { width: 100, height: 70 } }}
-          >
+            scrollbarProps={{ style: { width: 100, height: 70 } }}>
             <div style={{ width: 200, height: 200 }} />
           </ScrollbarPropsUpdater>,
           getNode(),
@@ -1373,29 +1378,29 @@ describe("Scrollbar", () => {
               noScroll: true,
             });
             setTimeout(() => {
-              expect(this.scrollbar.scrollerElement.style.overflowX).toBe("hidden");
-              expect(this.scrollbar.scrollerElement.style.overflowY).toBe("hidden");
+              expect(this.scrollbar.scrollerElement.style.overflowX).toBe('hidden');
+              expect(this.scrollbar.scrollerElement.style.overflowY).toBe('hidden');
 
               setScrollbarProps({
                 style: { width: 100, height: 70 },
                 noScrollX: true,
               });
               setTimeout(() => {
-                expect(this.scrollbar.scrollerElement.style.overflowX).toBe("hidden");
-                expect(this.scrollbar.scrollerElement.style.overflowY).not.toBe("hidden");
+                expect(this.scrollbar.scrollerElement.style.overflowX).toBe('hidden');
+                expect(this.scrollbar.scrollerElement.style.overflowY).not.toBe('hidden');
 
                 setScrollbarProps({
                   style: { width: 100, height: 70 },
                   noScrollY: true,
                 });
                 setTimeout(() => {
-                  expect(this.scrollbar.scrollerElement.style.overflowX).not.toBe("hidden");
-                  expect(this.scrollbar.scrollerElement.style.overflowY).toBe("hidden");
+                  expect(this.scrollbar.scrollerElement.style.overflowX).not.toBe('hidden');
+                  expect(this.scrollbar.scrollerElement.style.overflowY).toBe('hidden');
 
                   setScrollbarProps({ style: { width: 100, height: 70 } });
                   setTimeout(() => {
-                    expect(this.scrollbar.scrollerElement.style.overflowX).not.toBe("hidden");
-                    expect(this.scrollbar.scrollerElement.style.overflowY).not.toBe("hidden");
+                    expect(this.scrollbar.scrollerElement.style.overflowX).not.toBe('hidden');
+                    expect(this.scrollbar.scrollerElement.style.overflowY).not.toBe('hidden');
 
                     done();
                   }, 30);
@@ -1406,7 +1411,7 @@ describe("Scrollbar", () => {
         );
       });
 
-      it("should update permanentTrack* props", (done) => {
+      it('should update permanentTrack* props', (done) => {
         let setScrollbarProps;
         ReactDOM.render(
           <ScrollbarPropsUpdater
@@ -1414,8 +1419,7 @@ describe("Scrollbar", () => {
             scrollbarProps={{
               style: { width: 100, height: 70 },
               noScroll: true,
-            }}
-          >
+            }}>
             <div style={{ width: 200, height: 200 }} />
           </ScrollbarPropsUpdater>,
           getNode(),
@@ -1426,8 +1430,8 @@ describe("Scrollbar", () => {
               permanentTracks: true,
             });
             setTimeout(() => {
-              expect(this.scrollbar.trackXElement.style.display).not.toBe("none");
-              expect(this.scrollbar.trackYElement.style.display).not.toBe("none");
+              expect(this.scrollbar.trackXElement.style.display).not.toBe('none');
+              expect(this.scrollbar.trackYElement.style.display).not.toBe('none');
 
               setScrollbarProps({
                 style: { width: 100, height: 70 },
@@ -1435,8 +1439,8 @@ describe("Scrollbar", () => {
                 permanentTrackX: true,
               });
               setTimeout(() => {
-                expect(this.scrollbar.trackXElement.style.display).not.toBe("none");
-                expect(this.scrollbar.trackYElement.style.display).toBe("none");
+                expect(this.scrollbar.trackXElement.style.display).not.toBe('none');
+                expect(this.scrollbar.trackYElement.style.display).toBe('none');
 
                 setScrollbarProps({
                   style: { width: 100, height: 70 },
@@ -1444,16 +1448,16 @@ describe("Scrollbar", () => {
                   permanentTrackY: true,
                 });
                 setTimeout(() => {
-                  expect(this.scrollbar.trackXElement.style.display).toBe("none");
-                  expect(this.scrollbar.trackYElement.style.display).not.toBe("none");
+                  expect(this.scrollbar.trackXElement.style.display).toBe('none');
+                  expect(this.scrollbar.trackYElement.style.display).not.toBe('none');
 
                   setScrollbarProps({
                     style: { width: 100, height: 70 },
                     noScroll: true,
                   });
                   setTimeout(() => {
-                    expect(this.scrollbar.trackXElement.style.display).toBe("none");
-                    expect(this.scrollbar.trackYElement.style.display).toBe("none");
+                    expect(this.scrollbar.trackXElement.style.display).toBe('none');
+                    expect(this.scrollbar.trackYElement.style.display).toBe('none');
 
                     done();
                   }, 30);
@@ -1466,8 +1470,8 @@ describe("Scrollbar", () => {
     });
   });
 
-  describe("static methods", () => {
-    describe(".calculateStyles()", () => {
+  describe('static methods', () => {
+    describe('.calculateStyles()', () => {
       const props: ScrollbarProps = {
         wrapperProps: {},
         contentProps: {},
@@ -1503,7 +1507,7 @@ describe("Scrollbar", () => {
         zoomLevel: 1,
       };
 
-      it("should return proper rtl styles", () => {
+      it('should return proper rtl styles', () => {
         let result = Scrollbar.calculateStyles(
           {
             ...props,
@@ -1517,7 +1521,7 @@ describe("Scrollbar", () => {
           17
         );
 
-        expect(result.scroller.direction).toBe("rtl");
+        expect(result.scroller.direction).toBe('rtl');
         expect(result.wrapper.left).toBe(10);
 
         result = Scrollbar.calculateStyles(
@@ -1532,7 +1536,7 @@ describe("Scrollbar", () => {
           scrollState,
           17
         );
-        expect(result.scroller.direction).toBe("ltr");
+        expect(result.scroller.direction).toBe('ltr');
         expect(result.wrapper.right).toBe(10);
 
         result = Scrollbar.calculateStyles(
@@ -1551,7 +1555,7 @@ describe("Scrollbar", () => {
         expect(result.wrapper.right).toBe(10);
       });
 
-      it("should return proper content paddings for mobile browsers", () => {
+      it('should return proper content paddings for mobile browsers', () => {
         let result = Scrollbar.calculateStyles(
           {
             ...props,
@@ -1613,8 +1617,8 @@ describe("Scrollbar", () => {
     });
   });
 
-  describe("callbacks", () => {
-    it("these goes for coverage to ensure it is triggered", (done) => {
+  describe('callbacks', () => {
+    it('these goes for coverage to ensure it is triggered', (done) => {
       const onUpdateSpy1 = jasmine.createSpy();
       const onUpdateSpy2 = jasmine.createSpy();
 
@@ -1637,8 +1641,7 @@ describe("Scrollbar", () => {
             onScroll: onScrollSpy1,
             onScrollStart: onScrollStartSpy1,
             onScrollStop: onScrollStopSpy1,
-          }}
-        >
+          }}>
           <div style={{ width: 200, height: 200 }} />
         </ScrollbarPropsUpdater>,
         getNode(),
@@ -1657,9 +1660,9 @@ describe("Scrollbar", () => {
       );
     });
 
-    it("should call an onScroll only if scroll has changed", (done) => {
+    it('should call an onScroll only if scroll has changed', (done) => {
       let setScrollbarProps;
-      let spy = jasmine.createSpy("scroll", (scrollValues) => {
+      const spy = jasmine.createSpy('scroll', (scrollValues) => {
         console.log(scrollValues.scrollTop, scrollValues.scrollLeft);
       });
 
@@ -1670,8 +1673,7 @@ describe("Scrollbar", () => {
             style: { width: 100, height: 70 },
             noScroll: true,
             onScroll: spy,
-          }}
-        >
+          }}>
           <div style={{ width: 200, height: 200 }} />
         </ScrollbarPropsUpdater>,
         getNode(),
@@ -1707,11 +1709,10 @@ describe("Scrollbar", () => {
 
       ReactDOM.render(
         <Scrollbar
-          style={{ width: 100, height: 100, position: "relative" }}
+          style={{ width: 100, height: 100, position: 'relative' }}
           trackXProps={{ onClick: spyX }}
           trackYProps={{ onClick: spyY }}
-          noScroll
-        >
+          noScroll>
           <div style={{ width: 1000, height: 1000 }} />
         </Scrollbar>,
         getNode(),
@@ -1730,12 +1731,12 @@ describe("Scrollbar", () => {
               width: widthY,
             } = this.trackYElement.getBoundingClientRect();
 
-            simulant.fire(this.trackXElement, "click", {
+            simulant.fire(this.trackXElement, 'click', {
               which: 1,
               clientY: topX + heightX / 2,
               clientX: leftX + widthX / 2,
             });
-            simulant.fire(this.trackYElement, "click", {
+            simulant.fire(this.trackYElement, 'click', {
               which: 1,
               clientY: topY + heightY / 2,
               clientX: leftY + widthY / 2,
@@ -1761,8 +1762,7 @@ describe("Scrollbar", () => {
           trackClickBehavior={TRACK_CLICK_BEHAVIOR.JUMP}
           trackXProps={{ onWheel: spyX }}
           trackYProps={{ onWheel: spyY }}
-          style={{ width: 100, height: 100, position: "relative" }}
-        >
+          style={{ width: 100, height: 100, position: 'relative' }}>
           <div style={{ width: 1000, height: 1000 }} />
         </Scrollbar>,
         getNode(),
@@ -1790,13 +1790,12 @@ describe("Scrollbar", () => {
     });
   });
 
-  describe("track interaction", () => {
-    it("should perform a scroll while mousewheel over tracks", (done) => {
+  describe('track interaction', () => {
+    it('should perform a scroll while mousewheel over tracks', (done) => {
       ReactDOM.render(
         <Scrollbar
           trackClickBehavior={TRACK_CLICK_BEHAVIOR.JUMP}
-          style={{ width: 100, height: 100, position: "relative" }}
-        >
+          style={{ width: 100, height: 100, position: 'relative' }}>
           <div style={{ width: 1000, height: 1000 }} />
         </Scrollbar>,
         getNode(),
@@ -1823,13 +1822,12 @@ describe("Scrollbar", () => {
       );
     });
 
-    it("should not perform a scroll while mousewheel over tracks and `disableTracksMousewheelScrolling` passed", (done) => {
+    it('should not perform a scroll while mousewheel over tracks and `disableTracksMousewheelScrolling` passed', (done) => {
       ReactDOM.render(
         <Scrollbar
           trackClickBehavior={TRACK_CLICK_BEHAVIOR.JUMP}
-          style={{ width: 100, height: 100, position: "relative" }}
-          disableTracksMousewheelScrolling
-        >
+          style={{ width: 100, height: 100, position: 'relative' }}
+          disableTracksMousewheelScrolling>
           <div style={{ width: 1000, height: 1000 }} />
         </Scrollbar>,
         getNode(),
@@ -1856,13 +1854,12 @@ describe("Scrollbar", () => {
       );
     });
 
-    it("should not perform vertical scroll while mousewheel over tracks and `disableTrackYMousewheelScrolling` passed", (done) => {
+    it('should not perform vertical scroll while mousewheel over tracks and `disableTrackYMousewheelScrolling` passed', (done) => {
       ReactDOM.render(
         <Scrollbar
           trackClickBehavior={TRACK_CLICK_BEHAVIOR.JUMP}
-          style={{ width: 100, height: 100, position: "relative" }}
-          disableTrackYMousewheelScrolling
-        >
+          style={{ width: 100, height: 100, position: 'relative' }}
+          disableTrackYMousewheelScrolling>
           <div style={{ width: 1000, height: 1000 }} />
         </Scrollbar>,
         getNode(),
@@ -1889,13 +1886,12 @@ describe("Scrollbar", () => {
       );
     });
 
-    it("should not perform vertical scroll while mousewheel over tracks and `disableTrackXMousewheelScrolling` passed", (done) => {
+    it('should not perform vertical scroll while mousewheel over tracks and `disableTrackXMousewheelScrolling` passed', (done) => {
       ReactDOM.render(
         <Scrollbar
           trackClickBehavior={TRACK_CLICK_BEHAVIOR.JUMP}
-          style={{ width: 100, height: 100, position: "relative" }}
-          disableTrackXMousewheelScrolling
-        >
+          style={{ width: 100, height: 100, position: 'relative' }}
+          disableTrackXMousewheelScrolling>
           <div style={{ width: 1000, height: 1000 }} />
         </Scrollbar>,
         getNode(),
@@ -1922,13 +1918,12 @@ describe("Scrollbar", () => {
       );
     });
 
-    it("should not perform a scroll while mousewheel over tracks and scrolling is diabled", (done) => {
+    it('should not perform a scroll while mousewheel over tracks and scrolling is diabled', (done) => {
       ReactDOM.render(
         <Scrollbar
           trackClickBehavior={TRACK_CLICK_BEHAVIOR.JUMP}
-          style={{ width: 100, height: 100, position: "relative" }}
-          noScroll
-        >
+          style={{ width: 100, height: 100, position: 'relative' }}
+          noScroll>
           <div style={{ width: 1000, height: 1000 }} />
         </Scrollbar>,
         getNode(),
@@ -1955,26 +1950,35 @@ describe("Scrollbar", () => {
       );
     });
 
-    it("should not perform a scroll if scrolling disabled", (done) => {
+    it('should not perform a scroll if scrolling disabled', (done) => {
       ReactDOM.render(
         <Scrollbar
           trackClickBehavior={TRACK_CLICK_BEHAVIOR.JUMP}
-          style={{ width: 100, height: 100, position: "relative" }}
-          noScroll
-        >
+          style={{ width: 100, height: 100, position: 'relative' }}
+          noScroll>
           <div style={{ width: 1000, height: 1000 }} />
         </Scrollbar>,
         getNode(),
         function () {
-          const { top: topX, height: heightX, left: leftX, width: widthX } = this.trackXElement.getBoundingClientRect();
-          const { top: topY, height: heightY, left: leftY, width: widthY } = this.trackYElement.getBoundingClientRect();
+          const {
+            top: topX,
+            height: heightX,
+            left: leftX,
+            width: widthX,
+          } = this.trackXElement.getBoundingClientRect();
+          const {
+            top: topY,
+            height: heightY,
+            left: leftY,
+            width: widthY,
+          } = this.trackYElement.getBoundingClientRect();
 
-          simulant.fire(this.trackXElement, "click", {
+          simulant.fire(this.trackXElement, 'click', {
             which: 1,
             clientY: topX + heightX / 2,
             clientX: leftX + widthX / 2,
           });
-          simulant.fire(this.trackYElement, "click", {
+          simulant.fire(this.trackYElement, 'click', {
             which: 1,
             clientY: topY + heightY / 2,
             clientX: leftY + widthY / 2,
@@ -1994,8 +1998,7 @@ describe("Scrollbar", () => {
       ReactDOM.render(
         <Scrollbar
           trackClickBehavior={TRACK_CLICK_BEHAVIOR.JUMP}
-          style={{ width: 100, height: 100, position: "relative" }}
-        >
+          style={{ width: 100, height: 100, position: 'relative' }}>
           <div style={{ width: 1000, height: 1000 }} />
         </Scrollbar>,
         getNode(),
@@ -2014,12 +2017,12 @@ describe("Scrollbar", () => {
               width: widthY,
             } = this.trackYElement.getBoundingClientRect();
 
-            simulant.fire(this.trackXElement, "click", {
+            simulant.fire(this.trackXElement, 'click', {
               which: 1,
               clientY: Math.floor(topX + heightX / 2),
               clientX: Math.floor(leftX + widthX / 2),
             });
-            simulant.fire(this.trackYElement, "click", {
+            simulant.fire(this.trackYElement, 'click', {
               which: 1,
               clientY: Math.floor(topY + heightY / 2),
               clientX: Math.floor(leftY + widthY / 2),
@@ -2027,10 +2030,14 @@ describe("Scrollbar", () => {
 
             setTimeout(() => {
               expect(this.scrollerElement.scrollTop).toBe(
-                Math.floor((this.scrollerElement.scrollHeight - this.scrollerElement.clientHeight) / 2)
+                Math.floor(
+                  (this.scrollerElement.scrollHeight - this.scrollerElement.clientHeight) / 2
+                )
               );
               expect(this.scrollerElement.scrollLeft).toBe(
-                Math.floor((this.scrollerElement.scrollWidth - this.scrollerElement.clientWidth) / 2)
+                Math.floor(
+                  (this.scrollerElement.scrollWidth - this.scrollerElement.clientWidth) / 2
+                )
               );
 
               done();
@@ -2095,8 +2102,7 @@ describe("Scrollbar", () => {
       ReactDOM.render(
         <Scrollbar
           trackClickBehavior={TRACK_CLICK_BEHAVIOR.STEP}
-          style={{ width: 100, height: 100, position: "relative" }}
-        >
+          style={{ width: 100, height: 100, position: 'relative' }}>
           <div style={{ width: 1000, height: 1000 }} />
         </Scrollbar>,
         getNode(),
@@ -2115,12 +2121,12 @@ describe("Scrollbar", () => {
               width: widthY,
             } = this.trackYElement.getBoundingClientRect();
 
-            simulant.fire(this.trackXElement, "click", {
+            simulant.fire(this.trackXElement, 'click', {
               which: 1,
               clientY: topX + heightX / 2,
               clientX: leftX + widthX / 2,
             });
-            simulant.fire(this.trackYElement, "click", {
+            simulant.fire(this.trackYElement, 'click', {
               which: 1,
               clientY: topY + heightY / 2,
               clientX: leftY + widthY / 2,
@@ -2130,12 +2136,12 @@ describe("Scrollbar", () => {
               expect(this.scrollerElement.scrollTop).toBe(this.scrollerElement.clientHeight);
               expect(this.scrollerElement.scrollLeft).toBe(this.scrollerElement.clientWidth);
 
-              simulant.fire(this.trackXElement, "click", {
+              simulant.fire(this.trackXElement, 'click', {
                 which: 1,
                 clientY: topX + heightX / 2,
                 clientX: leftX + widthX / 2,
               });
-              simulant.fire(this.trackYElement, "click", {
+              simulant.fire(this.trackYElement, 'click', {
                 which: 1,
                 clientY: topY + heightY / 2,
                 clientX: leftY + widthY / 2,
@@ -2145,12 +2151,12 @@ describe("Scrollbar", () => {
                 expect(this.scrollerElement.scrollTop).toBe(2 * this.scrollerElement.clientHeight);
                 expect(this.scrollerElement.scrollLeft).toBe(2 * this.scrollerElement.clientWidth);
 
-                simulant.fire(this.trackXElement, "click", {
+                simulant.fire(this.trackXElement, 'click', {
                   which: 1,
                   clientY: topX,
                   clientX: leftX,
                 });
-                simulant.fire(this.trackYElement, "click", {
+                simulant.fire(this.trackYElement, 'click', {
                   which: 1,
                   clientY: topY,
                   clientX: leftY,
@@ -2160,12 +2166,12 @@ describe("Scrollbar", () => {
                   expect(this.scrollerElement.scrollTop).toBe(this.scrollerElement.clientHeight);
                   expect(this.scrollerElement.scrollLeft).toBe(this.scrollerElement.clientWidth);
 
-                  simulant.fire(this.trackXElement, "click", {
+                  simulant.fire(this.trackXElement, 'click', {
                     which: 1,
                     clientY: topX,
                     clientX: leftX,
                   });
-                  simulant.fire(this.trackYElement, "click", {
+                  simulant.fire(this.trackYElement, 'click', {
                     which: 1,
                     clientY: topY,
                     clientX: leftY,
@@ -2189,8 +2195,7 @@ describe("Scrollbar", () => {
       ReactDOM.render(
         <Scrollbar
           trackClickBehavior={TRACK_CLICK_BEHAVIOR.STEP}
-          style={{ width: 100, height: 100, position: "relative" }}
-        >
+          style={{ width: 100, height: 100, position: 'relative' }}>
           <div style={{ width: 1000, height: 1000 }} />
         </Scrollbar>,
         getNode(),
@@ -2209,12 +2214,12 @@ describe("Scrollbar", () => {
               width: widthY,
             } = this.trackYElement.getBoundingClientRect();
 
-            simulant.fire(this.trackXElement, "click", {
+            simulant.fire(this.trackXElement, 'click', {
               which: 1,
               clientY: topX + heightX / 2,
               clientX: leftX + widthX / 2,
             });
-            simulant.fire(this.trackYElement, "click", {
+            simulant.fire(this.trackYElement, 'click', {
               which: 1,
               clientY: topY + heightY / 2,
               clientX: leftY + widthY / 2,
@@ -2224,12 +2229,12 @@ describe("Scrollbar", () => {
               expect(this.scrollerElement.scrollTop).toBe(this.scrollerElement.clientHeight);
               expect(this.scrollerElement.scrollLeft).toBe(this.scrollerElement.clientWidth);
 
-              simulant.fire(this.trackXElement, "click", {
+              simulant.fire(this.trackXElement, 'click', {
                 which: 1,
                 clientY: topX + heightX / 2,
                 clientX: leftX + widthX / 2,
               });
-              simulant.fire(this.trackYElement, "click", {
+              simulant.fire(this.trackYElement, 'click', {
                 which: 1,
                 clientY: topY + heightY / 2,
                 clientX: leftY + widthY / 2,
@@ -2239,12 +2244,12 @@ describe("Scrollbar", () => {
                 expect(this.scrollerElement.scrollTop).toBe(2 * this.scrollerElement.clientHeight);
                 expect(this.scrollerElement.scrollLeft).toBe(2 * this.scrollerElement.clientWidth);
 
-                simulant.fire(this.trackXElement, "click", {
+                simulant.fire(this.trackXElement, 'click', {
                   which: 1,
                   clientY: topX,
                   clientX: leftX,
                 });
-                simulant.fire(this.trackYElement, "click", {
+                simulant.fire(this.trackYElement, 'click', {
                   which: 1,
                   clientY: topY,
                   clientX: leftY,
@@ -2254,12 +2259,12 @@ describe("Scrollbar", () => {
                   expect(this.scrollerElement.scrollTop).toBe(this.scrollerElement.clientHeight);
                   expect(this.scrollerElement.scrollLeft).toBe(this.scrollerElement.clientWidth);
 
-                  simulant.fire(this.trackXElement, "click", {
+                  simulant.fire(this.trackXElement, 'click', {
                     which: 1,
                     clientY: topX,
                     clientX: leftX,
                   });
-                  simulant.fire(this.trackYElement, "click", {
+                  simulant.fire(this.trackYElement, 'click', {
                     which: 1,
                     clientY: topY,
                     clientX: leftY,
@@ -2280,10 +2285,10 @@ describe("Scrollbar", () => {
     });
   });
 
-  describe("thumb interaction", () => {
-    it("should scroll on Y thumb drag", (done) => {
+  describe('thumb interaction', () => {
+    it('should scroll on Y thumb drag', (done) => {
       ReactDOM.render(
-        <Scrollbar style={{ width: 100, height: 100, position: "relative" }}>
+        <Scrollbar style={{ width: 100, height: 100, position: 'relative' }}>
           <div style={{ width: 1000, height: 1000 }} />
         </Scrollbar>,
         getNode(),
@@ -2296,23 +2301,24 @@ describe("Scrollbar", () => {
               width: thumbWidth,
             } = this.thumbYElement.getBoundingClientRect();
 
-            const { height: trackHeight, width: trackWidth } = this.trackYElement.getBoundingClientRect();
+            const { height: trackHeight, width: trackWidth } =
+              this.trackYElement.getBoundingClientRect();
 
-            simulant.fire(this.thumbYElement, "mousedown", {
+            simulant.fire(this.thumbYElement, 'mousedown', {
               button: 0,
               clientY: thumbTop + thumbHeight / 2,
               clientX: thumbLeft + thumbWidth / 2,
             });
 
             setTimeout(() => {
-              simulant.fire(document, "mousemove", {
+              simulant.fire(document, 'mousemove', {
                 button: 0,
                 clientY: thumbTop + trackHeight,
                 clientX: thumbLeft + trackWidth,
               });
 
               setTimeout(() => {
-                simulant.fire(document, "mouseup", {
+                simulant.fire(document, 'mouseup', {
                   button: 0,
                   clientY: thumbTop + trackHeight,
                   clientX: thumbLeft + trackWidth,
@@ -2332,9 +2338,9 @@ describe("Scrollbar", () => {
       );
     });
 
-    it("should scroll on X thumb drag", (done) => {
+    it('should scroll on X thumb drag', (done) => {
       ReactDOM.render(
-        <Scrollbar style={{ width: 100, height: 100, position: "relative" }}>
+        <Scrollbar style={{ width: 100, height: 100, position: 'relative' }}>
           <div style={{ width: 1000, height: 1000 }} />
         </Scrollbar>,
         getNode(),
@@ -2347,23 +2353,24 @@ describe("Scrollbar", () => {
               width: thumbWidth,
             } = this.thumbXElement.getBoundingClientRect();
 
-            const { height: trackHeight, width: trackWidth } = this.trackXElement.getBoundingClientRect();
+            const { height: trackHeight, width: trackWidth } =
+              this.trackXElement.getBoundingClientRect();
 
-            simulant.fire(this.thumbXElement, "mousedown", {
+            simulant.fire(this.thumbXElement, 'mousedown', {
               button: 0,
               clientY: thumbTop + thumbHeight / 2,
               clientX: thumbLeft + thumbWidth / 2,
             });
 
             setTimeout(() => {
-              simulant.fire(document, "mousemove", {
+              simulant.fire(document, 'mousemove', {
                 button: 0,
                 clientY: thumbTop + trackHeight,
                 clientX: thumbLeft + trackWidth,
               });
 
               setTimeout(() => {
-                simulant.fire(document, "mouseup", {
+                simulant.fire(document, 'mouseup', {
                   button: 0,
                   clientY: thumbTop + trackHeight,
                   clientX: thumbLeft + trackWidth,

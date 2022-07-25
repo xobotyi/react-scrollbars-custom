@@ -30,9 +30,11 @@ class ScrollbarPropsUpdater extends React.Component<
     return (
       <Scrollbar
         {...this.state.scrollbarProps}
-        children={this.props.children}
-        ref={(ref) => (this.scrollbar = ref)}
-      />
+        ref={(ref) => {
+          this.scrollbar = ref;
+        }}>
+        {this.props.children}
+      </Scrollbar>
     );
   }
 }
@@ -49,7 +51,7 @@ describe('Scrollbar', () => {
   };
 
   afterAll(() => {
-    nodes.forEach((node) => document.body.removeChild(node));
+    nodes.forEach((node) => node.remove());
   });
 
   beforeEach(() => {
@@ -336,7 +338,7 @@ describe('Scrollbar', () => {
         );
       };
 
-      class ErrorBoundary extends React.Component<{}, { [key: string]: any }> {
+      class ErrorBoundary extends React.Component<unknown, { [key: string]: any }> {
         constructor(props) {
           super(props);
           this.state = { error: null, errorInfo: null };
@@ -558,7 +560,9 @@ describe('Scrollbar', () => {
             expect(this.trackXElement).toBeNull();
             expect(this.thumbXElement).toBeNull();
 
+            // eslint-disable-next-line no-proto
             expect(this.scrollerElement.__proto__.toString()).toBe('[object HTMLDivElement]');
+            // eslint-disable-next-line no-proto
             expect(this.contentElement.__proto__.toString()).toBe('[object HTMLDivElement]');
             expect(this.scrollerElement.classList.contains('native')).toBeTruthy();
             expect(this.scrollerElement.classList.contains('rtl')).toBeTruthy();
@@ -1125,7 +1129,8 @@ describe('Scrollbar', () => {
     it('should create context if createContext is passed', (done) => {
       let consumedContext: ScrollbarContextValue;
 
-      class ScrollbarContextConsumer extends React.Component<{}, {}> {
+      class ScrollbarContextConsumer extends React.Component<unknown, unknown> {
+        // eslint-disable-next-line react/static-property-placement
         static contextType = ScrollbarContext;
 
         public componentDidMount(): void {
@@ -1302,6 +1307,7 @@ describe('Scrollbar', () => {
         let setScrollbarProps;
         ReactDOM.render(
           <ScrollbarPropsUpdater
+            // eslint-disable-next-line no-return-assign
             ref={(ref) => (setScrollbarProps = ref && ref.setScrollbarProps)}
             scrollbarProps={{ style: { width: 100, height: 70 } }}>
             <div style={{ width: 200, height: 200 }} />
@@ -1327,6 +1333,7 @@ describe('Scrollbar', () => {
         let setScrollbarProps;
         ReactDOM.render(
           <ScrollbarPropsUpdater
+            // eslint-disable-next-line no-return-assign
             ref={(ref) => (setScrollbarProps = ref && ref.setScrollbarProps)}
             scrollbarProps={{ style: { width: 100, height: 70 } }}>
             <div style={{ width: 200, height: 200 }} />
@@ -1368,6 +1375,7 @@ describe('Scrollbar', () => {
         let setScrollbarProps;
         ReactDOM.render(
           <ScrollbarPropsUpdater
+            // eslint-disable-next-line no-return-assign
             ref={(ref) => (setScrollbarProps = ref && ref.setScrollbarProps)}
             scrollbarProps={{ style: { width: 100, height: 70 } }}>
             <div style={{ width: 200, height: 200 }} />
@@ -1416,6 +1424,7 @@ describe('Scrollbar', () => {
         let setScrollbarProps;
         ReactDOM.render(
           <ScrollbarPropsUpdater
+            // eslint-disable-next-line no-return-assign
             ref={(ref) => (setScrollbarProps = ref && ref.setScrollbarProps)}
             scrollbarProps={{
               style: { width: 100, height: 70 },
@@ -1636,6 +1645,7 @@ describe('Scrollbar', () => {
 
       ReactDOM.render(
         <ScrollbarPropsUpdater
+          // eslint-disable-next-line no-return-assign
           ref={(ref) => (setScrollbarProps = ref && ref.setScrollbarProps)}
           scrollbarProps={{
             onUpdate: onUpdateSpy1,
@@ -1663,12 +1673,11 @@ describe('Scrollbar', () => {
 
     it('should call an onScroll only if scroll has changed', (done) => {
       let setScrollbarProps;
-      const spy = jasmine.createSpy('scroll', (scrollValues) => {
-        console.log(scrollValues.scrollTop, scrollValues.scrollLeft);
-      });
+      const spy = jasmine.createSpy('scroll', (scrollValues) => {});
 
       ReactDOM.render(
         <ScrollbarPropsUpdater
+          // eslint-disable-next-line no-return-assign
           ref={(ref) => (setScrollbarProps = ref && ref.setScrollbarProps)}
           scrollbarProps={{
             style: { width: 100, height: 70 },

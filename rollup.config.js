@@ -4,7 +4,7 @@ import pkg from './package.json';
 
 const ownKeys = Object.getOwnPropertyNames;
 const externalDependencies = [
-  ...new Set(ownKeys(pkg.peerDependencies).concat(ownKeys(pkg.dependencies))),
+  ...new Set([...ownKeys(pkg.peerDependencies), ...ownKeys(pkg.dependencies)]),
 ];
 
 export default [

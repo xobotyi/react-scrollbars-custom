@@ -1,6 +1,7 @@
 import Loop from '../src/Loop';
 
 describe('Loop', function () {
+  // eslint-disable-next-line unicorn/consistent-function-scoping
   const getTarget = () => ({
     _unmounted: false,
     randomField: 'Hello World!',

@@ -24,8 +24,15 @@ declare let global: {
 };
 
 let pageZoomLevel: number = global.window ? zoomLevel() : 1;
-global.window &&
-  global.window.addEventListener('resize', () => (pageZoomLevel = zoomLevel()), { passive: true });
+if (global.window) {
+  global.window.addEventListener(
+    'resize',
+    () => {
+      pageZoomLevel = zoomLevel();
+    },
+    { passive: true }
+  );
+}
 
 export type ScrollbarProps = ElementPropsWithElementRefAndRenderer & {
   createContext?: boolean;
@@ -107,8 +114,10 @@ export const ScrollbarContext: React.Context<ScrollbarContextValue> = React.crea
 } as ScrollbarContextValue);
 
 export default class Scrollbar extends React.Component<ScrollbarProps, ScrollbarState> {
+  // eslint-disable-next-line react/static-property-placement
   static contextType = ScrollbarContext;
 
+  // eslint-disable-next-line react/static-property-placement
   static defaultProps = {
     momentum: true,
 
@@ -196,14 +205,15 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
 
     this.eventEmitter = new Emittr(15);
 
-    props.onUpdate && this.eventEmitter.on('update', props.onUpdate);
-    props.onScroll && this.eventEmitter.on('scroll', props.onScroll);
-    props.onScrollStart && this.eventEmitter.on('scrollStart', props.onScrollStart);
-    props.onScrollStop && this.eventEmitter.on('scrollStop', props.onScrollStop);
+    if (props.onUpdate) this.eventEmitter.on('update', props.onUpdate);
+    if (props.onScroll) this.eventEmitter.on('scroll', props.onScroll);
+    if (props.onScrollStart) this.eventEmitter.on('scrollStart', props.onScrollStart);
+    if (props.onScrollStop) this.eventEmitter.on('scrollStop', props.onScrollStop);
 
     this.id = util.uuid();
   }
 
+  // eslint-disable-next-line react/sort-comp
   get scrollTop() {
     if (this.scrollerElement) {
       return this.scrollerElement.scrollTop;
@@ -265,6 +275,7 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
     return 0;
   }
 
+  // eslint-disable-next-line react/sort-comp
   public static calculateStyles(
     props: ScrollbarProps,
     state: ScrollbarState,
@@ -465,23 +476,23 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
     }
 
     if (prevProps.onUpdate !== props.onUpdate) {
-      prevProps.onUpdate && this.eventEmitter.off('update', prevProps.onUpdate);
-      props.onUpdate && this.eventEmitter.on('update', props.onUpdate);
+      if (prevProps.onUpdate) this.eventEmitter.off('update', prevProps.onUpdate);
+      if (props.onUpdate) this.eventEmitter.on('update', props.onUpdate);
     }
 
     if (prevProps.onScroll !== props.onScroll) {
-      prevProps.onScroll && this.eventEmitter.off('scroll', prevProps.onScroll);
-      props.onScroll && this.eventEmitter.on('scroll', props.onScroll);
+      if (prevProps.onScroll) this.eventEmitter.off('scroll', prevProps.onScroll);
+      if (props.onScroll) this.eventEmitter.on('scroll', props.onScroll);
     }
 
     if (prevProps.onScrollStart !== props.onScrollStart) {
-      prevProps.onScrollStart && this.eventEmitter.off('scrollStart', prevProps.onScrollStart);
-      props.onScrollStart && this.eventEmitter.on('scrollStart', props.onScrollStart);
+      if (prevProps.onScrollStart) this.eventEmitter.off('scrollStart', prevProps.onScrollStart);
+      if (props.onScrollStart) this.eventEmitter.on('scrollStart', props.onScrollStart);
     }
 
     if (prevProps.onScrollStop !== props.onScrollStop) {
-      prevProps.onScrollStop && this.eventEmitter.off('scrollStop', prevProps.onScrollStop);
-      props.onScrollStop && this.eventEmitter.on('scrollStop', props.onScrollStop);
+      if (prevProps.onScrollStop) this.eventEmitter.off('scrollStop', prevProps.onScrollStop);
+      if (props.onScrollStop) this.eventEmitter.on('scrollStop', props.onScrollStop);
     }
   }
 
@@ -602,8 +613,8 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
    */
   public scrollTo = (x?: number, y?: number): this => {
     if (this.scrollerElement) {
-      util.isNum(x) && (this.scrollerElement.scrollLeft = x!);
-      util.isNum(y) && (this.scrollerElement.scrollTop = y!);
+      if (util.isNum(x)) this.scrollerElement.scrollLeft = x!;
+      if (util.isNum(y)) this.scrollerElement.scrollTop = y!;
     }
 
     return this;
@@ -615,8 +626,8 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
    */
   public centerAt = (x?: number, y?: number): this => {
     if (this.scrollerElement) {
-      util.isNum(x) && (this.scrollerElement.scrollLeft = x - this.scrollerElement.clientWidth / 2);
-      util.isNum(y) && (this.scrollerElement.scrollTop = y - this.scrollerElement.clientHeight / 2);
+      if (util.isNum(x)) this.scrollerElement.scrollLeft = x - this.scrollerElement.clientWidth / 2;
+      if (util.isNum(y)) this.scrollerElement.scrollTop = y - this.scrollerElement.clientHeight / 2;
     }
 
     return this;
@@ -643,25 +654,25 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
     let bitmask = 0;
 
     if (!force) {
-      prevScrollState.clientHeight !== scrollState.clientHeight && (bitmask |= Math.trunc(1));
-      prevScrollState.clientWidth !== scrollState.clientWidth && (bitmask |= 1 << 1);
-      prevScrollState.scrollHeight !== scrollState.scrollHeight && (bitmask |= 1 << 2);
-      prevScrollState.scrollWidth !== scrollState.scrollWidth && (bitmask |= 1 << 3);
-      prevScrollState.scrollTop !== scrollState.scrollTop && (bitmask |= 1 << 4);
-      prevScrollState.scrollLeft !== scrollState.scrollLeft && (bitmask |= 1 << 5);
-      prevScrollState.scrollYBlocked !== scrollState.scrollYBlocked && (bitmask |= 1 << 6);
-      prevScrollState.scrollXBlocked !== scrollState.scrollXBlocked && (bitmask |= 1 << 7);
-      prevScrollState.scrollYPossible !== scrollState.scrollYPossible && (bitmask |= 1 << 8);
-      prevScrollState.scrollXPossible !== scrollState.scrollXPossible && (bitmask |= 1 << 9);
-      prevScrollState.trackYVisible !== scrollState.trackYVisible && (bitmask |= 1 << 10);
-      prevScrollState.trackXVisible !== scrollState.trackXVisible && (bitmask |= 1 << 11);
-      prevScrollState.isRTL !== scrollState.isRTL && (bitmask |= 1 << 12);
+      if (prevScrollState.clientHeight !== scrollState.clientHeight) bitmask |= Math.trunc(1);
+      if (prevScrollState.clientWidth !== scrollState.clientWidth) bitmask |= 1 << 1;
+      if (prevScrollState.scrollHeight !== scrollState.scrollHeight) bitmask |= 1 << 2;
+      if (prevScrollState.scrollWidth !== scrollState.scrollWidth) bitmask |= 1 << 3;
+      if (prevScrollState.scrollTop !== scrollState.scrollTop) bitmask |= 1 << 4;
+      if (prevScrollState.scrollLeft !== scrollState.scrollLeft) bitmask |= 1 << 5;
+      if (prevScrollState.scrollYBlocked !== scrollState.scrollYBlocked) bitmask |= 1 << 6;
+      if (prevScrollState.scrollXBlocked !== scrollState.scrollXBlocked) bitmask |= 1 << 7;
+      if (prevScrollState.scrollYPossible !== scrollState.scrollYPossible) bitmask |= 1 << 8;
+      if (prevScrollState.scrollXPossible !== scrollState.scrollXPossible) bitmask |= 1 << 9;
+      if (prevScrollState.trackYVisible !== scrollState.trackYVisible) bitmask |= 1 << 10;
+      if (prevScrollState.trackXVisible !== scrollState.trackXVisible) bitmask |= 1 << 11;
+      if (prevScrollState.isRTL !== scrollState.isRTL) bitmask |= 1 << 12;
 
-      prevScrollState.contentScrollHeight !== scrollState.contentScrollHeight &&
-        (bitmask |= 1 << 13);
-      prevScrollState.contentScrollWidth !== scrollState.contentScrollWidth && (bitmask |= 1 << 14);
+      if (prevScrollState.contentScrollHeight !== scrollState.contentScrollHeight)
+        bitmask |= 1 << 13;
+      if (prevScrollState.contentScrollWidth !== scrollState.contentScrollWidth) bitmask |= 1 << 14;
 
-      prevScrollState.zoomLevel !== scrollState.zoomLevel && (bitmask |= 1 << 15);
+      if (prevScrollState.zoomLevel !== scrollState.zoomLevel) bitmask |= 1 << 15;
 
       // if not forced and nothing has changed - skip this update
       if (bitmask === 0) {
@@ -735,12 +746,13 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
 
     this.eventEmitter.emit('update', { ...scrollState }, prevScrollState);
 
-    (bitmask & (1 << 4) || bitmask & (1 << 5)) &&
+    if (bitmask & (1 << 4) || bitmask & (1 << 5))
       this.eventEmitter.emit('scroll', { ...scrollState }, prevScrollState);
 
     return this.scrollValues;
   };
 
+  // eslint-disable-next-line react/sort-comp
   public render(): React.ReactNode {
     const {
       createContext,
@@ -748,14 +760,18 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
       native,
       mobileNative,
       momentum,
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       noDefaultStyles,
 
       disableTracksMousewheelScrolling,
       disableTrackXMousewheelScrolling,
       disableTrackYMousewheelScrolling,
 
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       disableTracksWidthCompensation,
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       disableTrackXWidthCompensation,
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       disableTrackYWidthCompensation,
 
       noScrollX,
@@ -770,20 +786,27 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
       removeTrackYWhenNotUsed,
       removeTrackXWhenNotUsed,
 
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       minimalThumbSize,
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       maximalThumbSize,
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       minimalThumbXSize,
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       maximalThumbXSize,
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       minimalThumbYSize,
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       maximalThumbYSize,
-
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       fallbackScrollbarWidth,
-
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       scrollTop,
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       scrollLeft,
-
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       trackClickBehavior,
-
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       scrollDetectionThreshold,
 
       wrapperProps: propsWrapperProps,
@@ -796,15 +819,23 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
 
       scrollbarWidth: propsScrollbarWidth,
 
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       elementRef,
 
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       onUpdate,
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       onScroll,
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       onScrollStart,
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       onScrollStop,
 
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       translateContentSizesToHolder,
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       translateContentSizeYToHolder,
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       translateContentSizeXToHolder,
 
       children,
@@ -884,7 +915,10 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
       className: cnb('ScrollbarsCustom-Content', propsContentProps!.className),
       style: styles.content,
       children: createContext ? (
-        <ScrollbarContext.Provider value={{ parentScrollbar: this }} children={children} />
+        // eslint-disable-next-line react/jsx-no-constructed-context-values
+        <ScrollbarContext.Provider value={{ parentScrollbar: this }}>
+          {children}
+        </ScrollbarContext.Provider>
       ) : (
         children
       ),
@@ -985,6 +1019,7 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
     return renderDivWithRenderer(holderProps, this.elementRefHolder);
   }
 
+  // eslint-disable-next-line class-methods-use-this
   private updaterNative = (): boolean => {
     // just for future
     return true;
@@ -1077,46 +1112,64 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
 
   private elementRefHolder = (ref: HTMLDivElement | null) => {
     this.holderElement = ref;
-    util.isFun(this.props.elementRef) && this.props.elementRef(ref);
+    if (util.isFun(this.props.elementRef)) {
+      this.props.elementRef(ref);
+    }
   };
 
   private elementRefWrapper = (ref: HTMLDivElement | null) => {
     this.wrapperElement = ref;
-    util.isFun(this.props.wrapperProps!.elementRef) && this.props.wrapperProps!.elementRef(ref);
+    if (util.isFun(this.props.wrapperProps!.elementRef)) {
+      this.props.wrapperProps!.elementRef(ref);
+    }
   };
 
   private elementRefScroller = (ref: HTMLDivElement | null) => {
     this.scrollerElement = ref;
-    util.isFun(this.props.scrollerProps!.elementRef) && this.props.scrollerProps!.elementRef(ref);
+    if (util.isFun(this.props.scrollerProps!.elementRef)) {
+      this.props.scrollerProps!.elementRef(ref);
+    }
   };
 
   private elementRefContent = (ref: HTMLDivElement | null) => {
     this.contentElement = ref;
-    util.isFun(this.props.contentProps!.elementRef) && this.props.contentProps!.elementRef(ref);
+    if (util.isFun(this.props.contentProps!.elementRef)) {
+      this.props.contentProps!.elementRef(ref);
+    }
   };
 
   private elementRefTrackX = (ref: HTMLDivElement | null) => {
     this.trackXElement = ref;
-    util.isFun(this.props.trackXProps!.elementRef) && this.props.trackXProps!.elementRef(ref);
+    if (util.isFun(this.props.trackXProps!.elementRef)) {
+      this.props.trackXProps!.elementRef(ref);
+    }
   };
 
   private elementRefTrackY = (ref: HTMLDivElement | null) => {
     this.trackYElement = ref;
-    util.isFun(this.props.trackYProps!.elementRef) && this.props.trackYProps!.elementRef(ref);
+    if (util.isFun(this.props.trackYProps!.elementRef)) {
+      this.props.trackYProps!.elementRef(ref);
+    }
   };
 
   private elementRefThumbX = (ref: HTMLDivElement | null) => {
     this.thumbXElement = ref;
-    util.isFun(this.props.thumbXProps!.elementRef) && this.props.thumbXProps!.elementRef(ref);
+    if (util.isFun(this.props.thumbXProps!.elementRef)) {
+      this.props.thumbXProps!.elementRef(ref);
+    }
   };
 
   private elementRefThumbY = (ref: HTMLDivElement | null) => {
     this.thumbYElement = ref;
-    util.isFun(this.props.thumbYProps!.elementRef) && this.props.thumbYProps!.elementRef(ref);
+    if (util.isFun(this.props.thumbYProps!.elementRef)) {
+      this.props.thumbYProps!.elementRef(ref);
+    }
   };
 
   private handleTrackXClick = (ev: MouseEvent, values: ScrollbarTrackClickParameters): void => {
-    this.props.trackXProps!.onClick && this.props.trackXProps!.onClick(ev, values);
+    if (this.props.trackXProps!.onClick) {
+      this.props.trackXProps!.onClick(ev, values);
+    }
 
     if (
       !this.scrollerElement ||
@@ -1136,7 +1189,6 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
       (this.scrollValues.isRTL && util.shouldReverseRtlScroll()
         ? values.offset + thumbSize / 2 - trackInnerSize
         : values.offset - thumbSize / 2) -
-      // @ts-ignore
       (Number.parseFloat(getComputedStyle(this.trackXElement).paddingLeft) || 0);
 
     let target = util.calcScrollForThumbOffset(
@@ -1161,7 +1213,7 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
   };
 
   private handleTrackYClick = (ev: MouseEvent, values: ScrollbarTrackClickParameters): void => {
-    this.props.trackYProps!.onClick && this.props.trackYProps!.onClick(ev, values);
+    if (this.props.trackYProps!.onClick) this.props.trackYProps!.onClick(ev, values);
 
     if (
       !this.scrollerElement ||
@@ -1183,9 +1235,7 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
         util.getInnerHeight(this.trackYElement),
         thumbSize,
         values.offset - thumbSize / 2
-      ) -
-      // @ts-ignore
-      (Number.parseFloat(getComputedStyle(this.trackYElement).paddingTop) || 0);
+      ) - (Number.parseFloat(getComputedStyle(this.trackYElement).paddingTop) || 0);
 
     if (this.props.trackClickBehavior === TRACK_CLICK_BEHAVIOR.JUMP) {
       this.scrollerElement.scrollTop = target;
@@ -1200,7 +1250,9 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
   private handleTrackYMouseWheel = (ev: React.WheelEvent<HTMLDivElement>) => {
     const { props } = this;
 
-    props.trackYProps && props.trackYProps.onWheel && props.trackYProps.onWheel(ev);
+    if (props.trackYProps && props.trackYProps.onWheel) {
+      props.trackYProps.onWheel(ev);
+    }
 
     if (props.disableTracksMousewheelScrolling || props.disableTrackYMousewheelScrolling) {
       return;
@@ -1218,7 +1270,9 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
   private handleTrackXMouseWheel = (ev: React.WheelEvent<HTMLDivElement>) => {
     const { props } = this;
 
-    props.trackXProps && props.trackXProps.onWheel && props.trackXProps.onWheel(ev);
+    if (props.trackXProps && props.trackXProps.onWheel) {
+      props.trackXProps.onWheel(ev);
+    }
 
     if (props.disableTracksMousewheelScrolling || props.disableTrackXMousewheelScrolling) {
       return;
@@ -1323,9 +1377,11 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
   };
 
   private _scrollDetection = () => {
-    !this._scrollDetectionTO && this.eventEmitter.emit('scrollStart', this.getScrollState());
-
-    this._scrollDetectionTO && global.window && global.window.clearTimeout(this._scrollDetectionTO);
+    if (!this._scrollDetectionTO) {
+      this.eventEmitter.emit('scrollStart', this.getScrollState());
+    } else if (global.window) {
+      global.window.clearTimeout(this._scrollDetectionTO);
+    }
 
     this._scrollDetectionTO = global.window
       ? global.window.setTimeout(

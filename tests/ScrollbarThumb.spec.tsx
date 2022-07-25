@@ -444,8 +444,7 @@ describe('ScrollbarThumb', () => {
 
         setTimeout(() => {
           expect(document.body.style.userSelect).toBe('none');
-          // @ts-expect-error simplification duw to testing
-          expect(document.onselectstart()).toBe(false);
+          expect(document.onselectstart).toBe(null);
 
           done();
         }, 50);

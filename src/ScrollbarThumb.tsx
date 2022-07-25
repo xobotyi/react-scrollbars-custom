@@ -174,6 +174,8 @@ export default class ScrollbarThumb extends React.Component<ScrollbarThumbProps,
     if (isFun(this.props.elementRef)) this.props.elementRef(ref);
     this.element = ref;
 
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     this.elementRefHack.current = ref;
   };
 

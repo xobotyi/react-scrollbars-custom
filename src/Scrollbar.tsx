@@ -844,7 +844,7 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
     } = this.props as ScrollbarProps;
 
     const scrollbarWidth = !util.isUndef(propsScrollbarWidth)
-      ? propsScrollbarWidth!
+      ? propsScrollbarWidth
       : util.getScrollbarWidth() || 0;
 
     if (native || (!scrollbarWidth && mobileNative)) {

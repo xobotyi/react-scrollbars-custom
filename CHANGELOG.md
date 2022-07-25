@@ -1,3 +1,15 @@
+# [4.1.0](https://github.com/xobotyi/react-scrollbars-custom/compare/v4.0.25...v4.1.0) (2022-07-25)
+
+
+### Bug Fixes
+
+* explicit children typing ([#259](https://github.com/xobotyi/react-scrollbars-custom/issues/259)) ([c52e21f](https://github.com/xobotyi/react-scrollbars-custom/commit/c52e21f6be4c0630a83c2de6d82d8ee1a5c19699))
+
+
+### Features
+
+* get rid of prop-types and set peerDependency of react to >=16 ([c3e50ae](https://github.com/xobotyi/react-scrollbars-custom/commit/c3e50ae0a57372598be6b5dfef0434c874c1a47a))
+
 # CHANGELOG
 
 ## v4.0.17

@@ -62,10 +62,66 @@ jobs:
           files: coverage/lcov.info
           fail_ci_if_error: true
 
+  build:
+    name: "Build"
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      - uses: bahmutov/npm-install@v1
+        with:
+          useRollingCache: true
+          install-command: yarn --frozen-lockfile
+
+      - name: "Build"
+        run: yarn build
+
+  semantic-release:
+    name: "Release"
+    runs-on: ubuntu-latest
+    needs: [  "lint", "test", "build" ]
+    permissions:
+      pull-requests: write
+      contents: write
+    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+    outputs:
+      new-release-published: ${{ steps.release.outputs.new-release-published }}
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      - uses: bahmutov/npm-install@v1
+        with:
+          useRollingCache: true
+          install-command: yarn --frozen-lockfile
+
+      - name: "Build package"
+        run: yarn build
+
+      - name: "Release"
+        id: "release"
+        uses: codfish/semantic-release-action@v1.9.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
   dependabot-merge:
     name: "Dependabot automerge"
     runs-on: ubuntu-latest
-    needs: [ "test", "lint" ]
+    needs: [  "lint", "test", "build" ]
     permissions:
       pull-requests: write
       contents: write

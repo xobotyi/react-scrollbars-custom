@@ -3,7 +3,6 @@ const webpack = require("webpack");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const HtmlWebpackExcludeAssetsPlugin = require("html-webpack-exclude-assets-plugin");
 
 const RSC_PACKAGE = require("react-scrollbars-custom/package");
 
@@ -12,48 +11,47 @@ module.exports = (env, opt) => {
 
   return {
     target: "web",
+    mode: opt.mode,
     entry: {
       "dist/js/bundle": path.join(__dirname, "src", "js", "index.jsx"),
-      "dist/css/style": path.join(__dirname, "src", "scss", "style.scss")
+      "dist/css/style": path.join(__dirname, "src", "scss", "style.scss"),
     },
     output: {
       path: __dirname,
-      filename: "[name].[hash].js",
-      publicPath: isDevMode ? "/" : "https://xobotyi.github.io/react-scrollbars-custom/"
+      filename: "[name].[contenthash].js",
+      publicPath: isDevMode ? "/" : "https://xobotyi.github.io/react-scrollbars-custom/",
     },
     resolve: {
-      extensions: [".js", ".jsx"]
+      extensions: [".js", ".jsx"],
     },
     optimization: {
       minimizer: [
         new TerserPlugin({
-          parallel: true
-        })
+          parallel: true,
+        }),
       ],
-      noEmitOnErrors: true
+      noEmitOnErrors: true,
     },
     devServer: {
-      contentBase: __dirname,
-      disableHostCheck: true,
-      port: 3030
+      allowedHosts: "all",
+      port: 3030,
     },
     plugins: [
       new MiniCssExtractPlugin({
-        filename: "[name].[contenthash].css"
+        filename: "[name].[contenthash].css",
       }),
       new webpack.DefinePlugin({
         RSC_VERSION: JSON.stringify(RSC_PACKAGE.version),
         RSC_NAME: JSON.stringify(RSC_PACKAGE.name),
         RSC_HOMEPAGE: JSON.stringify(RSC_PACKAGE.homepage),
-        RSC_AUTHOR: JSON.stringify(RSC_PACKAGE.author)
+        RSC_AUTHOR: JSON.stringify(RSC_PACKAGE.author),
       }),
       new HtmlWebpackPlugin({
         template: path.join(__dirname, "src", "index.html"),
         title: `${RSC_PACKAGE.name} demo page`,
         excludeAssets: [/css.*.js/],
-        prefix: "/react-scrollbars-custom/"
+        prefix: "/react-scrollbars-custom/",
       }),
-      new HtmlWebpackExcludeAssetsPlugin()
     ],
     module: {
       rules: [
@@ -72,43 +70,42 @@ module.exports = (env, opt) => {
                   {
                     targets: {
                       chrome: "58",
-                      ie: "9"
+                      ie: "9",
                     },
                     useBuiltIns: "entry",
-                    corejs: 3
-                  }
-                ]
+                    corejs: 3,
+                  },
+                ],
               ],
               plugins: [
                 ["@babel/plugin-proposal-class-properties"],
                 [
                   "@babel/plugin-transform-runtime",
                   {
-                    corejs: 3
-                  }
-                ]
-              ]
-            }
-          }
+                    corejs: 3,
+                  },
+                ],
+              ],
+            },
+          },
         },
         {
           test: /\.scss$/,
           use: [
             {
               loader: MiniCssExtractPlugin.loader,
-              options: { sourceMap: false, hmr: isDevMode }
             },
             {
               loader: "css-loader",
-              options: { sourceMap: false, url: false }
+              options: { sourceMap: false, url: false },
             },
             {
               loader: "sass-loader",
-              options: { sourceMap: false, outputStyle: "compressed" }
-            }
-          ]
-        }
-      ]
-    }
+              options: { sourceMap: false },
+            },
+          ],
+        },
+      ],
+    },
   };
 };

@@ -1,18 +1,19 @@
+// eslint-disable-next-line unicorn/prefer-module
 module.exports = (cfg) => {
   cfg.set({
-    browsers: ["ChromeHeadless"],
+    browsers: ['ChromeHeadless'],
 
     singleRun: true,
     autoWatch: false,
 
-    frameworks: ["jasmine", "karma-typescript"],
-    reporters: ["progress", "karma-typescript"],
+    frameworks: ['jasmine', 'karma-typescript'],
+    reporters: ['progress', 'karma-typescript'],
     preprocessors: {
-      "**/*.ts": "karma-typescript",
-      "**/*.tsx": "karma-typescript",
+      '**/*.ts': 'karma-typescript',
+      '**/*.tsx': 'karma-typescript',
     },
 
-    files: ["./src/**/*.ts", "./src/**/*.tsx", "./tests/**/*.spec.ts", "./tests/**/*.spec.tsx"],
+    files: ['./src/**/*.ts', './src/**/*.tsx', './tests/**/*.spec.ts', './tests/**/*.spec.tsx'],
 
     client: {
       jasmine: {
@@ -23,33 +24,33 @@ module.exports = (cfg) => {
     karmaTypescriptConfig: {
       bundlerOptions: {
         constants: {
-          "process.env": {
-            NODE_ENV: "production",
+          'process.env': {
+            NODE_ENV: 'production',
           },
         },
       },
       compilerOptions: {
-        target: "es2017",
-        module: "commonjs",
-        moduleResolution: "node",
-        jsx: "react",
-        lib: ["dom", "es2017"],
+        target: 'es2017',
+        module: 'commonjs',
+        moduleResolution: 'node',
+        jsx: 'react',
+        lib: ['dom', 'es2017'],
       },
       coverageOptions: {
         exclude: /(node_modules|tests|spec)/i,
       },
       reports: {
         lcovonly: {
-          directory: "./coverage",
-          subdirectory: () => "",
-          filename: "lcov.info",
+          directory: './coverage',
+          subdirectory: () => '',
+          filename: 'lcov.info',
         },
         html: {
-          directory: "./coverage",
-          subdirectory: () => "",
+          directory: './coverage',
+          subdirectory: () => '',
         },
       },
-      include: ["./src/**/*", "./tests/**/*"],
+      include: ['./src/**/*', './tests/**/*'],
     },
   });
 };

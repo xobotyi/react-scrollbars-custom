@@ -1,6 +1,9 @@
-import { isFun, isNum, isUndef } from "./util";
+import { isFun, isNum, isUndef } from './util';
 
 type EventHandler = (...args: any[]) => void;
+type OnceHandler = OnceHandlerState & { (...args: any[]): void };
+type EventHandlersList = (OnceHandler | EventHandler)[];
+type EmitterEventHandlers = { [key: string]: EventHandlersList };
 type OnceHandlerState = {
   fired: boolean;
   handler: EventHandler;
@@ -8,15 +11,13 @@ type OnceHandlerState = {
   emitter: Emittr;
   event: string;
 };
-type OnceHandler = OnceHandlerState & { (...args: any[]): void };
-type EventHandlersList = (OnceHandler | EventHandler)[];
-type EmitterEventHandlers = { [key: string]: EventHandlersList };
 
 export default class Emittr {
   private _handlers: EmitterEventHandlers;
+
   private _maxHandlers: number;
 
-  constructor(maxHandlers: number = 10) {
+  constructor(maxHandlers = 10) {
     this.setMaxHandlers(maxHandlers);
     this._handlers = Object.create(null);
   }
@@ -40,14 +41,20 @@ export default class Emittr {
     emitter: Emittr,
     name: string,
     handler: EventHandler,
-    prepend: boolean = false
+    prepend = false
   ): Emittr => {
     if (!isFun(handler)) {
-      throw new TypeError("Expected event handler to be a function, got " + typeof handler);
+      throw new TypeError(`Expected event handler to be a function, got ${typeof handler}`);
     }
     emitter._handlers[name] = emitter._handlers[name] || [];
-    emitter.emit("addHandler", name, handler);
-    prepend ? emitter._handlers[name].unshift(handler) : emitter._handlers[name].push(handler);
+    emitter.emit('addHandler', name, handler);
+
+    if (prepend) {
+      emitter._handlers[name].unshift(handler);
+    } else {
+      emitter._handlers[name].push(handler);
+    }
+
     return emitter;
   };
 
@@ -59,16 +66,23 @@ export default class Emittr {
     }
   };
 
-  private static _removeHandler = (emitter: Emittr, name: string, handler: EventHandler): Emittr => {
+  private static _removeHandler = (
+    emitter: Emittr,
+    name: string,
+    handler: EventHandler
+  ): Emittr => {
     if (!isFun(handler)) {
-      throw new TypeError("Expected event handler to be a function, got " + typeof handler);
+      throw new TypeError(`Expected event handler to be a function, got ${typeof handler}`);
     }
     if (isUndef(emitter._handlers[name]) || !emitter._handlers[name].length) {
       return emitter;
     }
     let idx = -1;
     if (emitter._handlers[name].length === 1) {
-      if (emitter._handlers[name][0] === handler || (emitter._handlers[name][0] as OnceHandler).handler === handler) {
+      if (
+        emitter._handlers[name][0] === handler ||
+        (emitter._handlers[name][0] as OnceHandler).handler === handler
+      ) {
         idx = 0;
         handler = (emitter._handlers[name][0] as OnceHandler).handler || emitter._handlers[name][0];
       }
@@ -78,7 +92,8 @@ export default class Emittr {
           emitter._handlers[name][idx] === handler ||
           (emitter._handlers[name][idx] as OnceHandler).handler === handler
         ) {
-          handler = (emitter._handlers[name][idx] as OnceHandler).handler || emitter._handlers[name][idx];
+          handler =
+            (emitter._handlers[name][idx] as OnceHandler).handler || emitter._handlers[name][idx];
           break;
         }
       }
@@ -86,14 +101,22 @@ export default class Emittr {
     if (idx === -1) {
       return emitter;
     }
-    idx === 0 ? emitter._handlers[name].shift() : emitter._handlers[name].splice(idx, 1);
-    emitter.emit("removeHandler", name, handler);
+
+    if (idx === 0) {
+      emitter._handlers[name].shift();
+    } else {
+      emitter._handlers[name].splice(idx, 1);
+    }
+
+    emitter.emit('removeHandler', name, handler);
     return emitter;
   };
 
   setMaxHandlers(count: number): this {
     if (!isNum(count) || count <= 0) {
-      throw new TypeError(`Expected maxHandlers to be a positive number, got '${count}' of type ${typeof count}`);
+      throw new TypeError(
+        `Expected maxHandlers to be a positive number, got '${count}' of type ${typeof count}`
+      );
     }
     this._maxHandlers = count;
     return this;
@@ -104,7 +127,7 @@ export default class Emittr {
   }
 
   public emit(name: string, ...args: any[]): boolean {
-    if (typeof this._handlers[name] !== "object" || !Array.isArray(this._handlers[name])) {
+    if (typeof this._handlers[name] !== 'object' || !Array.isArray(this._handlers[name])) {
       return false;
     }
     Emittr._callEventHandlers(this, this._handlers[name], args);
@@ -123,7 +146,7 @@ export default class Emittr {
 
   public once(name: string, handler: EventHandler): this {
     if (!isFun(handler)) {
-      throw new TypeError("Expected event handler to be a function, got " + typeof handler);
+      throw new TypeError(`Expected event handler to be a function, got ${typeof handler}`);
     }
     Emittr._addHandler(this, name, this._wrapOnceHandler(name, handler));
     return this;
@@ -131,7 +154,7 @@ export default class Emittr {
 
   public prependOnce(name: string, handler: EventHandler): this {
     if (!isFun(handler)) {
-      throw new TypeError("Expected event handler to be a function, got " + typeof handler);
+      throw new TypeError(`Expected event handler to be a function, got ${typeof handler}`);
     }
     Emittr._addHandler(this, name, this._wrapOnceHandler(name, handler), true);
     return this;
@@ -145,9 +168,11 @@ export default class Emittr {
   public removeAllHandlers(): this {
     const handlers = this._handlers;
     this._handlers = Object.create(null);
-    const removeHandlers = handlers["removeHandler"];
-    delete handlers["removeHandler"];
-    let idx, eventName;
+    const removeHandlers = handlers.removeHandler;
+    delete handlers.removeHandler;
+    let idx;
+    let eventName;
+    // eslint-disable-next-line guard-for-in,no-restricted-syntax
     for (eventName in handlers) {
       for (idx = handlers[eventName].length - 1; idx >= 0; idx--) {
         Emittr._callEventHandlers(this, removeHandlers, [

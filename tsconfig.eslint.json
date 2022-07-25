@@ -1,0 +1,19 @@
+{
+  "extends": "./tsconfig.json",
+  "exclude": [
+    "./cjs",
+    "./coverage",
+    "./esm",
+    "./esnext",
+    "./node_modules"
+  ],
+  "include": [
+    ".**/*.js",
+    "**/.*.js",
+    "**/*.js",
+    "**/*.ts",
+    "**/*.tsx",
+    "**/*.md",
+    "**/*.mdx"
+  ]
+}

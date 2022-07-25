@@ -13,6 +13,27 @@ env:
   HUSKY: 0
 
 jobs:
+  lint:
+    name: "Lint"
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      - uses: bahmutov/npm-install@v1
+        with:
+          useRollingCache: true
+          install-command: yarn --frozen-lockfile
+
+      - name: "Lint"
+        run: yarn lint -f @jamesacarr/github-actions
+
   test:
     name: "Test"
     runs-on: ubuntu-latest
@@ -44,7 +65,7 @@ jobs:
   dependabot-merge:
     name: "Dependabot automerge"
     runs-on: ubuntu-latest
-    needs: [ "test" ]
+    needs: [ "test", "lint" ]
     permissions:
       pull-requests: write
       contents: write

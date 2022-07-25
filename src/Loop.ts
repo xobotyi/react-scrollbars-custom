@@ -12,12 +12,12 @@ export class RAFLoop {
   /**
    * @description ID of requested animation frame. Valuable only if loop is active and has items to iterate.
    */
-  private animationFrameID: number = 0;
+  private animationFrameID = 0;
 
   /**
    * @description Loop's state.
    */
-  private _isActive: boolean = false;
+  private _isActive = false;
 
   /**
    * @description Loop's state.
@@ -33,7 +33,7 @@ export class RAFLoop {
     if (!this._isActive && this.targets.length) {
       this._isActive = true;
 
-      this.animationFrameID && cancelAnimationFrame(this.animationFrameID);
+      if (this.animationFrameID) cancelAnimationFrame(this.animationFrameID);
       this.animationFrameID = requestAnimationFrame(this.rafCallback);
     }
 
@@ -47,7 +47,7 @@ export class RAFLoop {
     if (this._isActive) {
       this._isActive = false;
 
-      this.animationFrameID && cancelAnimationFrame(this.animationFrameID);
+      if (this.animationFrameID) cancelAnimationFrame(this.animationFrameID);
       this.animationFrameID = 0;
     }
 
@@ -57,11 +57,11 @@ export class RAFLoop {
   /**
    * @description Add target to the iteration list if it's not there.
    */
-  public addTarget = (target: UpdatableItem, silent: boolean = false): this => {
-    if (this.targets.indexOf(target) === -1) {
+  public addTarget = (target: UpdatableItem, silent = false): this => {
+    if (!this.targets.includes(target)) {
       this.targets.push(target);
 
-      this.targets.length === 1 && !silent && this.start();
+      if (this.targets.length === 1 && !silent) this.start();
     }
 
     return this;
@@ -76,7 +76,7 @@ export class RAFLoop {
     if (idx !== -1) {
       this.targets.splice(idx, 1);
 
-      this.targets.length === 0 && this.stop();
+      if (this.targets.length === 0) this.stop();
     }
 
     return this;
@@ -91,10 +91,11 @@ export class RAFLoop {
     }
 
     for (let i = 0; i < this.targets.length; i++) {
-      !this.targets[i]._unmounted && this.targets[i].update();
+      if (!this.targets[i]._unmounted) this.targets[i].update();
     }
 
-    return (this.animationFrameID = requestAnimationFrame(this.rafCallback));
+    this.animationFrameID = requestAnimationFrame(this.rafCallback);
+    return this.animationFrameID;
   };
 }
 

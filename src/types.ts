@@ -16,7 +16,9 @@ export type ElementPropsWithElementRef<T = HTMLDivElement> = React.HTMLProps<T> 
   elementRef?: ElementRef<T>;
 };
 
-export type ElementRenderer<T = HTMLDivElement> = React.FC<ElementPropsWithElementRef<T>>;
+export type ElementRenderer<T = HTMLDivElement> = React.FC<
+  React.PropsWithChildren<ElementPropsWithElementRef<T>>
+>;
 
 export type ElementPropsWithElementRefAndRenderer<T = HTMLDivElement> = React.HTMLProps<T> & {
   elementRef?: ElementRef<T>;

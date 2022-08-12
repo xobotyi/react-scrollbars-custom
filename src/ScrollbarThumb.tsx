@@ -66,12 +66,12 @@ export default class ScrollbarThumb extends React.Component<ScrollbarThumbProps,
       return;
     }
 
-    if (global.document) {
-      this.prevUserSelect = global.document.body.style.userSelect;
-      global.document.body.style.userSelect = 'none';
+    if (globalThis.document) {
+      this.prevUserSelect = globalThis.document.body.style.userSelect;
+      globalThis.document.body.style.userSelect = 'none';
 
-      this.prevOnSelectStart = global.document.onselectstart;
-      global.document.addEventListener('selectstart', ScrollbarThumb.selectStartReplacer);
+      this.prevOnSelectStart = globalThis.document.onselectstart;
+      globalThis.document.addEventListener('selectstart', ScrollbarThumb.selectStartReplacer);
     }
 
     if (this.props.onDragStart) {
@@ -126,11 +126,11 @@ export default class ScrollbarThumb extends React.Component<ScrollbarThumbProps,
 
     if (this.element) this.element.classList.remove('dragging');
 
-    if (global.document) {
-      global.document.body.style.userSelect = this.prevUserSelect;
+    if (globalThis.document) {
+      globalThis.document.body.style.userSelect = this.prevUserSelect;
 
       if (this.prevOnSelectStart) {
-        global.document.addEventListener('selectstart', this.prevOnSelectStart);
+        globalThis.document.addEventListener('selectstart', this.prevOnSelectStart);
       }
 
       this.prevOnSelectStart = null;

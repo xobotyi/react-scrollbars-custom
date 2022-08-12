@@ -23,9 +23,9 @@ declare let global: {
   window?: Window;
 };
 
-let pageZoomLevel: number = global.window ? zoomLevel() : 1;
-if (global.window) {
-  global.window.addEventListener(
+let pageZoomLevel: number = globalThis.window ? zoomLevel() : 1;
+if (globalThis.window) {
+  globalThis.window.addEventListener(
     'resize',
     () => {
       pageZoomLevel = zoomLevel();
@@ -1379,12 +1379,12 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
   private _scrollDetection = () => {
     if (!this._scrollDetectionTO) {
       this.eventEmitter.emit('scrollStart', this.getScrollState());
-    } else if (global.window) {
-      global.window.clearTimeout(this._scrollDetectionTO);
+    } else if (globalThis.window) {
+      globalThis.window.clearTimeout(this._scrollDetectionTO);
     }
 
-    this._scrollDetectionTO = global.window
-      ? global.window.setTimeout(
+    this._scrollDetectionTO = globalThis.window
+      ? globalThis.window.setTimeout(
           this._scrollDetectionCallback,
           this.props.scrollDetectionThreshold || 0
         )

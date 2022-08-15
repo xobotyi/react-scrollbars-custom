@@ -2,11 +2,7 @@ import { cnb } from 'cnbuilder';
 import * as React from 'react';
 import { DraggableCore, DraggableData, DraggableEvent } from 'react-draggable';
 import { AXIS_DIRECTION, ElementPropsWithElementRefAndRenderer } from './types';
-import { isFun, isUndef, renderDivWithRenderer } from './util';
-
-declare let global: {
-  document?: Document;
-};
+import { isBrowser, isFun, isUndef, renderDivWithRenderer } from "./util";
 
 export type DragCallbackData = Pick<DraggableData, Exclude<keyof DraggableData, 'node'>>;
 
@@ -66,12 +62,12 @@ export default class ScrollbarThumb extends React.Component<ScrollbarThumbProps,
       return;
     }
 
-    if (global.document) {
-      this.prevUserSelect = global.document.body.style.userSelect;
-      global.document.body.style.userSelect = 'none';
+    if (isBrowser) {
+      this.prevUserSelect = document.body.style.userSelect;
+      document.body.style.userSelect = 'none';
 
-      this.prevOnSelectStart = global.document.onselectstart;
-      global.document.addEventListener('selectstart', ScrollbarThumb.selectStartReplacer);
+      this.prevOnSelectStart = document.onselectstart;
+      document.addEventListener('selectstart', ScrollbarThumb.selectStartReplacer);
     }
 
     if (this.props.onDragStart) {
@@ -126,11 +122,11 @@ export default class ScrollbarThumb extends React.Component<ScrollbarThumbProps,
 
     if (this.element) this.element.classList.remove('dragging');
 
-    if (global.document) {
-      global.document.body.style.userSelect = this.prevUserSelect;
+    if (isBrowser) {
+      document.body.style.userSelect = this.prevUserSelect;
 
       if (this.prevOnSelectStart) {
-        global.document.addEventListener('selectstart', this.prevOnSelectStart);
+        document.addEventListener('selectstart', this.prevOnSelectStart);
       }
 
       this.prevOnSelectStart = null;

@@ -3,6 +3,11 @@ import { ElementPropsWithElementRefAndRenderer, ElementRef } from './types';
 
 let doc: Document | null = typeof document === 'object' ? document : null;
 
+export const isBrowser =
+  typeof window !== 'undefined' &&
+  typeof navigator !== 'undefined' &&
+  typeof document !== 'undefined';
+
 export const isUndef = (v: any): v is Exclude<typeof v, undefined> => {
   return typeof v === 'undefined';
 };

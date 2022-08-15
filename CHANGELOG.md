@@ -1,3 +1,10 @@
+## [4.1.1](https://github.com/xobotyi/react-scrollbars-custom/compare/v4.1.0...v4.1.1) (2022-08-15)
+
+
+### Bug Fixes
+
+* replace `global` with browser env detection ([4c39fa3](https://github.com/xobotyi/react-scrollbars-custom/commit/4c39fa3a4c9485d00d5ea46930c0f3a4e732f914))
+
 # [4.1.0](https://github.com/xobotyi/react-scrollbars-custom/compare/v4.0.25...v4.1.0) (2022-07-25)
 
 

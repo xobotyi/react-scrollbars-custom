@@ -45,10 +45,10 @@
     "zoom-level": "^2.5.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.18.9",
-    "@babel/preset-env": "^7.18.9",
+    "@babel/core": "^7.18.10",
+    "@babel/preset-env": "^7.18.10",
     "@jamesacarr/eslint-formatter-github-actions": "^0.1.0",
-    "@react-hookz/eslint-config": "^1.6.1",
+    "@react-hookz/eslint-config": "^1.7.1",
     "@semantic-release/changelog": "^6.0.1",
     "@semantic-release/git": "^10.0.1",
     "@semantic-release/github": "^8.0.5",

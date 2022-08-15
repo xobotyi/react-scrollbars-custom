@@ -1,4 +1,4 @@
-const path = require('path');
+const path = require('node:path');
 // eslint-disable-next-line import/no-unresolved
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 // eslint-disable-next-line import/no-unresolved

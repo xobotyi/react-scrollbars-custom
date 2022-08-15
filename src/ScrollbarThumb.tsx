@@ -2,7 +2,7 @@ import { cnb } from 'cnbuilder';
 import * as React from 'react';
 import { DraggableCore, DraggableData, DraggableEvent } from 'react-draggable';
 import { AXIS_DIRECTION, ElementPropsWithElementRefAndRenderer } from './types';
-import { isBrowser, isFun, isUndef, renderDivWithRenderer } from "./util";
+import { isBrowser, isFun, isUndef, renderDivWithRenderer } from './util';
 
 export type DragCallbackData = Pick<DraggableData, Exclude<keyof DraggableData, 'node'>>;
 
@@ -19,6 +19,18 @@ export type ScrollbarThumbProps = ElementPropsWithElementRefAndRenderer & {
 export default class ScrollbarThumb extends React.Component<ScrollbarThumbProps, unknown> {
   private static selectStartReplacer = () => false;
 
+  public element: HTMLDivElement | null = null;
+
+  public initialOffsetX = 0;
+
+  public initialOffsetY = 0;
+
+  private prevUserSelect: string;
+
+  private prevOnSelectStart: ((ev: Event) => boolean) | null;
+
+  private elementRefHack = React.createRef<HTMLElement>();
+
   public lastDragData: DragCallbackData = {
     x: 0,
     y: 0,
@@ -27,18 +39,6 @@ export default class ScrollbarThumb extends React.Component<ScrollbarThumbProps,
     lastX: 0,
     lastY: 0,
   };
-
-  public element: HTMLDivElement | null = null;
-
-  private prevUserSelect: string;
-
-  private prevOnSelectStart: ((ev: Event) => boolean) | null;
-
-  private elementRefHack = React.createRef<HTMLElement>();
-
-  public initialOffsetX = 0;
-
-  public initialOffsetY = 0;
 
   public componentDidMount(): void {
     if (!this.element) {

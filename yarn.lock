@@ -1334,9 +1334,9 @@
     tslib "^2.4.0"
 
 "@react-hookz/eslint-config@^1.7.1":
-  version "1.7.1"
-  resolved "https://registry.yarnpkg.com/@react-hookz/eslint-config/-/eslint-config-1.7.1.tgz#1b7f98b610475ee1692a159842c1995e7cb9642f"
-  integrity sha512-xgF0HhEPlGmoEZ0qzmr6bzPsXckWa4L0YuhBxqawYxp5VpTUwrNXqWmdXpVFuRrW/VDstVqxLoL48FDlw+6vFg==
+  version "1.7.2"
+  resolved "https://registry.yarnpkg.com/@react-hookz/eslint-config/-/eslint-config-1.7.2.tgz#44bb7dbe112cbdd21c40ba9483d42e9005a8f84c"
+  integrity sha512-lnTmClFDlsiP4weandfv8akmb0FzmuFMQINVjU/aE486P/gR4xDl+dKcSNk2HE8lB1hoDiIbIyoowY85LoGjyg==
   dependencies:
     "@typescript-eslint/eslint-plugin" "^5.33.0"
     "@typescript-eslint/parser" "^5.33.0"
@@ -1348,7 +1348,7 @@
     eslint-mdx "^2.0.2"
     eslint-plugin-eslint-comments "^3.2.0"
     eslint-plugin-import "^2.26.0"
-    eslint-plugin-jest "^26.8.2"
+    eslint-plugin-jest "^26.8.3"
     eslint-plugin-jsx-a11y "^6.6.1"
     eslint-plugin-mdx "^2.0.2"
     eslint-plugin-prettier "^4.2.1"
@@ -3332,10 +3332,10 @@ eslint-plugin-import@^2.26.0:
     resolve "^1.22.0"
     tsconfig-paths "^3.14.1"
 
-eslint-plugin-jest@^26.8.2:
-  version "26.8.2"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-jest/-/eslint-plugin-jest-26.8.2.tgz#42a1248a5ade2bc589eb0f9c4e0608dd89b18cf3"
-  integrity sha512-67oh0FKaku9y48OpLzL3uK9ckrgLb83Sp5gxxTbtOGDw9lq6D8jw/Psj/9CipkbK406I2M7mvx1q+pv/MdbvxA==
+eslint-plugin-jest@^26.8.3:
+  version "26.8.3"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-jest/-/eslint-plugin-jest-26.8.3.tgz#f5d9bb162636491c8f6f0cd2743fe67c86569338"
+  integrity sha512-2roWu1MkEiihQ/qEszPPoaoqVI1x2D8Jtadk5AmoXTdEeNVPMu01Dtz7jIuTOAmdW3L+tSkPZOtEtQroYJDt0A==
   dependencies:
     "@typescript-eslint/utils" "^5.10.0"
 

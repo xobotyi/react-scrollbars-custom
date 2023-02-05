@@ -152,17 +152,17 @@ export default class ScrollbarThumb extends React.Component<ScrollbarThumbProps,
     ev.preventDefault();
     ev.stopPropagation();
 
-    if (!isUndef(ev.offsetX)) {
-      /* istanbul ignore next */
-      this.initialOffsetX = ev.offsetX;
-      /* istanbul ignore next */
-      this.initialOffsetY = ev.offsetY;
-    } else {
+    if (isUndef(ev.offsetX)) {
       const rect: ClientRect = this.element.getBoundingClientRect();
       this.initialOffsetX =
         (ev.clientX || (ev as unknown as TouchEvent).touches[0].clientX) - rect.left;
       this.initialOffsetY =
         (ev.clientY || (ev as unknown as TouchEvent).touches[0].clientY) - rect.top;
+    } else {
+      /* istanbul ignore next */
+      this.initialOffsetX = ev.offsetX;
+      /* istanbul ignore next */
+      this.initialOffsetY = ev.offsetY;
     }
   };
 

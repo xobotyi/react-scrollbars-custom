@@ -1,13 +1,13 @@
-import babel from 'rollup-plugin-babel';
-import ts from 'rollup-plugin-typescript2';
-import pkg from './package.json';
+const babelPlugin = require('rollup-plugin-babel');
+const tsPlugin = require('rollup-plugin-typescript2');
+const pkg = require('./package.json');
 
 const ownKeys = Object.getOwnPropertyNames;
 const externalDependencies = [
   ...new Set([...ownKeys(pkg.peerDependencies), ...ownKeys(pkg.dependencies)]),
 ];
 
-export default [
+module.exports = [
   {
     input: './src/index.ts',
     external: externalDependencies,
@@ -21,14 +21,12 @@ export default [
     ],
 
     plugins: [
-      ts({
+      tsPlugin({
         clean: true,
         useTsconfigDeclarationDir: true,
         tsconfigOverride: {
           compilerOptions: {
             module: 'esnext',
-            // ToDo: FIXME! sadly rollup do not handle optional chaining yet
-            target: 'es2019',
             declaration: true,
             declarationDir: `${__dirname}/dist/types`,
           },
@@ -55,7 +53,7 @@ export default [
     ],
 
     plugins: [
-      ts({
+      tsPlugin({
         clean: true,
         tsconfigOverride: {
           compilerOptions: {
@@ -65,7 +63,7 @@ export default [
           },
         },
       }),
-      babel({
+      babelPlugin({
         babelrc: false,
         exclude: 'node_modules/**',
         extensions: ['.ts', '.tsx', '.js', '.jsx'],

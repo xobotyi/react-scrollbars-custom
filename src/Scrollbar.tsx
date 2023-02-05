@@ -109,7 +109,10 @@ export const ScrollbarContext: React.Context<ScrollbarContextValue> = React.crea
   parentScrollbar: null,
 } as ScrollbarContextValue);
 
-export default class Scrollbar extends React.Component<ScrollbarProps, ScrollbarState> {
+export default class Scrollbar extends React.Component<
+  React.PropsWithChildren<ScrollbarProps>,
+  ScrollbarState
+> {
   // eslint-disable-next-line react/static-property-placement
   static contextType = ScrollbarContext;
 
@@ -649,7 +652,9 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
 
     let bitmask = 0;
 
-    if (!force) {
+    if (force) {
+      bitmask = 0b111_1111_1111_1111;
+    } else {
       if (prevScrollState.clientHeight !== scrollState.clientHeight) bitmask |= Math.trunc(1);
       if (prevScrollState.clientWidth !== scrollState.clientWidth) bitmask |= 1 << 1;
       if (prevScrollState.scrollHeight !== scrollState.scrollHeight) bitmask |= 1 << 2;
@@ -674,8 +679,6 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
       if (bitmask === 0) {
         return prevScrollState;
       }
-    } else {
-      bitmask = 0b111_1111_1111_1111;
     }
 
     if (!props.native && this.holderElement) {
@@ -839,9 +842,9 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
       ...propsHolderProps
     } = this.props as ScrollbarProps;
 
-    const scrollbarWidth = !util.isUndef(propsScrollbarWidth)
-      ? propsScrollbarWidth
-      : util.getScrollbarWidth() || 0;
+    const scrollbarWidth = util.isUndef(propsScrollbarWidth)
+      ? util.getScrollbarWidth() || 0
+      : propsScrollbarWidth;
 
     if (native || (!scrollbarWidth && mobileNative)) {
       this.elementRefHolder(null);

@@ -16,7 +16,10 @@ export type ScrollbarTrackProps = ElementPropsWithElementRefAndRenderer & {
   ref?: (ref: ScrollbarTrack | null) => void;
 };
 
-export default class ScrollbarTrack extends React.Component<ScrollbarTrackProps, unknown> {
+export default class ScrollbarTrack extends React.Component<
+  React.PropsWithChildren<ScrollbarTrackProps>,
+  unknown
+> {
   public element: HTMLDivElement | null = null;
 
   public componentDidMount(): void {
@@ -52,12 +55,7 @@ export default class ScrollbarTrack extends React.Component<ScrollbarTrackProps,
     }
 
     if (isFun(this.props.onClick) && ev.target === this.element) {
-      if (!isUndef(ev.offsetX)) {
-        this.props.onClick(ev, {
-          axis: this.props.axis,
-          offset: this.props.axis === AXIS_DIRECTION.X ? ev.offsetX : ev.offsetY,
-        });
-      } else {
+      if (isUndef(ev.offsetX)) {
         // support for old browsers
         /* istanbul ignore next */
         const rect: ClientRect = this.element.getBoundingClientRect();
@@ -68,6 +66,11 @@ export default class ScrollbarTrack extends React.Component<ScrollbarTrackProps,
             this.props.axis === AXIS_DIRECTION.X
               ? (ev.clientX || (ev as unknown as TouchEvent).touches[0].clientX) - rect.left
               : (ev.clientY || (ev as unknown as TouchEvent).touches[0].clientY) - rect.top,
+        });
+      } else {
+        this.props.onClick(ev, {
+          axis: this.props.axis,
+          offset: this.props.axis === AXIS_DIRECTION.X ? ev.offsetX : ev.offsetY,
         });
       }
     }

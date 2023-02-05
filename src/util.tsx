@@ -9,7 +9,7 @@ export const isBrowser =
   typeof document !== 'undefined';
 
 export const isUndef = (v: any): v is Exclude<typeof v, undefined> => {
-  return typeof v === 'undefined';
+  return v === undefined;
 };
 
 export const isFun = (v: any): v is CallableFunction => {

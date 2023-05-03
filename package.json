@@ -74,7 +74,7 @@
     "semantic-release": "^19.0.3",
     "simulant": "^0.2.2",
     "tslib": "^2.4.0",
-    "typescript": "^4.7.4"
+    "typescript": "^5.0.4"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx,md,mdx}": "eslint --fix"

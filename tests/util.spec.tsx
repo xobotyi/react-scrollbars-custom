@@ -419,14 +419,10 @@ describe('util', () => {
 
     it('should pass elementRef as ref if renderer not presented', (done) => {
       const ref = jasmine.createSpy();
-      ReactDOM.render(
-        renderDivWithRenderer({ elementRef: undefined, className: 'tests' }, ref),
-        node,
-        () => {
-          expect(ref).toHaveBeenCalled();
-          done();
-        }
-      );
+      ReactDOM.render(renderDivWithRenderer({ className: 'tests' }, ref)!, node, () => {
+        expect(ref).toHaveBeenCalled();
+        done();
+      });
     });
 
     it("should not leak renderer prop if it's passed", () => {

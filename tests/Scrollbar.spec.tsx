@@ -1,6 +1,7 @@
 // eslint-disable-next-line max-classes-per-file
 import { cnb } from 'cnbuilder';
 import * as React from 'react';
+import { Context, PropsWithChildren } from 'react';
 import * as ReactDOM from 'react-dom';
 import * as simulant from 'simulant';
 import { Scrollbar, ScrollbarContext, ScrollbarProps, ScrollbarState } from '../src';
@@ -9,7 +10,7 @@ import { ScrollState, TRACK_CLICK_BEHAVIOR } from '../src/types';
 import { getScrollbarWidth, shouldReverseRtlScroll } from '../src/util';
 
 class ScrollbarPropsUpdater extends React.Component<
-  { scrollbarProps: ScrollbarProps },
+  React.PropsWithChildren & { scrollbarProps: ScrollbarProps },
   { scrollbarProps: ScrollbarProps }
 > {
   scrollbar: Scrollbar;
@@ -338,7 +339,7 @@ describe('Scrollbar', () => {
         );
       };
 
-      class ErrorBoundary extends React.Component<unknown, { [key: string]: any }> {
+      class ErrorBoundary extends React.Component<PropsWithChildren, { [key: string]: any }> {
         constructor(props) {
           super(props);
           this.state = { error: null, errorInfo: null };
@@ -1129,12 +1130,12 @@ describe('Scrollbar', () => {
     it('should create context if createContext is passed', (done) => {
       let consumedContext: ScrollbarContextValue;
 
-      class ScrollbarContextConsumer extends React.Component<unknown, unknown> {
+      class ScrollbarContextConsumer extends React.Component<PropsWithChildren, unknown> {
         // eslint-disable-next-line react/static-property-placement
         static contextType = ScrollbarContext;
 
         public componentDidMount(): void {
-          consumedContext = this.context;
+          consumedContext = this.context as ScrollbarContextValue;
         }
 
         render() {

@@ -1,3 +1,4 @@
+import { PropsWithChildren } from 'react';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import * as simulant from 'simulant';
@@ -111,7 +112,7 @@ describe('ScrollbarThumb', () => {
       );
     };
 
-    class ErrorBoundary extends React.Component<Record<string, unknown>, { [key: string]: any }> {
+    class ErrorBoundary extends React.Component<PropsWithChildren, { [key: string]: any }> {
       constructor(props) {
         super(props);
         this.state = { error: null, errorInfo: null };

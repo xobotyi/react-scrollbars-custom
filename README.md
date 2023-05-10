@@ -16,6 +16,9 @@
 
 </div>
 
+> **Maintainers Wanted!**  
+> If you're interested in helping with project maintenance - please contact me throgh email or twitter (links in profile)
+
 ---
 
 - Native browser scroll behavior - it don't emulate scrolling, only showing custom scrollbars,

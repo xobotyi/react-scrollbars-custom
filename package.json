@@ -57,7 +57,7 @@
     "@types/react": "^17",
     "@types/react-dom": "^17",
     "cross-env": "^7.0.3",
-    "jasmine-core": "^4.3.0",
+    "jasmine-core": "^5.0.0",
     "karma": "^6.4.0",
     "karma-chrome-launcher": "^3.1.1",
     "karma-coverage": "^2.2.0",

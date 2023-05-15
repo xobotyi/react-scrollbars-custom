@@ -4781,10 +4781,15 @@ istanbul-reports@^3.0.0, istanbul-reports@^3.0.5:
     html-escaper "^2.0.0"
     istanbul-lib-report "^3.0.0"
 
-jasmine-core@^4.1.0, jasmine-core@^4.3.0:
+jasmine-core@^4.1.0:
   version "4.5.0"
   resolved "https://registry.yarnpkg.com/jasmine-core/-/jasmine-core-4.5.0.tgz#1a6bd0bde3f60996164311c88a0995d67ceda7c3"
   integrity sha512-9PMzyvhtocxb3aXJVOPqBDswdgyAeSB81QnLop4npOpbqnheaTEwPc9ZloQeVswugPManznQBjD8kWDTjlnHuw==
+
+jasmine-core@^5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/jasmine-core/-/jasmine-core-5.0.0.tgz#84a200637f9ef92f6d0788e96bb4e67bb1316a81"
+  integrity sha512-BJLxZlSVyWPN/oyaS1IIvIjChghI9/xWsLAIJqL9J5Fz47CN3JNr8Lmik3S2S7QS2RxclYjvSVSXP7IR35PAmg==
 
 java-properties@^1.0.0:
   version "1.0.2"

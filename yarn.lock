@@ -1640,9 +1640,9 @@
   integrity sha512-dRLjCWHYg4oaA77cxO64oO+7JwCwnIzkZPdrrC71jQmQtlhM556pwKo5bUzqvZndkVbeFLIIi+9TC40JNF5hNQ==
 
 "@types/karma@^6.3.3":
-  version "6.3.3"
-  resolved "https://registry.yarnpkg.com/@types/karma/-/karma-6.3.3.tgz#fc48cc53d13ec9beeea3a2a47a2036ed7647ba29"
-  integrity sha512-nRMec4mTCt+tkpRqh5/pAxmnjzEgAaalIq7mdfLFH88gSRC8+bxejLiSjHMMT/vHIhJHqg4GPIGCnCFbwvDRww==
+  version "6.3.4"
+  resolved "https://registry.yarnpkg.com/@types/karma/-/karma-6.3.4.tgz#3189076da2fcf0d4d59fd50bdfd4786aa6d877c7"
+  integrity sha512-aefuFcs4e4NAOi1Ue4AP9fR2TQv45NFpdaLXdg+3FxDDndk/4T6LoHRTmKtRVqkwtQPh5Ntc3CxsoOgzldAAfg==
   dependencies:
     "@types/node" "*"
     log4js "^6.4.1"

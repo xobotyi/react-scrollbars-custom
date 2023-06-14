@@ -30,6 +30,10 @@ if (isBrowser) {
   );
 }
 
+
+const DEFAULT_TRACK_Y_VISIBLE_CLASS_NAME = "trackYVisible";
+const DEFAULT_TRACK_X_VISIBLE_CLASS_NAME = "trackXVisible";
+
 export type ScrollbarProps = ElementPropsWithElementRefAndRenderer & {
   createContext?: boolean;
 
@@ -95,6 +99,9 @@ export type ScrollbarProps = ElementPropsWithElementRefAndRenderer & {
   onScroll?: (scrollValues: ScrollState, prevScrollState: ScrollState) => void;
   onScrollStart?: (scrollValues: ScrollState) => void;
   onScrollStop?: (scrollValues: ScrollState) => void;
+
+  trackXVisibleClassName?: string
+  trackYVisibleClassName?: string
 };
 
 export type ScrollbarState = {
@@ -836,8 +843,14 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
 
       children,
 
+      trackXVisibleClassName,
+      trackYVisibleClassName,
+
       ...propsHolderProps
     } = this.props as ScrollbarProps;
+
+    const trackXVisibleClassNameToRender = trackXVisibleClassName ?? DEFAULT_TRACK_X_VISIBLE_CLASS_NAME
+    const trackYVisibleClassNameToRender = trackYVisibleClassName ?? DEFAULT_TRACK_Y_VISIBLE_CLASS_NAME
 
     const scrollbarWidth = !util.isUndef(propsScrollbarWidth)
       ? propsScrollbarWidth
@@ -862,8 +875,8 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
         ...propsHolderProps,
         className: cnb(
           'ScrollbarsCustom native',
-          this.state.trackYVisible && 'trackYVisible',
-          this.state.trackXVisible && 'trackXVisible',
+          this.state.trackYVisible && trackYVisibleClassNameToRender,
+          this.state.trackXVisible && trackXVisibleClassNameToRender,
           this.state.isRTL && 'rtl',
           propsHolderProps.className
         ),
@@ -1003,8 +1016,8 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
       ...propsHolderProps,
       className: cnb(
         'ScrollbarsCustom',
-        this.state.trackYVisible && 'trackYVisible',
-        this.state.trackXVisible && 'trackXVisible',
+        this.state.trackYVisible && trackYVisibleClassNameToRender,
+        this.state.trackXVisible && trackXVisibleClassNameToRender,
         this.state.isRTL && 'rtl',
         propsHolderProps.className
       ),

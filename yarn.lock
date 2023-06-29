@@ -1627,9 +1627,9 @@
     "@types/unist" "*"
 
 "@types/jasmine@^4.0.3":
-  version "4.3.2"
-  resolved "https://registry.yarnpkg.com/@types/jasmine/-/jasmine-4.3.2.tgz#27045b95e1249e67ef02c7966e12003fb25df18b"
-  integrity sha512-lKkWBcbxEZX/7nxPqEtv/OjPLaBa2j0o+hmv5Yn83b/+11C1kfBAkgvmrb13WDkmizUJ3B+jYrWh4M0YRtrzEQ==
+  version "4.3.5"
+  resolved "https://registry.yarnpkg.com/@types/jasmine/-/jasmine-4.3.5.tgz#05c6b401c041b8a4f3303c3a58c9580aac2b898c"
+  integrity sha512-9YHUdvuNDDRJYXZwHqSsO72Ok0vmqoJbNn73ttyITQp/VA60SarnZ+MPLD37rJAhVoKp+9BWOvJP5tHIRfZylQ==
 
 "@types/json-schema@^7.0.9":
   version "7.0.11"

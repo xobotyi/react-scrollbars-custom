@@ -64,7 +64,7 @@
     "karma-jasmine": "^5.1.0",
     "karma-typescript": "^5.5.3",
     "lint-staged": "^13.0.3",
-    "prettier": "^2.7.1",
+    "prettier": "^3.0.2",
     "react": "^17",
     "react-dom": "^17",
     "rimraf": "^5.0.0",

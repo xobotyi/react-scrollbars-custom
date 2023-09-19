@@ -21,7 +21,7 @@
 
 ---
 
-- Native browser scroll behavior - it don't emulate scrolling, only showing custom scrollbars,
+- Native browser scroll behavior - it doesn't emulate scrolling, only showing custom scrollbars,
   scrolling itself still native
 - Cross-browser and cross-platform - does not matter where and how, scrollbars looks the same
   everywhere

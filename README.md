@@ -16,8 +16,13 @@
 
 </div>
 
-> **Maintainers Wanted!**  
-> If you're interested in helping with project maintenance - please contact me throgh email or twitter (links in profile)
+> **Archived.** react-scrollbars-custom is no longer maintained. The last release was 4.1.1 in August 2022, and
+> there will be no further updates. The package stays installable from npm.
+>
+> Use [OverlayScrollbars](https://github.com/KingSora/OverlayScrollbars) with its React wrapper
+> [`overlayscrollbars-react`](https://www.npmjs.com/package/overlayscrollbars-react) instead. It is actively maintained
+> and covers what this library did: native scrolling, custom styling, nesting, RTL, SSR. Two differences to plan for
+> when migrating: it needs its stylesheet, and it has no equivalent of `translateContentSizesToHolder`.
 
 ---
 

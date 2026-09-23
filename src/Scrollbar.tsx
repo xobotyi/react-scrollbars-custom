@@ -735,6 +735,12 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
 
     this.scrollValues = scrollState;
 
+    // Check if the status of whether scrolling is possible has changed, and if it has force a re-render. This handles
+    // the condition of permanentTracks enabled because otherwise we're depending on trackVisibility changing to trigger a re-render.
+    if (bitmask & (1 << 8) || bitmask & (1 << 9)) {
+      this.forceUpdate();
+    }
+
     if (!props.native && bitmask & (1 << 15)) {
       util.getScrollbarWidth(true);
       this.forceUpdate();

@@ -218,6 +218,15 @@ interface GetScrollbarWidthFN {
   (force?: boolean): number | undefined;
 }
 
+const setWidthDetectorStyle = (el: HTMLDivElement): void => {
+  el.style.position = 'absolute';
+  el.style.width = '100px';
+  el.style.height = '100px';
+  el.style.top = '-999px';
+  el.style.left = '-999px';
+  el.style.overflow = 'scroll';
+}
+
 /**
  * @description Returns scrollbar width specific for current environment. Can return undefined if DOM is not ready yet.
  */
@@ -233,10 +242,7 @@ export const getScrollbarWidth: GetScrollbarWidthFN = (force = false): number | 
   }
 
   const el = doc.createElement('div');
-  el.setAttribute(
-    'style',
-    'position:absolute;width:100px;height:100px;top:-999px;left:-999px;overflow:scroll;'
-  );
+  setWidthDetectorStyle(el);
 
   doc.body.append(el);
 
@@ -277,11 +283,11 @@ export const shouldReverseRtlScroll: ShouldReverseRtlScroll = (force = false): b
 
   el.append(child);
 
-  el.setAttribute(
-    'style',
-    'position:absolute;width:100px;height:100px;top:-999px;left:-999px;overflow:scroll;direction:rtl'
-  );
-  child.setAttribute('style', 'width:1000px;height:1000px');
+  setWidthDetectorStyle(el);
+  el.style.direction = 'rtl';
+
+  child.style.width = '1000px';
+  child.style.left = '1000px';
 
   doc.body.append(el);
 
